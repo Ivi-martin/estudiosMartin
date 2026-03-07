@@ -1850,8 +1850,8 @@ function startExam() {
     {type:'write',section:'Numbers',question:'Write the number 8 in words:',correct:'eight'},
     {type:'write',section:'Numbers',question:'Write the number 17 in words:',correct:'seventeen'},
     // LISTENING
-    {type:'mc',section:'Listening',question:'🔊 "How many ___ can you see?" Complete:',options:['frogs','swimming','can'],correct:'frogs'},
-    {type:'mc',section:'Listening',question:'🔊 Listen: "Can it jump?" – Frog. Correct answer:',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
+    {type:'mc',section:'Listening',audio:'How many frogs can you see?',question:'🔊 Listen and complete: "How many ___ can you see?"',options:['frogs','swimming','can'],correct:'frogs'},
+    {type:'mc',section:'Listening',audio:'Can it jump?',question:'🔊 Listen: "Can it jump?" – Frog. Choose the answer:',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
   ].sort(()=>Math.random()-.5);
 
   examIdx=0;
@@ -1886,10 +1886,12 @@ function renderExamQuestion() {
   const dots = examQuestions.map((_,i)=>`<div class="test-dot ${i<examIdx?(examResults[i]?'done-correct':'done-wrong'):(i===examIdx?'current':'')}"></div>`).join('');
   let exHTML='';
   if(q.type==='mc') {
-    exHTML=`<div class="options" id="exam-opts">
-      ${q.options.map(o=>`<button class="option-btn" onclick="checkExam(this,'${q.correct.replace(/'/g,"\\'")}','${o.replace(/'/g,"\\'")}')">${o}</button>`).join('')}
+    const examAudioBtn = q.audio
+      ? `<button class="speak-btn" style="margin-bottom:14px;font-size:15px;padding:10px 22px" onclick="speak('${q.audio.replace(/'/g,"\\'")}')" >🔊 Escuchar</button>`
+      : '';
+    exHTML=`${examAudioBtn}<div class="options" id="exam-opts">
+      ${q.options.map(o=>`<button class="option-btn" onclick="checkExam(this,'${q.correct.replace(/'/g,"\\'")  }','${o.replace(/'/g,"\\'")}')">${o}</button>`).join('')}
     </div>`;
-  } else {
     exHTML=`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
       <input class="text-input" style="max-width:280px" placeholder="Type here..." id="exam-inp">
       <button class="btn btn-primary" onclick="checkExamWrite('${q.correct.replace(/'/g,"\\'").replace(/\?/,'\\?')}')">Check ✓</button>
@@ -1910,6 +1912,8 @@ function renderExamQuestion() {
       ${exHTML}
       <div class="feedback" id="exam-fb"></div>
     </div>`;
+  // Auto-play audio if present
+  if (q.audio) setTimeout(() => speak(q.audio), 500);
 }
 
 function checkExam(btn, correct, chosen) {
