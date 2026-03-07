@@ -1809,8 +1809,8 @@ function buildExam() {
       <div style="font-size:56px;margin-bottom:12px">📝</div>
       <div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:8px">Unit 4 Exam Simulator</div>
       <p style="color:var(--gray-600);max-width:440px;margin:0 auto 20px;line-height:1.6">
-        20 questions across all topics: Animals, Verbs, Can/Can't, Numbers, and Listening.<br>
-        Get your final grade and see where to improve!
+        20 preguntas elegidas al azar de una batería de +90. ¡Cada examen es diferente!<br>
+        Animales, Verbos, Can/Can't, Números y Listening. ¡A por todas!
       </p>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
         <div style="background:var(--sky);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">🐾 5 Animals</div>
@@ -1823,37 +1823,111 @@ function buildExam() {
     </div>`;
 }
 
+// ============================================================
+// EXAM QUESTION BANK — pool grande, se eligen 20 al azar
+// ============================================================
+function buildExamPool() {
+  const pool = [];
+  const pick = (arr, n) => [...arr].sort(()=>Math.random()-.5).slice(0,n);
+  const wrongAnimals = (a) => ANIMALS.filter(x=>x.id!==a.id).sort(()=>Math.random()-.5).slice(0,2).map(w=>w.en);
+  const wrongVerbs   = (v) => VERBS.filter(x=>x.en!==v.en).sort(()=>Math.random()-.5).slice(0,2).map(w=>w.en);
+
+  // ── ANIMALS (pool: 8 preguntas — una por animal) ──
+  ANIMALS.forEach(a => {
+    pool.push({type:'mc',section:'Animals',emoji:a.emoji,
+      question:'What animal is this?',
+      options:[a.en,...wrongAnimals(a)].sort(()=>Math.random()-.5),correct:a.en});
+    pool.push({type:'write',section:'Animals',emoji:a.emoji,
+      question:'Write the name of this animal in English:',correct:a.en});
+  });
+
+  // ── VERBS (pool: 12 preguntas) ──
+  VERBS.forEach(v => {
+    pool.push({type:'mc',section:'Action Verbs',emoji:v.emoji,
+      question:`How do you say "${v.es}" in English?`,
+      options:[v.en,...wrongVerbs(v)].sort(()=>Math.random()-.5),correct:v.en});
+    pool.push({type:'mc',section:'Action Verbs',
+      question:`Which animal can ${v.en}?`,
+      options:['bird','duck','hedgehog'].sort(()=>Math.random()-.5),
+      correct: v.en==='fly'?'bird':v.en==='swim'?'duck':v.en==='sing'?'bird':v.en==='jump'?'frog':v.en==='climb'?'squirrel':'duck'});
+  });
+
+  // ── CAN / CAN'T (pool: 20 preguntas) ──
+  const canPool = [
+    {type:'mc',question:'🐸 Can a frog swim?',options:['Yes, it can.',"No, it can't."],correct:'Yes, it can.'},
+    {type:'mc',question:"🦔 Can a hedgehog fly?",options:['Yes, it can.',"No, it can't."],correct:"No, it can't."},
+    {type:'mc',question:'🦆 Can a duck swim?',options:['Yes, it can.',"No, it can't."],correct:'Yes, it can.'},
+    {type:'mc',question:'🦇 Can a bat fly?',options:['Yes, it can.',"No, it can't."],correct:'Yes, it can.'},
+    {type:'mc',question:'🐦 Can a bird sing?',options:['Yes, it can.',"No, it can't."],correct:'Yes, it can.'},
+    {type:'mc',question:'🐿️ Can a squirrel climb?',options:['Yes, it can.',"No, it can't."],correct:'Yes, it can.'},
+    {type:'mc',question:'🦎 Can a lizard fly?',options:['Yes, it can.',"No, it can't."],correct:"No, it can't."},
+    {type:'mc',question:'🐸 Can a frog fly?',options:['Yes, it can.',"No, it can't."],correct:"No, it can't."},
+    {type:'mc',question:'Which sentence is correct?',options:["It can't swim.",'It swim can.',"Can swim it."],correct:"It can't swim."},
+    {type:'mc',question:'Which sentence is correct?',options:['A bird can fly.','A bird fly can.','Can fly a bird.'],correct:'A bird can fly.'},
+    {type:'mc',question:"¿Qué significa \"can't\" en español?",options:['no puede','puede','sí puede'],correct:'no puede'},
+    {type:'mc',question:'Which is the question form?',options:['Can it swim?','It can swim?','Can swim it?'],correct:'Can it swim?'},
+    {type:'write',question:'Write: "Una rana puede nadar." in English:',correct:'A frog can swim.'},
+    {type:'write',question:'Write: "Un murciélago no puede nadar." in English:',correct:"A bat can't swim."},
+    {type:'write',question:'"A bird ___ fly." – Complete with CAN or CAN\'T:',correct:'can'},
+    {type:'write',question:'"A hedgehog ___ fly." – Complete:',correct:"can't"},
+    {type:'write',question:'Write: "Can it jump?" in Spanish:',correct:'¿Puede saltar?'},
+    {type:'mc',question:'How do you answer "Can it run?" — yes?',options:['Yes, it can.',"No, it can't.",'It running.'],correct:'Yes, it can.'},
+    {type:'mc',question:'How do you answer "Can it fly?" — no?',options:['Yes, it can.',"No, it can't.",'Not fly.'],correct:"No, it can't."},
+    {type:'mc',question:'"A squirrel ___ climb." Choose the correct word:',options:['can','cans','is'],correct:'can'},
+  ];
+  canPool.forEach(q => pool.push({...q, section:"Can/Can't"}));
+
+  // ── NUMBERS (pool: 20 preguntas) ──
+  NUMBERS.forEach(([n, w]) => {
+    pool.push({type:'mc',section:'Numbers',
+      question:`What is ${n} in English?`,
+      options:[w,...NUMBERS.filter(([nn])=>nn!==n).sort(()=>Math.random()-.5).slice(0,2).map(([,ww])=>ww)].sort(()=>Math.random()-.5),
+      correct:w});
+    pool.push({type:'write',section:'Numbers',
+      question:`Write the number ${n} in English:`,correct:w});
+  });
+  // Extra: number recognition
+  ['five','thirteen','twenty','eleven','sixteen','eight'].forEach(w => {
+    const n = NUMBERS.find(([,ww])=>ww===w)?.[0];
+    if(n) pool.push({type:'mc',section:'Numbers',
+      question:`What number is "${w}"?`,
+      options:[String(n),...NUMBERS.filter(([nn])=>nn!==n).sort(()=>Math.random()-.5).slice(0,2).map(([nn])=>String(nn))].sort(()=>Math.random()-.5),
+      correct:String(n)});
+  });
+
+  // ── LISTENING (pool: 10 preguntas) ──
+  const listenPool = [
+    {type:'mc',audio:'A frog can swim.',question:'🔊 Listen and complete: "A ___ can swim."',options:['frog','bat','duck'],correct:'frog'},
+    {type:'mc',audio:"A bat can't fly.",question:'🔊 Listen and choose what you heard:',options:["A bat can't fly.",'A bat can fly.','A bat can swim.'],correct:"A bat can't fly."},
+    {type:'mc',audio:'Can it jump?',question:'🔊 You hear a question. Which one?',options:['Can it jump?','Can it swim?','Can it fly?'],correct:'Can it jump?'},
+    {type:'mc',audio:'How many frogs can you see?',question:'🔊 Listen and complete: "How many ___ can you see?"',options:['frogs','ducks','birds'],correct:'frogs'},
+    {type:'mc',audio:'A duck can swim and fly.',question:'🔊 What can the duck do?',options:['swim and fly','run and jump','climb and sing'],correct:'swim and fly'},
+    {type:'mc',audio:"It can't sing.",question:"🔊 Listen and choose what you heard:",options:["It can't sing.",'It can sing.',"Can it sing?"],correct:"It can't sing."},
+    {type:'mc',audio:'Yes, it can.',question:'🔊 What answer do you hear?',options:['Yes, it can.',"No, it can't.",'It can run.'],correct:'Yes, it can.'},
+    {type:'mc',audio:'A squirrel can climb.',question:'🔊 Which animal can climb?',options:['squirrel','frog','lizard'],correct:'squirrel'},
+    {type:'mc',audio:"No, it can't.",question:"🔊 What answer do you hear?",options:['Yes, it can.',"No, it can't.",'Maybe it can.'],correct:"No, it can't."},
+    {type:'mc',audio:'A bird can fly and sing.',question:'🔊 What can the bird do?',options:['fly and sing','swim and run','jump and climb'],correct:'fly and sing'},
+  ];
+  listenPool.forEach(q => pool.push({...q, section:'Listening'}));
+
+  return pool;
+}
+
+// Pick N random questions ensuring section coverage
+function pickExamQuestions(pool, total=20) {
+  const sections = {Animals:4, 'Action Verbs':3, "Can/Can't":7, Numbers:4, Listening:2};
+  const result = [];
+  Object.entries(sections).forEach(([sec, count]) => {
+    const secPool = pool.filter(q => q.section===sec);
+    result.push(...[...secPool].sort(()=>Math.random()-.5).slice(0, count));
+  });
+  return result.sort(()=>Math.random()-.5);
+}
+
 function startExam() {
   examResults=[];
-  examQuestions = [
-    // ANIMALS
-    ...ANIMALS.slice(0,5).map(a=>{
-      const wrong=ANIMALS.filter(x=>x.id!==a.id).sort(()=>Math.random()-.5).slice(0,2);
-      return {type:'mc',section:'Animals',emoji:a.emoji,question:'What animal is this?',options:[a.en,...wrong.map(w=>w.en)].sort(()=>Math.random()-.5),correct:a.en};
-    }),
-    // VERBS
-    ...VERBS.slice(0,3).map(v=>({
-      type:'mc',section:'Action Verbs',question:`How do you say "${v.es}" in English?`,
-      options:[v.en,...VERBS.filter(x=>x.en!==v.en).sort(()=>Math.random()-.5).slice(0,2).map(w=>w.en)].sort(()=>Math.random()-.5),
-      correct:v.en
-    })),
-    // CAN
-    {type:'mc',section:'Can/Can\'t',question:'🐸 Can it swim? (frog)',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
-    {type:'mc',section:'Can/Can\'t',question:'🦔 Can it fly? (hedgehog)',options:['Yes, it can.','No, it can\'t.'],correct:'No, it can\'t.'},
-    {type:'mc',section:'Can/Can\'t',question:'Which is correct?',options:['It can\'t swim.','It swim can\'t.','Can\'t it swim'],correct:'It can\'t swim.'},
-    {type:'write',section:'Can/Can\'t',question:'Write: "Una rana puede nadar." in English:',correct:'A frog can swim.'},
-    {type:'mc',section:'Can/Can\'t',question:'🦆 Can a duck swim?',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
-    {type:'write',section:'Can/Can\'t',question:'"A bird ___ fly." Complete with can or can\'t:',correct:'can'},
-    // NUMBERS
-    {type:'mc',section:'Numbers',question:'What is 15 in English?',options:['fifteen','fifty','fifth'],correct:'fifteen'},
-    {type:'mc',section:'Numbers',question:'What is 12 in English?',options:['twenty','twelve','eleven'],correct:'twelve'},
-    {type:'write',section:'Numbers',question:'Write the number 8 in words:',correct:'eight'},
-    {type:'write',section:'Numbers',question:'Write the number 17 in words:',correct:'seventeen'},
-    // LISTENING
-    {type:'mc',section:'Listening',audio:'How many frogs can you see?',question:'🔊 Listen and complete: "How many ___ can you see?"',options:['frogs','swimming','can'],correct:'frogs'},
-    {type:'mc',section:'Listening',audio:'Can it jump?',question:'🔊 Listen: "Can it jump?" – Frog. Choose the answer:',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
-  ].sort(()=>Math.random()-.5);
-
+  const pool = buildExamPool();
+  examQuestions = pickExamQuestions(pool, 20);
   examIdx=0;
   renderExamQuestion();
 }
@@ -1892,12 +1966,12 @@ function renderExamQuestion() {
     exHTML=`${examAudioBtn}<div class="options" id="exam-opts">
       ${q.options.map(o=>`<button class="option-btn" onclick="checkExam(this,'${q.correct.replace(/'/g,"\\'")  }','${o.replace(/'/g,"\\'")}')">${o}</button>`).join('')}
     </div>`;
+  } else {
     exHTML=`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
       <input class="text-input" style="max-width:280px" placeholder="Type here..." id="exam-inp">
-      <button class="btn btn-primary" onclick="checkExamWrite('${q.correct.replace(/'/g,"\\'").replace(/\?/,'\\?')}')">Check ✓</button>
+      <button class="btn btn-primary" onclick="checkExamWrite('${q.correct.replace(/'/g,"\\'").replace(/\?/,'\\?')}')" >Check ✓</button>
     </div>`;
   }
-
   c.innerHTML = `
     <div style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
