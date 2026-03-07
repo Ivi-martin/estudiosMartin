@@ -17,11 +17,7 @@
 .hero::before {
   content: ''; position: absolute; inset: 0; border-radius: 28px;
   pointer-events: none; z-index: 0; overflow: hidden;
-  background-image:
-    linear-gradient(135deg, rgba(22,28,42,.90) 0%, rgba(26,38,66,.82) 45%, rgba(22,28,42,.88) 100%),
-    url('assets/class-photo.jpg');
-  background-size: cover;
-  background-position: center 30%;
+  background: linear-gradient(135deg, #1e2638 0%, #28324a 40%, #1e2638 100%);
 }
 /* Trama diagonal sutil */
 .hero::after {
@@ -29,7 +25,7 @@
   background: repeating-linear-gradient(-55deg, transparent, transparent 20px,
     rgba(255,255,255,.012) 20px, rgba(255,255,255,.012) 21px);
 }
-.hero-text { flex: 1; position: relative; z-index: 1; padding-right: 110px; }
+.hero-text { flex: 1; position: relative; z-index: 1; }
 .hero-eyebrow {
   font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent);
   text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
@@ -49,28 +45,7 @@
 .stat-num   { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--accent); line-height: 1.2; }
 .stat-label { font-size: 10px; color: var(--muted); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
 .stat-sub   { font-size: 10px; color: rgba(255,255,255,.4); font-weight: 600; margin-top: 1px; }
-/* Avatar — sobresale por arriba del hero card */
-.hero-avatar {
-  position: absolute;
-  bottom: 0; right: 28px;
-  z-index: 10;
-  /* Sube la imagen para que sobresalga: ajusta según la altura de la imagen */
-  transform: translateY(-8px);
-}
-.hero-avatar img {
-  height: 170px; width: auto;
-  filter: drop-shadow(0 -4px 20px rgba(0,0,0,.5)) drop-shadow(0 8px 16px rgba(0,0,0,.6));
-  display: block;
-  /* La imagen sobresale N px por encima del borde superior del hero */
-  margin-bottom: 0;
-  position: relative;
-  bottom: 0;
-}
-/* Wrapper del hero necesita margen arriba para que el avatar no tape el header */
-.hero-wrapper {
-  padding-top: 60px;
-  position: relative;
-}
+
 
 /* ── SECTION TITLE ── */
 .section-title {
@@ -138,10 +113,6 @@
 
 @media(max-width:600px) {
   .hero { padding: 22px; }
-  .hero-text { padding-right: 90px; }
-  .hero-avatar img { height: 120px; }
-  .hero-avatar { right: 12px; }
-  .hero-wrapper { padding-top: 40px; }
 }
 </style>
 </head>
@@ -154,11 +125,10 @@
 <div class="wrapper">
 
   <!-- HERO -->
-  <div class="hero-wrapper">
   <div class="hero">
     <div class="hero-text">
       <div class="hero-eyebrow">Portal de estudio</div>
-      <h1>¡Hola <span>chicos y chicas</span>! 👋</h1>
+      <h1>🚀 ¡A estudiar y <span>aprobar</span>!</h1>
       <div class="hero-school" id="hero-school"></div>
       <div class="hero-stats">
         <div class="stat clickable" onclick="MA.openModal('modal-exams')" title="Ver calendario de exámenes">
@@ -173,10 +143,7 @@
         </div>
       </div>
     </div>
-    <div class="hero-avatar">
-      <img id="avatar-img" src="assets/avatar.png" alt="Martín">
-    </div>
-  </div>
+
   </div>
 
   <!-- ASIGNATURAS -->
