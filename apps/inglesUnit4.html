@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎓 Animal English Academy – Unit 4</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2744;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --sky: #dbeafe;
+  --green: #16a34a;
+  --green-light: #22c55e;
+  --green-bg: #dcfce7;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --yellow: #f59e0b;
+  --yellow-bg: #fef3c7;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --orange: #ea580c;
+  --orange-bg: #ffedd5;
+  --teal: #0d9488;
+  --teal-bg: #ccfbf1;
+  --white: #ffffff;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-400: #94a3b8;
+  --gray-600: #475569;
+  --gray-800: #1e293b;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  --shadow: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0f172a;
+  min-height: 100vh;
+  color: var(--gray-800);
+  overflow-x: hidden;
+}
+
+/* ===== STAR BACKGROUND ===== */
+.stars-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  overflow: hidden;
+}
+.stars-bg::before {
+  content: '★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position: absolute; inset: 0;
+  font-size: 12px; color: rgba(255,255,255,0.06);
+  line-height: 2.5; word-break: break-all;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from{opacity:.5} to{opacity:1} }
+
+/* ===== LAYOUT ===== */
+.app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 3px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.header-logo { font-family: 'Fredoka One', cursive; font-size: 20px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.header-logo span { color: #fbbf24; }
+.header-sub { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 600; letter-spacing: 0.5px; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.exam-countdown {
+  background: rgba(255,255,255,0.15); border-radius: 12px; padding: 8px 14px;
+  text-align: center; border: 1px solid rgba(255,255,255,0.2);
+}
+.exam-countdown .days { font-family: 'Fredoka One', cursive; font-size: 28px; color: #fbbf24; line-height: 1; }
+.exam-countdown .label { font-size: 10px; color: rgba(255,255,255,0.8); font-weight: 700; letter-spacing: 1px; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-strip {
+  background: rgba(0,0,0,0.3);
+  padding: 10px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.progress-label { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
+.progress-track { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #86efac); border-radius: 4px; transition: width .5s ease; }
+.progress-pct { font-size: 12px; color: #86efac; font-weight: 800; }
+
+/* ===== MAIN CONTENT ===== */
+.main { flex: 1; display: flex; gap: 0; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 240px; flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sidebar-section { font-size: 10px; color: rgba(255,255,255,0.3); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 8px 8px 4px; }
+
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 12px;
+  cursor: pointer; transition: all .2s;
+  border: none; background: transparent; width: 100%; text-align: left;
+  color: rgba(255,255,255,0.6); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-btn.active { background: rgba(37,99,235,0.3); color: white; border: 1px solid rgba(37,99,235,0.5); }
+.nav-btn.completed { color: #86efac; }
+.nav-btn .nav-icon { font-size: 18px; width: 24px; text-align: center; }
+.nav-btn .nav-badge {
+  margin-left: auto; font-size: 10px; background: var(--green); color: white;
+  padding: 2px 6px; border-radius: 20px; font-weight: 800;
+}
+.nav-btn .nav-lock { margin-left: auto; font-size: 14px; opacity: .4; }
+.nav-btn .nav-stars { margin-left: auto; font-size: 12px; }
+
+/* ===== CONTENT AREA ===== */
+.content { flex: 1; padding: 28px; overflow-y: auto; max-height: calc(100vh - 100px); }
+
+/* ===== SCREEN ===== */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===== HOME SCREEN ===== */
+.home-hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 60%, #7c3aed 100%);
+  border-radius: 24px; padding: 40px; margin-bottom: 24px; position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.home-hero::before {
+  content: '🐸🦆🦇🐦🦋🐿️🦎🦔';
+  position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+  font-size: 48px; opacity: .15; writing-mode: vertical-rl; letter-spacing: 12px;
+}
+.home-hero h1 { font-family: 'Fredoka One', cursive; font-size: 38px; color: white; margin-bottom: 8px; }
+.home-hero h1 span { color: #fbbf24; }
+.home-hero p { color: rgba(255,255,255,0.8); font-size: 15px; max-width: 500px; line-height: 1.6; }
+.home-hero .exam-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(251,191,36,0.2); border: 1px solid rgba(251,191,36,0.4);
+  padding: 8px 16px; border-radius: 30px; margin-top: 16px;
+  color: #fbbf24; font-weight: 800; font-size: 13px;
+}
+
+.classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.class-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 20px; cursor: pointer; transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.class-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.2); }
+.class-card.unlocked { background: rgba(255,255,255,0.08); }
+.class-card.completed { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.06); }
+.class-number { font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; }
+.class-icon { font-size: 36px; margin-bottom: 10px; }
+.class-title { font-family: 'Fredoka One', cursive; font-size: 18px; color: white; margin-bottom: 4px; }
+.class-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+.class-status { position: absolute; top: 14px; right: 14px; font-size: 18px; }
+.class-stars { margin-top: 12px; font-size: 16px; color: #fbbf24; }
+
+/* ===== LESSON HEADER ===== */
+.lesson-header {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 20px 24px; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.lesson-icon { font-size: 42px; }
+.lesson-info h2 { font-family: 'Fredoka One', cursive; font-size: 26px; color: white; }
+.lesson-info p { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.lesson-back {
+  margin-left: auto; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  color: white; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-family: 'Nunito', sans-serif;
+  font-weight: 700; font-size: 13px; transition: all .2s;
+}
+.lesson-back:hover { background: rgba(255,255,255,0.2); }
+
+/* ===== PHASE TABS ===== */
+.phase-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.phase-tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .2s; border: 1px solid transparent;
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+  font-family: 'Nunito', sans-serif;
+}
+.phase-tab.active { background: var(--blue); color: white; border-color: var(--blue-light); }
+.phase-tab.done { background: rgba(34,197,94,0.15); color: #86efac; border-color: rgba(34,197,94,0.3); }
+
+/* ===== CARD ===== */
+.card {
+  background: white; border-radius: var(--radius); padding: 24px;
+  box-shadow: var(--shadow); margin-bottom: 20px;
+}
+.card-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--navy); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+/* ===== ANIMALS GRID ===== */
+.animals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+.animal-card {
+  background: var(--gray-50); border: 2px solid var(--gray-200);
+  border-radius: 14px; padding: 16px 12px; text-align: center; cursor: pointer;
+  transition: all .2s;
+}
+.animal-card:hover { border-color: var(--blue); background: var(--sky); transform: scale(1.03); }
+.animal-card.active { border-color: var(--blue); background: var(--sky); }
+.animal-card .animal-emoji { font-size: 44px; display: block; margin-bottom: 8px; }
+.animal-card .animal-en { font-family: 'Fredoka One', cursive; font-size: 15px; color: var(--navy); }
+.animal-card .animal-es { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+
+/* ===== SPEAK BUTTON ===== */
+.speak-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue); color: white; border: none;
+  padding: 8px 16px; border-radius: 20px; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px;
+  transition: all .2s;
+}
+.speak-btn:hover { background: var(--blue-light); transform: scale(1.05); }
+.speak-btn:active { transform: scale(0.97); }
+
+/* ===== VERBS TABLE ===== */
+.verbs-table { width: 100%; border-collapse: collapse; }
+.verbs-table th {
+  background: var(--navy); color: white; padding: 10px 16px;
+  font-family: 'Fredoka One', cursive; font-size: 14px; text-align: left;
+}
+.verbs-table th:first-child { border-radius: 10px 0 0 0; }
+.verbs-table th:last-child { border-radius: 0 10px 0 0; }
+.verbs-table td {
+  padding: 12px 16px; border-bottom: 1px solid var(--gray-100);
+  font-size: 14px;
+}
+.verbs-table tr:hover td { background: var(--sky); }
+.verbs-table .verb-en { font-family: 'Fredoka One', cursive; font-size: 16px; color: var(--blue); }
+.verbs-table .verb-emoji { font-size: 20px; }
+.verb-example { font-size: 13px; color: var(--gray-600); font-style: italic; }
+
+/* ===== CAN/CAN'T DISPLAY ===== */
+.can-visual { display: flex; gap: 12px; flex-wrap: wrap; }
+.can-box {
+  flex: 1; min-width: 150px; border-radius: 14px; padding: 20px; text-align: center;
+  border: 2px solid transparent;
+}
+.can-box.can { background: var(--green-bg); border-color: var(--green); }
+.can-box.cant { background: var(--red-bg); border-color: var(--red); }
+.can-box .can-label { font-family: 'Fredoka One', cursive; font-size: 22px; }
+.can-box.can .can-label { color: var(--green); }
+.can-box.cant .can-label { color: var(--red); }
+.can-box .can-icon { font-size: 32px; margin-bottom: 8px; }
+.can-box .can-sentence { font-size: 14px; color: var(--gray-600); margin-top: 8px; }
+
+/* ===== EXERCISE ===== */
+.exercise-box {
+  background: var(--gray-50); border: 2px solid var(--gray-200);
+  border-radius: 14px; padding: 20px; margin-bottom: 16px;
+}
+.exercise-box .q-num {
+  font-size: 11px; font-weight: 800; letter-spacing: 1px; color: var(--blue);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.exercise-box .q-text { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+.exercise-box .q-emoji { font-size: 48px; display: block; text-align: center; margin-bottom: 12px; }
+
+/* ===== OPTIONS ===== */
+.options { display: flex; flex-wrap: wrap; gap: 8px; }
+.option-btn {
+  padding: 10px 20px; border-radius: 10px; font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: all .2s; border: 2px solid var(--gray-200);
+  background: white; color: var(--navy); font-family: 'Nunito', sans-serif;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--sky); }
+.option-btn.correct { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+.option-btn.wrong { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+.option-btn:disabled { cursor: not-allowed; opacity: .8; }
+
+/* ===== TEXT INPUT ===== */
+.text-input {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--gray-200);
+  border-radius: 10px; font-size: 16px; font-family: 'Nunito', sans-serif; font-weight: 700;
+  outline: none; transition: all .2s;
+}
+.text-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+.text-input.correct { border-color: var(--green); background: var(--green-bg); }
+.text-input.wrong { border-color: var(--red); background: var(--red-bg); }
+
+/* ===== FEEDBACK ===== */
+.feedback {
+  padding: 12px 16px; border-radius: 10px; font-weight: 700; font-size: 14px;
+  margin-top: 10px; display: none;
+}
+.feedback.show { display: block; animation: pop .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.feedback.correct { background: var(--green-bg); color: var(--green); }
+.feedback.wrong { background: var(--red-bg); color: var(--red); }
+@keyframes pop { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+
+/* ===== MATCHING ===== */
+.match-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.match-col { display: flex; flex-direction: column; gap: 8px; }
+.match-item {
+  padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all .2s; border: 2px solid var(--gray-200);
+  background: white; text-align: center;
+}
+.match-item:hover { border-color: var(--blue); }
+.match-item.selected { border-color: var(--blue); background: var(--sky); }
+.match-item.matched { border-color: var(--green); background: var(--green-bg); color: var(--green); cursor: default; }
+.match-item.wrong-match { border-color: var(--red); background: var(--red-bg); animation: shake .4s; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)}
+}
+
+/* ===== WORD ORDER ===== */
+.word-bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 50px; margin-bottom: 12px; }
+.word-chip {
+  padding: 8px 14px; background: var(--blue); color: white;
+  border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 700;
+  transition: all .2s; user-select: none;
+}
+.word-chip:hover { background: var(--blue-light); transform: scale(1.05); }
+.word-chip.used { background: var(--gray-200); color: var(--gray-400); cursor: default; transform: none; }
+.sentence-slots {
+  display: flex; flex-wrap: wrap; gap: 6px; min-height: 44px;
+  padding: 8px; background: var(--gray-100); border-radius: 10px; margin-bottom: 12px;
+  border: 2px dashed var(--gray-300);
+}
+.sentence-slot {
+  padding: 8px 14px; background: white; border-radius: 8px; cursor: pointer;
+  font-size: 14px; font-weight: 700; color: var(--navy); transition: all .2s;
+  border: 1px solid var(--gray-200);
+}
+.sentence-slot:hover { border-color: var(--red); }
+
+/* ===== NUMBERS ===== */
+.numbers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+.num-card {
+  background: white; border: 2px solid var(--gray-200); border-radius: 12px;
+  padding: 14px; text-align: center; cursor: pointer; transition: all .2s;
+}
+.num-card:hover { border-color: var(--blue); background: var(--sky); }
+.num-card .num-digit { font-family: 'Fredoka One', cursive; font-size: 24px; color: var(--blue); }
+.num-card .num-word { font-size: 12px; color: var(--gray-600); margin-top: 4px; font-weight: 700; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  padding: 12px 24px; border-radius: 12px; font-size: 15px; font-weight: 800;
+  cursor: pointer; transition: all .2s; border: none; font-family: 'Nunito', sans-serif;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover { background: var(--blue-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,.4); }
+.btn-success { background: var(--green); color: white; }
+.btn-success:hover { background: var(--green-light); transform: translateY(-1px); }
+.btn-warning { background: var(--yellow); color: white; }
+.btn-warning:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-purple { background: var(--purple); color: white; }
+.btn-purple:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn:active { transform: translateY(0) scale(.97); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+/* ===== SCORE CARD ===== */
+.score-card {
+  text-align: center; padding: 32px; background: white;
+  border-radius: 20px; box-shadow: var(--shadow-lg);
+}
+.score-big { font-family: 'Fredoka One', cursive; font-size: 64px; color: var(--blue); }
+.score-label { font-size: 16px; color: var(--gray-600); margin-bottom: 20px; }
+.score-grade { font-size: 24px; font-weight: 800; margin-bottom: 16px; }
+.score-grade.excellent { color: var(--green); }
+.score-grade.good { color: var(--blue); }
+.score-grade.ok { color: var(--yellow); }
+.score-grade.practice { color: var(--red); }
+.stars-display { font-size: 36px; letter-spacing: 4px; }
+
+/* ===== MINI TEST ===== */
+.test-progress {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px;
+}
+.test-dots { display: flex; gap: 6px; }
+.test-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--gray-200); transition: all .3s;
+}
+.test-dot.current { background: var(--blue); transform: scale(1.3); }
+.test-dot.done-correct { background: var(--green); }
+.test-dot.done-wrong { background: var(--red); }
+.test-timer { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--navy); }
+
+/* ===== EXAM SCREEN ===== */
+.exam-section-header {
+  background: linear-gradient(135deg, var(--navy), #2563eb);
+  color: white; border-radius: 14px; padding: 16px 20px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.exam-section-header .sec-num { font-family: 'Fredoka One', cursive; font-size: 28px; color: #fbbf24; }
+.exam-section-header .sec-title { font-family: 'Fredoka One', cursive; font-size: 18px; }
+.exam-section-header .sec-sub { font-size: 12px; opacity: .7; }
+
+/* ===== LISTENING ===== */
+.listen-box {
+  background: linear-gradient(135deg, #1e3a5f, #2563eb);
+  border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 16px;
+}
+.listen-icon { font-size: 48px; margin-bottom: 12px; }
+.listen-box p { color: rgba(255,255,255,.7); font-size: 14px; margin-bottom: 16px; }
+
+/* ===== CERTIFICATE ===== */
+.certificate {
+  background: linear-gradient(135deg, #fef3c7, #fff); border: 4px solid #fbbf24;
+  border-radius: 20px; padding: 32px; text-align: center; box-shadow: var(--shadow-lg);
+  position: relative; overflow: hidden;
+}
+.certificate::before {
+  content: '⭐🎓⭐'; position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+  font-size: 40px; opacity: .15;
+}
+.cert-title { font-family: 'Fredoka One', cursive; font-size: 32px; color: var(--navy); margin-bottom: 8px; }
+.cert-name { font-family: 'Fredoka One', cursive; font-size: 42px; color: var(--blue); margin-bottom: 8px; }
+.cert-text { color: var(--gray-600); font-size: 15px; line-height: 1.6; }
+.cert-seal { font-size: 64px; margin: 20px 0; }
+
+/* ===== HARD WORDS TRACKER ===== */
+.hard-words { display: flex; flex-wrap: wrap; gap: 8px; }
+.hard-word {
+  padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700;
+  background: var(--red-bg); color: var(--red); border: 1px solid rgba(220,38,38,.2);
+  display: flex; align-items: center; gap: 6px;
+}
+.hard-word .hw-count { background: var(--red); color: white; border-radius: 10px; padding: 1px 6px; font-size: 11px; }
+
+/* ===== SCROLL ===== */
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-track { background: rgba(255,255,255,.05); }
+.content::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 3px; }
+
+/* ===== TOOLTIP ===== */
+.tooltip { position: relative; display: inline-block; }
+.tooltip-text {
+  visibility: hidden; background: var(--navy); color: white; font-size: 12px;
+  padding: 6px 10px; border-radius: 8px; position: absolute; bottom: 125%; left: 50%;
+  transform: translateX(-50%); white-space: nowrap; opacity: 0; transition: opacity .2s;
+  font-weight: 700; z-index: 100;
+}
+.tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+  .sidebar { display: none; }
+  .content { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+
+<!-- HEADER — renderizado por components.js -->
+<div id="app-header-root"></div>
+
+<!-- PROGRESS -->
+<div class="progress-strip">
+  <div class="progress-label">OVERALL PROGRESS</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-section">Classes</div>
+  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span> Home
+  </button>
+  <button class="nav-btn" onclick="showLesson('animals')" id="nav-animals">
+    <span class="nav-icon">🐾</span> Animals
+    <span class="nav-stars" id="stars-animals"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('verbs')" id="nav-verbs">
+    <span class="nav-icon">🏃</span> Action Verbs
+    <span class="nav-stars" id="stars-verbs"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('can')" id="nav-can">
+    <span class="nav-icon">✅</span> Can / Can't
+    <span class="nav-stars" id="stars-can"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('numbers')" id="nav-numbers">
+    <span class="nav-icon">🔢</span> Numbers 1–20
+    <span class="nav-stars" id="stars-numbers"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('listening')" id="nav-listening">
+    <span class="nav-icon">🎧</span> Listening
+    <span class="nav-stars" id="stars-listening"></span>
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Exam</div>
+  <button class="nav-btn" onclick="showScreen('exam')" id="nav-exam">
+    <span class="nav-icon">📝</span> Exam Simulator
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">My Progress</div>
+  <button class="nav-btn" onclick="showScreen('progress')" id="nav-progress">
+    <span class="nav-icon">📊</span> Dashboard
+  </button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- ========== HOME ========== -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <div style="display:flex;align-items:flex-end;gap:0;position:relative;">
+      <div style="flex:1">
+        <h1>Welcome to <span>Unit 4</span>! 🎉</h1>
+        <p>Learn animals, action verbs, and how to use <strong>"can"</strong> and <strong>"can't"</strong>. Complete all classes and ace your exam!</p>
+        <div class="exam-badge">📅 Examen el 17 de marzo – ¡Tú puedes!</div>
+      </div>
+      <img src="../assets/avatar.png"
+        alt="Estudiante"
+        style="height:170px;width:auto;flex-shrink:0;align-self:flex-end;margin-right:-20px;margin-bottom:-40px;filter:drop-shadow(0 6px 20px rgba(0,0,0,0.4));">
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px; font-family:'Fredoka One',cursive; font-size:18px; color:white; opacity:.8;">📚 Your Classes</div>
+  <div class="classes-grid">
+    <div class="class-card unlocked" onclick="showLesson('animals')">
+      <div class="class-number">CLASS 1</div>
+      <div class="class-icon">🐾</div>
+      <div class="class-title">Animals</div>
+      <div class="class-desc">bird, butterfly, squirrel, frog, duck, lizard, bat, hedgehog</div>
+      <div class="class-stars" id="home-stars-animals"></div>
+      <div class="class-status" id="home-status-animals">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('verbs')">
+      <div class="class-number">CLASS 2</div>
+      <div class="class-icon">🏃</div>
+      <div class="class-title">Action Verbs</div>
+      <div class="class-desc">fly, run, swim, sing, jump, climb</div>
+      <div class="class-stars" id="home-stars-verbs"></div>
+      <div class="class-status" id="home-status-verbs">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('can')">
+      <div class="class-number">CLASS 3</div>
+      <div class="class-icon">✅</div>
+      <div class="class-title">Can / Can't</div>
+      <div class="class-desc">It can swim. It can't fly. Can it run? Yes, it can.</div>
+      <div class="class-stars" id="home-stars-can"></div>
+      <div class="class-status" id="home-status-can">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('numbers')">
+      <div class="class-number">CLASS 4</div>
+      <div class="class-icon">🔢</div>
+      <div class="class-title">Numbers 1–20</div>
+      <div class="class-desc">one, two, three... fifteen, sixteen... twenty</div>
+      <div class="class-stars" id="home-stars-numbers"></div>
+      <div class="class-status" id="home-status-numbers">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('listening')">
+      <div class="class-number">CLASS 5</div>
+      <div class="class-icon">🎧</div>
+      <div class="class-title">Listening</div>
+      <div class="class-desc">Listen and respond. Dictation practice.</div>
+      <div class="class-stars" id="home-stars-listening"></div>
+      <div class="class-status" id="home-status-listening">▶️</div>
+    </div>
+    <div class="class-card" onclick="showScreen('exam')" style="background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(37,99,235,.2)); border-color:rgba(124,58,237,.4);">
+      <div class="class-number">FINAL</div>
+      <div class="class-icon">📝</div>
+      <div class="class-title">Exam Simulator</div>
+      <div class="class-desc">All topics. Real exam style. Get your grade!</div>
+      <div class="class-status">🎯</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚠️ Words to Practice More</div>
+    <div class="hard-words" id="hard-words-display">
+      <span style="color:var(--gray-400); font-size:13px;">Complete exercises to track your tricky words!</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ANIMALS LESSON ========== -->
+<div class="screen" id="screen-animals">
+  <div class="lesson-header">
+    <div class="lesson-icon">🐾</div>
+    <div class="lesson-info">
+      <h2>Class 1 – Animals Vocabulary</h2>
+      <p>Learn to recognise, read and write the 8 animals</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Back</button>
+  </div>
+
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="atab-1" onclick="showAnimalPhase(1)">📖 1. Learn</div>
+    <div class="phase-tab" id="atab-2" onclick="showAnimalPhase(2)">🧠 2. Practice</div>
+    <div class="phase-tab" id="atab-3" onclick="showAnimalPhase(3)">✏️ 3. Write</div>
+    <div class="phase-tab" id="atab-4" onclick="showAnimalPhase(4)">🔗 4. Match</div>
+    <div class="phase-tab" id="atab-5" onclick="showAnimalPhase(5)">📝 Mini Test</div>
+  </div>
+
+  <!-- Phase 1: Learn -->
+  <div id="aphase-1">
+    <div class="card">
+      <div class="card-title">📖 Meet the Animals! Click to hear their name</div>
+      <div class="animals-grid" id="animals-learn-grid"></div>
+    </div>
+  </div>
+
+  <!-- Phase 2: Multiple choice -->
+  <div id="aphase-2" style="display:none">
+    <div class="card">
+      <div class="card-title">🧠 What is this?</div>
+      <div id="mc-exercise"></div>
+    </div>
+  </div>
+
+  <!-- Phase 3: Write -->
+  <div id="aphase-3" style="display:none">
+    <div class="card">
+      <div class="card-title">✏️ Look at the emoji and write the animal name in English</div>
+      <div id="write-exercises"></div>
+    </div>
+  </div>
+
+  <!-- Phase 4: Match -->
+  <div id="aphase-4" style="display:none">
+    <div class="card">
+      <div class="card-title">🔗 Match the animal with its Spanish translation</div>
+      <div class="match-container">
+        <div class="match-col" id="match-left"></div>
+        <div class="match-col" id="match-right"></div>
+      </div>
+      <div id="match-feedback" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <!-- Phase 5: Mini test -->
+  <div id="aphase-5" style="display:none">
+    <div id="animals-test-container"></div>
+  </div>
+</div>
+
+<!-- ========== VERBS LESSON ========== -->
+<div class="screen" id="screen-verbs">
+  <div class="lesson-header">
+    <div class="lesson-icon">🏃</div>
+    <div class="lesson-info">
+      <h2>Class 2 – Action Verbs</h2>
+      <p>fly, run, swim, sing, jump, climb</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Back</button>
+  </div>
+
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="vtab-1" onclick="showVerbPhase(1)">📖 1. Learn</div>
+    <div class="phase-tab" id="vtab-2" onclick="showVerbPhase(2)">🧠 2. Comprehension</div>
+    <div class="phase-tab" id="vtab-3" onclick="showVerbPhase(3)">✏️ 3. Write</div>
+    <div class="phase-tab" id="vtab-4" onclick="showVerbPhase(4)">📝 Mini Test</div>
+  </div>
+
+  <div id="vphase-1">
+    <div class="card">
+      <div class="card-title">📖 Action Verbs</div>
+      <table class="verbs-table">
+        <thead><tr><th>Verb</th><th>Spanish</th><th>Example</th><th>Hear</th></tr></thead>
+        <tbody id="verbs-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="vphase-2" style="display:none">
+    <div class="card">
+      <div class="card-title">🧠 Complete the sentence</div>
+      <div id="verb-comprehension"></div>
+    </div>
+  </div>
+
+  <div id="vphase-3" style="display:none">
+    <div class="card">
+      <div class="card-title">✏️ Write the verb</div>
+      <div id="verb-write"></div>
+    </div>
+  </div>
+
+  <div id="vphase-4" style="display:none">
+    <div id="verbs-test-container"></div>
+  </div>
+</div>
+
+<!-- ========== CAN LESSON ========== -->
+<div class="screen" id="screen-can">
+  <div class="lesson-header">
+    <div class="lesson-icon">✅</div>
+    <div class="lesson-info">
+      <h2>Class 3 – Can / Can't</h2>
+      <p>The most important class! Use "can" and "can't"</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Back</button>
+  </div>
+
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="ctab-1" onclick="showCanPhase(1)">📖 1. Explain</div>
+    <div class="phase-tab" id="ctab-2" onclick="showCanPhase(2)">🧠 2. Build Sentences</div>
+    <div class="phase-tab" id="ctab-3" onclick="showCanPhase(3)">✏️ 3. Q&A</div>
+    <div class="phase-tab" id="ctab-4" onclick="showCanPhase(4)">📝 Mini Test</div>
+  </div>
+
+  <div id="cphase-1">
+    <div class="card">
+      <div class="card-title">📖 Understanding Can and Can't</div>
+      <div class="can-visual" style="margin-bottom:20px">
+        <div class="can-box can"><div class="can-icon">✅</div><div class="can-label">CAN</div><div class="can-sentence">It <strong>can</strong> swim. (puede nadar)</div></div>
+        <div class="can-box cant"><div class="can-icon">❌</div><div class="can-label">CAN'T</div><div class="can-sentence">It <strong>can't</strong> fly. (no puede volar)</div></div>
+      </div>
+      <div style="background:var(--yellow-bg);border-radius:12px;padding:16px;margin-bottom:16px">
+        <div style="font-weight:800;color:var(--navy);margin-bottom:8px">📋 Structure (Estructura):</div>
+        <div style="font-size:15px;color:var(--gray-800);line-height:2">
+          ✅ <strong>Affirmative:</strong> It <span style="color:var(--green);font-weight:800">can</span> + verb → <em>It can swim.</em><br>
+          ❌ <strong>Negative:</strong> It <span style="color:var(--red);font-weight:800">can't</span> + verb → <em>It can't fly.</em><br>
+          ❓ <strong>Question:</strong> <span style="color:var(--blue);font-weight:800">Can</span> it + verb? → <em>Can it run?</em><br>
+          ✔️ <strong>Answer yes:</strong> Yes, it can.<br>
+          ✖️ <strong>Answer no:</strong> No, it can't.
+        </div>
+      </div>
+      <div style="font-weight:800;color:var(--navy);margin-bottom:12px">🎯 Examples – click to hear!</div>
+      <div id="can-examples"></div>
+    </div>
+  </div>
+
+  <div id="cphase-2" style="display:none">
+    <div class="card">
+      <div class="card-title">🧠 Put the words in the right order</div>
+      <div id="word-order-exercises"></div>
+    </div>
+  </div>
+
+  <div id="cphase-3" style="display:none">
+    <div class="card">
+      <div class="card-title">✏️ Answer the questions</div>
+      <div id="qa-exercises"></div>
+    </div>
+  </div>
+
+  <div id="cphase-4" style="display:none">
+    <div id="can-test-container"></div>
+  </div>
+</div>
+
+<!-- ========== NUMBERS LESSON ========== -->
+<div class="screen" id="screen-numbers">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔢</div>
+    <div class="lesson-info">
+      <h2>Class 4 – Numbers 1–20</h2>
+      <p>Learn to write and recognise numbers in English</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Back</button>
+  </div>
+
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="ntab-1" onclick="showNumPhase(1)">📖 1. Learn</div>
+    <div class="phase-tab" id="ntab-2" onclick="showNumPhase(2)">✏️ 2. Write</div>
+    <div class="phase-tab" id="ntab-3" onclick="showNumPhase(3)">🔗 3. Match</div>
+    <div class="phase-tab" id="ntab-4" onclick="showNumPhase(4)">🐸 4. Count</div>
+    <div class="phase-tab" id="ntab-5" onclick="showNumPhase(5)">📝 Mini Test</div>
+  </div>
+
+  <div id="nphase-1">
+    <div class="card">
+      <div class="card-title">📖 Numbers 1–20 – Click to hear!</div>
+      <div class="numbers-grid" id="numbers-learn-grid"></div>
+    </div>
+  </div>
+
+  <div id="nphase-2" style="display:none">
+    <div class="card">
+      <div class="card-title">✏️ Write the number in words</div>
+      <div id="num-write-exercises"></div>
+    </div>
+  </div>
+
+  <div id="nphase-3" style="display:none">
+    <div class="card">
+      <div class="card-title">🔗 Match the number with its word</div>
+      <div class="match-container">
+        <div class="match-col" id="num-match-left"></div>
+        <div class="match-col" id="num-match-right"></div>
+      </div>
+      <div id="num-match-feedback" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <div id="nphase-4" style="display:none">
+    <div class="card">
+      <div class="card-title">🐸 How many can you see? Write the number in words!</div>
+      <div id="count-exercises"></div>
+    </div>
+  </div>
+
+  <div id="nphase-5" style="display:none">
+    <div id="numbers-test-container"></div>
+  </div>
+</div>
+
+<!-- ========== LISTENING LESSON ========== -->
+<div class="screen" id="screen-listening">
+  <div class="lesson-header">
+    <div class="lesson-icon">🎧</div>
+    <div class="lesson-info">
+      <h2>Class 5 – Listening</h2>
+      <p>Listen and respond. Train your ear!</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Back</button>
+  </div>
+
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="ltab-1" onclick="showListenPhase(1)">🎧 1. Listen & Repeat</div>
+    <div class="phase-tab" id="ltab-2" onclick="showListenPhase(2)">🎧 2. Listen & Answer</div>
+    <div class="phase-tab" id="ltab-3" onclick="showListenPhase(3)">✏️ 3. Dictation</div>
+    <div class="phase-tab" id="ltab-4" onclick="showListenPhase(4)">📝 Mini Test</div>
+  </div>
+
+  <div id="lphase-1">
+    <div class="card">
+      <div class="card-title">🎧 Listen and Repeat! Press play, then press Repeat.</div>
+      <div id="listen-repeat-list"></div>
+    </div>
+  </div>
+
+  <div id="lphase-2" style="display:none">
+    <div class="card">
+      <div class="card-title">🎧 Listen and choose the right answer</div>
+      <div id="listen-answer-list"></div>
+    </div>
+  </div>
+
+  <div id="lphase-3" style="display:none">
+    <div class="card">
+      <div class="card-title">✏️ Dictation – Listen and write the full sentence!</div>
+      <div id="dictation-list"></div>
+    </div>
+  </div>
+
+  <div id="lphase-4" style="display:none">
+    <div id="listen-test-container"></div>
+  </div>
+</div>
+
+<!-- ========== EXAM SIMULATOR ========== -->
+<div class="screen" id="screen-exam">
+  <div class="lesson-header">
+    <div class="lesson-icon">📝</div>
+    <div class="lesson-info">
+      <h2>Exam Simulator – Unit 4</h2>
+      <p>Real exam style. All topics. Get your final grade!</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Back</button>
+  </div>
+  <div id="exam-container"></div>
+</div>
+
+<!-- ========== PROGRESS SCREEN ========== -->
+<div class="screen" id="screen-progress">
+  <div class="lesson-header">
+    <div class="lesson-icon">📊</div>
+    <div class="lesson-info">
+      <h2>My Learning Dashboard</h2>
+      <p>Track your progress towards the exam</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Back</button>
+  </div>
+  <div id="progress-content"></div>
+</div>
+
+</div><!-- end content -->
+</div><!-- end main -->
+</div><!-- end app -->
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const ANIMALS = [
+  { id:'bird',      emoji:'🐦', en:'bird',      es:'pájaro' },
+  { id:'butterfly', emoji:'🦋', en:'butterfly',  es:'mariposa' },
+  { id:'squirrel',  emoji:'🐿️', en:'squirrel',  es:'ardilla' },
+  { id:'frog',      emoji:'🐸', en:'frog',       es:'rana' },
+  { id:'duck',      emoji:'🦆', en:'duck',       es:'pato' },
+  { id:'lizard',    emoji:'🦎', en:'lizard',     es:'lagarto' },
+  { id:'bat',       emoji:'🦇', en:'bat',        es:'murciélago' },
+  { id:'hedgehog',  emoji:'🦔', en:'hedgehog',   es:'erizo' },
+];
+
+const VERBS = [
+  { en:'fly',   es:'volar',   emoji:'✈️',  example:'A bird can fly.' },
+  { en:'run',   es:'correr',  emoji:'🏃',  example:'A frog can run.' },
+  { en:'swim',  es:'nadar',   emoji:'🏊',  example:'A duck can swim.' },
+  { en:'sing',  es:'cantar',  emoji:'🎵',  example:'A bird can sing.' },
+  { en:'jump',  es:'saltar',  emoji:'⬆️',  example:'A frog can jump.' },
+  { en:'climb', es:'trepar',  emoji:'🧗',  example:'A squirrel can climb.' },
+];
+
+const NUMBERS = [
+  [1,'one'],[2,'two'],[3,'three'],[4,'four'],[5,'five'],
+  [6,'six'],[7,'seven'],[8,'eight'],[9,'nine'],[10,'ten'],
+  [11,'eleven'],[12,'twelve'],[13,'thirteen'],[14,'fourteen'],[15,'fifteen'],
+  [16,'sixteen'],[17,'seventeen'],[18,'eighteen'],[19,'nineteen'],[20,'twenty'],
+];
+
+const CAN_EXAMPLES = [
+  { animal:'🐸', sentence:'A frog can swim.', can:true },
+  { animal:'🦆', sentence:'A duck can fly.', can:true },
+  { animal:'🦇', sentence:'A bat can\'t swim.', can:false },
+  { animal:'🐿️', sentence:'A squirrel can climb.', can:true },
+  { animal:'🐦', sentence:'A bird can\'t swim.', can:false },
+  { animal:'🦎', sentence:'A lizard can\'t fly.', can:false },
+];
+
+// Progress state
+const progress = {
+  animals: { score: null, stars: 0, done: false },
+  verbs:   { score: null, stars: 0, done: false },
+  can:     { score: null, stars: 0, done: false },
+  numbers: { score: null, stars: 0, done: false },
+  listening:{ score: null, stars: 0, done: false },
+  exam:    { score: null, done: false },
+};
+const hardWords = {};
+
+// ============================================================
+// TTS
+// ============================================================
+function speak(text, rate=0.85) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB'; u.rate = rate;
+  window.speechSynthesis.speak(u);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+  if (id === 'home') updateHome();
+  if (id === 'progress') buildProgressScreen();
+  if (id === 'exam') buildExam();
+}
+
+function showLesson(id) {
+  showScreen(id);
+  if (id === 'animals') initAnimals();
+  if (id === 'verbs')   initVerbs();
+  if (id === 'can')     initCan();
+  if (id === 'numbers') initNumbers();
+  if (id === 'listening') initListening();
+}
+
+// ============================================================
+// COUNTDOWN
+// ============================================================
+function updateCountdown() {
+  const exam = new Date('2026-03-17');
+  const now = new Date();
+  const diff = Math.ceil((exam - now) / (1000*60*60*24));
+  document.getElementById('countdown-days').textContent = Math.max(0, diff);
+}
+updateCountdown();
+
+// ============================================================
+// PROGRESS / HOME
+// ============================================================
+function getStars(pct) {
+  if (pct >= 90) return '⭐⭐⭐';
+  if (pct >= 70) return '⭐⭐';
+  if (pct >= 50) return '⭐';
+  return '';
+}
+function updateOverallProgress() {
+  const keys = ['animals','verbs','can','numbers','listening'];
+  const done = keys.filter(k => progress[k].done).length;
+  const pct = Math.round(done / keys.length * 100);
+  document.getElementById('overall-progress').style.width = pct + '%';
+  document.getElementById('overall-pct').textContent = pct + '%';
+}
+function updateHome() {
+  ['animals','verbs','can','numbers','listening'].forEach(k => {
+    const s = document.getElementById('home-stars-' + k);
+    const st = document.getElementById('home-status-' + k);
+    const n = document.getElementById('stars-' + k);
+    if (s) s.textContent = progress[k].stars ? getStars(progress[k].score) : '';
+    if (st) st.textContent = progress[k].done ? '✅' : '▶️';
+    if (n) n.textContent = progress[k].stars ? getStars(progress[k].score) : '';
+  });
+  updateHardWords();
+  updateOverallProgress();
+}
+function updateHardWords() {
+  const el = document.getElementById('hard-words-display');
+  const entries = Object.entries(hardWords).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  if (entries.length === 0) {
+    el.innerHTML = '<span style="color:var(--gray-400);font-size:13px;">No tricky words yet — great job! 🎉</span>';
+  } else {
+    el.innerHTML = entries.map(([w,c])=>`<div class="hard-word">${w}<span class="hw-count">${c}x</span></div>`).join('');
+  }
+}
+function trackHard(word) {
+  hardWords[word] = (hardWords[word] || 0) + 1;
+}
+
+// ============================================================
+// CLASS 1 – ANIMALS
+// ============================================================
+let animalPhase = 1, mcIdx = 0, mcQuestions = [], writeIdx = 0;
+let matchSelected = null, matchPairs = [], matchDone = 0;
+
+function initAnimals() {
+  showAnimalPhase(1);
+}
+function showAnimalPhase(n) {
+  animalPhase = n;
+  for(let i=1;i<=5;i++) document.getElementById('aphase-'+i).style.display = (i===n)?'block':'none';
+  document.querySelectorAll('[id^=atab-]').forEach(t => t.classList.remove('active','done'));
+  document.getElementById('atab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('atab-'+i).classList.add('done');
+
+  if (n===1) buildAnimalLearn();
+  if (n===2) buildMCExercise();
+  if (n===3) buildWriteExercise();
+  if (n===4) buildMatchExercise();
+  if (n===5) buildAnimalTest();
+}
+
+function buildAnimalLearn() {
+  const g = document.getElementById('animals-learn-grid');
+  g.innerHTML = ANIMALS.map(a => `
+    <div class="animal-card" onclick="speak('${a.en}')">
+      <span class="animal-emoji">${a.emoji}</span>
+      <div class="animal-en">${a.en}</div>
+      <div class="animal-es">(${a.es})</div>
+      <div style="margin-top:8px"><button class="speak-btn" onclick="event.stopPropagation();speak('${a.en}')">🔊 Hear</button></div>
+    </div>
+  `).join('');
+}
+
+function buildMCExercise() {
+  const shuffled = [...ANIMALS].sort(()=>Math.random()-.5);
+  mcQuestions = shuffled.map(a => {
+    const wrong = ANIMALS.filter(x=>x.id!==a.id).sort(()=>Math.random()-.5).slice(0,2);
+    const opts = [a,...wrong].sort(()=>Math.random()-.5);
+    return { animal:a, opts };
+  });
+  mcIdx = 0;
+  renderMCQuestion();
+}
+
+function renderMCQuestion() {
+  const c = document.getElementById('mc-exercise');
+  if (mcIdx >= mcQuestions.length) {
+    c.innerHTML = `<div style="text-align:center;padding:30px"><div style="font-size:48px">🎉</div><div style="font-family:'Fredoka One',cursive;font-size:24px;color:var(--green)">¡Terminado!</div><div class="btn-row" style="justify-content:center"><button class="btn btn-primary" onclick="showAnimalPhase(3)">Siguiente fase →</button></div></div>`;
+    return;
+  }
+  const {animal:a, opts} = mcQuestions[mcIdx];
+  c.innerHTML = `
+    <div class="exercise-box">
+      <div class="q-num">Question ${mcIdx+1} of ${mcQuestions.length}</div>
+      <span class="q-emoji">${a.emoji}</span>
+      <div class="q-text">What animal is this?</div>
+      <div class="options" id="mc-opts">
+        ${opts.map(o=>`<button class="option-btn" onclick="checkMC(this,'${a.id}','${o.id}')">${o.en}</button>`).join('')}
+      </div>
+      <div class="feedback" id="mc-fb"></div>
+    </div>`;
+}
+
+function checkMC(btn, correct, chosen) {
+  const fb = document.getElementById('mc-fb');
+  document.querySelectorAll('#mc-opts .option-btn').forEach(b => b.disabled = true);
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.className = 'feedback correct show'; fb.textContent = '✅ Correct! Well done!';
+    speak('Correct! ' + correct);
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'feedback wrong show'; fb.textContent = '❌ Not quite! The answer is ' + correct;
+    speak(correct);
+    trackHard(correct);
+    document.querySelectorAll('#mc-opts .option-btn').forEach(b => { if(b.textContent===correct) b.classList.add('correct'); });
+  }
+  setTimeout(() => { mcIdx++; renderMCQuestion(); }, 1500);
+}
+
+function buildWriteExercise() {
+  const c = document.getElementById('write-exercises');
+  const shuffled = [...ANIMALS].sort(()=>Math.random()-.5);
+  c.innerHTML = shuffled.map((a,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Exercise ${i+1}</div>
+      <span class="q-emoji">${a.emoji}</span>
+      <div class="q-text">Write the name of this animal in English:</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input class="text-input" style="max-width:200px" placeholder="Type here..." id="write-${i}" onkeydown="if(event.key==='Enter')checkWrite(${i},'${a.en}')">
+        <button class="btn btn-primary" onclick="checkWrite(${i},'${a.en}')">Check ✓</button>
+        <button class="speak-btn" onclick="speak('${a.en}')">🔊</button>
+      </div>
+      <div class="feedback" id="wfb-${i}"></div>
+    </div>
+  `).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showAnimalPhase(4)">Next Phase →</button></div>`;
+}
+
+function checkWrite(i, correct) {
+  const inp = document.getElementById('write-'+i);
+  const fb = document.getElementById('wfb-'+i);
+  const val = inp.value.trim().toLowerCase();
+  if (val === correct.toLowerCase()) {
+    inp.classList.add('correct'); inp.disabled = true;
+    fb.className = 'feedback correct show'; fb.textContent = '✅ Perfect!';
+    speak('Correct! ' + correct);
+  } else {
+    inp.classList.add('wrong');
+    fb.className = 'feedback wrong show'; fb.textContent = `❌ Almost! The answer is "${correct}"`;
+    speak(correct); trackHard(correct);
+    setTimeout(() => { inp.classList.remove('wrong'); inp.value=''; fb.className='feedback'; }, 2000);
+  }
+}
+
+function buildMatchExercise() {
+  const shuffledA = [...ANIMALS].sort(()=>Math.random()-.5).slice(0,6);
+  const shuffledB = [...shuffledA].sort(()=>Math.random()-.5);
+  matchSelected = null; matchPairs = []; matchDone = 0;
+
+  document.getElementById('match-left').innerHTML = shuffledA.map(a=>`
+    <div class="match-item" id="ml-${a.id}" onclick="selectMatch('left','${a.id}')">${a.emoji} ${a.en}</div>`).join('');
+  document.getElementById('match-right').innerHTML = shuffledB.map(a=>`
+    <div class="match-item" id="mr-${a.id}" onclick="selectMatch('right','${a.id}')">${a.es}</div>`).join('');
+  document.getElementById('match-feedback').innerHTML = '';
+}
+
+function selectMatch(side, id) {
+  if (matchSelected === null) {
+    matchSelected = { side, id };
+    document.getElementById((side==='left'?'ml':'mr')+'-'+id).classList.add('selected');
+  } else {
+    const prev = matchSelected;
+    if (prev.side === side) {
+      document.getElementById((prev.side==='left'?'ml':'mr')+'-'+prev.id).classList.remove('selected');
+      matchSelected = { side, id };
+      document.getElementById((side==='left'?'ml':'mr')+'-'+id).classList.add('selected');
+      return;
+    }
+    const leftId = side==='right' ? prev.id : id;
+    const rightId = side==='right' ? id : prev.id;
+    const correct = leftId === rightId;
+    const lEl = document.getElementById('ml-'+leftId);
+    const rEl = document.getElementById('mr-'+rightId);
+    if (correct) {
+      lEl.classList.remove('selected'); lEl.classList.add('matched'); lEl.onclick = null;
+      rEl.classList.remove('selected'); rEl.classList.add('matched'); rEl.onclick = null;
+      matchDone++;
+      speak(leftId);
+      if (matchDone === 6) {
+        document.getElementById('match-feedback').innerHTML = `<div class="feedback correct show">🎉 ¡Todo unido correctamente! <button class="btn btn-primary" onclick="showAnimalPhase(5)" style="margin-left:12px">Mini Test →</button></div>`;
+      }
+    } else {
+      lEl.classList.add('wrong-match'); rEl.classList.add('wrong-match');
+      lEl.classList.remove('selected'); rEl.classList.remove('selected');
+      setTimeout(()=>{ lEl.classList.remove('wrong-match'); rEl.classList.remove('wrong-match'); }, 600);
+      trackHard(leftId);
+    }
+    matchSelected = null;
+  }
+}
+
+// ============================================================
+// MINI TEST ENGINE
+// ============================================================
+function buildMiniTest(questions, containerId, onComplete) {
+  let curr = 0, results = [];
+  const render = () => {
+    if (curr >= questions.length) {
+      const correct = results.filter(r=>r).length;
+      const pct = Math.round(correct/questions.length*100);
+      document.getElementById(containerId).innerHTML = buildScoreHTML(correct, questions.length, pct, onComplete);
+      return;
+    }
+    const q = questions[curr];
+    const dots = questions.map((_,i)=>`<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):(i===curr?'current':'')}"></div>`).join('');
+    let exHTML = '';
+    if (q.type === 'mc') {
+      exHTML = `<div class="q-text">${q.question}</div>
+        <div class="options" id="test-opts">
+          ${q.options.map(o=>`<button class="option-btn" onclick="testAnswer(this,'${q.correct}','${o}','${containerId}',${curr},${questions.length})">${o}</button>`).join('')}
+        </div>`;
+    } else if (q.type === 'write') {
+      exHTML = `<div class="q-text">${q.question}</div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px">
+          <input class="text-input" style="max-width:220px" placeholder="Type here..." id="test-inp">
+          <button class="btn btn-primary" onclick="testWriteAnswer('${q.correct}','${containerId}',${curr},${questions.length})">Check ✓</button>
+        </div>`;
+    }
+    document.getElementById(containerId).innerHTML = `
+      <div class="card">
+        <div class="test-progress">
+          <div class="test-dots">${dots}</div>
+          <div style="font-size:13px;font-weight:700;color:var(--gray-600)">${curr+1} / ${questions.length}</div>
+        </div>
+        ${q.emoji ? `<span class="q-emoji">${q.emoji}</span>` : ''}
+        ${exHTML}
+        <div class="feedback" id="test-fb"></div>
+      </div>`;
+  };
+
+  window.testAnswer = function(btn, correct, chosen, cid, idx, total) {
+    if (cid !== containerId) return;
+    document.querySelectorAll('#test-opts .option-btn').forEach(b=>b.disabled=true);
+    const ok = chosen.toLowerCase()===correct.toLowerCase();
+    results[idx] = ok;
+    btn.classList.add(ok?'correct':'wrong');
+    const fb = document.getElementById('test-fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok ? '✅ Correct!' : `❌ The answer is "${correct}"`;
+    if (!ok) trackHard(correct);
+    speak(correct);
+    setTimeout(() => { curr++; render(); }, 1400);
+  };
+  window.testWriteAnswer = function(correct, cid, idx, total) {
+    if (cid !== containerId) return;
+    const inp = document.getElementById('test-inp');
+    if (!inp) return;
+    const val = inp.value.trim().toLowerCase();
+    const ok = val === correct.toLowerCase();
+    results[idx] = ok;
+    inp.classList.add(ok?'correct':'wrong');
+    inp.disabled = true;
+    const fb = document.getElementById('test-fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok ? '✅ Perfect!' : `❌ The answer is "${correct}"`;
+    if (!ok) trackHard(correct);
+    speak(correct);
+    setTimeout(() => { curr++; render(); }, 1800);
+  };
+
+  render();
+}
+
+function buildScoreHTML(correct, total, pct, onComplete) {
+  const grade = pct>=90?['¡Excelente! 🏆','excellent']:pct>=70?['¡Muy bien! 🌟','good']:pct>=50?['¡Sigue practicando! 💪','ok']:['¡A repasar más! 📚','practice'];
+  const stars = getStars(pct);
+  if (onComplete) onComplete(pct, stars);
+  return `<div class="score-card">
+    <div style="font-size:48px;margin-bottom:8px">${pct>=70?'🎉':'😊'}</div>
+    <div class="score-big">${correct}/${total}</div>
+    <div class="score-label">${pct}% correcto</div>
+    <div class="score-grade ${grade[1]}">${grade[0]}</div>
+    <div class="stars-display">${stars || '⭐'}</div>
+    <div class="btn-row" style="justify-content:center;margin-top:20px">
+      <button class="btn btn-primary" onclick="showScreen('home')">🏠 Inicio</button>
+      ${pct<80?`<button class="btn btn-warning" onclick="location.reload()">🔄 Intentar de nuevo</button>`:''}
+    </div>
+  </div>`;
+}
+
+function buildAnimalTest() {
+  const questions = [];
+  // MC questions
+  ANIMALS.slice(0,5).forEach(a => {
+    const wrong = ANIMALS.filter(x=>x.id!==a.id).sort(()=>Math.random()-.5).slice(0,2);
+    const opts = [a.en, ...wrong.map(w=>w.en)].sort(()=>Math.random()-.5);
+    questions.push({ type:'mc', emoji:a.emoji, question:'What animal is this?', options:opts, correct:a.en });
+  });
+  // Write questions
+  ANIMALS.slice(5).forEach(a => {
+    questions.push({ type:'write', emoji:a.emoji, question:'Write the name of this animal in English:', correct:a.en });
+  });
+  questions.sort(()=>Math.random()-.5);
+  const sel = questions.slice(0,6);
+  buildMiniTest(sel, 'animals-test-container', (pct, stars) => {
+    progress.animals.score = pct; progress.animals.stars = stars?stars.split('⭐').length-1:0;
+    progress.animals.done = true; updateHome();
+  });
+}
+
+// ============================================================
+// CLASS 2 – VERBS
+// ============================================================
+function initVerbs() { showVerbPhase(1); }
+function showVerbPhase(n) {
+  for(let i=1;i<=4;i++) document.getElementById('vphase-'+i).style.display = (i===n)?'block':'none';
+  document.querySelectorAll('[id^=vtab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('vtab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('vtab-'+i).classList.add('done');
+  if (n===1) buildVerbTable();
+  if (n===2) buildVerbComprehension();
+  if (n===3) buildVerbWrite();
+  if (n===4) buildVerbTest();
+}
+
+function buildVerbTable() {
+  const tb = document.getElementById('verbs-table-body');
+  tb.innerHTML = VERBS.map(v=>`<tr>
+    <td><span class="verb-en">${v.en}</span></td>
+    <td>${v.es}</td>
+    <td><span class="verb-example">${v.example}</span></td>
+    <td><button class="speak-btn" onclick="speak('${v.example}')">🔊</button></td>
+  </tr>`).join('');
+}
+
+function buildVerbComprehension() {
+  const q = [
+    { q:'The frog can ______. (nadar)', correct:'swim', opts:['swim','fly','sing'] },
+    { q:'The bird can ______. (cantar)', correct:'sing', opts:['climb','run','sing'] },
+    { q:'The squirrel can ______. (trepar)', correct:'climb', opts:['swim','climb','jump'] },
+    { q:'The bat can ______. (volar)', correct:'fly', opts:['fly','run','swim'] },
+    { q:'The duck can ______. (correr)', correct:'run', opts:['sing','run','climb'] },
+    { q:'The frog can ______. (saltar)', correct:'jump', opts:['jump','fly','sing'] },
+  ];
+  const c = document.getElementById('verb-comprehension');
+  c.innerHTML = q.map((item,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Question ${i+1}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="options" id="vcomp-opts-${i}">
+        ${item.opts.map(o=>`<button class="option-btn" onclick="checkVComp(this,${i},'${item.correct}','${o}')">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="vcomp-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showVerbPhase(3)">Next Phase →</button></div>`;
+}
+
+function checkVComp(btn, i, correct, chosen) {
+  document.querySelectorAll(`#vcomp-opts-${i} .option-btn`).forEach(b=>b.disabled=true);
+  const ok = chosen===correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb = document.getElementById('vcomp-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? '✅ Correct!' : `❌ The answer is "${correct}"`;
+  if(!ok) trackHard(correct);
+  speak(correct);
+}
+
+function buildVerbWrite() {
+  const c = document.getElementById('verb-write');
+  const shuffled = [...VERBS].sort(()=>Math.random()-.5);
+  c.innerHTML = shuffled.map((v,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Exercise ${i+1}</div>
+      <div class="q-text">${v.emoji} "${v.es}" in English:</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input class="text-input" style="max-width:160px" placeholder="Type here..." id="vw-${i}" onkeydown="if(event.key==='Enter')checkVWrite(${i},'${v.en}')">
+        <button class="btn btn-primary" onclick="checkVWrite(${i},'${v.en}')">Check ✓</button>
+      </div>
+      <div class="feedback" id="vwfb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showVerbPhase(4)">Mini Test →</button></div>`;
+}
+function checkVWrite(i, correct) {
+  const inp=document.getElementById('vw-'+i); const fb=document.getElementById('vwfb-'+i);
+  const ok=inp.value.trim().toLowerCase()===correct;
+  inp.classList.add(ok?'correct':'wrong'); if(ok)inp.disabled=true;
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ Perfect!':`❌ The answer is "${correct}"`;
+  if(!ok){trackHard(correct);setTimeout(()=>{inp.classList.remove('wrong');inp.value='';fb.className='feedback';},2000);}
+}
+
+function buildVerbTest() {
+  const qs = VERBS.map(v=>{
+    const wrong=VERBS.filter(x=>x.en!==v.en).sort(()=>Math.random()-.5).slice(0,2);
+    const opts=[v.en,...wrong.map(w=>w.en)].sort(()=>Math.random()-.5);
+    return {type:'mc',question:`${v.emoji} How do you say "${v.es}" in English?`,options:opts,correct:v.en};
+  });
+  buildMiniTest(qs.slice(0,5),'verbs-test-container',(pct,stars)=>{
+    progress.verbs.score=pct; progress.verbs.done=true; updateHome();
+  });
+}
+
+// ============================================================
+// CLASS 3 – CAN / CAN'T
+// ============================================================
+let wordOrderExercises = [], woIdx = 0;
+
+function initCan() { showCanPhase(1); }
+function showCanPhase(n) {
+  for(let i=1;i<=4;i++) document.getElementById('cphase-'+i).style.display=(i===n)?'block':'none';
+  document.querySelectorAll('[id^=ctab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('ctab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('ctab-'+i).classList.add('done');
+  if(n===1) buildCanExamples();
+  if(n===2) buildWordOrder();
+  if(n===3) buildQA();
+  if(n===4) buildCanTest();
+}
+
+function buildCanExamples() {
+  const c = document.getElementById('can-examples');
+  c.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px">` +
+    CAN_EXAMPLES.map(e=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${e.can?'var(--green-bg)':'var(--red-bg)'};border-radius:10px;border:1px solid ${e.can?'var(--green)':'var(--red)'}">
+        <span style="font-size:28px">${e.animal}</span>
+        <span style="font-weight:700;font-size:15px;color:${e.can?'var(--green)':'var(--red)'}">${e.sentence}</span>
+        <button class="speak-btn" style="margin-left:auto" onclick="speak('${e.sentence}')">🔊</button>
+      </div>`).join('') + `</div>
+    <div class="btn-row" style="margin-top:20px"><button class="btn btn-primary" onclick="showCanPhase(2)">Practice →</button></div>`;
+}
+
+function buildWordOrder() {
+  wordOrderExercises = [
+    { words:['frog','can','swim','A','.'], correct:'A frog can swim .' },
+    { words:['bat','can\'t','fly','A','.'], correct:'A bat can\'t fly .' },
+    { words:['duck','can','fly','A','.'], correct:'A duck can fly .' },
+    { words:['it','run','Can','?'], correct:'Can it run ?' },
+    { words:['squirrel','climb','can','A','.'], correct:'A squirrel can climb .' },
+    { words:['it','swim','Can\'t','?'], correct:'Can\'t it swim ?' },
+  ].map(e=>({...e, words:[...e.words].sort(()=>Math.random()-.5), placed:[], usedIdx:new Set()}));
+
+  woIdx = 0;
+  renderWordOrder();
+}
+
+function renderWordOrder() {
+  const c = document.getElementById('word-order-exercises');
+  if (woIdx >= wordOrderExercises.length) {
+    c.innerHTML = `<div class="card" style="text-align:center;padding:30px">
+      <div style="font-size:48px">🎉</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--green);margin-bottom:16px">¡Todas las frases completadas!</div>
+      <button class="btn btn-primary" onclick="showCanPhase(3)">Siguiente fase →</button>
+    </div>`;
+    return;
+  }
+  const ex = wordOrderExercises[woIdx];
+  c.innerHTML = `
+    <div class="card">
+      <div class="q-num">Exercise ${woIdx+1} of ${wordOrderExercises.length} – Put the words in order:</div>
+      <div class="sentence-slots" id="wo-placed">
+        ${ex.placed.map((w,i)=>`<div class="sentence-slot" onclick="removeWord(${i})">${w}</div>`).join('')}
+      </div>
+      <div class="word-bank" id="wo-bank">
+        ${ex.words.map((w,i)=>`<div class="word-chip ${ex.usedIdx.has(i)?'used':''}" onclick="placeWord(${i},'${w.replace(/'/g,"\\'")}')">${w}</div>`).join('')}
+      </div>
+      <div class="feedback" id="wo-fb"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkWordOrder()">Check ✓</button>
+        <button class="btn" style="background:var(--gray-200)" onclick="resetWO()">Reset 🔄</button>
+      </div>
+    </div>`;
+}
+
+window.placeWord = function(idx, word) {
+  const ex = wordOrderExercises[woIdx];
+  if (ex.usedIdx.has(idx)) return;
+  ex.usedIdx.add(idx); ex.placed.push(word);
+  renderWordOrder();
+};
+window.removeWord = function(pi) {
+  const ex = wordOrderExercises[woIdx];
+  ex.placed.splice(pi,1);
+  ex.usedIdx = new Set();
+  // rebuild used: match placed words back to original words
+  const tmp = [...ex.words];
+  ex.placed.forEach(w => { const i=tmp.indexOf(w); if(i>=0){ex.usedIdx.add(ex.words.indexOf(w));tmp[i]=null;} });
+  renderWordOrder();
+};
+window.resetWO = function() {
+  const ex = wordOrderExercises[woIdx]; ex.placed=[]; ex.usedIdx=new Set(); renderWordOrder();
+};
+window.checkWordOrder = function() {
+  const ex = wordOrderExercises[woIdx];
+  const ans = ex.placed.join(' ');
+  const fb = document.getElementById('wo-fb');
+  if (ans === ex.correct) {
+    fb.className='feedback correct show'; fb.textContent='✅ Perfect sentence!';
+    speak(ans.replace(' .','.')); 
+    setTimeout(()=>{ woIdx++; renderWordOrder(); },1500);
+  } else {
+    fb.className='feedback wrong show'; fb.textContent=`❌ Not quite! Try again. Correct: "${ex.correct.replace(' .','.')}"`;
+    trackHard(ex.correct.replace(' .',''));
+    setTimeout(()=>{ fb.className='feedback'; },2500);
+  }
+};
+
+function buildQA() {
+  const qas = [
+    { q:'Can it run?', context:'🐸 frog', correct:'Yes, it can.', isYes:true },
+    { q:'Can it fly?', context:'🦔 hedgehog', correct:'No, it can\'t.', isYes:false },
+    { q:'Can it swim?', context:'🦆 duck', correct:'Yes, it can.', isYes:true },
+    { q:'Can it climb a tree?', context:'🐿️ squirrel', correct:'Yes, it can.', isYes:true },
+    { q:'Can it talk to me?', context:'🐦 bird', correct:'No, it can\'t.', isYes:false },
+    { q:'Can it sing?', context:'🦇 bat', correct:'No, it can\'t.', isYes:false },
+  ];
+  const c = document.getElementById('qa-exercises');
+  c.innerHTML = qas.map((qa,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Question ${i+1}</div>
+      <div class="q-text">${qa.context} – <em>${qa.q}</em></div>
+      <div class="options" id="qa-opts-${i}">
+        <button class="option-btn" onclick="checkQA(this,${i},'${qa.correct}','Yes, it can.')">Yes, it can.</button>
+        <button class="option-btn" onclick="checkQA(this,${i},'${qa.correct}','No, it can\\'t.')">No, it can't.</button>
+      </div>
+      <div class="feedback" id="qa-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showCanPhase(4)">Mini Test →</button></div>`;
+}
+
+function checkQA(btn, i, correct, chosen) {
+  document.querySelectorAll(`#qa-opts-${i} .option-btn`).forEach(b=>b.disabled=true);
+  const ok=chosen===correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('qa-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ Correct!':`❌ The answer is "${correct}"`;
+  if(!ok) trackHard(correct);
+  speak(correct);
+}
+
+function buildCanTest() {
+  const qs = [
+    {type:'mc',question:'🐸 Can it swim? (frog)',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
+    {type:'mc',question:'🦔 Can it fly? (hedgehog)',options:['Yes, it can.','No, it can\'t.'],correct:'No, it can\'t.'},
+    {type:'mc',question:'Which sentence is correct?',options:['It can\'t swim.','It swim can\'t.','Can\'t swim it.'],correct:'It can\'t swim.'},
+    {type:'write',question:'Complete: "A bird ___ fly." (can)',correct:'can'},
+    {type:'write',question:'Complete: "A hedgehog ___ fly." (can\'t)',correct:'can\'t'},
+    {type:'mc',question:'🦆 Can it swim? (duck)',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
+    {type:'mc',question:'What does "can\'t" mean?',options:['puede','no puede','quiere'],correct:'no puede'},
+    {type:'write',question:'Write: "Una rana puede nadar." in English:',correct:'A frog can swim.'},
+  ];
+  buildMiniTest(qs.slice(0,7),'can-test-container',(pct,stars)=>{
+    progress.can.score=pct; progress.can.done=true; updateHome();
+  });
+}
+
+// ============================================================
+// CLASS 4 – NUMBERS
+// ============================================================
+let numMatchSel=null, numMatchDone=0;
+
+function initNumbers() { showNumPhase(1); }
+function showNumPhase(n) {
+  for(let i=1;i<=5;i++) document.getElementById('nphase-'+i).style.display=(i===n)?'block':'none';
+  document.querySelectorAll('[id^=ntab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('ntab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('ntab-'+i).classList.add('done');
+  if(n===1) buildNumLearn();
+  if(n===2) buildNumWrite();
+  if(n===3) buildNumMatch();
+  if(n===4) buildNumCount();
+  if(n===5) buildNumTest();
+}
+
+function buildNumLearn() {
+  const g = document.getElementById('numbers-learn-grid');
+  g.innerHTML = NUMBERS.map(([n,w])=>`
+    <div class="num-card" onclick="speak('${w}')">
+      <div class="num-digit">${n}</div>
+      <div class="num-word">${w}</div>
+    </div>`).join('');
+}
+
+function buildNumWrite() {
+  const shuffled = [...NUMBERS].sort(()=>Math.random()-.5).slice(0,8);
+  const c = document.getElementById('num-write-exercises');
+  c.innerHTML = shuffled.map(([n,w],i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Exercise ${i+1}</div>
+      <div class="q-text" style="font-size:36px;font-family:'Fredoka One',cursive;color:var(--blue)">${n}</div>
+      <div style="margin-top:8px;font-size:13px;color:var(--gray-600)">Write this number in words:</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
+        <input class="text-input" style="max-width:180px" placeholder="Type here..." id="nw-${i}" onkeydown="if(event.key==='Enter')checkNumWrite(${i},'${w}')">
+        <button class="btn btn-primary" onclick="checkNumWrite(${i},'${w}')">Check ✓</button>
+        <button class="speak-btn" onclick="speak('${w}')">🔊</button>
+      </div>
+      <div class="feedback" id="nwfb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showNumPhase(3)">Next →</button></div>`;
+}
+function checkNumWrite(i, correct) {
+  const inp=document.getElementById('nw-'+i); const fb=document.getElementById('nwfb-'+i);
+  const ok=inp.value.trim().toLowerCase()===correct;
+  inp.classList.add(ok?'correct':'wrong'); if(ok)inp.disabled=true;
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?`✅ "${correct}" – Correct!`:`❌ The answer is "${correct}"`;
+  if(!ok){trackHard(correct);setTimeout(()=>{inp.classList.remove('wrong');inp.value='';fb.className='feedback';},2000);}
+  speak(correct);
+}
+
+function buildNumMatch() {
+  const pick = NUMBERS.filter((_,i)=>i%2===0).sort(()=>Math.random()-.5).slice(0,6);
+  const pickR = [...pick].sort(()=>Math.random()-.5);
+  numMatchSel=null; numMatchDone=0;
+  document.getElementById('num-match-left').innerHTML = pick.map(([n,w])=>`
+    <div class="match-item" id="nml-${n}" onclick="selectNumMatch('left',${n},'${w}')">${n}</div>`).join('');
+  document.getElementById('num-match-right').innerHTML = pickR.map(([n,w])=>`
+    <div class="match-item" id="nmr-${n}" onclick="selectNumMatch('right',${n},'${w}')">${w}</div>`).join('');
+  document.getElementById('num-match-feedback').innerHTML='';
+}
+
+function selectNumMatch(side, id, word) {
+  if(!numMatchSel) {
+    numMatchSel={side,id,word};
+    document.getElementById((side==='left'?'nml':'nmr')+'-'+id).classList.add('selected');
+  } else {
+    const prev=numMatchSel;
+    if(prev.side===side) {
+      document.getElementById((prev.side==='left'?'nml':'nmr')+'-'+prev.id).classList.remove('selected');
+      numMatchSel={side,id,word};
+      document.getElementById((side==='left'?'nml':'nmr')+'-'+id).classList.add('selected');
+      return;
+    }
+    const lid = side==='right'?prev.id:id;
+    const rid = side==='right'?id:prev.id;
+    const correct = lid===rid;
+    const lEl=document.getElementById('nml-'+lid); const rEl=document.getElementById('nmr-'+rid);
+    if(correct) {
+      lEl.classList.remove('selected'); lEl.classList.add('matched'); lEl.onclick=null;
+      rEl.classList.remove('selected'); rEl.classList.add('matched'); rEl.onclick=null;
+      numMatchDone++;
+      speak(NUMBERS.find(([n])=>n===lid)?.[1]||'');
+      if(numMatchDone===6) document.getElementById('num-match-feedback').innerHTML=`<div class="feedback correct show">🎉 ¡Todo correcto! <button class="btn btn-primary" onclick="showNumPhase(4)" style="margin-left:12px">Siguiente →</button></div>`;
+    } else {
+      lEl.classList.add('wrong-match'); rEl.classList.add('wrong-match');
+      lEl.classList.remove('selected'); rEl.classList.remove('selected');
+      setTimeout(()=>{lEl.classList.remove('wrong-match');rEl.classList.remove('wrong-match');},600);
+    }
+    numMatchSel=null;
+  }
+}
+
+function buildNumCount() {
+  const counts = [
+    {emoji:'🐸',count:7},{emoji:'🦋',count:12},{emoji:'🐦',count:5},
+    {emoji:'🦆',count:9},{emoji:'🐿️',count:3},{emoji:'🦇',count:16},
+  ];
+  const c = document.getElementById('count-exercises');
+  c.innerHTML = counts.map((item,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Question ${i+1}</div>
+      <div class="q-text">How many ${item.emoji} can you see?</div>
+      <div style="font-size:22px;letter-spacing:2px;margin:10px 0">${item.emoji.repeat(item.count)}</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input class="text-input" style="max-width:180px" placeholder="Write in words..." id="cnt-${i}" onkeydown="if(event.key==='Enter')checkCount(${i},${item.count})">
+        <button class="btn btn-primary" onclick="checkCount(${i},${item.count})">Check ✓</button>
+      </div>
+      <div class="feedback" id="cntfb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showNumPhase(5)">Mini Test →</button></div>`;
+}
+function checkCount(i, n) {
+  const correct = NUMBERS.find(([num])=>num===n)?.[1]||'';
+  const inp=document.getElementById('cnt-'+i); const fb=document.getElementById('cntfb-'+i);
+  const ok=inp.value.trim().toLowerCase()===correct;
+  inp.classList.add(ok?'correct':'wrong'); if(ok)inp.disabled=true;
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?`✅ ${n} = "${correct}"`:`❌ The answer is "${correct}" (${n})`;
+  if(!ok){trackHard(correct);setTimeout(()=>{inp.classList.remove('wrong');inp.value='';fb.className='feedback';},2000);}
+  speak(correct);
+}
+
+function buildNumTest() {
+  const qs = [
+    ...NUMBERS.filter((_,i)=>[2,5,8,11,14,17].includes(i)).map(([n,w])=>({
+      type:'mc', question:`What is ${n} in English?`,
+      options:[w,...NUMBERS.filter(([nn])=>nn!==n).sort(()=>Math.random()-.5).slice(0,2).map(([,ww])=>ww)].sort(()=>Math.random()-.5),
+      correct:w
+    })),
+    ...NUMBERS.filter((_,i)=>[3,9,15].includes(i)).map(([n,w])=>({
+      type:'write', question:`Write the number ${n} in English:`, correct:w
+    })),
+  ];
+  buildMiniTest(qs.slice(0,7),'numbers-test-container',(pct,stars)=>{
+    progress.numbers.score=pct; progress.numbers.done=true; updateHome();
+  });
+}
+
+// ============================================================
+// CLASS 5 – LISTENING
+// ============================================================
+function initListening() { showListenPhase(1); }
+function showListenPhase(n) {
+  for(let i=1;i<=4;i++) document.getElementById('lphase-'+i).style.display=(i===n)?'block':'none';
+  document.querySelectorAll('[id^=ltab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('ltab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('ltab-'+i).classList.add('done');
+  if(n===1) buildListenRepeat();
+  if(n===2) buildListenAnswer();
+  if(n===3) buildDictation();
+  if(n===4) buildListenTest();
+}
+
+const LISTEN_SENTENCES = [
+  'A frog can swim.',
+  'A bat can\'t fly during the day.',
+  'It can run.',
+  'It can\'t sing.',
+  'Can it climb a tree? Yes, it can.',
+  'How many butterflies can you see?',
+  'A duck can swim and fly.',
+];
+
+function buildListenRepeat() {
+  const c = document.getElementById('listen-repeat-list');
+  c.innerHTML = LISTEN_SENTENCES.map((s,i)=>`
+    <div class="exercise-box" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div class="q-num">Sentence ${i+1}</div>
+        <div class="q-text">${s}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="speak-btn" onclick="speak('${s.replace(/'/g,"\\'")}')">🔊 Play</button>
+        <button class="speak-btn" style="background:var(--green)" onclick="speak('${s.replace(/'/g,"\\'")}',0.7)">🐢 Slow</button>
+      </div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-primary" onclick="showListenPhase(2)">Next →</button></div>`;
+}
+
+function buildListenAnswer() {
+  const items = [
+    {s:'A frog can swim.',q:'Can it swim?',correct:'Yes, it can.'},
+    {s:'A bat can\'t fly.',q:'Can it fly?',correct:'No, it can\'t.'},
+    {s:'A duck can jump.',q:'Can it jump?',correct:'Yes, it can.'},
+    {s:'A squirrel can\'t swim.',q:'Can it swim?',correct:'No, it can\'t.'},
+  ];
+  const c = document.getElementById('listen-answer-list');
+  c.innerHTML = items.map((item,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Exercise ${i+1} – Listen, then answer the question</div>
+      <button class="speak-btn" style="margin-bottom:12px" onclick="speak('${item.s.replace(/'/g,"\\'")}')">🔊 Play sentence</button>
+      <div class="q-text">${item.q}</div>
+      <div class="options" id="la-opts-${i}">
+        <button class="option-btn" onclick="checkLA(this,${i},'${item.correct}','Yes, it can.')">Yes, it can.</button>
+        <button class="option-btn" onclick="checkLA(this,${i},'${item.correct}','No, it can\\'t.')">No, it can't.</button>
+      </div>
+      <div class="feedback" id="la-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showListenPhase(3)">Next →</button></div>`;
+}
+function checkLA(btn,i,correct,chosen) {
+  document.querySelectorAll(`#la-opts-${i} .option-btn`).forEach(b=>b.disabled=true);
+  const ok=chosen===correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('la-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ Correct!':`❌ The answer is "${correct}"`;
+  if(!ok)trackHard(correct);
+  speak(correct);
+}
+
+function buildDictation() {
+  const sents=['It can run.','A frog can swim.','It can\'t fly.','Can it jump?'];
+  const c = document.getElementById('dictation-list');
+  c.innerHTML = sents.map((s,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Dictation ${i+1}</div>
+      <button class="speak-btn" style="margin-bottom:12px" onclick="speak('${s.replace(/'/g,"\\'")}',0.8)">🔊 Listen</button>
+      <input class="text-input" placeholder="Write what you hear..." id="dict-${i}" onkeydown="if(event.key==='Enter')checkDict(${i},'${s.replace(/'/g,"\\'").replace(/\?/,'\\?')}')">
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkDict(${i},'${s.replace(/'/g,"\\'").replace(/\?/,'\\?')}')">Check ✓</button>
+      </div>
+      <div class="feedback" id="dictfb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showListenPhase(4)">Mini Test →</button></div>`;
+}
+function checkDict(i, correct) {
+  const inp=document.getElementById('dict-'+i); const fb=document.getElementById('dictfb-'+i);
+  const val=inp.value.trim().replace(/[?\.]/g,'').toLowerCase();
+  const cor=correct.replace(/[?\.]/g,'').toLowerCase();
+  const ok=val===cor;
+  inp.classList.add(ok?'correct':'wrong'); if(ok)inp.disabled=true;
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ Perfect dictation!':`❌ The correct sentence is: "${correct}"`;
+  if(!ok){trackHard(correct);setTimeout(()=>{inp.classList.remove('wrong');inp.value='';fb.className='feedback';},2500);}
+  speak(correct);
+}
+
+function buildListenTest() {
+  const qs = [
+    {type:'mc',question:'🔊 "It can... what?" – A frog can ___.',options:['swim','fly','sing'],correct:'swim'},
+    {type:'mc',question:'🔊 "A bat can\'t ___."',options:['fly','swim','run'],correct:'fly'},
+    {type:'mc',question:'Listen: "Can it run?" – What is the correct answer?',options:['Yes, it can.','No, it can\'t.','It can run.'],correct:'Yes, it can.'},
+    {type:'write',question:'Write: "It can\'t fly." (the full sentence)',correct:'It can\'t fly.'},
+    {type:'mc',question:'"How many frogs can you ___?"',options:['see','hear','find'],correct:'see'},
+  ];
+  buildMiniTest(qs,'listen-test-container',(pct,stars)=>{
+    progress.listening.score=pct; progress.listening.done=true; updateHome();
+  });
+}
+
+// ============================================================
+// EXAM SIMULATOR
+// ============================================================
+let examQuestions=[], examIdx=0, examResults=[];
+
+function buildExam() {
+  const c = document.getElementById('exam-container');
+  c.innerHTML = `
+    <div class="card" style="text-align:center;padding:36px">
+      <div style="font-size:56px;margin-bottom:12px">📝</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:8px">Unit 4 Exam Simulator</div>
+      <p style="color:var(--gray-600);max-width:440px;margin:0 auto 20px;line-height:1.6">
+        20 questions across all topics: Animals, Verbs, Can/Can't, Numbers, and Listening.<br>
+        Get your final grade and see where to improve!
+      </p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+        <div style="background:var(--sky);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">🐾 5 Animals</div>
+        <div style="background:var(--green-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">🏃 3 Verbs</div>
+        <div style="background:var(--yellow-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">✅ 6 Can/Can't</div>
+        <div style="background:var(--purple-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">🔢 4 Numbers</div>
+        <div style="background:var(--teal-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">🎧 2 Listening</div>
+      </div>
+      <button class="btn btn-purple" style="font-size:18px;padding:16px 36px" onclick="startExam()">🚀 Start Exam</button>
+    </div>`;
+}
+
+function startExam() {
+  examResults=[];
+  examQuestions = [
+    // ANIMALS
+    ...ANIMALS.slice(0,5).map(a=>{
+      const wrong=ANIMALS.filter(x=>x.id!==a.id).sort(()=>Math.random()-.5).slice(0,2);
+      return {type:'mc',section:'Animals',emoji:a.emoji,question:'What animal is this?',options:[a.en,...wrong.map(w=>w.en)].sort(()=>Math.random()-.5),correct:a.en};
+    }),
+    // VERBS
+    ...VERBS.slice(0,3).map(v=>({
+      type:'mc',section:'Action Verbs',question:`How do you say "${v.es}" in English?`,
+      options:[v.en,...VERBS.filter(x=>x.en!==v.en).sort(()=>Math.random()-.5).slice(0,2).map(w=>w.en)].sort(()=>Math.random()-.5),
+      correct:v.en
+    })),
+    // CAN
+    {type:'mc',section:'Can/Can\'t',question:'🐸 Can it swim? (frog)',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
+    {type:'mc',section:'Can/Can\'t',question:'🦔 Can it fly? (hedgehog)',options:['Yes, it can.','No, it can\'t.'],correct:'No, it can\'t.'},
+    {type:'mc',section:'Can/Can\'t',question:'Which is correct?',options:['It can\'t swim.','It swim can\'t.','Can\'t it swim'],correct:'It can\'t swim.'},
+    {type:'write',section:'Can/Can\'t',question:'Write: "Una rana puede nadar." in English:',correct:'A frog can swim.'},
+    {type:'mc',section:'Can/Can\'t',question:'🦆 Can a duck swim?',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
+    {type:'write',section:'Can/Can\'t',question:'"A bird ___ fly." Complete with can or can\'t:',correct:'can'},
+    // NUMBERS
+    {type:'mc',section:'Numbers',question:'What is 15 in English?',options:['fifteen','fifty','fifth'],correct:'fifteen'},
+    {type:'mc',section:'Numbers',question:'What is 12 in English?',options:['twenty','twelve','eleven'],correct:'twelve'},
+    {type:'write',section:'Numbers',question:'Write the number 8 in words:',correct:'eight'},
+    {type:'write',section:'Numbers',question:'Write the number 17 in words:',correct:'seventeen'},
+    // LISTENING
+    {type:'mc',section:'Listening',question:'🔊 "How many ___ can you see?" Complete:',options:['frogs','swimming','can'],correct:'frogs'},
+    {type:'mc',section:'Listening',question:'🔊 Listen: "Can it jump?" – Frog. Correct answer:',options:['Yes, it can.','No, it can\'t.'],correct:'Yes, it can.'},
+  ].sort(()=>Math.random()-.5);
+
+  examIdx=0;
+  renderExamQuestion();
+}
+
+function renderExamQuestion() {
+  const c = document.getElementById('exam-container');
+  if (examIdx >= examQuestions.length) {
+    const correct = examResults.filter(r=>r).length;
+    const pct = Math.round(correct/examQuestions.length*100);
+    const grade = pct>=90?'A – ¡Sobresaliente! 🏆':pct>=70?'B – ¡Muy bien! 🌟':pct>=50?'C – ¡Buen esfuerzo! 💪':'D – ¡A seguir practicando! 📚';
+    progress.exam.score=pct; progress.exam.done=true; updateHome();
+    c.innerHTML = `
+      <div class="score-card">
+        <div style="font-size:56px;margin-bottom:12px">${pct>=70?'🎓':'📚'}</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:var(--gray-600);margin-bottom:4px">EXAM RESULT</div>
+        <div class="score-big">${correct}/${examQuestions.length}</div>
+        <div class="score-label">${pct}%</div>
+        <div class="score-grade ${pct>=90?'excellent':pct>=70?'good':pct>=50?'ok':'practice'}">${grade}</div>
+        <div class="stars-display">${getStars(pct) || '📘'}</div>
+        ${pct>=80?`<div style="margin-top:16px;padding:16px;background:var(--green-bg);border-radius:12px;color:var(--green);font-weight:700">🎉 ¡Estás listo para el examen del 17 de marzo!</div>`:`<div style="margin-top:16px;padding:16px;background:var(--yellow-bg);border-radius:12px;color:var(--orange);font-weight:700">📚 ¡Sigue estudiando! ¡Cada vez lo haces mejor!</div>`}
+        <div class="btn-row" style="justify-content:center;margin-top:20px">
+          <button class="btn btn-primary" onclick="showScreen('home')">🏠 Home</button>
+          <button class="btn btn-purple" onclick="startExam()">🔄 Try Again</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const q = examQuestions[examIdx];
+  const dots = examQuestions.map((_,i)=>`<div class="test-dot ${i<examIdx?(examResults[i]?'done-correct':'done-wrong'):(i===examIdx?'current':'')}"></div>`).join('');
+  let exHTML='';
+  if(q.type==='mc') {
+    exHTML=`<div class="options" id="exam-opts">
+      ${q.options.map(o=>`<button class="option-btn" onclick="checkExam(this,'${q.correct.replace(/'/g,"\\'")}','${o.replace(/'/g,"\\'")}')">${o}</button>`).join('')}
+    </div>`;
+  } else {
+    exHTML=`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
+      <input class="text-input" style="max-width:280px" placeholder="Type here..." id="exam-inp">
+      <button class="btn btn-primary" onclick="checkExamWrite('${q.correct.replace(/'/g,"\\'").replace(/\?/,'\\?')}')">Check ✓</button>
+    </div>`;
+  }
+
+  c.innerHTML = `
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.5)">${q.section?.toUpperCase()}</div>
+        <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.7)">${examIdx+1} / ${examQuestions.length}</div>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">${dots}</div>
+    </div>
+    <div class="card">
+      ${q.emoji?`<span class="q-emoji">${q.emoji}</span>`:''}
+      <div class="q-text" style="margin-bottom:14px">${q.question}</div>
+      ${exHTML}
+      <div class="feedback" id="exam-fb"></div>
+    </div>`;
+}
+
+function checkExam(btn, correct, chosen) {
+  document.querySelectorAll('#exam-opts .option-btn').forEach(b=>b.disabled=true);
+  const ok=chosen===correct;
+  examResults[examIdx]=ok;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('exam-fb');
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ Correct!':`❌ The answer is "${correct}"`;
+  if(!ok)trackHard(correct);
+  speak(correct);
+  setTimeout(()=>{ examIdx++; renderExamQuestion(); },1500);
+}
+function checkExamWrite(correct) {
+  const inp=document.getElementById('exam-inp'); if(!inp)return;
+  const val=inp.value.trim().toLowerCase().replace(/[?.]/g,'');
+  const cor=correct.toLowerCase().replace(/[?.]/g,'');
+  const ok=val===cor;
+  examResults[examIdx]=ok;
+  inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+  const fb=document.getElementById('exam-fb');
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ Perfect!':`❌ The answer is "${correct}"`;
+  if(!ok)trackHard(correct);
+  speak(correct);
+  setTimeout(()=>{ examIdx++; renderExamQuestion(); },1800);
+}
+
+// ============================================================
+// PROGRESS SCREEN
+// ============================================================
+function buildProgressScreen() {
+  const keys=['animals','verbs','can','numbers','listening'];
+  const names=['🐾 Animals','🏃 Verbs','✅ Can/Can\'t','🔢 Numbers','🎧 Listening'];
+  const colors=['var(--blue)','var(--green)','var(--yellow)','var(--purple)','var(--teal)'];
+  const done=keys.filter(k=>progress[k].done).length;
+  const avgScore = keys.filter(k=>progress[k].done).length>0 ? Math.round(keys.filter(k=>progress[k].done).reduce((s,k)=>s+(progress[k].score||0),0)/keys.filter(k=>progress[k].done).length) : 0;
+
+  const c = document.getElementById('progress-content');
+  c.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px">
+      <div class="card" style="text-align:center;padding:20px">
+        <div style="font-family:'Fredoka One',cursive;font-size:42px;color:var(--blue)">${done}/5</div>
+        <div style="font-size:12px;font-weight:800;color:var(--gray-600)">CLASSES DONE</div>
+      </div>
+      <div class="card" style="text-align:center;padding:20px">
+        <div style="font-family:'Fredoka One',cursive;font-size:42px;color:var(--green)">${avgScore}%</div>
+        <div style="font-size:12px;font-weight:800;color:var(--gray-600)">AVERAGE SCORE</div>
+      </div>
+      <div class="card" style="text-align:center;padding:20px">
+        <div style="font-family:'Fredoka One',cursive;font-size:42px;color:var(--yellow)">${Object.keys(hardWords).length}</div>
+        <div style="font-size:12px;font-weight:800;color:var(--gray-600)">WORDS TO REVIEW</div>
+      </div>
+      <div class="card" style="text-align:center;padding:20px">
+        <div style="font-family:'Fredoka One',cursive;font-size:42px;color:var(--purple)" id="pd-countdown">-</div>
+        <div style="font-size:12px;font-weight:800;color:var(--gray-600)">DAYS TO EXAM</div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">📊 Class Performance</div>
+      ${keys.map((k,i)=>`
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span style="font-weight:700;font-size:14px">${names[i]}</span>
+            <span style="font-size:13px;font-weight:700;color:${progress[k].done?'var(--green)':'var(--gray-400)'}">${progress[k].done?progress[k].score+'%':'Not started'}</span>
+          </div>
+          <div style="height:10px;background:var(--gray-100);border-radius:5px;overflow:hidden">
+            <div style="height:100%;background:${colors[i]};border-radius:5px;width:${progress[k].score||0}%;transition:width .5s"></div>
+          </div>
+        </div>`).join('')}
+    </div>
+    ${Object.keys(hardWords).length>0?`
+    <div class="card">
+      <div class="card-title">⚠️ Words to Review</div>
+      <div class="hard-words" id="pd-hard-words">
+        ${Object.entries(hardWords).sort((a,b)=>b[1]-a[1]).map(([w,c])=>`<div class="hard-word">${w}<span class="hw-count">${c}x</span><button class="speak-btn" style="padding:4px 8px;font-size:11px" onclick="speak('${w.replace(/'/g,"\\'")}')">🔊</button></div>`).join('')}
+      </div>
+    </div>`:''}
+    ${progress.exam.done?`
+    <div class="card" style="text-align:center;padding:30px;background:linear-gradient(135deg,#fef3c7,#fff);border:3px solid #fbbf24">
+      <div style="font-size:48px;margin-bottom:8px">🏆</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--navy)">Exam Simulator Completed!</div>
+      <div style="font-size:32px;color:var(--blue);font-family:'Fredoka One',cursive">${progress.exam.score}%</div>
+      <div style="font-size:13px;color:var(--gray-600);margin-top:8px">${progress.exam.score>=80?'¡Estás listo para el examen real! 🎓':'¡Sigue practicando e inténtalo de nuevo!'}</div>
+    </div>`:''}
+  `;
+  document.getElementById('pd-countdown').textContent = document.getElementById('countdown-days').textContent;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+updateHome();
+</script>
+
+<div id="app-footer-root"></div>
+
+
+<script type="module">
+import { CONFIG }                               from '../components/config.js';
+import { MA, renderFooter }                     from '../components/components.js';
+
+// ── Header de la app (custom, no el del portal) ──
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🎓 Animal <span>English</span> Academy · ${s.class} · ${s.school} · ${s.location}</div>
+      <div class="header-sub">UNIT 4 – 2nd Level</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back" style="margin-right:12px">← Volver</a>
+      <div class="exam-countdown">
+        <div class="days" id="countdown-days">–</div>
+        <div class="label">DAYS TO EXAM</div>
+      </div>
+    </div>
+  </div>`;
+
+// ── Footer ──
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+
+// ── Sincronizar exámenes con el portal ──
+MA.loadExams();
+</script>
+
+</body>
+</html>

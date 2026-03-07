@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Estudio · Martín</title>
+<link rel="stylesheet" href="components/shared.css">
+<style>
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #1a1f2e 0%, #1e2a4a 40%, #1a1f2e 100%);
+  border: 1px solid var(--border); border-radius: 28px;
+  padding: 32px 36px; display: flex; align-items: flex-end; gap: 24px;
+  overflow: hidden; position: relative; margin-bottom: 32px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0; border-radius: 28px; pointer-events: none;
+  background: repeating-linear-gradient(-55deg, transparent, transparent 20px,
+    rgba(255,255,255,.015) 20px, rgba(255,255,255,.015) 21px);
+}
+.hero-text { flex: 1; position: relative; z-index: 1; }
+.hero-eyebrow {
+  font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent);
+  text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--accent); border-radius: 2px; }
+.hero h1 { font-family: 'Fredoka One', cursive; font-size: clamp(26px,3.5vw,42px); line-height: 1.1; color: white; margin-bottom: 4px; }
+.hero h1 span { color: var(--accent); }
+.hero-school { font-size: 13px; color: rgba(255,255,255,.5); font-weight: 700; margin-bottom: 18px; line-height: 1.6; }
+.hero-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.stat {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px; padding: 10px 16px; text-align: center; transition: all .2s;
+}
+.stat.clickable { cursor: pointer; }
+.stat.clickable:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); transform: translateY(-2px); }
+.stat-num   { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--accent); line-height: 1.2; }
+.stat-label { font-size: 10px; color: var(--muted); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+.stat-sub   { font-size: 10px; color: rgba(255,255,255,.4); font-weight: 600; margin-top: 1px; }
+.hero-avatar { position: relative; z-index: 1; flex-shrink: 0; align-self: flex-end; }
+.hero-avatar img { height: 220px; width: auto; filter: drop-shadow(0 8px 24px rgba(0,0,0,.5)); display: block; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Fredoka One', cursive; font-size: 13px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── SUBJECT CARDS ── */
+.subjects { display: flex; flex-direction: column; gap: 10px; }
+.subject-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+  overflow: hidden; transition: border-color .2s; cursor: pointer;
+}
+.subject-card:hover { border-color: rgba(255,255,255,.15); }
+.subject-header {
+  display: flex; align-items: center; gap: 14px; padding: 16px 20px;
+  user-select: none; transition: background .2s; pointer-events: none;
+}
+.subject-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.subject-info { flex: 1; }
+.subject-name    { font-family: 'Fredoka One', cursive; font-size: 17px; color: white; margin-bottom: 2px; }
+.subject-teacher { font-size: 12px; color: var(--muted); font-weight: 600; display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.teacher-name    { color: rgba(255,255,255,.45); }
+.subject-chevron { font-size: 18px; color: var(--muted); transition: transform .3s; }
+.subject-card.open .subject-chevron { transform: rotate(90deg); }
+
+.topics { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+.subject-card.open .topics { max-height: 700px; border-top: 1px solid var(--border); }
+.topics-inner { padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 7px; pointer-events: all; }
+
+.topic-item {
+  display: flex; align-items: center; gap: 12px; padding: 11px 15px; border-radius: 11px;
+  background: var(--surface2); border: 1px solid var(--border);
+  text-decoration: none; color: inherit; transition: all .2s; pointer-events: all;
+}
+.topic-item.topic-available { cursor: pointer; }
+.topic-item.topic-available:hover { transform: translateX(4px); border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.05); }
+.topic-item.topic-available:hover .topic-arrow { opacity: 1; transform: translateX(0); }
+.topic-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.topic-label { flex: 1; font-size: 14px; font-weight: 700; }
+.topic-badge { font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; }
+.topic-arrow { font-size: 14px; color: var(--muted); opacity: 0; transform: translateX(-4px); transition: all .2s; }
+.topic-available .topic-badge { background: rgba(34,197,94,.15); color: #4ade80; }
+.topic-soon { opacity: .55; cursor: default; pointer-events: none; }
+.topic-soon .topic-badge { background: rgba(255,255,255,.06); color: var(--muted); }
+
+/* Colores por asignatura */
+.mat  .subject-icon { background: var(--mat-bg);  } .mat  .subject-name { color: #93c5fd; } .mat  .topic-dot { background: var(--mat);  }
+.cono .subject-icon { background: var(--cono-bg); } .cono .subject-name { color: #6ee7b7; } .cono .topic-dot { background: var(--cono); }
+.len  .subject-icon { background: var(--len-bg);  } .len  .subject-name { color: #fda4af; } .len  .topic-dot { background: var(--len);  }
+.ing  .subject-icon { background: var(--ing-bg);  } .ing  .subject-name { color: #c4b5fd; } .ing  .topic-dot { background: var(--ing);  }
+.ef   .subject-icon { background: var(--ef-bg);   } .ef   .subject-name { color: #fdba74; } .ef   .topic-dot { background: var(--ef);   }
+.pla  .subject-icon { background: var(--pla-bg);  } .pla  .subject-name { color: #f0abfc; } .pla  .topic-dot { background: var(--pla);  }
+.val  .subject-icon { background: var(--val-bg);  } .val  .subject-name { color: #cbd5e1; } .val  .topic-dot { background: var(--val);  }
+
+/* Animaciones */
+.hero          { animation: ma-fadeUp .5s ease both; animation-delay: .1s; }
+.subject-card  { animation: ma-fadeUp .5s ease both; }
+.subject-card:nth-child(1){animation-delay:.15s} .subject-card:nth-child(2){animation-delay:.22s}
+.subject-card:nth-child(3){animation-delay:.29s} .subject-card:nth-child(4){animation-delay:.36s}
+.subject-card:nth-child(5){animation-delay:.43s} .subject-card:nth-child(6){animation-delay:.50s}
+.subject-card:nth-child(7){animation-delay:.57s}
+
+@media(max-width:600px) {
+  .hero { flex-direction: column; align-items: flex-start; padding: 22px; }
+  .hero-avatar img { height: 150px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Orbes y cabecera se inyectan desde JS -->
+<div id="orbs-root"></div>
+<div id="header-root"></div>
+
+<div class="wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Portal de estudio</div>
+      <h1>¡Hola, <span id="hero-name">Martín</span>! 👋</h1>
+      <div class="hero-school" id="hero-school"></div>
+      <div class="hero-stats">
+        <div class="stat clickable" onclick="MA.openModal('modal-exams')" title="Ver calendario de exámenes">
+          <div class="stat-num" id="next-exam-date">–</div>
+          <div class="stat-label" id="next-exam-subject">Próximo examen</div>
+          <div class="stat-sub" id="next-exam-topic">Sin exámenes</div>
+        </div>
+        <div class="stat clickable" onclick="MA.openModal('modal-schedule')">
+          <div class="stat-num">🗓️</div>
+          <div class="stat-label">Horario</div>
+          <div class="stat-sub">Ver clases</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-avatar">
+      <img id="avatar-img" src="assets/avatar.png" alt="Martín">
+    </div>
+  </div>
+
+  <!-- ASIGNATURAS -->
+  <div class="section-title">📚 Mis asignaturas</div>
+  <div class="subjects" id="subjects-root"></div>
+
+</div>
+
+<!-- Modales y footer se inyectan desde JS -->
+<div id="modals-root"></div>
+<div id="footer-root"></div>
+
+<script type="module">
+import { CONFIG }                                          from './components/config.js';
+import { MA, renderOrbs, renderHeader, renderFooter,
+         renderExamModal, renderScheduleModal }            from './components/components.js';
+
+// ── Inyectar componentes compartidos ──
+document.getElementById('orbs-root').innerHTML   = renderOrbs();
+document.getElementById('header-root').innerHTML = renderHeader({ backButton: false });
+document.getElementById('modals-root').innerHTML = renderExamModal() + renderScheduleModal();
+document.getElementById('footer-root').innerHTML = renderFooter();
+
+// ── Rellenar datos del alumno ──
+const s = CONFIG.student;
+document.getElementById('hero-name').textContent   = s.name;
+document.getElementById('hero-school').textContent = `${s.class} de Primaria · ${s.school} · Curso ${s.year}`;
+
+// ── Generar cards de asignaturas ──
+const subjects = CONFIG.subjects;
+document.getElementById('subjects-root').innerHTML = subjects.map(subj => {
+  const teacher = CONFIG.teachers[subj.id] ?? '–';
+  const availableCount = subj.topics.filter(t => t.url).length;
+  const countLabel = availableCount > 0
+    ? `${availableCount} app${availableCount > 1 ? 's' : ''} disponible${availableCount > 1 ? 's' : ''}`
+    : '0 apps disponibles · próximamente';
+
+  const topicsHTML = subj.topics.map(t => {
+    if (t.url) {
+      return `<div class="topic-item topic-available ${subj.id}" onclick="event.stopPropagation();location.href='${t.url}'">
+        <div class="topic-dot"></div>
+        <span class="topic-label">${t.label}</span>
+        <span class="topic-badge">¡Disponible!</span>
+        <span class="topic-arrow">→</span>
+      </div>`;
+    }
+    return `<div class="topic-item topic-soon ${subj.id}">
+      <div class="topic-dot"></div>
+      <span class="topic-label">${t.label}</span>
+      <span class="topic-badge">Próximamente</span>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="subject-card ${subj.id}" id="card-${subj.id}" onclick="toggleSubject('${subj.id}')">
+      <div class="subject-header">
+        <div class="subject-icon">${subj.icon}</div>
+        <div class="subject-info">
+          <div class="subject-name">${subj.name}</div>
+          <div class="subject-teacher"><span>👤</span> <span class="teacher-name">${teacher}</span></div>
+        </div>
+        <div class="subject-chevron">›</div>
+      </div>
+      <div class="topics"><div class="topics-inner">${topicsHTML}</div></div>
+    </div>`;
+}).join('');
+
+// ── Toggle asignaturas ──
+function toggleSubject(id) {
+  const card = document.getElementById('card-' + id);
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.subject-card').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+window.toggleSubject = toggleSubject;
+
+// Abrir Inglés por defecto (tiene contenido)
+toggleSubject('ing');
+
+// ── Inicializar lógica compartida ──
+MA.init();
+</script>
+</body>
+</html>
