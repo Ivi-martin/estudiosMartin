@@ -8,18 +8,28 @@
 <style>
 /* ── HERO ── */
 .hero {
-  background: linear-gradient(135deg, #1a1f2e 0%, #1e2a4a 40%, #1a1f2e 100%);
   border: 1px solid var(--border); border-radius: 28px;
   padding: 32px 36px; display: flex; align-items: flex-end; gap: 24px;
-  overflow: hidden; position: relative; margin-bottom: 32px;
+  position: relative; margin-bottom: 32px; overflow: visible;
   box-shadow: 0 20px 60px rgba(0,0,0,.4);
 }
+/* Fondo con foto de clase — dentro del hero con clip */
 .hero::before {
-  content: ''; position: absolute; inset: 0; border-radius: 28px; pointer-events: none;
-  background: repeating-linear-gradient(-55deg, transparent, transparent 20px,
-    rgba(255,255,255,.015) 20px, rgba(255,255,255,.015) 21px);
+  content: ''; position: absolute; inset: 0; border-radius: 28px;
+  pointer-events: none; z-index: 0; overflow: hidden;
+  background-image:
+    linear-gradient(135deg, rgba(22,28,42,.90) 0%, rgba(26,38,66,.82) 45%, rgba(22,28,42,.88) 100%),
+    url('assets/class-photo.jpg');
+  background-size: cover;
+  background-position: center 30%;
 }
-.hero-text { flex: 1; position: relative; z-index: 1; }
+/* Trama diagonal sutil */
+.hero::after {
+  content: ''; position: absolute; inset: 0; border-radius: 28px; pointer-events: none; z-index: 0;
+  background: repeating-linear-gradient(-55deg, transparent, transparent 20px,
+    rgba(255,255,255,.012) 20px, rgba(255,255,255,.012) 21px);
+}
+.hero-text { flex: 1; position: relative; z-index: 1; padding-right: 110px; }
 .hero-eyebrow {
   font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent);
   text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
@@ -27,19 +37,40 @@
 .hero-eyebrow::before { content: ''; display: block; width: 20px; height: 2px; background: var(--accent); border-radius: 2px; }
 .hero h1 { font-family: 'Fredoka One', cursive; font-size: clamp(26px,3.5vw,42px); line-height: 1.1; color: white; margin-bottom: 4px; }
 .hero h1 span { color: var(--accent); }
-.hero-school { font-size: 13px; color: rgba(255,255,255,.5); font-weight: 700; margin-bottom: 18px; line-height: 1.6; }
+.hero-school { font-size: 13px; color: rgba(255,255,255,.55); font-weight: 700; margin-bottom: 18px; line-height: 1.6; }
 .hero-stats { display: flex; gap: 12px; flex-wrap: wrap; }
 .stat {
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
   border-radius: 14px; padding: 10px 16px; text-align: center; transition: all .2s;
+  backdrop-filter: blur(4px);
 }
 .stat.clickable { cursor: pointer; }
-.stat.clickable:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); transform: translateY(-2px); }
+.stat.clickable:hover { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.25); transform: translateY(-2px); }
 .stat-num   { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--accent); line-height: 1.2; }
 .stat-label { font-size: 10px; color: var(--muted); font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
 .stat-sub   { font-size: 10px; color: rgba(255,255,255,.4); font-weight: 600; margin-top: 1px; }
-.hero-avatar { position: relative; z-index: 1; flex-shrink: 0; align-self: flex-end; }
-.hero-avatar img { height: 220px; width: auto; filter: drop-shadow(0 8px 24px rgba(0,0,0,.5)); display: block; }
+/* Avatar — sobresale por arriba del hero card */
+.hero-avatar {
+  position: absolute;
+  bottom: 0; right: 28px;
+  z-index: 10;
+  /* Sube la imagen para que sobresalga: ajusta según la altura de la imagen */
+  transform: translateY(-8px);
+}
+.hero-avatar img {
+  height: 170px; width: auto;
+  filter: drop-shadow(0 -4px 20px rgba(0,0,0,.5)) drop-shadow(0 8px 16px rgba(0,0,0,.6));
+  display: block;
+  /* La imagen sobresale N px por encima del borde superior del hero */
+  margin-bottom: 0;
+  position: relative;
+  bottom: 0;
+}
+/* Wrapper del hero necesita margen arriba para que el avatar no tape el header */
+.hero-wrapper {
+  padding-top: 60px;
+  position: relative;
+}
 
 /* ── SECTION TITLE ── */
 .section-title {
@@ -106,8 +137,11 @@
 .subject-card:nth-child(7){animation-delay:.57s}
 
 @media(max-width:600px) {
-  .hero { flex-direction: column; align-items: flex-start; padding: 22px; }
-  .hero-avatar img { height: 150px; }
+  .hero { padding: 22px; }
+  .hero-text { padding-right: 90px; }
+  .hero-avatar img { height: 120px; }
+  .hero-avatar { right: 12px; }
+  .hero-wrapper { padding-top: 40px; }
 }
 </style>
 </head>
@@ -120,10 +154,11 @@
 <div class="wrapper">
 
   <!-- HERO -->
+  <div class="hero-wrapper">
   <div class="hero">
     <div class="hero-text">
       <div class="hero-eyebrow">Portal de estudio</div>
-      <h1>¡Hola, <span id="hero-name">Martín</span>! 👋</h1>
+      <h1>¡Hola <span>chicos y chicas</span>! 👋</h1>
       <div class="hero-school" id="hero-school"></div>
       <div class="hero-stats">
         <div class="stat clickable" onclick="MA.openModal('modal-exams')" title="Ver calendario de exámenes">
@@ -141,6 +176,7 @@
     <div class="hero-avatar">
       <img id="avatar-img" src="assets/avatar.png" alt="Martín">
     </div>
+  </div>
   </div>
 
   <!-- ASIGNATURAS -->
@@ -166,7 +202,6 @@ document.getElementById('footer-root').innerHTML = renderFooter();
 
 // ── Rellenar datos del alumno ──
 const s = CONFIG.student;
-document.getElementById('hero-name').textContent   = s.name;
 document.getElementById('hero-school').textContent = `${s.class} de Primaria · ${s.school} · Curso ${s.year}`;
 
 // ── Generar cards de asignaturas ──

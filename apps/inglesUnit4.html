@@ -983,7 +983,7 @@ function updateCountdown() {
   const diff = Math.ceil((exam - now) / (1000*60*60*24));
   document.getElementById('countdown-days').textContent = Math.max(0, diff);
 }
-updateCountdown();
+// countdown se llama desde el módulo, tras inyectar el header
 
 // ============================================================
 // PROGRESS / HOME
@@ -1205,7 +1205,10 @@ function buildMiniTest(questions, containerId, onComplete) {
     const dots = questions.map((_,i)=>`<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):(i===curr?'current':'')}"></div>`).join('');
     let exHTML = '';
     if (q.type === 'mc') {
-      exHTML = `<div class="q-text">${q.question}</div>
+      const audioBtn = q.audio
+        ? `<button class="speak-btn" style="margin-bottom:14px;font-size:15px;padding:10px 22px" onclick="speak('${q.audio.replace(/'/g,"\\'")}')">🔊 Escuchar</button>`
+        : '';
+      exHTML = `${audioBtn}<div class="q-text">${q.question}</div>
         <div class="options" id="test-opts">
           ${q.options.map(o=>`<button class="option-btn" onclick="testAnswer(this,'${q.correct}','${o}','${containerId}',${curr},${questions.length})">${o}</button>`).join('')}
         </div>`;
@@ -1226,6 +1229,8 @@ function buildMiniTest(questions, containerId, onComplete) {
         ${exHTML}
         <div class="feedback" id="test-fb"></div>
       </div>`;
+    // Auto-play audio on load
+    if (q.audio) setTimeout(() => speak(q.audio), 500);
   };
 
   window.testAnswer = function(btn, correct, chosen, cid, idx, total) {
@@ -1781,11 +1786,11 @@ function checkDict(i, correct) {
 
 function buildListenTest() {
   const qs = [
-    {type:'mc',question:'🔊 "It can... what?" – A frog can ___.',options:['swim','fly','sing'],correct:'swim'},
-    {type:'mc',question:'🔊 "A bat can\'t ___."',options:['fly','swim','run'],correct:'fly'},
-    {type:'mc',question:'Listen: "Can it run?" – What is the correct answer?',options:['Yes, it can.','No, it can\'t.','It can run.'],correct:'Yes, it can.'},
-    {type:'write',question:'Write: "It can\'t fly." (the full sentence)',correct:'It can\'t fly.'},
-    {type:'mc',question:'"How many frogs can you ___?"',options:['see','hear','find'],correct:'see'},
+    {type:'mc', audio:'A frog can swim.', question:'🔊 Listen and complete: "A frog can ___"', options:['swim','fly','sing'], correct:'swim'},
+    {type:'mc', audio:"A bat can't fly.", question:'🔊 Listen and complete: "A bat can\'t ___"', options:['fly','swim','run'], correct:'fly'},
+    {type:'mc', audio:'Can it run?', question:'🔊 Listen: "Can it run?" – Choose the correct answer:', options:['Yes, it can.', "No, it can't.", 'It can run.'], correct:'Yes, it can.'},
+    {type:'mc', audio:"It can't fly.", question:'🔊 Listen and choose what you heard:', options:["It can't fly.", 'It can fly.', 'Can it fly?'], correct:"It can't fly."},
+    {type:'mc', audio:'How many frogs can you see?', question:'🔊 Listen and complete: "How many frogs can you ___?"', options:['see','hear','find'], correct:'see'},
   ];
   buildMiniTest(qs,'listen-test-container',(pct,stars)=>{
     progress.listening.score=pct; progress.listening.done=true; updateHome();
@@ -2027,6 +2032,9 @@ document.getElementById('app-header-root').innerHTML = `
 
 // ── Footer ──
 document.getElementById('app-footer-root').innerHTML = renderFooter();
+
+// ── Countdown (necesita el header ya en el DOM) ──
+updateCountdown();
 
 // ── Sincronizar exámenes con el portal ──
 MA.loadExams();

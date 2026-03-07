@@ -6,10 +6,10 @@
 
 /* ── Variables ── */
 :root {
-  --bg:       #0d1117;
-  --surface:  #161b22;
-  --surface2: #21262d;
-  --border:   rgba(255,255,255,0.08);
+  --bg:       #161c2a;
+  --surface:  #1e2638;
+  --surface2: #28324a;
+  --border:   rgba(255,255,255,0.10);
   --text:     #e6edf3;
   --muted:    #7d8590;
   --accent:   #fbbf24;
