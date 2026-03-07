@@ -41,7 +41,7 @@ export function renderHeader({ backButton = false } = {}) {
 export function renderFooter() {
   return `
     <footer class="shared-footer">
-      © Realizado por <span>Iván MOCA</span> &nbsp;·&nbsp; ${SCHOOL_FULL}
+      © Realizado por <span>Iván MOCA</span>
     </footer>`;
 }
 
