@@ -15,13 +15,13 @@ export const CONFIG = {
 
   // ── Profesores ── edita aquí el nombre de cada uno
   teachers: {
-    mat:  'Nombre del/la profe',
-    cono: 'Nombre del/la profe',
-    len:  'Nombre del/la profe',
-    ing:  'Nombre del/la profe',
-    ef:   'Nombre del/la profe',
-    pla:  'Nombre del/la profe',
-    val:  'Nombre del/la profe',
+    mat:  'Isabel Begoña Rivera Suárez',
+    cono: 'María Trinidad De la Hoz Jiménez',
+    len:  'María Trinidad De la Hoz Jiménez',
+    ing:  'Trinidad Lara Moya',
+    ef:   'Laura María Morales Rubio',
+    pla:  'Maria Gloria Pérez Ayllón',
+    val:  'María Trinidad De la Hoz Jiménez',
   },
 
   // ── Asignaturas ──
