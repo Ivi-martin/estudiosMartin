@@ -41,7 +41,7 @@ export function renderFooter() {
   return `
     <footer class="shared-footer">
       © Realizado por <span>Iván MOCA</span>
-      <div class="footer-disclaimer">⚠️ Web de uso personal, no oficial.</div>
+      <div class="footer-disclaimer">⚠️ Web de uso personal, no oficial. El contenido puede contener errores e imprecisiones.</div>
     </footer>`;
 }
 
@@ -110,7 +110,7 @@ export function renderScheduleModal() {
             ${headers}
             ${bodyRows}
           </div>
-          <div class="sch-note">⚠️ Horario orientativo — actualízalo en <code>components/config.js</code> si cambia.</div>
+
         </div>
       </div>
     </div>`;
