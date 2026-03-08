@@ -15,12 +15,12 @@ export const CONFIG = {
 
   // ── Profesores ── edita aquí el nombre de cada uno
   teachers: {
-    mat:  'Isabel Begoña Rivera Suárez',
+    mat:  'Isabel Begoña Rivera García',
     cono: 'María Trinidad De la Hoz Jiménez',
     len:  'María Trinidad De la Hoz Jiménez',
     ing:  'Trinidad Lara Moya',
     ef:   'Laura María Morales Rubio',
-    pla:  'Maria Gloria Pérez Ayllón',
+    pla:  'María Gloria Pérez Ayllón',
     val:  'María Trinidad De la Hoz Jiménez',
   },
 
@@ -51,7 +51,7 @@ export const CONFIG = {
       topics: [
         //{ label: 'Unidad 1 – Lectura y comprensión', url: null },
         //{ label: 'Unidad 2 – Ortografía',            url: null },
-        //{ label: 'Unidad 3 – Gramática',             url: null },
+       // { label: 'Unidad 3 – Gramática',             url: null },
       ],
     },
     {
@@ -90,6 +90,12 @@ export const CONFIG = {
         //{ label: 'Tema 2 – Convivencia y respeto',   url: null },
       ],
     },
+  ],
+
+  // ── Próximos exámenes ── edita aquí para añadir o quitar
+  // Formato: { date: 'YYYY-MM-DD', subject: 'Nombre', topic: 'Descripción' }
+  exams: [
+    { date: '2026-03-17', subject: 'Inglés',   topic: "Unit 4 – Animals & Can/Can't" },
   ],
 
   // ── Horario semanal ──
