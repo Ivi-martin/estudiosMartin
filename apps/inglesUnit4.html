@@ -535,7 +535,7 @@ body {
       <div style="flex:1">
         <h1>Welcome to <span>Unit 4</span>! 🎉</h1>
         <p>Learn animals, action verbs, and how to use <strong>"can"</strong> and <strong>"can't"</strong>. Complete all classes and ace your exam!</p>
-        <div class="exam-badge">📅 Examen el 17 de marzo – ¡Tú puedes!</div>
+        <div class="exam-badge">📅 Examen el <span id="home-exam-date">...</span> – ¡Tú puedes!</div>
       </div>
       
     </div>
@@ -1962,7 +1962,7 @@ function renderExamQuestion() {
         <div class="score-label">${pct}%</div>
         <div class="score-grade ${pct>=90?'excellent':pct>=70?'good':pct>=50?'ok':'practice'}">${grade}</div>
         <div class="stars-display">${getStars(pct) || '📘'}</div>
-        ${pct>=80?`<div style="margin-top:16px;padding:16px;background:var(--green-bg);border-radius:12px;color:var(--green);font-weight:700">🎉 ¡Estás listo para el examen del 17 de marzo!</div>`:`<div style="margin-top:16px;padding:16px;background:var(--yellow-bg);border-radius:12px;color:var(--orange);font-weight:700">📚 ¡Sigue estudiando! ¡Cada vez lo haces mejor!</div>`}
+        ${pct>=80?`<div style="margin-top:16px;padding:16px;background:var(--green-bg);border-radius:12px;color:var(--green);font-weight:700">🎉 ¡Estás listo para el examen! 🎓</div>`:`<div style="margin-top:16px;padding:16px;background:var(--yellow-bg);border-radius:12px;color:var(--orange);font-weight:700">📚 ¡Sigue estudiando! ¡Cada vez lo haces mejor!</div>`}
         <div class="btn-row" style="justify-content:center;margin-top:20px">
           <button class="btn btn-primary" onclick="showScreen('home')">🏠 Home</button>
           <button class="btn btn-purple" onclick="startExam()">🔄 Try Again</button>
@@ -2106,6 +2106,15 @@ updateHome();
 import { CONFIG }                               from '../components/config.js';
 import { MA, renderFooter }                     from '../components/components.js';
 window.CONFIG = CONFIG; // necesario para updateCountdown en script principal
+
+// ── Fecha del examen en la home ──
+const _today = new Date(); _today.setHours(0,0,0,0);
+const _next = (CONFIG.exams||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).find(e=>new Date(e.date+'T12:00:00')>=_today);
+const _dateEl = document.getElementById('home-exam-date');
+if (_dateEl && _next) {
+  const _d = new Date(_next.date+'T12:00:00');
+  _dateEl.textContent = _d.toLocaleDateString('es-ES',{day:'numeric',month:'long'});
+}
 
 // ── Header de la app (custom, no el del portal) ──
 const s = CONFIG.student;
