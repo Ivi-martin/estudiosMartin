@@ -9,7 +9,7 @@
     --text: #e6edf3; --muted: #7d8590; --border: rgba(255,255,255,0.10);
     --accent: #fbbf24;
   }
-  html, body { background-color: #161c2a !important; color: #e6edf3 !important; }
+  html, body { background-color: #161c2a !important; }
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -302,6 +302,7 @@ body {
   width: 100%; padding: 12px 16px; border: 2px solid var(--gray-200);
   border-radius: 10px; font-size: 16px; font-family: 'Nunito', sans-serif; font-weight: 700;
   outline: none; transition: all .2s;
+  background: #ffffff !important; color: #1a2744 !important;
 }
 .text-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
 .text-input.correct { border-color: var(--green); background: var(--green-bg); }
@@ -1756,15 +1757,16 @@ function buildListenAnswer() {
       <button class="speak-btn" style="margin-bottom:12px" onclick="speak('${item.s.replace(/'/g,"\\'")}')">🔊 Play sentence</button>
       <div class="q-text">${item.q}</div>
       <div class="options" id="la-opts-${i}">
-        <button class="option-btn" onclick="checkLA(this,${i},'${item.correct}','Yes, it can.')">Yes, it can.</button>
-        <button class="option-btn" onclick="checkLA(this,${i},'${item.correct}','No, it can\\'t.')">No, it can't.</button>
+        <button class="option-btn" data-correct="${item.correct}" onclick="checkLA(this,${i})">Yes, it can.</button>
+        <button class="option-btn" data-correct="${item.correct}" onclick="checkLA(this,${i})">No, it can't.</button>
       </div>
       <div class="feedback" id="la-fb-${i}"></div>
     </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showListenPhase(3)">Next →</button></div>`;
 }
-function checkLA(btn,i,correct,chosen) {
-  document.querySelectorAll(`#la-opts-${i} .option-btn`).forEach(b=>b.disabled=true);
-  const ok=chosen===correct;
+function checkLA(btn,i) {
+  const correct=btn.dataset.correct; const chosen=btn.textContent.trim();
+  document.querySelectorAll('#la-opts-'+i+' .option-btn').forEach(b=>b.disabled=true);
+  const ok=chosen.trim()===correct.trim();
   btn.classList.add(ok?'correct':'wrong');
   const fb=document.getElementById('la-fb-'+i);
   fb.className='feedback '+(ok?'correct':'wrong')+' show';
@@ -1997,7 +1999,7 @@ function renderExamQuestion() {
     </div>
     <div class="card">
       ${q.emoji?`<span class="q-emoji">${q.emoji}</span>`:''}
-      <div class="q-text" style="margin-bottom:14px">${q.question}</div>
+      <div class="q-text" style="margin-bottom:14px;color:#1e2638;font-size:18px;font-weight:800;">${q.question}</div>
       ${exHTML}
       <div class="feedback" id="exam-fb"></div>
     </div>`;
