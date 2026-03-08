@@ -11,55 +11,7 @@
   }
   html, body { background-color: #161c2a !important; color: #e6edf3 !important; }
 
-/* ── DISCLAIMER MODAL ── */
-#disclaimer-overlay {
-  position: fixed; inset: 0; z-index: 9999;
-  background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px;
-  animation: ma-fadeIn .3s ease;
-}
-@keyframes ma-fadeIn { from { opacity: 0 } to { opacity: 1 } }
-#disclaimer-overlay.hidden { display: none; }
-.disclaimer-box {
-  background: var(--surface);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 24px;
-  max-width: 580px; width: 100%;
-  padding: 36px;
-  box-shadow: 0 30px 80px rgba(0,0,0,.6);
-  animation: ma-fadeUp .4s ease;
-}
-.disclaimer-icon { font-size: 40px; margin-bottom: 16px; }
-.disclaimer-title {
-  font-family: 'Fredoka One', cursive;
-  font-size: 22px; color: white;
-  margin-bottom: 20px; line-height: 1.2;
-}
-.disclaimer-title span { color: var(--accent); }
-.disclaimer-body {
-  font-size: 13.5px; color: rgba(255,255,255,.65);
-  line-height: 1.75; display: flex; flex-direction: column; gap: 12px;
-}
-.disclaimer-body p { margin: 0; }
-.disclaimer-footer {
-  margin-top: 28px;
-  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-}
-.disclaimer-btn {
-  background: var(--accent); color: #0d1117;
-  border: none; border-radius: 12px;
-  padding: 12px 28px; font-family: 'Fredoka One', cursive;
-  font-size: 16px; cursor: pointer; transition: all .2s;
-  flex-shrink: 0;
-}
-.disclaimer-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(251,191,36,.3); }
-.disclaimer-check {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 12px; color: var(--muted); cursor: pointer;
-  user-select: none;
-}
-.disclaimer-check input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+
 
 </style>
 <meta charset="UTF-8">
@@ -176,56 +128,35 @@
   .hero { padding: 22px; }
 }
 
+
+
+
 /* ── DISCLAIMER MODAL ── */
 #disclaimer-overlay {
   position: fixed; inset: 0; z-index: 9999;
   background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
-  animation: ma-fadeIn .3s ease;
 }
-@keyframes ma-fadeIn { from { opacity: 0 } to { opacity: 1 } }
 #disclaimer-overlay.hidden { display: none; }
 .disclaimer-box {
-  background: var(--surface);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 24px;
-  max-width: 580px; width: 100%;
-  padding: 36px;
-  box-shadow: 0 30px 80px rgba(0,0,0,.6);
-  animation: ma-fadeUp .4s ease;
+  background: #1e2638; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 24px; max-width: 580px; width: 100%;
+  padding: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.6);
 }
 .disclaimer-icon { font-size: 40px; margin-bottom: 16px; }
-.disclaimer-title {
-  font-family: 'Fredoka One', cursive;
-  font-size: 22px; color: white;
-  margin-bottom: 20px; line-height: 1.2;
-}
-.disclaimer-title span { color: var(--accent); }
-.disclaimer-body {
-  font-size: 13.5px; color: rgba(255,255,255,.65);
-  line-height: 1.75; display: flex; flex-direction: column; gap: 12px;
-}
+.disclaimer-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: white; margin-bottom: 20px; }
+.disclaimer-title span { color: #fbbf24; }
+.disclaimer-body { font-size: 13.5px; color: rgba(255,255,255,.65); line-height: 1.75; display: flex; flex-direction: column; gap: 12px; }
 .disclaimer-body p { margin: 0; }
-.disclaimer-footer {
-  margin-top: 28px;
-  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-}
+.disclaimer-footer { margin-top: 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .disclaimer-btn {
-  background: var(--accent); color: #0d1117;
-  border: none; border-radius: 12px;
-  padding: 12px 28px; font-family: 'Fredoka One', cursive;
-  font-size: 16px; cursor: pointer; transition: all .2s;
-  flex-shrink: 0;
+  background: #fbbf24; color: #0d1117; border: none; border-radius: 12px;
+  padding: 12px 28px; font-family: 'Fredoka One', cursive; font-size: 16px;
+  cursor: pointer;
 }
-.disclaimer-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(251,191,36,.3); }
-.disclaimer-check {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 12px; color: var(--muted); cursor: pointer;
-  user-select: none;
-}
-.disclaimer-check input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
-
+.disclaimer-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,.5); cursor: pointer; }
+.disclaimer-check input { width: 16px; height: 16px; cursor: pointer; accent-color: #fbbf24; }
 </style>
 </head>
 <body>
@@ -243,16 +174,25 @@
     </div>
     <div class="disclaimer-footer">
       <button class="disclaimer-btn" onclick="closeDisclaimer()">Entendido ✓</button>
-
+      <label class="disclaimer-check">
+        <input type="checkbox" id="disc-remember"> No volver a mostrar
+      </label>
     </div>
   </div>
 </div>
-
 <script>
+  if (localStorage.getItem('disc-ok') === '1') {
+    document.getElementById('disclaimer-overlay').classList.add('hidden');
+  }
   function closeDisclaimer() {
+    if (document.getElementById('disc-remember').checked) {
+      localStorage.setItem('disc-ok', '1');
+    }
     document.getElementById('disclaimer-overlay').classList.add('hidden');
   }
 </script>
+
+
 
 
 <!-- Orbes y cabecera se inyectan desde JS -->
