@@ -161,7 +161,7 @@ export const MA = {
 
     if (next) {
       const d    = new Date(next.date + 'T12:00:00');
-      const diff = Math.ceil((d - today) / 86400000);
+      const diff = Math.floor((d - today) / 86400000);
       dateEl.textContent    = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
       subjectEl.textContent = next.subject;
       topicEl.textContent   = diff === 0 ? '¡HOY!' : diff === 1 ? 'Mañana' : `${diff} días`;
