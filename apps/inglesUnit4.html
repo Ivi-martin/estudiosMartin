@@ -1226,7 +1226,7 @@ function buildMiniTest(questions, containerId, onComplete) {
         : '';
       exHTML = `${audioBtn}<div class="q-text">${q.question}</div>
         <div class="options" id="test-opts">
-          ${q.options.map(o=>`<button class="option-btn" onclick="testAnswer(this,'${q.correct}','${o}','${containerId}',${curr},${questions.length})">${o}</button>`).join('')}
+          ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="testAnswer(this,'${containerId}',${curr},${questions.length})">${o}</button>`).join('')}
         </div>`;
     } else if (q.type === 'write') {
       exHTML = `<div class="q-text">${q.question}</div>
@@ -1249,9 +1249,9 @@ function buildMiniTest(questions, containerId, onComplete) {
     if (q.audio) setTimeout(() => speak(q.audio), 500);
   };
 
-  window.testAnswer = function(btn, correct, chosen, cid, idx, total) {
+  window.testAnswer = function(btn, cid, idx, total) {
+    const correct = btn.dataset.correct; const chosen = btn.dataset.chosen;
     if (cid !== containerId) return;
-    document.querySelectorAll('#test-opts .option-btn').forEach(b=>b.disabled=true);
     const ok = chosen.toLowerCase()===correct.toLowerCase();
     results[idx] = ok;
     btn.classList.add(ok?'correct':'wrong');
@@ -1738,7 +1738,7 @@ function buildListenRepeat() {
       </div>
       <div style="display:flex;gap:8px">
         <button class="speak-btn" onclick="speak('${s.replace(/'/g,"\\'")}')">🔊 Play</button>
-        <button class="speak-btn" style="background:var(--green)" onclick="speak('${s.replace(/'/g,"\\'")}',0.7)">🐢 Slow</button>
+        <button class="speak-btn" style="background:var(--green)" onclick="speak('${s.replace(/'/g,"\\'")}',0.45)">🐢 Slow</button>
       </div>
     </div>`).join('') + `<div class="btn-row"><button class="btn btn-primary" onclick="showListenPhase(2)">Next →</button></div>`;
 }
@@ -1981,7 +1981,7 @@ function renderExamQuestion() {
       ? `<button class="speak-btn" style="margin-bottom:14px;font-size:15px;padding:10px 22px" onclick="speak('${q.audio.replace(/'/g,"\\'")}')" >🔊 Escuchar</button>`
       : '';
     exHTML=`${examAudioBtn}<div class="options" id="exam-opts">
-      ${q.options.map(o=>`<button class="option-btn" onclick="checkExam(this,'${q.correct.replace(/'/g,"\\'")  }','${o.replace(/'/g,"\\'")}')">${o}</button>`).join('')}
+      ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="checkExam(this)">${o}</button>`).join('')}
     </div>`;
   } else {
     exHTML=`<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">
@@ -2007,8 +2007,8 @@ function renderExamQuestion() {
   if (q.audio) setTimeout(() => speak(q.audio), 500);
 }
 
-function checkExam(btn, correct, chosen) {
-  document.querySelectorAll('#exam-opts .option-btn').forEach(b=>b.disabled=true);
+function checkExam(btn) {
+  const correct=btn.dataset.correct; const chosen=btn.dataset.chosen;
   const ok=chosen===correct;
   examResults[examIdx]=ok;
   btn.classList.add(ok?'correct':'wrong');
