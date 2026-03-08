@@ -1529,15 +1529,15 @@ function buildQA() {
       <div class="q-num">Question ${i+1}</div>
       <div class="q-text">${qa.context} – <em>${qa.q}</em></div>
       <div class="options" id="qa-opts-${i}">
-        <button class="option-btn" onclick="checkQA(this,${i},'${qa.correct}','Yes, it can.')">Yes, it can.</button>
-        <button class="option-btn" onclick="checkQA(this,${i},'${qa.correct}','No, it can\\'t.')">No, it can't.</button>
+        <button class="option-btn" data-correct="${qa.correct}" onclick="checkQA(this,${i})">Yes, it can.</button>
+        <button class="option-btn" data-correct="${qa.correct}" onclick="checkQA(this,${i})">No, it can't.</button>
       </div>
       <div class="feedback" id="qa-fb-${i}"></div>
     </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showCanPhase(4)">Mini Test →</button></div>`;
 }
 
-function checkQA(btn, i, correct, chosen) {
-  document.querySelectorAll(`#qa-opts-${i} .option-btn`).forEach(b=>b.disabled=true);
+function checkQA(btn, i) {
+  const correct=btn.dataset.correct; const chosen=btn.textContent.trim();
   const ok=chosen===correct;
   btn.classList.add(ok?'correct':'wrong');
   const fb=document.getElementById('qa-fb-'+i);
