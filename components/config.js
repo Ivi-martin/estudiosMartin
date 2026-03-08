@@ -95,7 +95,7 @@ export const CONFIG = {
   // ── Próximos exámenes ── edita aquí para añadir o quitar
   // Formato: { date: 'YYYY-MM-DD', subject: 'Nombre', topic: 'Descripción' }
   exams: [
-    { date: '2026-03-17', subject: 'Inglés',   topic: "Unit 4 – Animals & Can/Can't" },
+    { date: '2026-03-09', subject: 'Inglés',   topic: "Unit 4 – Animals & Can/Can't" },
   ],
 
   // ── Horario semanal ──
