@@ -15,13 +15,13 @@ export const CONFIG = {
 
   // ── Profesores ── edita aquí el nombre de cada uno
   teachers: {
-    mat:  'Isabel Begoña Rivera García',
-    cono: 'María Trinidad De la Hoz Jiménez',
-    len:  'María Trinidad De la Hoz Jiménez',
-    ing:  'Trinidad Lara Moya',
-    ef:   'Laura María Morales Rubio',
-    pla:  'María Gloria Pérez Ayllón',
-    val:  'María Trinidad De la Hoz Jiménez',
+    mat:  'Nombre del/la profe',
+    cono: 'Nombre del/la profe',
+    len:  'Nombre del/la profe',
+    ing:  'Nombre del/la profe',
+    ef:   'Nombre del/la profe',
+    pla:  'Nombre del/la profe',
+    val:  'Nombre del/la profe',
   },
 
   // ── Asignaturas ──
@@ -34,6 +34,7 @@ export const CONFIG = {
         //{ label: 'Unidad 2 – Sumas y restas',       url: null },
         //{ label: 'Unidad 3 – Multiplicación',        url: null },
         //{ label: 'Unidad 4 – Geometría',             url: null },
+        { label: 'Unidad 6 – Una tarde de juegos',   url: 'apps/mat6.html' },
       ],
     },
     {
@@ -51,7 +52,7 @@ export const CONFIG = {
       topics: [
         //{ label: 'Unidad 1 – Lectura y comprensión', url: null },
         //{ label: 'Unidad 2 – Ortografía',            url: null },
-       // { label: 'Unidad 3 – Gramática',             url: null },
+        //{ label: 'Unidad 3 – Gramática',             url: null },
       ],
     },
     {
@@ -95,7 +96,7 @@ export const CONFIG = {
   // ── Próximos exámenes ── edita aquí para añadir o quitar
   // Formato: { date: 'YYYY-MM-DD', subject: 'Nombre', topic: 'Descripción' }
   exams: [
-    { date: '2026-03-09', subject: 'Inglés',   topic: "Unit 4 – Animals & Can/Can't" },
+    { date: '2026-03-17', subject: 'Inglés',   topic: "Unit 4 – Animals & Can/Can't" },
   ],
 
   // ── Horario semanal ──

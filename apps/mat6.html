@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  /* Blindaje de colores */
+  :root {
+    color-scheme: dark;
+    --bg: #161c2a; --surface: #1e2638; --surface2: #28324a;
+    --text: #e6edf3; --muted: #7d8590; --border: rgba(255,255,255,0.10);
+    --accent: #fbbf24;
+  }
+  html, body { background-color: #161c2a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔢 Matemáticas – Tema 6</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2744;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --sky: #dbeafe;
+  --green: #16a34a;
+  --green-light: #22c55e;
+  --green-bg: #dcfce7;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --yellow: #f59e0b;
+  --yellow-bg: #fef3c7;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --orange: #ea580c;
+  --orange-bg: #ffedd5;
+  --white: #ffffff;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-400: #94a3b8;
+  --gray-600: #475569;
+  --gray-800: #1e293b;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  --shadow: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0f172a;
+  min-height: 100vh;
+  color: var(--gray-800);
+  overflow-x: hidden;
+}
+
+/* ===== STAR BACKGROUND ===== */
+.stars-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  overflow: hidden;
+}
+.stars-bg::before {
+  content: '★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position: absolute; inset: 0;
+  font-size: 12px; color: rgba(255,255,255,0.06);
+  line-height: 2.5; word-break: break-all;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from{opacity:.5} to{opacity:1} }
+
+/* ===== LAYOUT ===== */
+.app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 3px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.header-logo { font-family: 'Fredoka One', cursive; font-size: 20px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.header-logo span { color: #fbbf24; }
+.header-sub { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 600; letter-spacing: 0.5px; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.exam-countdown {
+  background: rgba(255,255,255,0.15); border-radius: 12px; padding: 8px 14px;
+  text-align: center; border: 1px solid rgba(255,255,255,0.2);
+}
+.exam-countdown .days { font-family: 'Fredoka One', cursive; font-size: 28px; color: #fbbf24; line-height: 1; }
+.exam-countdown .label { font-size: 10px; color: rgba(255,255,255,0.8); font-weight: 700; letter-spacing: 1px; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-strip {
+  background: rgba(0,0,0,0.3); padding: 10px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.progress-label { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
+.progress-track { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #86efac); border-radius: 4px; transition: width .5s ease; }
+.progress-pct { font-size: 12px; color: #86efac; font-weight: 800; }
+
+/* ===== MAIN ===== */
+.main { flex: 1; display: flex; gap: 0; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 240px; flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sidebar-section { font-size: 10px; color: rgba(255,255,255,0.3); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 8px 8px 4px; }
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 12px;
+  cursor: pointer; transition: all .2s;
+  border: none; background: transparent; width: 100%; text-align: left;
+  color: rgba(255,255,255,0.6); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-btn.active { background: rgba(37,99,235,0.3); color: white; border: 1px solid rgba(37,99,235,0.5); }
+.nav-btn.completed { color: #86efac; }
+.nav-btn .nav-icon { font-size: 18px; width: 24px; text-align: center; }
+.nav-btn .nav-stars { margin-left: auto; font-size: 12px; }
+
+/* ===== CONTENT ===== */
+.content { flex: 1; padding: 28px; overflow-y: auto; max-height: calc(100vh - 100px); }
+
+/* ===== SCREEN ===== */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===== HOME HERO ===== */
+.home-hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 60%, #7c3aed 100%);
+  border-radius: 24px; padding: 40px; margin-bottom: 24px; position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.home-hero::before {
+  content: '🔢➕📏🔷⭕🎮';
+  position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+  font-size: 48px; opacity: .15; writing-mode: vertical-rl; letter-spacing: 12px;
+}
+.home-hero h1 { font-family: 'Fredoka One', cursive; font-size: 38px; color: white; margin-bottom: 8px; }
+.home-hero h1 span { color: #fbbf24; }
+.home-hero p { color: rgba(255,255,255,0.8); font-size: 15px; max-width: 500px; line-height: 1.6; }
+.home-hero .exam-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(251,191,36,0.2); border: 1px solid rgba(251,191,36,0.4);
+  padding: 8px 16px; border-radius: 30px; margin-top: 16px;
+  color: #fbbf24; font-weight: 800; font-size: 13px;
+}
+
+/* ===== CLASS CARDS ===== */
+.classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.class-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 20px; cursor: pointer; transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.class-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.2); }
+.class-card.unlocked { background: rgba(255,255,255,0.08); }
+.class-card.completed { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.06); }
+.class-number { font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; }
+.class-icon { font-size: 36px; margin-bottom: 10px; }
+.class-title { font-family: 'Fredoka One', cursive; font-size: 18px; color: white; margin-bottom: 4px; }
+.class-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+.class-status { position: absolute; top: 14px; right: 14px; font-size: 18px; }
+.class-stars { margin-top: 12px; font-size: 16px; color: #fbbf24; }
+
+/* ===== LESSON HEADER ===== */
+.lesson-header {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 20px 24px; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.lesson-icon { font-size: 42px; }
+.lesson-info h2 { font-family: 'Fredoka One', cursive; font-size: 26px; color: white; }
+.lesson-info p { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.lesson-back {
+  margin-left: auto; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  color: white; padding: 8px 16px; border-radius: 10px; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px; transition: all .2s;
+}
+.lesson-back:hover { background: rgba(255,255,255,0.2); }
+
+/* ===== PHASE TABS ===== */
+.phase-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.phase-tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .2s; border: 1px solid transparent;
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+  font-family: 'Nunito', sans-serif;
+}
+.phase-tab.active { background: var(--blue); color: white; border-color: var(--blue-light); }
+.phase-tab.done { background: rgba(34,197,94,0.15); color: #86efac; border-color: rgba(34,197,94,0.3); }
+
+/* ===== WHITE CARD (exercises) ===== */
+.card {
+  background: white; border-radius: var(--radius); padding: 24px;
+  box-shadow: var(--shadow); margin-bottom: 20px;
+}
+.card-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--navy); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+/* ===== EXERCISE BOX ===== */
+.exercise-box {
+  background: var(--gray-50); border: 2px solid var(--gray-200);
+  border-radius: 14px; padding: 20px; margin-bottom: 16px;
+}
+.exercise-box .q-num { font-size: 11px; font-weight: 800; letter-spacing: 1px; color: var(--blue); text-transform: uppercase; margin-bottom: 8px; }
+.exercise-box .q-text { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+
+/* ===== OPTIONS ===== */
+.options { display: flex; flex-wrap: wrap; gap: 8px; }
+.option-btn {
+  padding: 10px 20px; border-radius: 10px; font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: all .2s; border: 2px solid var(--gray-200);
+  background: white; color: var(--navy); font-family: 'Nunito', sans-serif;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--sky); }
+.option-btn.correct { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+.option-btn.wrong { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+.option-btn:disabled { cursor: not-allowed; opacity: .8; }
+
+/* ===== TEXT INPUT ===== */
+.text-input {
+  padding: 12px 16px; border: 2px solid var(--gray-200);
+  border-radius: 10px; font-size: 16px; font-family: 'Nunito', sans-serif; font-weight: 700;
+  outline: none; transition: all .2s;
+  background: #ffffff !important; color: #1a2744 !important;
+}
+.text-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+.text-input.correct { border-color: var(--green); background: var(--green-bg) !important; }
+.text-input.wrong { border-color: var(--red); background: var(--red-bg) !important; }
+
+/* ===== FEEDBACK ===== */
+.feedback {
+  padding: 12px 16px; border-radius: 10px; font-weight: 700; font-size: 14px;
+  margin-top: 10px; display: none;
+}
+.feedback.show { display: block; animation: pop .3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.feedback.correct { background: var(--green-bg); color: var(--green); }
+.feedback.wrong { background: var(--red-bg); color: var(--red); }
+@keyframes pop { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+
+/* ===== BUTTONS ===== */
+.btn {
+  padding: 12px 24px; border-radius: 12px; font-size: 15px; font-weight: 800;
+  cursor: pointer; transition: all .2s; border: none; font-family: 'Nunito', sans-serif;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover { background: var(--blue-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,.4); }
+.btn-success { background: var(--green); color: white; }
+.btn-success:hover { background: var(--green-light); transform: translateY(-1px); }
+.btn:active { transform: translateY(0) scale(.97); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+/* ===== SCORE CARD ===== */
+.score-card {
+  text-align: center; padding: 32px; background: white;
+  border-radius: 20px; box-shadow: var(--shadow-lg);
+}
+.score-big { font-family: 'Fredoka One', cursive; font-size: 64px; color: var(--blue); }
+.score-label { font-size: 16px; color: var(--gray-600); margin-bottom: 20px; }
+.score-grade { font-size: 24px; font-weight: 800; margin-bottom: 16px; }
+.score-grade.excellent { color: var(--green); }
+.score-grade.good { color: var(--blue); }
+.score-grade.ok { color: var(--yellow); }
+.score-grade.practice { color: var(--red); }
+.stars-display { font-size: 36px; letter-spacing: 4px; }
+
+/* ===== MINI TEST ===== */
+.test-progress { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.test-dots { display: flex; gap: 6px; }
+.test-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--gray-200); transition: all .3s; }
+.test-dot.current { background: var(--blue); transform: scale(1.3); }
+.test-dot.done-correct { background: var(--green); }
+.test-dot.done-wrong { background: var(--red); }
+
+/* ===== CDU DIGITS ===== */
+.cdu-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 10px 0; }
+.cdu-box { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.cdu-label { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: white; padding: 2px 7px; border-radius: 4px; }
+.cdu-label.c { background: #7c3aed; }
+.cdu-label.d { background: #ea580c; }
+.cdu-label.u { background: #0891b2; }
+.cdu-digit {
+  width: 46px; height: 46px; border-radius: 8px; font-family: 'Fredoka One', cursive;
+  font-size: 24px; text-align: center; border: 2px solid var(--gray-200);
+  background: #fff !important; color: #1e293b !important; outline: none;
+}
+.cdu-digit:focus { border-color: var(--blue); }
+.cdu-digit.correct { border-color: var(--green); background: var(--green-bg) !important; }
+.cdu-digit.wrong { border-color: var(--red); background: var(--red-bg) !important; }
+
+/* ===== NUM DISPLAY ===== */
+.num-display {
+  font-family: 'Fredoka One', cursive; font-size: 52px; color: var(--blue);
+  text-align: center; padding: 16px; background: var(--sky);
+  border-radius: 14px; margin-bottom: 16px; border: 2px solid rgba(37,99,235,.2);
+}
+
+/* ===== THEORY HIGHLIGHT ===== */
+.theory-highlight {
+  background: var(--yellow-bg); border-left: 4px solid var(--yellow);
+  border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 12px 0;
+  font-size: 14px; color: var(--gray-800); line-height: 1.8;
+}
+
+/* ===== COMPARE BUTTONS ===== */
+.compare-btns { display: flex; gap: 10px; justify-content: center; margin: 10px 0; }
+.cmp-btn {
+  width: 54px; height: 54px; border-radius: 12px; font-size: 22px; font-weight: 900;
+  border: 2px solid var(--gray-200); background: white; cursor: pointer;
+  font-family: 'Fredoka One', cursive; transition: all .2s; color: var(--gray-800);
+}
+.cmp-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--sky); }
+.cmp-btn.correct { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+.cmp-btn.wrong { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+
+/* ===== GAME MEMORY ===== */
+.game-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+@media(max-width:600px){ .game-grid { grid-template-columns: repeat(2, 1fr); } }
+.game-card {
+  background: rgba(255,255,255,0.07); border: 2px solid rgba(255,255,255,0.12);
+  border-radius: 14px; padding: 14px; cursor: pointer; transition: all .25s;
+  text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center;
+}
+.game-card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
+.game-card.flipped { background: rgba(37,99,235,0.25); border-color: #60a5fa; }
+.game-card.matched { background: rgba(34,197,94,0.15); border-color: #4ade80; pointer-events: none; }
+.game-card .gc-front { font-size: 28px; }
+.game-card .gc-back { font-family: 'Fredoka One', cursive; font-size: 13px; color: white; display: none; line-height: 1.4; }
+.game-card.flipped .gc-front, .game-card.matched .gc-front { display: none; }
+.game-card.flipped .gc-back { display: block; }
+.game-card.matched .gc-back { display: block; color: #86efac; }
+
+/* ===== PROGRESS SCREEN ===== */
+.progress-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.progress-stat { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center; }
+.progress-stat .ps-num { font-family: 'Fredoka One', cursive; font-size: 40px; color: #fbbf24; }
+.progress-stat .ps-label { font-size: 12px; color: rgba(255,255,255,.4); font-weight: 700; margin-top: 4px; }
+.progress-topic-row { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 18px; margin-bottom: 8px; }
+.progress-topic-row .pt-icon { font-size: 22px; }
+.progress-topic-row .pt-name { font-weight: 700; color: rgba(255,255,255,.8); flex: 1; font-size: 14px; }
+.progress-topic-row .pt-score { font-family: 'Fredoka One', cursive; font-size: 22px; color: #86efac; }
+.progress-topic-row .pt-bar { flex: 1; height: 6px; background: rgba(255,255,255,.1); border-radius: 99px; overflow: hidden; }
+.progress-topic-row .pt-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #86efac); border-radius: 99px; transition: width .8s; }
+
+/* ===== SCROLL ===== */
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-track { background: rgba(255,255,255,.05); }
+.content::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 3px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+  .sidebar { display: none; }
+  .content { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+
+<!-- HEADER — inyectado por módulo ES6 -->
+<div id="app-header-root"></div>
+
+<!-- PROGRESS -->
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO GENERAL</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-section">Clases</div>
+  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span> Inicio
+  </button>
+  <button class="nav-btn" onclick="showLesson('numeros')" id="nav-numeros">
+    <span class="nav-icon">🔢</span> Números 800–999
+    <span class="nav-stars" id="stars-numeros"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('sumas')" id="nav-sumas">
+    <span class="nav-icon">➕</span> Sumas llevando
+    <span class="nav-stars" id="stars-sumas"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('recta')" id="nav-recta">
+    <span class="nav-icon">📏</span> Punto y recta
+    <span class="nav-stars" id="stars-recta"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('poligonos')" id="nav-poligonos">
+    <span class="nav-icon">🔷</span> Polígonos
+    <span class="nav-stars" id="stars-poligonos"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('circulo')" id="nav-circulo">
+    <span class="nav-icon">⭕</span> Círculo y circunf.
+    <span class="nav-stars" id="stars-circulo"></span>
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Repaso</div>
+  <button class="nav-btn" onclick="showScreen('juego')" id="nav-juego">
+    <span class="nav-icon">🎮</span> Juego Memory
+  </button>
+  <button class="nav-btn" onclick="showScreen('examen')" id="nav-examen">
+    <span class="nav-icon">📝</span> Examen Final
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Dashboard
+  </button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- ========== HOME ========== -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <div>
+      <h1>¡Bienvenido al <span>Tema 6</span>! 🎉</h1>
+      <p>Aprende los números del 800 al 999, las sumas con llevadas, el punto y la recta, los polígonos y el círculo. ¡Completa todas las clases y aprueba el examen!</p>
+      <div class="exam-badge">📅 Examen el <span id="home-exam-date">...</span> – ¡Tú puedes! 💪</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px; font-family:'Fredoka One',cursive; font-size:18px; color:white; opacity:.8;">📚 Tus Clases</div>
+  <div class="classes-grid">
+    <div class="class-card unlocked" onclick="showLesson('numeros')">
+      <div class="class-number">CLASE 1</div>
+      <div class="class-icon">🔢</div>
+      <div class="class-title">Números 800–999</div>
+      <div class="class-desc">Centenas, descomposición C+D+U, leer y comparar números de 3 cifras.</div>
+      <div class="class-stars" id="home-stars-numeros"></div>
+      <div class="class-status" id="home-status-numeros">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('sumas')">
+      <div class="class-number">CLASE 2</div>
+      <div class="class-icon">➕</div>
+      <div class="class-title">Sumas llevando</div>
+      <div class="class-desc">Sumas de 3 cifras paso a paso. Unidades → Decenas → Centenas.</div>
+      <div class="class-stars" id="home-stars-sumas"></div>
+      <div class="class-status" id="home-status-sumas">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('recta')">
+      <div class="class-number">CLASE 3</div>
+      <div class="class-icon">📏</div>
+      <div class="class-title">Punto y recta</div>
+      <div class="class-desc">El punto, la recta y el segmento. ¿Cuáles son las diferencias?</div>
+      <div class="class-stars" id="home-stars-recta"></div>
+      <div class="class-status" id="home-status-recta">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('poligonos')">
+      <div class="class-number">CLASE 4</div>
+      <div class="class-icon">🔷</div>
+      <div class="class-title">Los polígonos</div>
+      <div class="class-desc">Lados, vértices, triángulos, cuadriláteros, rectángulos y rombos.</div>
+      <div class="class-stars" id="home-stars-poligonos"></div>
+      <div class="class-status" id="home-status-poligonos">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('circulo')">
+      <div class="class-number">CLASE 5</div>
+      <div class="class-icon">⭕</div>
+      <div class="class-title">Círculo y circunferencia</div>
+      <div class="class-desc">¿Cuál es la diferencia? Pizza, rueda de bici, moneda...</div>
+      <div class="class-stars" id="home-stars-circulo"></div>
+      <div class="class-status" id="home-status-circulo">▶️</div>
+    </div>
+    <div class="class-card" onclick="showScreen('examen')" style="background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(37,99,235,.2)); border-color:rgba(124,58,237,.4);">
+      <div class="class-number">FINAL</div>
+      <div class="class-icon">📝</div>
+      <div class="class-title">Examen Final</div>
+      <div class="class-desc">Todos los temas. 20 preguntas. ¡A por la nota!</div>
+      <div class="class-status">🎯</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CLASE 1: NÚMEROS ========== -->
+<div class="screen" id="screen-numeros">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔢</div>
+    <div class="lesson-info">
+      <h2>Clase 1 – Números del 800 al 999</h2>
+      <p>Aprende a leer, escribir y comparar números de tres cifras</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="ntab-1" onclick="showNumPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="ntab-2" onclick="showNumPhase(2)">✏️ 2. Descompón</div>
+    <div class="phase-tab" id="ntab-3" onclick="showNumPhase(3)">🔤 3. ¿Cómo se lee?</div>
+    <div class="phase-tab" id="ntab-4" onclick="showNumPhase(4)">⚖️ 4. Compara</div>
+    <div class="phase-tab" id="ntab-5" onclick="showNumPhase(5)">📝 Mini Test</div>
+  </div>
+  <div id="num-content"></div>
+</div>
+
+<!-- ========== CLASE 2: SUMAS ========== -->
+<div class="screen" id="screen-sumas">
+  <div class="lesson-header">
+    <div class="lesson-icon">➕</div>
+    <div class="lesson-info">
+      <h2>Clase 2 – Sumas con llevadas</h2>
+      <p>Tres cifras paso a paso: Unidades → Decenas → Centenas</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="stab-1" onclick="showSumaPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="stab-2" onclick="showSumaPhase(2)">🧮 2. Calcula</div>
+    <div class="phase-tab" id="stab-3" onclick="showSumaPhase(3)">⚡ 3. Rápido</div>
+    <div class="phase-tab" id="stab-4" onclick="showSumaPhase(4)">📝 Mini Test</div>
+  </div>
+  <div id="suma-content"></div>
+</div>
+
+<!-- ========== CLASE 3: RECTA ========== -->
+<div class="screen" id="screen-recta">
+  <div class="lesson-header">
+    <div class="lesson-icon">📏</div>
+    <div class="lesson-info">
+      <h2>Clase 3 – El punto y la recta</h2>
+      <p>Punto, recta y segmento — conoce las diferencias</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="rtab-1" onclick="showRectaPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="rtab-2" onclick="showRectaPhase(2)">🔍 2. Identifica</div>
+    <div class="phase-tab" id="rtab-3" onclick="showRectaPhase(3)">📝 Mini Test</div>
+  </div>
+  <div id="recta-content"></div>
+</div>
+
+<!-- ========== CLASE 4: POLÍGONOS ========== -->
+<div class="screen" id="screen-poligonos">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔷</div>
+    <div class="lesson-info">
+      <h2>Clase 4 – Los polígonos</h2>
+      <p>Lados, vértices, triángulos, cuadriláteros y más</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="ptab-1" onclick="showPoliPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="ptab-2" onclick="showPoliPhase(2)">🔢 2. Lados y vértices</div>
+    <div class="phase-tab" id="ptab-3" onclick="showPoliPhase(3)">🔴 3. Cuenta los puntos</div>
+    <div class="phase-tab" id="ptab-4" onclick="showPoliPhase(4)">🏷️ 4. ¿Qué figura es?</div>
+    <div class="phase-tab" id="ptab-5" onclick="showPoliPhase(5)">📝 Mini Test</div>
+  </div>
+  <div id="poli-content"></div>
+</div>
+
+<!-- ========== CLASE 5: CÍRCULO ========== -->
+<div class="screen" id="screen-circulo">
+  <div class="lesson-header">
+    <div class="lesson-icon">⭕</div>
+    <div class="lesson-info">
+      <h2>Clase 5 – El círculo y la circunferencia</h2>
+      <p>¿Cuál es la diferencia? ¡Con ejemplos de la vida real!</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="ctab-1" onclick="showCircPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="ctab-2" onclick="showCircPhase(2)">🔍 2. Identifica</div>
+    <div class="phase-tab" id="ctab-3" onclick="showCircPhase(3)">📝 Mini Test</div>
+  </div>
+  <div id="circ-content"></div>
+</div>
+
+<!-- ========== JUEGO ========== -->
+<div class="screen" id="screen-juego">
+  <div class="lesson-header">
+    <div class="lesson-icon">🎮</div>
+    <div class="lesson-info">
+      <h2>Juego Memory Matemático</h2>
+      <p>Une cada número con su nombre y cada figura con su descripción</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div id="juego-content"></div>
+</div>
+
+<!-- ========== EXAMEN ========== -->
+<div class="screen" id="screen-examen">
+  <div class="lesson-header">
+    <div class="lesson-icon">📝</div>
+    <div class="lesson-info">
+      <h2>Examen Final – Tema 6</h2>
+      <p>20 preguntas de todos los temas. ¡Demuestra lo que sabes!</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div id="examen-content"></div>
+</div>
+
+<!-- ========== PROGRESO ========== -->
+<div class="screen" id="screen-progreso">
+  <div class="lesson-header">
+    <div class="lesson-icon">📊</div>
+    <div class="lesson-info">
+      <h2>Mi progreso</h2>
+      <p>Cómo vas en cada clase del Tema 6</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div id="progreso-content"></div>
+</div>
+
+</div><!-- .content -->
+</div><!-- .main -->
+
+<script>
+// ============================================================
+// PROGRESO
+// ============================================================
+const progress = {
+  numeros:   { done:false, score:0 },
+  sumas:     { done:false, score:0 },
+  recta:     { done:false, score:0 },
+  poligonos: { done:false, score:0 },
+  circulo:   { done:false, score:0 },
+  juego:     { done:false, score:0 },
+  examen:    { done:false, score:0 },
+};
+
+function updateHome() {
+  const topics = ['numeros','sumas','recta','poligonos','circulo'];
+  const done = topics.filter(t => progress[t].done).length;
+  const pct  = Math.round(done / topics.length * 100);
+  document.getElementById('overall-progress').style.width = pct + '%';
+  document.getElementById('overall-pct').textContent = pct + '%';
+  topics.forEach((t, idx) => {
+    const stars = progress[t].done
+      ? (progress[t].score >= 80 ? '⭐⭐⭐' : progress[t].score >= 60 ? '⭐⭐' : '⭐')
+      : '';
+    const statusEl = document.getElementById('home-status-' + t);
+    const starsEl  = document.getElementById('home-stars-' + t);
+    const navStars = document.getElementById('stars-' + t);
+    const navBtn   = document.getElementById('nav-' + t);
+    if (statusEl) statusEl.textContent = progress[t].done ? '✅' : '▶️';
+    if (starsEl)  starsEl.textContent  = stars;
+    if (navStars) navStars.textContent  = stars;
+    if (navBtn && progress[t].done) navBtn.classList.add('completed');
+    const cards = document.querySelectorAll('#screen-home .class-card.unlocked');
+    if (cards[idx] && progress[t].done) cards[idx].classList.add('completed');
+  });
+}
+
+// ============================================================
+// NAVEGACIÓN
+// ============================================================
+let numInit=false, sumaInit=false, rectaInit=false, poliInit=false, circInit=false, examenReady=false;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  const nb = document.getElementById('nav-' + id);
+  if (nb) nb.classList.add('active');
+  else document.getElementById('nav-home').classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'juego')                   buildJuego();
+  if (id === 'examen' && !examenReady)  buildExamenStart();
+  if (id === 'progreso')                buildProgreso();
+}
+window.showScreen = showScreen;
+
+function showLesson(id) {
+  showScreen(id);
+  if (id === 'numeros'   && !numInit)   { numInit   = true; showNumPhase(1); }
+  if (id === 'sumas'     && !sumaInit)  { sumaInit  = true; showSumaPhase(1); }
+  if (id === 'recta'     && !rectaInit) { rectaInit = true; showRectaPhase(1); }
+  if (id === 'poligonos' && !poliInit)  { poliInit  = true; showPoliPhase(1); }
+  if (id === 'circulo'   && !circInit)  { circInit  = true; showCircPhase(1); }
+}
+window.showLesson = showLesson;
+
+function setTab(prefix, n, total) {
+  for (let i = 1; i <= total; i++) {
+    const t = document.getElementById(prefix + 'tab-' + i);
+    if (t) t.classList.remove('active');
+  }
+  const a = document.getElementById(prefix + 'tab-' + n);
+  if (a) a.classList.add('active');
+}
+
+// ============================================================
+// SCORE
+// ============================================================
+function buildScoreHTML(correct, total, pct, cb) {
+  const stars = pct >= 80 ? '⭐⭐⭐' : pct >= 60 ? '⭐⭐' : '⭐';
+  const color = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--yellow)' : 'var(--red)';
+  const msg   = pct >= 80 ? '¡Excelente! 🎉' : pct >= 60 ? '¡Bien, sigue así! 💪' : '¡Sigue practicando! 📚';
+  const grade = pct >= 80 ? 'excellent' : pct >= 60 ? 'good' : pct >= 40 ? 'ok' : 'practice';
+  if (cb) cb(pct, stars);
+  return `<div class="score-card">
+    <div class="stars-display">${stars}</div>
+    <div class="score-big" style="color:${color}">${pct}%</div>
+    <div class="score-label">${correct} de ${total} correctas</div>
+    <div class="score-grade ${grade}">${msg}</div>
+  </div>`;
+}
+
+// ============================================================
+// MINI TEST ENGINE
+// ============================================================
+function buildMiniTest(questions, cid, onComplete) {
+  let curr = 0, results = [];
+  function render() {
+    if (curr >= questions.length) {
+      const c = results.filter(r => r).length;
+      const pct = Math.round(c / questions.length * 100);
+      document.getElementById(cid).innerHTML = buildScoreHTML(c, questions.length, pct, onComplete);
+      return;
+    }
+    const q = questions[curr];
+    const dots = questions.map((_, i) =>
+      `<div class="test-dot ${i < curr ? (results[i] ? 'done-correct' : 'done-wrong') : i === curr ? 'current' : ''}"></div>`
+    ).join('');
+    let html = '';
+    if (q.type === 'mc') {
+      html = `<div class="exercise-box .q-text" style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px">${q.question}</div>
+        <div class="options" id="${cid}-opts">
+          ${q.options.map(o => `<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${cid}')">${o}</button>`).join('')}
+        </div>`;
+    } else {
+      html = `<div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px">${q.question}</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input class="text-input" id="${cid}-inp" placeholder="Escribe aquí..." style="max-width:200px">
+          <button class="btn btn-primary" onclick="mtWrt('${cid}','${q.correct.replace(/'/g,"\\'")}')">Comprobar ✓</button>
+        </div>`;
+    }
+    document.getElementById(cid).innerHTML = `
+      <div class="exercise-box">
+        <div class="test-progress">
+          <div class="test-dots">${dots}</div>
+          <div style="font-size:13px;font-weight:700;color:var(--gray-600)">${curr+1} / ${questions.length}</div>
+        </div>
+        ${html}
+        <div class="feedback" id="${cid}-fb"></div>
+      </div>`;
+  }
+  window[cid + '_next'] = ok => { results.push(ok); curr++; setTimeout(render, ok ? 600 : 1200); };
+  window.mtAns = (btn, id) => {
+    if (id !== cid) return;
+    document.querySelectorAll('#' + id + '-opts .option-btn').forEach(b => b.disabled = true);
+    const ok = btn.dataset.chosen === btn.dataset.correct;
+    btn.classList.add(ok ? 'correct' : 'wrong');
+    const fb = document.getElementById(id + '-fb');
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+    fb.textContent = ok ? '✅ ¡Correcto!' : `❌ La respuesta es: ${btn.dataset.correct}`;
+    window[id + '_next'](ok);
+  };
+  window.mtWrt = (id, correct) => {
+    const inp = document.getElementById(id + '-inp'); if (!inp) return;
+    const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
+    inp.classList.add(ok ? 'correct' : 'wrong'); inp.disabled = true;
+    document.querySelector('#' + id + ' .btn-primary').disabled = true;
+    const fb = document.getElementById(id + '-fb');
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+    fb.textContent = ok ? '✅ ¡Correcto!' : `❌ La respuesta era: ${correct}`;
+    window[id + '_next'](ok);
+  };
+  render();
+}
+
+// ============================================================
+// CLASE 1: NÚMEROS
+// ============================================================
+function showNumPhase(n) {
+  setTab('n', n, 5);
+  const c = document.getElementById('num-content');
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">🔢 Los números del 800 al 999</div>
+        <p style="color:var(--gray-600);margin-bottom:12px">Un número de tres cifras tiene <strong>Centenas (C)</strong>, <strong>Decenas (D)</strong> y <strong>Unidades (U)</strong>.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+          <div style="background:#ede9fe;border-radius:12px;padding:14px;text-align:center">
+            <div style="font-family:'Fredoka One',cursive;font-size:32px;color:#7c3aed">C</div>
+            <div style="font-size:11px;font-weight:800;color:#7c3aed;letter-spacing:1px">CENTENAS</div>
+          </div>
+          <div style="background:#ffedd5;border-radius:12px;padding:14px;text-align:center">
+            <div style="font-family:'Fredoka One',cursive;font-size:32px;color:#ea580c">D</div>
+            <div style="font-size:11px;font-weight:800;color:#ea580c;letter-spacing:1px">DECENAS</div>
+          </div>
+          <div style="background:#e0f2fe;border-radius:12px;padding:14px;text-align:center">
+            <div style="font-family:'Fredoka One',cursive;font-size:32px;color:#0891b2">U</div>
+            <div style="font-size:11px;font-weight:800;color:#0891b2;letter-spacing:1px">UNIDADES</div>
+          </div>
+        </div>
+        <div class="theory-highlight"><strong>Ejemplo: 857</strong><br>8 Centenas → 800 &nbsp;·&nbsp; 5 Decenas → 50 &nbsp;·&nbsp; 7 Unidades → 7<br><strong>800 + 50 + 7 = 857</strong> &nbsp;→&nbsp; <em>ochocientos cincuenta y siete</em></div>
+        <div class="theory-highlight" style="background:var(--purple-bg);border-color:var(--purple)"><strong>Ejemplo: 940</strong><br>9C = 900 &nbsp;·&nbsp; 4D = 40 &nbsp;·&nbsp; 0U = 0<br><strong>900 + 40 + 0 = 940</strong> &nbsp;→&nbsp; <em>novecientos cuarenta</em></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="showNumPhase(2)">Siguiente →</button></div>`;
+  } else if (n === 2) { buildNumDescomp(); }
+  else if (n === 3) { buildNumLectura(); }
+  else if (n === 4) { buildNumCompara(); }
+  else if (n === 5) { buildNumTest(); }
+}
+window.showNumPhase = showNumPhase;
+
+function buildNumDescomp() {
+  // Batería amplia — se eligen 4 al azar cada vez
+  const ALL_DESCOMP = [
+    [823,8,2,3],[965,9,6,5],[841,8,4,1],[907,9,0,7],
+    [812,8,1,2],[834,8,3,4],[856,8,5,6],[878,8,7,8],
+    [891,8,9,1],[900,9,0,0],[913,9,1,3],[924,9,2,4],
+    [935,9,3,5],[946,9,4,6],[958,9,5,8],[970,9,7,0],
+    [802,8,0,2],[815,8,1,5],[829,8,2,9],[843,8,4,3],
+    [860,8,6,0],[875,8,7,5],[889,8,8,9],[896,8,9,6],
+    [901,9,0,1],[917,9,1,7],[928,9,2,8],[939,9,3,9],
+    [952,9,5,2],[963,9,6,3],[974,9,7,4],[986,9,8,6],
+    [995,9,9,5],[999,9,9,9],[980,9,8,0],[808,8,0,8],
+  ];
+  const pool = ALL_DESCOMP.sort(() => Math.random() - .5).slice(0, 4);
+  const c = document.getElementById('num-content');
+  c.innerHTML = pool.map(([num,cv,dv,uv], i) => `
+    <div class="exercise-box" id="nd-box-${i}">
+      <div class="q-num">Ejercicio ${i+1} – Descompón el número</div>
+      <div class="num-display">${num}</div>
+      <div class="cdu-row">
+        <div class="cdu-box"><div class="cdu-label c">C</div><input class="cdu-digit" id="nd-c-${i}" maxlength="1" data-v="${cv}"></div>
+        <div style="font-size:22px;font-weight:900;color:var(--gray-400);margin-top:18px">+</div>
+        <div class="cdu-box"><div class="cdu-label d">D</div><input class="cdu-digit" id="nd-d-${i}" maxlength="1" data-v="${dv}"></div>
+        <div style="font-size:22px;font-weight:900;color:var(--gray-400);margin-top:18px">+</div>
+        <div class="cdu-box"><div class="cdu-label u">U</div><input class="cdu-digit" id="nd-u-${i}" maxlength="1" data-v="${uv}"></div>
+        <div style="font-size:22px;font-weight:900;color:var(--gray-400);margin-top:18px">=</div>
+        <div style="margin-top:18px;font-family:'Fredoka One',cursive;font-size:26px;color:var(--navy)">${num}</div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:12px" onclick="checkND(${i})">Comprobar ✓</button>
+      <div class="feedback" id="nd-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showNumPhase(3)">Siguiente →</button></div>`;
+}
+window.checkND = function(i) {
+  const fc = document.getElementById('nd-c-' + i), fd = document.getElementById('nd-d-' + i), fu = document.getElementById('nd-u-' + i);
+  [fc,fd,fu].forEach(f => { f.classList.add(f.value === f.dataset.v ? 'correct' : 'wrong'); f.disabled = true; });
+  const ok = fc.value===fc.dataset.v && fd.value===fd.dataset.v && fu.value===fu.dataset.v;
+  document.querySelector('#nd-box-' + i + ' .btn-primary').disabled = true;
+  const fb = document.getElementById('nd-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ Era: ${fc.dataset.v}C + ${fd.dataset.v}D + ${fu.dataset.v}U`;
+};
+
+function buildNumLectura() {
+  const ALL_LECTURA = [
+    [800,'ochocientos'],[801,'ochocientos uno'],[810,'ochocientos diez'],
+    [811,'ochocientos once'],[815,'ochocientos quince'],[820,'ochocientos veinte'],
+    [821,'ochocientos veintiuno'],[825,'ochocientos veinticinco'],[830,'ochocientos treinta'],
+    [831,'ochocientos treinta y uno'],[835,'ochocientos treinta y cinco'],[840,'ochocientos cuarenta'],
+    [843,'ochocientos cuarenta y tres'],[850,'ochocientos cincuenta'],[856,'ochocientos cincuenta y seis'],
+    [860,'ochocientos sesenta'],[867,'ochocientos sesenta y siete'],[870,'ochocientos setenta'],
+    [872,'ochocientos setenta y dos'],[880,'ochocientos ochenta'],[885,'ochocientos ochenta y cinco'],
+    [890,'ochocientos noventa'],[894,'ochocientos noventa y cuatro'],[900,'novecientos'],
+    [910,'novecientos diez'],[913,'novecientos trece'],[920,'novecientos veinte'],
+    [924,'novecientos veinticuatro'],[930,'novecientos treinta'],[937,'novecientos treinta y siete'],
+    [940,'novecientos cuarenta'],[945,'novecientos cuarenta y cinco'],[950,'novecientos cincuenta'],
+    [953,'novecientos cincuenta y tres'],[960,'novecientos sesenta'],[967,'novecientos sesenta y siete'],
+    [970,'novecientos setenta'],[971,'novecientos setenta y uno'],[980,'novecientos ochenta'],
+    [985,'novecientos ochenta y cinco'],[990,'novecientos noventa'],[999,'novecientos noventa y nueve'],
+  ];
+  const pool = ALL_LECTURA.sort(() => Math.random() - .5).slice(0, 4);
+  const c = document.getElementById('num-content');
+  c.innerHTML = pool.map(([num,word], i) => `
+    <div class="exercise-box" id="nl-box-${i}">
+      <div class="q-num">Ejercicio ${i+1} – ¿Cómo se lee este número?</div>
+      <div class="num-display">${num}</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="text-input" id="nl-inp-${i}" placeholder="Escribe cómo se lee..." style="min-width:260px;flex:1">
+        <button class="btn btn-primary" onclick="checkNL(${i},'${word}')">Comprobar ✓</button>
+      </div>
+      <div class="feedback" id="nl-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showNumPhase(4)">Siguiente →</button></div>`;
+}
+window.checkNL = function(i, correct) {
+  const inp = document.getElementById('nl-inp-' + i);
+  const ok = inp.value.trim().toLowerCase().replace(/\s+/g,' ') === correct;
+  inp.classList.add(ok ? 'correct' : 'wrong'); inp.disabled = true;
+  document.querySelector('#nl-box-' + i + ' .btn-primary').disabled = true;
+  const fb = document.getElementById('nl-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ Se escribe: "${correct}"`;
+};
+
+function buildNumCompara() {
+  // Genera 40 pares únicos automáticamente
+  const ALL_CMP = [];
+  const usedPairs = new Set();
+  const candidates = [
+    [967,849,'>'],[905,871,'>'],[962,854,'>'],[815,851,'<'],
+    [880,880,'='],[900,870,'>'],[843,843,'='],[850,950,'<'],
+    [999,899,'>'],[810,910,'<'],[875,875,'='],[932,923,'>'],
+    [800,900,'<'],[945,945,'='],[861,916,'<'],[970,970,'='],
+    [999,990,'>'],[815,815,'='],[903,930,'<'],[888,808,'>'],
+    [820,829,'<'],[975,957,'>'],[840,840,'='],[861,816,'>'],
+    [910,901,'>'],[923,932,'<'],[855,550,'>'],[808,880,'<'],
+    [990,909,'>'],[930,903,'>'],[859,895,'<'],[870,870,'='],
+    [912,912,'='],[946,964,'<'],[835,853,'<'],[971,917,'>'],
+    [800,800,'='],[899,989,'<'],[801,810,'<'],[919,991,'<'],
+  ];
+  const pool = candidates.sort(() => Math.random() - .5).slice(0, 4);
+  const c = document.getElementById('num-content');
+  c.innerHTML = pool.map(([a,b,correct], i) => `
+    <div class="exercise-box">
+      <div class="q-num">Ejercicio ${i+1} – Pon el signo correcto</div>
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:14px">
+        <div style="font-family:'Fredoka One',cursive;font-size:48px;color:var(--blue)">${a}</div>
+        <div class="compare-btns">
+          <button class="cmp-btn" data-cmp="&lt;" data-correct="${correct}" onclick="checkCMP(this,${i})">&lt;</button>
+          <button class="cmp-btn" data-cmp="=" data-correct="${correct}" onclick="checkCMP(this,${i})">=</button>
+          <button class="cmp-btn" data-cmp="&gt;" data-correct="${correct}" onclick="checkCMP(this,${i})">&gt;</button>
+        </div>
+        <div style="font-family:'Fredoka One',cursive;font-size:48px;color:var(--purple)">${b}</div>
+      </div>
+      <div class="feedback" id="cmp-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showNumPhase(5)">Mini Test →</button></div>`;
+}
+window.checkCMP = function(btn, i) {
+  btn.closest('.exercise-box').querySelectorAll('.cmp-btn').forEach(b => b.disabled = true);
+  const ok = btn.dataset.cmp === btn.dataset.correct;
+  btn.classList.add(ok ? 'correct' : 'wrong');
+  const fb = document.getElementById('cmp-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ El signo correcto era: ${btn.dataset.correct}`;
+};
+
+function buildNumTest() {
+  const ALL_QS = [
+    { type:'mc', question:'¿Cuántas centenas tiene el número 873?', options:['7','8','3'], correct:'8' },
+    { type:'mc', question:'¿Cuántas decenas tiene el número 852?', options:['8','2','5'], correct:'5' },
+    { type:'mc', question:'¿Cuántas unidades tiene el número 934?', options:['9','3','4'], correct:'4' },
+    { type:'mc', question:'¿Cómo se descompone 945?', options:['9C+4D+5U','4C+9D+5U','9C+5D+4U'], correct:'9C+4D+5U' },
+    { type:'mc', question:'¿Cómo se descompone 861?', options:['8C+6D+1U','6C+8D+1U','8C+1D+6U'], correct:'8C+6D+1U' },
+    { type:'mc', question:'¿Cómo se descompone 903?', options:['9C+0D+3U','9C+3D+0U','0C+9D+3U'], correct:'9C+0D+3U' },
+    { type:'write', question:'Escribe el número: 8 centenas, 0 decenas, 6 unidades.', correct:'806' },
+    { type:'write', question:'Escribe el número: 9 centenas, 2 decenas, 7 unidades.', correct:'927' },
+    { type:'write', question:'Escribe el número: 8 centenas, 5 decenas, 0 unidades.', correct:'850' },
+    { type:'write', question:'Escribe el número: 9 centenas, 9 decenas, 9 unidades.', correct:'999' },
+    { type:'mc', question:'¿Qué número es mayor?', options:['879','897','789'], correct:'897' },
+    { type:'mc', question:'¿Qué número es mayor?', options:['812','821','182'], correct:'821' },
+    { type:'mc', question:'¿Qué número es menor?', options:['960','906','969'], correct:'906' },
+    { type:'mc', question:'¿Qué número es menor?', options:['875','857','785'], correct:'785' },
+    { type:'write', question:'800 + 50 + 3 = ¿qué número es?', correct:'853' },
+    { type:'write', question:'900 + 20 + 7 = ¿qué número es?', correct:'927' },
+    { type:'write', question:'800 + 0 + 9 = ¿qué número es?', correct:'809' },
+    { type:'write', question:'900 + 70 + 0 = ¿qué número es?', correct:'970' },
+    { type:'mc', question:'¿Cómo se lee 820?', options:['ochocientos veinte','ochocientos dos','ochenta y veinte'], correct:'ochocientos veinte' },
+    { type:'mc', question:'¿Cómo se lee 915?', options:['novecientos cincuenta','novecientos quince','nueve quince'], correct:'novecientos quince' },
+    { type:'mc', question:'¿Cómo se lee 870?', options:['ochocientos setenta','ochocientos siete','ochenta y siete'], correct:'ochocientos setenta' },
+    { type:'mc', question:'¿Cómo se lee 901?', options:['novecientos uno','noventa y uno','nueve cero uno'], correct:'novecientos uno' },
+    { type:'mc', question:'Ordena de menor a mayor: 891, 819, 981', options:['819 < 891 < 981','891 < 819 < 981','981 < 891 < 819'], correct:'819 < 891 < 981' },
+    { type:'mc', question:'¿Cuánto vale el dígito 9 en el número 935?', options:['9','90','900'], correct:'900' },
+    { type:'mc', question:'¿Cuánto vale el dígito 7 en el número 872?', options:['7','70','700'], correct:'70' },
+  ];
+  const qs = ALL_QS.sort(() => Math.random() - .5).slice(0, 6);
+  buildMiniTest(qs, 'num-content', (pct) => { progress.numeros.score = pct; progress.numeros.done = true; updateHome(); });
+}
+
+// ============================================================
+// CLASE 2: SUMAS
+// ============================================================
+function showSumaPhase(n) {
+  setTab('s', n, 4);
+  const c = document.getElementById('suma-content');
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">➕ Sumas con llevadas – paso a paso</div>
+        <div class="theory-highlight"><strong>Ejemplo: 275 + 125 = ?</strong><br><br>
+          <strong>1.º Suma las unidades:</strong> 5 + 5 = 10 → Escribes <u>0</u> y llevas 1 decena.<br>
+          <strong>2.º Suma las decenas:</strong> 1(llevada) + 7 + 2 = 10 → Escribes <u>0</u> y llevas 1 centena.<br>
+          <strong>3.º Suma las centenas:</strong> 1(llevada) + 2 + 1 = 4 → Escribes <u>4</u>.<br><br>
+          <strong>Resultado: 400 ✅</strong></div>
+        <div class="theory-highlight" style="background:var(--orange-bg);border-color:var(--orange)">
+          <strong>⚡ Regla de oro:</strong> Cuando la suma de una columna es 10 o más, escribes solo las unidades y llevas 1 a la siguiente columna.
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="showSumaPhase(2)">Siguiente →</button></div>`;
+  } else if (n === 2) { buildSumaCalcula(); }
+  else if (n === 3) { buildSumaRapido(); }
+  else if (n === 4) { buildSumaTest(); }
+}
+window.showSumaPhase = showSumaPhase;
+
+function buildSumaCalcula() {
+  // Batería amplia de sumas con llevadas — se eligen 3 al azar
+  const ALL_SUMAS = [
+    [587,364,951],[628,293,921],[435,478,913],[257,565,822],
+    [346,475,821],[483,359,842],[567,285,852],[274,548,822],
+    [639,182,821],[456,376,832],[748,193,941],[529,384,913],
+    [385,467,852],[674,258,932],[293,548,841],[817,164,981],
+    [546,387,933],[728,195,923],[463,479,942],[374,568,942],
+    [685,247,932],[539,293,832],[467,375,842],[284,657,941],
+    [593,248,841],[376,485,861],[847,136,983],[264,579,843],
+    [748,183,931],[357,486,843],[639,274,913],[485,367,852],
+  ];
+  const pool = ALL_SUMAS.sort(() => Math.random() - .5).slice(0, 3);
+  const c = document.getElementById('suma-content');
+  c.innerHTML = pool.map(([a,b,res], i) => `
+    <div class="exercise-box" id="sc-box-${i}">
+      <div class="q-num">Suma ${i+1} – Calcula el resultado</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:34px;color:var(--navy);margin-bottom:16px">${a} + ${b} = ?</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="text-input" id="sc-inp-${i}" placeholder="?" style="max-width:120px;font-size:22px;text-align:center">
+        <button class="btn btn-primary" onclick="checkSC(${i},${res})">Comprobar ✓</button>
+      </div>
+      <div class="feedback" id="sc-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showSumaPhase(3)">Siguiente →</button></div>`;
+}
+window.checkSC = function(i, res) {
+  const inp = document.getElementById('sc-inp-' + i);
+  const ok = inp.value.trim() === String(res);
+  inp.classList.add(ok ? 'correct' : 'wrong'); inp.disabled = true;
+  document.querySelector('#sc-box-' + i + ' .btn-primary').disabled = true;
+  const fb = document.getElementById('sc-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ El resultado era ${res}`;
+};
+
+function buildSumaRapido() {
+  const ALL_PARES = [
+    [346,215],[527,384],[638,247],[419,376],
+    [253,468],[374,259],[485,317],[562,279],
+    [437,386],[528,293],[619,274],[345,487],
+    [274,358],[463,279],[537,386],[648,193],
+    [382,459],[573,268],[461,379],[284,537],
+    [395,467],[516,378],[427,395],[638,284],
+  ];
+  const pool = ALL_PARES.sort(() => Math.random() - .5).slice(0, 4);
+  const c = document.getElementById('suma-content');
+  c.innerHTML = pool.map(([a,b], i) => {
+    const res = a + b, w1 = res + 10, w2 = res - 10;
+    const opts = [res, w1, w2].sort(() => Math.random() - .5);
+    return `<div class="exercise-box">
+      <div class="q-num">Pregunta ${i+1} – ¡Elige el resultado correcto!</div>
+      <div class="q-text" style="font-size:26px">${a} + ${b} = ?</div>
+      <div class="options" id="sr-opts-${i}">
+        ${opts.map(o => `<button class="option-btn" style="font-size:18px;padding:12px 28px" data-correct="${res}" data-chosen="${o}" onclick="checkSR(this,${i})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="sr-fb-${i}"></div>
+    </div>`;
+  }).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showSumaPhase(4)">Mini Test →</button></div>`;
+}
+window.checkSR = function(btn, i) {
+  document.querySelectorAll('#sr-opts-' + i + ' .option-btn').forEach(b => b.disabled = true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok ? 'correct' : 'wrong');
+  const fb = document.getElementById('sr-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ El resultado era ${btn.dataset.correct}`;
+};
+
+function buildSumaTest() {
+  const ALL_QS = [
+    { type:'write', question:'587 + 364 = ?', correct:'951' },
+    { type:'write', question:'628 + 293 = ?', correct:'921' },
+    { type:'write', question:'435 + 478 = ?', correct:'913' },
+    { type:'write', question:'257 + 565 = ?', correct:'822' },
+    { type:'write', question:'346 + 475 = ?', correct:'821' },
+    { type:'write', question:'483 + 359 = ?', correct:'842' },
+    { type:'write', question:'567 + 285 = ?', correct:'852' },
+    { type:'write', question:'274 + 548 = ?', correct:'822' },
+    { type:'write', question:'639 + 182 = ?', correct:'821' },
+    { type:'write', question:'456 + 376 = ?', correct:'832' },
+    { type:'write', question:'748 + 193 = ?', correct:'941' },
+    { type:'write', question:'529 + 384 = ?', correct:'913' },
+    { type:'write', question:'374 + 568 = ?', correct:'942' },
+    { type:'write', question:'293 + 548 = ?', correct:'841' },
+    { type:'mc', question:'¿Cuándo se "lleva" en una suma?', options:['Cuando la columna suma 10 o más','Siempre','Cuando hay un 9'], correct:'Cuando la columna suma 10 o más' },
+    { type:'mc', question:'7 + 4 = 11. ¿Qué escribes en las unidades?', options:['11','1 y llevas 1','0'], correct:'1 y llevas 1' },
+    { type:'mc', question:'8 + 5 = 13. ¿Qué número llevas a la siguiente columna?', options:['3','1','13'], correct:'1' },
+    { type:'mc', question:'Al sumar 3 cifras, ¿por qué columna empezamos?', options:['Centenas','Decenas','Unidades'], correct:'Unidades' },
+    { type:'mc', question:'Si no hay llevada, ¿qué pasa?', options:['Se escribe 0','Se escribe el resultado entero','No se puede sumar'], correct:'Se escribe el resultado entero' },
+    { type:'mc', question:'¿Cuánto es 700 + 200?', options:['500','900','1000'], correct:'900' },
+    { type:'write', question:'817 + 164 = ?', correct:'981' },
+    { type:'write', question:'546 + 387 = ?', correct:'933' },
+    { type:'write', question:'728 + 195 = ?', correct:'923' },
+  ];
+  const qs = ALL_QS.sort(() => Math.random() - .5).slice(0, 6);
+  buildMiniTest(qs, 'suma-content', (pct) => { progress.sumas.score = pct; progress.sumas.done = true; updateHome(); });
+}
+
+// ============================================================
+// CLASE 3: RECTA
+// ============================================================
+function showRectaPhase(n) {
+  setTab('r', n, 3);
+  const c = document.getElementById('recta-content');
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">📏 El punto, la recta y el segmento</div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="display:flex;align-items:center;gap:16px">
+            <svg width="64" height="64" style="flex-shrink:0"><circle cx="32" cy="32" r="9" fill="#2563eb"/></svg>
+            <div><strong style="color:var(--navy);font-size:16px">El punto</strong><br><span style="color:var(--gray-600);font-size:14px">La marca de la punta de un lápiz. No tiene longitud.</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <svg width="140" height="44" style="flex-shrink:0"><line x1="0" y1="22" x2="140" y2="22" stroke="#dc2626" stroke-width="3"/><polygon points="133,17 140,22 133,27" fill="#dc2626"/><polygon points="7,17 0,22 7,27" fill="#dc2626"/></svg>
+            <div><strong style="color:var(--navy);font-size:16px">La recta</strong><br><span style="color:var(--gray-600);font-size:14px">Muchos puntos en línea. <strong>No tiene principio ni final.</strong> Es infinita.</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <svg width="140" height="44" style="flex-shrink:0"><circle cx="10" cy="22" r="6" fill="#16a34a"/><line x1="10" y1="22" x2="130" y2="22" stroke="#16a34a" stroke-width="3"/><circle cx="130" cy="22" r="6" fill="#16a34a"/></svg>
+            <div><strong style="color:var(--navy);font-size:16px">El segmento</strong><br><span style="color:var(--gray-600);font-size:14px">Trozo de recta entre <strong>dos puntos</strong>. Tiene inicio y fin.</span></div>
+          </div>
+        </div>
+        <div class="theory-highlight" style="margin-top:16px">🧠 Recuerda: <strong>Punto = lugar exacto &nbsp;·&nbsp; Recta = infinita &nbsp;·&nbsp; Segmento = trozo entre dos puntos</strong></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="showRectaPhase(2)">Siguiente →</button></div>`;
+  } else if (n === 2) { buildRectaId(); }
+  else if (n === 3) { buildRectaTest(); }
+}
+window.showRectaPhase = showRectaPhase;
+
+function buildRectaId() {
+  const items = [
+    { svg:`<svg width="100" height="60"><circle cx="50" cy="30" r="9" fill="#2563eb"/></svg>`, correct:'punto' },
+    { svg:`<svg width="160" height="44"><line x1="0" y1="22" x2="160" y2="22" stroke="#dc2626" stroke-width="3"/><polygon points="153,17 160,22 153,27" fill="#dc2626"/><polygon points="7,17 0,22 7,27" fill="#dc2626"/></svg>`, correct:'recta' },
+    { svg:`<svg width="160" height="44"><circle cx="10" cy="22" r="6" fill="#16a34a"/><line x1="10" y1="22" x2="150" y2="22" stroke="#16a34a" stroke-width="3"/><circle cx="150" cy="22" r="6" fill="#16a34a"/></svg>`, correct:'segmento' },
+    { svg:`<svg width="100" height="60"><circle cx="25" cy="18" r="7" fill="#7c3aed"/><circle cx="72" cy="45" r="7" fill="#7c3aed"/></svg>`, correct:'punto' },
+    { svg:`<svg width="160" height="44"><circle cx="14" cy="22" r="6" fill="#ea580c"/><line x1="14" y1="22" x2="146" y2="22" stroke="#ea580c" stroke-width="3"/><circle cx="146" cy="22" r="6" fill="#ea580c"/></svg>`, correct:'segmento' },
+  ];
+  const c = document.getElementById('recta-content');
+  c.innerHTML = items.map((item, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Ejercicio ${i+1} – ¿Qué figura es esta?</div>
+      <div style="margin:12px 0 16px;display:flex;justify-content:center">${item.svg}</div>
+      <div class="options" id="ri-opts-${i}">
+        ${['punto','recta','segmento'].map(o => `<button class="option-btn" data-correct="${item.correct}" data-chosen="${o}" onclick="checkRI(this,${i})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="ri-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showRectaPhase(3)">Mini Test →</button></div>`;
+}
+window.checkRI = function(btn, i) {
+  document.querySelectorAll('#ri-opts-' + i + ' .option-btn').forEach(b => b.disabled = true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok ? 'correct' : 'wrong');
+  const fb = document.getElementById('ri-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ Es un/a ${btn.dataset.correct}`;
+};
+
+function buildRectaTest() {
+  const ALL_QS = [
+    { type:'mc', question:'¿Qué figura no tiene principio ni final?', options:['Punto','Recta','Segmento'], correct:'Recta' },
+    { type:'mc', question:'¿Cómo se llama el trozo de recta entre dos puntos?', options:['Punto','Segmento','Línea curva'], correct:'Segmento' },
+    { type:'mc', question:'¿Qué es la marca de la punta de un lápiz?', options:['Segmento','Recta','Punto'], correct:'Punto' },
+    { type:'mc', question:'¿Cuántos puntos necesitas para definir un segmento?', options:['1','2','3'], correct:'2' },
+    { type:'mc', question:'¿Puedes alargar una recta infinitamente?', options:['No, tiene inicio y fin','Sí, es infinita','Solo por un lado'], correct:'Sí, es infinita' },
+    { type:'mc', question:'¿Qué tienen en común recta y segmento?', options:['Son infinitas','Son líneas rectas','Son curvas'], correct:'Son líneas rectas' },
+    { type:'mc', question:'Un segmento tiene inicio y final. ¿Verdadero o falso?', options:['Verdadero','Falso'], correct:'Verdadero' },
+    { type:'mc', question:'¿La recta puede doblarse o curvarse?', options:['Sí','No, es siempre recta','Solo si es corta'], correct:'No, es siempre recta' },
+    { type:'mc', question:'¿Cuántos puntos forma la recta?', options:['2','10','Infinitos'], correct:'Infinitos' },
+    { type:'mc', question:'¿Qué es más largo, un segmento o una recta?', options:['El segmento','La recta, es infinita','Son iguales'], correct:'La recta, es infinita' },
+    { type:'mc', question:'¿El punto tiene longitud?', options:['Sí, es pequeña','No, no tiene longitud','Depende del tamaño'], correct:'No, no tiene longitud' },
+    { type:'mc', question:'¿Cómo se indica el extremo de un segmento?', options:['Con una flecha','Con un punto','Con una cruz'], correct:'Con un punto' },
+    { type:'mc', question:'¿Una recta tiene dos extremos?', options:['Sí, siempre','No, es infinita','Solo a veces'], correct:'No, es infinita' },
+  ];
+  const qs = ALL_QS.sort(() => Math.random() - .5).slice(0, 6);
+  buildMiniTest(qs, 'recta-content', (pct) => { progress.recta.score = pct; progress.recta.done = true; updateHome(); });
+}
+
+// ============================================================
+// CLASE 4: POLÍGONOS
+// ============================================================
+function showPoliPhase(n) {
+  setTab('p', n, 5);
+  const c = document.getElementById('poli-content');
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">🔷 Los polígonos</div>
+        <p style="color:var(--gray-600);margin-bottom:14px">Una <strong>línea poligonal cerrada</strong> más su interior forman un <strong>polígono</strong>. Todos tienen <strong>lados</strong> y <strong>vértices</strong> (el punto donde se unen dos lados).</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+          ${[
+            ['triángulo','#16a34a','M50,5 L95,90 L5,90 Z','3 lados · 3 vértices'],
+            ['cuadrilátero','#2563eb','M8,8 L92,8 L92,92 L8,92 Z','4 lados · 4 vértices'],
+            ['pentágono','#7c3aed','M50,5 L95,38 L77,92 L23,92 L5,38 Z','5 lados · 5 vértices']
+          ].map(([name,col,path,desc]) => `
+            <div style="border:2px solid ${col}40;border-radius:12px;padding:12px;text-align:center">
+              <svg viewBox="0 0 100 100" width="90" height="90" style="overflow:visible"><path d="${path}" fill="${col}20" stroke="${col}" stroke-width="3" stroke-linejoin="round"/></svg>
+              <div style="font-family:'Fredoka One',cursive;font-size:14px;color:${col};margin-top:6px">${name.toUpperCase()}</div>
+              <div style="font-size:11px;color:var(--gray-600);margin-top:3px">${desc}</div>
+            </div>`).join('')}
+        </div>
+        <div class="theory-highlight"><strong>Tipos de cuadriláteros:</strong><br>🟥 <strong>Cuadrado</strong> – 4 lados iguales, 4 ángulos iguales.<br>🟦 <strong>Rectángulo</strong> – lados opuestos iguales, 4 ángulos iguales.<br>🔷 <strong>Rombo</strong> – 4 lados iguales, ángulos distintos.</div>
+        <div class="theory-highlight" style="background:#fef9c3;border-color:#eab308">⚠️ El <strong>círculo NO es un polígono</strong> porque no tiene lados rectos.</div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="showPoliPhase(2)">Siguiente →</button></div>`;
+  } else if (n === 2) { buildPoliLados(); }
+  else if (n === 3) { buildPoliCuentaPuntos(); }
+  else if (n === 4) { buildPoliClasifica(); }
+  else if (n === 5) { buildPoliTest(); }
+}
+window.showPoliPhase = showPoliPhase;
+
+function buildPoliLados() {
+  // 5 figuras únicas y distintas — una de cada tipo
+  const FIGURAS = [
+    [3, 3, 'M50,5 L95,90 L5,90 Z',               '#16a34a', 'Triángulo'],
+    [4, 4, 'M8,8 L92,8 L92,92 L8,92 Z',           '#2563eb', 'Cuadrado'],
+    [4, 4, 'M5,28 L95,28 L95,72 L5,72 Z',         '#7c3aed', 'Rectángulo'],
+    [4, 4, 'M50,5 L92,50 L50,95 L8,50 Z',         '#ea580c', 'Rombo'],
+    [5, 5, 'M50,5 L95,38 L77,92 L23,92 L5,38 Z',  '#0891b2', 'Pentágono'],
+  ];
+  const c = document.getElementById('poli-content');
+  c.innerHTML = FIGURAS.map(([sides, verts, path, col, nombre], i) => `
+    <div class="exercise-box" id="pl-box-${i}">
+      <div class="q-num">Ejercicio ${i+1} – ${nombre}: ¿cuántos lados y vértices tiene?</div>
+      <div style="display:flex;justify-content:center;margin-bottom:14px">
+        <svg viewBox="0 0 100 100" width="110" height="110" style="overflow:visible">
+          <path d="${path}" fill="${col}20" stroke="${col}" stroke-width="3" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end">
+        <div>
+          <div style="font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;margin-bottom:4px">Lados</div>
+          <input class="text-input" id="pl-l-${i}" maxlength="1" style="width:56px;text-align:center;font-size:20px" data-v="${sides}">
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:800;color:var(--purple);text-transform:uppercase;margin-bottom:4px">Vértices</div>
+          <input class="text-input" id="pl-v-${i}" maxlength="1" style="width:56px;text-align:center;font-size:20px" data-v="${verts}">
+        </div>
+        <button class="btn btn-primary" onclick="checkPL(${i})">Comprobar ✓</button>
+      </div>
+      <div class="feedback" id="pl-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showPoliPhase(3)">Siguiente →</button></div>`;
+}
+window.checkPL = function(i) {
+  const il = document.getElementById('pl-l-' + i), iv = document.getElementById('pl-v-' + i);
+  il.classList.add(il.value===il.dataset.v?'correct':'wrong'); il.disabled = true;
+  iv.classList.add(iv.value===iv.dataset.v?'correct':'wrong'); iv.disabled = true;
+  document.querySelector('#pl-box-' + i + ' .btn-primary').disabled = true;
+  const ok = il.value===il.dataset.v && iv.value===iv.dataset.v;
+  const fb = document.getElementById('pl-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ Lados: ${il.dataset.v} · Vértices: ${iv.dataset.v}`;
+};
+
+// ══════════════════════════════════════════════════════════════
+// EJERCICIO 3: CONSTRUCTOR DE POLÍGONOS
+// El niño dibuja el polígono haciendo clic en los puntos correctos
+// ══════════════════════════════════════════════════════════════
+
+const RETOS_CONSTRUCTOR = [
+  {
+    nombre: 'Triángulo', lados: 3, col: '#16a34a',
+    puntos: [[50,10],[85,80],[15,80]],
+    pista: 'Haz clic en los 3 vértices del triángulo para dibujarlo.'
+  },
+  {
+    nombre: 'Cuadrado', lados: 4, col: '#2563eb',
+    puntos: [[20,20],[80,20],[80,80],[20,80]],
+    pista: 'El cuadrado tiene 4 esquinas iguales. ¡Encuéntralas!'
+  },
+  {
+    nombre: 'Rectángulo', lados: 4, col: '#7c3aed',
+    puntos: [[10,30],[90,30],[90,70],[10,70]],
+    pista: 'Como el cuadrado pero más largo por un lado.'
+  },
+  {
+    nombre: 'Rombo', lados: 4, col: '#ea580c',
+    puntos: [[50,10],[88,50],[50,90],[12,50]],
+    pista: 'El rombo parece un cuadrado girado. 4 vértices.'
+  },
+  {
+    nombre: 'Pentágono', lados: 5, col: '#0891b2',
+    puntos: [[50,8],[91,38],[74,90],[26,90],[9,38]],
+    pista: '¡5 vértices! Como la estrella de los superhéroes sin las puntas.'
+  },
+  {
+    nombre: 'Hexágono', lados: 6, col: '#7c3aed',
+    puntos: [[50,8],[88,30],[88,70],[50,92],[12,70],[12,30]],
+    pista: '6 vértices — como las celdas de un panal de abejas 🐝'
+  },
+  {
+    nombre: 'Triángulo isósceles', lados: 3, col: '#16a34a',
+    puntos: [[50,8],[90,90],[10,90]],
+    pista: 'Otro tipo de triángulo. ¡Siempre 3 vértices!'
+  },
+  {
+    nombre: 'Trapecio', lados: 4, col: '#ea580c',
+    puntos: [[25,20],[75,20],[95,80],[5,80]],
+    pista: 'El trapecio tiene 4 vértices pero sus lados no son paralelos todos.'
+  },
+];
+
+// Estado del constructor (una instancia activa a la vez)
+let _cpState = null;
+
+function buildPoliCuentaPuntos() {
+  // Elegir 4 retos al azar de la lista
+  const retos = RETOS_CONSTRUCTOR.sort(() => Math.random() - .5).slice(0, 4);
+  _cpState = {
+    retos,
+    idx: 0,          // reto actual
+    clicks: [],       // vértices clicados hasta ahora
+    score: 0,
+    done: false,
+  };
+
+  const c = document.getElementById('poli-content');
+  c.innerHTML = `
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">🖊️ Dibuja el polígono</div>
+      <p style="color:var(--gray-600);font-size:14px">
+        En cada reto verás una cuadrícula con <strong>puntos disponibles</strong> (gris).
+        Haz clic sobre los puntos correctos en orden para dibujar la figura pedida.
+        Cuando hayas marcado todos los vértices, ¡pulsa <strong>Comprobar</strong>!
+      </p>
+    </div>
+    <div id="cp-reto-wrap"></div>
+    <div class="btn-row" id="cp-next-btn" style="display:none">
+      <button class="btn btn-success" onclick="cpNextReto()">Siguiente reto →</button>
+    </div>
+    <div class="btn-row" id="cp-finish-btn" style="display:none">
+      <button class="btn btn-success" onclick="showPoliPhase(4)">¡Terminado! Siguiente →</button>
+    </div>`;
+
+  cpRenderReto();
+}
+window.buildPoliCuentaPuntos = buildPoliCuentaPuntos;
+
+// Genera la cuadrícula de puntos disponibles (5×5 grid con puntos extras en posiciones clave)
+function cpGridPoints() {
+  const pts = [];
+  // Cuadrícula base 5×5
+  for (let r = 0; r < 5; r++) {
+    for (let cc = 0; cc < 5; cc++) {
+      pts.push([10 + cc * 20, 10 + r * 20]);
+    }
+  }
+  // Puntos extra intermedios (mitad de aristas)
+  const extras = [[50,10],[50,90],[10,50],[90,50],[50,50],[30,50],[70,50],[50,30],[50,70]];
+  extras.forEach(ep => { if (!pts.some(p => p[0]===ep[0] && p[1]===ep[1])) pts.push(ep); });
+  return pts;
+}
+
+function cpRenderReto() {
+  const st = _cpState;
+  const reto = st.retos[st.idx];
+  const total = st.retos.length;
+  const gridPts = cpGridPoints();
+
+  // Asegura que todos los vértices del polígono están en la grid
+  reto.puntos.forEach(vp => {
+    if (!gridPts.some(p => p[0]===vp[0] && p[1]===vp[1])) gridPts.push(vp);
+  });
+
+  const clicks = st.clicks;
+
+  // Construye el path del polígono clicado hasta ahora
+  let pathEl = '';
+  if (clicks.length >= 2) {
+    const d = 'M' + clicks.map(p => p.join(',')).join(' L') + (clicks.length >= reto.lados ? ' Z' : '');
+    pathEl = `<path d="${d}" fill="${reto.col}18" stroke="${reto.col}" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="${clicks.length >= reto.lados ? 'none' : '6 3'}"/>`;
+  }
+
+  // Puntos de la grid
+  const dotEls = gridPts.map((p, di) => {
+    const isClicked = clicks.some(c => c[0]===p[0] && c[1]===p[1]);
+    const clickIdx  = clicks.findIndex(c => c[0]===p[0] && c[1]===p[1]);
+    const isTarget  = reto.puntos.some(v => v[0]===p[0] && v[1]===p[1]);
+    const size = isClicked ? 9 : 5;
+    const fill = isClicked ? reto.col : '#cbd5e1';
+    const stroke = isClicked ? 'white' : '#94a3b8';
+    const label = isClicked
+      ? `<text x="${p[0]}" y="${p[1]+1}" text-anchor="middle" dominant-baseline="middle"
+           font-family="Nunito,sans-serif" font-size="7" font-weight="900" fill="white">${clickIdx+1}</text>`
+      : '';
+    return `<g class="cp-dot" data-x="${p[0]}" data-y="${p[1]}" onclick="cpClickDot(${p[0]},${p[1]})" style="cursor:pointer">
+      <circle cx="${p[0]}" cy="${p[1]}" r="${size + 5}" fill="transparent"/>
+      <circle cx="${p[0]}" cy="${p[1]}" r="${size}" fill="${fill}" stroke="${stroke}" stroke-width="1.5"
+        style="transition:all 0.15s"/>
+      ${label}
+    </g>`;
+  }).join('');
+
+  const retoNum = st.idx + 1;
+  const wrap = document.getElementById('cp-reto-wrap');
+  wrap.innerHTML = `
+    <div class="exercise-box" id="cp-box-active">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div class="q-num" style="margin:0">Reto ${retoNum}/${total} – Dibuja un <span style="color:${reto.col};font-family:'Fredoka One',cursive">${reto.nombre}</span></div>
+        <div style="font-size:13px;color:var(--gray-600)">Vértices marcados: <strong id="cp-counter" style="color:${reto.col}">${clicks.length}</strong> / ${reto.lados}</div>
+      </div>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:10px;font-style:italic">💡 ${reto.pista}</p>
+
+      <div style="display:flex;justify-content:center;margin-bottom:12px">
+        <svg id="cp-svg" viewBox="0 0 100 100" width="240" height="240"
+             style="border:2px solid var(--gray-200);border-radius:12px;background:#f8fafc;overflow:visible">
+          <!-- Grid lines suaves -->
+          ${[10,30,50,70,90].map(x => `<line x1="${x}" y1="10" x2="${x}" y2="90" stroke="#e2e8f0" stroke-width="0.5"/>`).join('')}
+          ${[10,30,50,70,90].map(y => `<line x1="10" y1="${y}" x2="90" y2="${y}" stroke="#e2e8f0" stroke-width="0.5"/>`).join('')}
+          ${pathEl}
+          ${dotEls}
+        </svg>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-primary" id="cp-check-btn" onclick="cpComprobar()"
+          ${clicks.length === 0 ? 'disabled' : ''}>
+          Comprobar ✓
+        </button>
+        <button class="btn" style="background:rgba(0,0,0,0.06);color:var(--gray-600)"
+          onclick="cpBorrarUltimo()">← Borrar último</button>
+        <button class="btn" style="background:rgba(220,38,38,0.08);color:#dc2626"
+          onclick="cpReset()">🔄 Empezar de nuevo</button>
+      </div>
+      <div class="feedback" id="cp-fb" style="margin-top:10px"></div>
+    </div>`;
+}
+
+window.cpClickDot = function(x, y) {
+  const st = _cpState;
+  if (!st || st.done) return;
+  const reto = st.retos[st.idx];
+  // Desmarcar si ya estaba clicado
+  const existing = st.clicks.findIndex(c => c[0]===x && c[1]===y);
+  if (existing !== -1) {
+    st.clicks.splice(existing, 1);
+  } else {
+    if (st.clicks.length >= reto.lados + 2) return; // máximo lados+2 para no bloquear
+    st.clicks.push([x, y]);
+  }
+  cpRenderReto();
+};
+
+window.cpBorrarUltimo = function() {
+  if (_cpState && _cpState.clicks.length > 0) {
+    _cpState.clicks.pop();
+    cpRenderReto();
+  }
+};
+
+window.cpReset = function() {
+  if (_cpState) { _cpState.clicks = []; cpRenderReto(); }
+};
+
+window.cpComprobar = function() {
+  const st = _cpState;
+  const reto = st.retos[st.idx];
+  const clicks = st.clicks;
+  const fb = document.getElementById('cp-fb');
+
+  // Comprobación: ¿se han marcado exactamente los vértices correctos (en cualquier orden)?
+  const correctSet = reto.puntos.map(p => p.join(','));
+  const clickedSet = clicks.map(p => p.join(','));
+  const exactMatch = clicks.length === reto.lados &&
+    correctSet.every(v => clickedSet.includes(v)) &&
+    clickedSet.every(v => correctSet.includes(v));
+
+  if (exactMatch) {
+    st.score++;
+    fb.className = 'feedback correct show';
+    fb.innerHTML = `✅ ¡Perfecto! Has dibujado un <strong>${reto.nombre}</strong> con ${reto.lados} lados y ${reto.lados} vértices. 🎉`;
+    // Bloquear botones
+    ['cp-check-btn'].forEach(id => { const el = document.getElementById(id); if(el) el.disabled = true; });
+    st.done = true;
+
+    const isLast = st.idx === st.retos.length - 1;
+    setTimeout(() => {
+      document.getElementById(isLast ? 'cp-finish-btn' : 'cp-next-btn').style.display = '';
+    }, 600);
+
+  } else if (clicks.length !== reto.lados) {
+    fb.className = 'feedback wrong show';
+    fb.textContent = `❌ Un ${reto.nombre} tiene ${reto.lados} vértices — tú has marcado ${clicks.length}. ¡Ajusta!`;
+  } else {
+    // Número correcto pero puntos equivocados
+    fb.className = 'feedback wrong show';
+    fb.textContent = `❌ Tienes ${clicks.length} puntos pero no son los vértices correctos. ¡Fíjate bien en la figura!`;
+  }
+};
+
+window.cpNextReto = function() {
+  const st = _cpState;
+  st.idx++;
+  st.clicks = [];
+  st.done = false;
+  document.getElementById('cp-next-btn').style.display = 'none';
+  cpRenderReto();
+};
+
+function buildPoliClasifica() {
+  // Batería amplia — se eligen 5 al azar
+  const ALL_CL = [
+    { svg:'M50,5 L95,90 L5,90 Z', col:'#16a34a', opts:['triángulo','cuadrado','rectángulo'], correct:'triángulo' },
+    { svg:'M8,8 L92,8 L92,92 L8,92 Z', col:'#2563eb', opts:['rombo','cuadrado','triángulo'], correct:'cuadrado' },
+    { svg:'M5,28 L95,28 L95,72 L5,72 Z', col:'#7c3aed', opts:['cuadrado','rectángulo','pentágono'], correct:'rectángulo' },
+    { svg:'M50,5 L92,50 L50,95 L8,50 Z', col:'#ea580c', opts:['triángulo','rombo','cuadrado'], correct:'rombo' },
+    { svg:'M50,5 L95,38 L77,92 L23,92 L5,38 Z', col:'#0891b2', opts:['cuadrado','triángulo','pentágono'], correct:'pentágono' },
+    { svg:'M50,8 L90,88 L10,88 Z', col:'#16a34a', opts:['pentágono','cuadrado','triángulo'], correct:'triángulo' },
+    { svg:'M15,10 L85,10 L85,90 L15,90 Z', col:'#2563eb', opts:['cuadrado','triángulo','rombo'], correct:'cuadrado' },
+    { svg:'M10,22 L90,22 L90,78 L10,78 Z', col:'#7c3aed', opts:['rombo','cuadrado','rectángulo'], correct:'rectángulo' },
+    { svg:'M50,8 L88,50 L50,92 L12,50 Z', col:'#ea580c', opts:['pentágono','rombo','triángulo'], correct:'rombo' },
+    { svg:'M50,8 L90,35 L74,88 L26,88 L10,35 Z', col:'#0891b2', opts:['rectángulo','pentágono','triángulo'], correct:'pentágono' },
+    { svg:'M50,10 L88,86 L12,86 Z', col:'#16a34a', opts:['cuadrado','rombo','triángulo'], correct:'triángulo' },
+    { svg:'M18,12 L82,12 L82,88 L18,88 Z', col:'#2563eb', opts:['cuadrado','pentágono','triángulo'], correct:'cuadrado' },
+  ];
+  const qs = ALL_CL.sort(() => Math.random() - .5).slice(0, 5);
+  const c = document.getElementById('poli-content');
+  c.innerHTML = qs.map((q, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Figura ${i+1} – ¿Qué polígono es?</div>
+      <div style="display:flex;justify-content:center;margin-bottom:12px">
+        <svg viewBox="0 0 100 100" width="110" height="110" style="overflow:visible">
+          <path d="${q.svg}" fill="${q.col}20" stroke="${q.col}" stroke-width="3" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="options" id="pc-opts-${i}">
+        ${q.opts.map(o => `<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="checkPC(this,${i})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="pc-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showPoliPhase(5)">Mini Test →</button></div>`;
+}
+window.checkPC = function(btn, i) {
+  document.querySelectorAll('#pc-opts-' + i + ' .option-btn').forEach(b => b.disabled = true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok ? 'correct' : 'wrong');
+  const fb = document.getElementById('pc-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ Es un ${btn.dataset.correct}`;
+};
+
+function buildPoliTest() {
+  const ALL_QS = [
+    { type:'mc', question:'¿Cuántos lados tiene un triángulo?', options:['2','3','4'], correct:'3' },
+    { type:'mc', question:'¿Cuántos lados tiene un pentágono?', options:['4','5','6'], correct:'5' },
+    { type:'mc', question:'¿Qué es un vértice?', options:['Un lado del polígono','El punto donde se unen dos lados','El interior del polígono'], correct:'El punto donde se unen dos lados' },
+    { type:'mc', question:'¿Cuántos lados tiene un rectángulo?', options:['3','4','5'], correct:'4' },
+    { type:'mc', question:'¿Cuántos vértices tiene un cuadrado?', options:['3','4','5'], correct:'4' },
+    { type:'mc', question:'¿Cuál NO es un polígono?', options:['triángulo','círculo','cuadrado'], correct:'círculo' },
+    { type:'mc', question:'Un rombo tiene 4 lados iguales. ¿Cómo son sus ángulos?', options:['Todos iguales','Son distintos','No tiene ángulos'], correct:'Son distintos' },
+    { type:'write', question:'¿Cuántos vértices tiene un pentágono? (escribe el número)', correct:'5' },
+    { type:'write', question:'¿Cuántos lados tiene un triángulo? (escribe el número)', correct:'3' },
+    { type:'write', question:'¿Cuántos lados tiene un cuadrilátero? (escribe el número)', correct:'4' },
+    { type:'mc', question:'¿Qué diferencia al cuadrado del rectángulo?', options:['El cuadrado tiene más lados','El cuadrado tiene los 4 lados iguales','El cuadrado tiene 3 lados'], correct:'El cuadrado tiene los 4 lados iguales' },
+    { type:'mc', question:'¿Cuántos lados iguales tiene un rombo?', options:['2','3','4'], correct:'4' },
+    { type:'mc', question:'¿Un triángulo y un cuadrado tienen el mismo número de lados?', options:['Sí','No'], correct:'No' },
+    { type:'mc', question:'¿Cuántos lados tiene un cuadrado?', options:['3','4','5'], correct:'4' },
+    { type:'mc', question:'¿Qué polígono tiene 5 lados?', options:['triángulo','cuadrado','pentágono'], correct:'pentágono' },
+    { type:'mc', question:'¿El rectángulo es un cuadrilátero?', options:['Sí','No'], correct:'Sí' },
+    { type:'mc', question:'¿Cuántos vértices tiene un triángulo?', options:['2','3','4'], correct:'3' },
+  ];
+  const qs = ALL_QS.sort(() => Math.random() - .5).slice(0, 7);
+  buildMiniTest(qs, 'poli-content', (pct) => { progress.poligonos.score = pct; progress.poligonos.done = true; updateHome(); });
+}
+
+// ============================================================
+// CLASE 5: CÍRCULO
+// ============================================================
+function showCircPhase(n) {
+  setTab('c', n, 3);
+  const c = document.getElementById('circ-content');
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">⭕ El círculo y la circunferencia</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+          <div style="text-align:center;padding:20px;background:var(--sky);border-radius:14px;border:2px solid rgba(37,99,235,.3)">
+            <svg width="90" height="90"><circle cx="45" cy="45" r="38" fill="#bfdbfe" stroke="#2563eb" stroke-width="3"/></svg>
+            <div style="font-family:'Fredoka One',cursive;font-size:16px;color:var(--blue);margin-top:8px">CÍRCULO</div>
+            <div style="font-size:12px;color:var(--gray-600);margin-top:3px">Línea + <strong>interior</strong></div>
+          </div>
+          <div style="text-align:center;padding:20px;background:#fee2e2;border-radius:14px;border:2px solid rgba(220,38,38,.3)">
+            <svg width="90" height="90"><circle cx="45" cy="45" r="38" fill="none" stroke="#dc2626" stroke-width="3"/></svg>
+            <div style="font-family:'Fredoka One',cursive;font-size:16px;color:var(--red);margin-top:8px">CIRCUNFERENCIA</div>
+            <div style="font-size:12px;color:var(--gray-600);margin-top:3px">Solo la <strong>línea</strong></div>
+          </div>
+        </div>
+        <div class="theory-highlight">🔵 <strong>Círculo</strong> = la línea curva <em>y</em> su interior (como una pizza, tiene relleno).<br>⭕ <strong>Circunferencia</strong> = solo la línea de fuera (como el aro de una rueda, solo el borde).</div>
+        <div class="theory-highlight" style="background:var(--orange-bg);border-color:var(--orange)"><strong>Ejemplos:</strong><br>🍕 Pizza → <strong>círculo</strong> &nbsp;·&nbsp; 🚲 Aro de bici → <strong>circunferencia</strong> &nbsp;·&nbsp; 🏅 Medalla → <strong>círculo</strong></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="showCircPhase(2)">Siguiente →</button></div>`;
+  } else if (n === 2) { buildCircId(); }
+  else if (n === 3) { buildCircTest(); }
+}
+window.showCircPhase = showCircPhase;
+
+function buildCircId() {
+  const items = [
+    { label:'🍕 Una pizza entera', correct:'círculo' },
+    { label:'⭕ El aro de una bicicleta', correct:'circunferencia' },
+    { label:'🏅 Una moneda', correct:'círculo' },
+    { label:'🎯 El borde exterior de una diana', correct:'circunferencia' },
+    { label:'🍩 El interior de un donut (sin el agujero)', correct:'círculo' },
+    { label:'💍 Un anillo (solo la línea)', correct:'circunferencia' },
+  ];
+  const c = document.getElementById('circ-content');
+  c.innerHTML = items.map((item, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Ejercicio ${i+1}</div>
+      <div class="q-text">${item.label}</div>
+      <div class="options" id="ci-opts-${i}">
+        <button class="option-btn" data-correct="${item.correct}" data-chosen="círculo" onclick="checkCI(this,${i})">🔵 Círculo</button>
+        <button class="option-btn" data-correct="${item.correct}" data-chosen="circunferencia" onclick="checkCI(this,${i})">⭕ Circunferencia</button>
+      </div>
+      <div class="feedback" id="ci-fb-${i}"></div>
+    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showCircPhase(3)">Mini Test →</button></div>`;
+}
+window.checkCI = function(btn, i) {
+  document.querySelectorAll('#ci-opts-' + i + ' .option-btn').forEach(b => b.disabled = true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok ? 'correct' : 'wrong');
+  const fb = document.getElementById('ci-fb-' + i);
+  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ Es una ${btn.dataset.correct}`;
+};
+
+function buildCircTest() {
+  const ALL_QS = [
+    { type:'mc', question:'¿Qué es la circunferencia?', options:['Una línea curva cerrada','Una figura con interior','Un polígono'], correct:'Una línea curva cerrada' },
+    { type:'mc', question:'¿Qué forman la circunferencia y su interior?', options:['Un triángulo','Un círculo','Un segmento'], correct:'Un círculo' },
+    { type:'mc', question:'¿Cuál es un ejemplo de círculo?', options:['El aro de un hula-hoop','Una pizza entera','El borde de un plato'], correct:'Una pizza entera' },
+    { type:'mc', question:'¿La circunferencia tiene interior?', options:['Sí, siempre','No, solo es la línea','Depende del tamaño'], correct:'No, solo es la línea' },
+    { type:'mc', question:'¿El círculo es un polígono?', options:['Sí, tiene lados','No, sus lados son curvos','Solo si es grande'], correct:'No, sus lados son curvos' },
+    { type:'mc', question:'¿Cuál es un ejemplo de circunferencia?', options:['Una moneda','El interior de un reloj','El aro de una bicicleta'], correct:'El aro de una bicicleta' },
+    { type:'mc', question:'¿Una moneda es un círculo o una circunferencia?', options:['Circunferencia','Círculo','Ninguno'], correct:'Círculo' },
+    { type:'mc', question:'¿El aro de un hula-hoop es un círculo o una circunferencia?', options:['Círculo','Circunferencia'], correct:'Circunferencia' },
+    { type:'mc', question:'¿Qué parte del círculo llamas circunferencia?', options:['El interior','La línea del borde','El centro'], correct:'La línea del borde' },
+    { type:'mc', question:'Una rueda de coche: ¿el borde de goma es círculo o circunferencia?', options:['Círculo','Circunferencia'], correct:'Circunferencia' },
+    { type:'mc', question:'El fondo de un vaso lleno de agua: ¿es círculo o circunferencia?', options:['Circunferencia','Círculo'], correct:'Círculo' },
+    { type:'mc', question:'¿Qué tienen en común el círculo y la circunferencia?', options:['Son polígonos','Son figuras curvas','Tienen lados rectos'], correct:'Son figuras curvas' },
+    { type:'mc', question:'¿El círculo tiene interior?', options:['No','Sí'], correct:'Sí' },
+    { type:'mc', question:'Una tapa de bote vista por arriba: ¿es círculo o circunferencia?', options:['Circunferencia','Círculo'], correct:'Círculo' },
+  ];
+  const qs = ALL_QS.sort(() => Math.random() - .5).slice(0, 6);
+  buildMiniTest(qs, 'circ-content', (pct) => { progress.circulo.score = pct; progress.circulo.done = true; updateHome(); });
+}
+
+// ============================================================
+// JUEGO MEMORY
+// ============================================================
+let jFlipped = [], jMatched = 0, jMoves = 0;
+
+function buildJuego() {
+  const pairs = [
+    ['857', 'ochocientos cincuenta y siete'],
+    ['940', 'novecientos cuarenta'],
+    ['🔺 Triángulo', '3 lados, 3 vértices'],
+    ['🟦 Rectángulo', '4 lados, ángulos iguales'],
+    ['⭕ Circunferencia', 'solo la línea curva'],
+    ['🔵 Círculo', 'línea curva + interior'],
+    ['📏 Recta', 'no tiene inicio ni fin'],
+    ['✏️ Segmento', 'trozo de recta entre 2 puntos'],
+  ];
+  const cards = [];
+  pairs.forEach(([a, b], i) => {
+    cards.push({ id: i, face: a, pair: i });
+    cards.push({ id: i + 100, face: b, pair: i });
+  });
+  const shuffled = cards.sort(() => Math.random() - .5);
+  jFlipped = []; jMatched = 0; jMoves = 0;
+
+  document.getElementById('juego-content').innerHTML = `
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">🎮 Memory – Une las parejas</div>
+      <p style="color:var(--gray-600)">Movimientos: <strong id="jmoves">0</strong> &nbsp;·&nbsp; Parejas: <strong id="jpairs">0</strong> / 8</p>
+    </div>
+    <div class="game-grid" id="jgrid">
+      ${shuffled.map(card => `
+        <div class="game-card" id="jcard-${card.id}" data-pair="${card.pair}" onclick="jFlip(${card.id})">
+          <div class="gc-front">🎲</div>
+          <div class="gc-back">${card.face}</div>
+        </div>`).join('')}
+    </div>
+    <div id="juego-result"></div>`;
+}
+window.buildJuego = buildJuego;
+
+window.jFlip = function(id) {
+  const card = document.getElementById('jcard-' + id);
+  if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  if (jFlipped.length >= 2) return;
+  card.classList.add('flipped');
+  jFlipped.push({ id, pair: parseInt(card.dataset.pair) });
+  if (jFlipped.length === 2) {
+    jMoves++;
+    document.getElementById('jmoves').textContent = jMoves;
+    const [a, b] = jFlipped;
+    if (a.pair === b.pair) {
+      document.getElementById('jcard-' + a.id).classList.add('matched');
+      document.getElementById('jcard-' + b.id).classList.add('matched');
+      jMatched++; jFlipped = [];
+      document.getElementById('jpairs').textContent = jMatched;
+      if (jMatched === 8) {
+        progress.juego.done = true; progress.juego.score = 100; updateHome();
+        document.getElementById('juego-result').innerHTML = `
+          <div class="score-card">
+            <div class="stars-display">🏆</div>
+            <div class="score-big" style="color:var(--green)">¡Ganaste!</div>
+            <div class="score-label">Memory completado en <strong>${jMoves} movimientos</strong>.</div>
+            <div class="score-grade excellent">¡Genial! 🎉</div>
+          </div>`;
+      }
+    } else {
+      setTimeout(() => {
+        document.getElementById('jcard-' + a.id).classList.remove('flipped');
+        document.getElementById('jcard-' + b.id).classList.remove('flipped');
+        jFlipped = [];
+      }, 800);
+    }
+  }
+};
+
+// ============================================================
+// EXAMEN FINAL
+// ============================================================
+function buildExamenStart() {
+  examenReady = true;
+  document.getElementById('examen-content').innerHTML = `
+    <div class="score-card" style="text-align:center">
+      <div style="font-size:56px;margin-bottom:12px">📝</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:30px;color:var(--navy);margin-bottom:8px">Examen Final – Tema 6</div>
+      <p style="color:var(--gray-600);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6">20 preguntas de todos los temas. ¡Demuestra todo lo que has aprendido!</p>
+      <button class="btn btn-primary" style="font-size:16px;padding:14px 36px" onclick="startExamen()">¡Empezar el examen! 🚀</button>
+    </div>`;
+}
+window.buildExamenStart = buildExamenStart;
+
+window.startExamen = function() {
+  examenReady = false;
+  const pool = [
+    // --- NÚMEROS ---
+    { type:'mc', question:'¿Cuántas centenas tiene 873?', options:['7','8','3'], correct:'8' },
+    { type:'mc', question:'¿Cuántas decenas tiene 852?', options:['8','2','5'], correct:'5' },
+    { type:'mc', question:'¿Cuántas unidades tiene 934?', options:['9','3','4'], correct:'4' },
+    { type:'mc', question:'¿Cómo se descompone 945?', options:['9C+4D+5U','4C+9D+5U','9C+5D+4U'], correct:'9C+4D+5U' },
+    { type:'mc', question:'¿Cómo se descompone 803?', options:['8C+0D+3U','8C+3D+0U','0C+8D+3U'], correct:'8C+0D+3U' },
+    { type:'mc', question:'¿Qué número es mayor?', options:['879','897','789'], correct:'897' },
+    { type:'mc', question:'¿Qué número es menor?', options:['960','906','969'], correct:'906' },
+    { type:'mc', question:'¿Cómo se lee 820?', options:['ochocientos veinte','ochocientos dos','ochenta y veinte'], correct:'ochocientos veinte' },
+    { type:'mc', question:'¿Cómo se lee 915?', options:['novecientos cincuenta','novecientos quince','nueve quince'], correct:'novecientos quince' },
+    { type:'write', question:'8 centenas + 0 decenas + 5 unidades = ?', correct:'805' },
+    { type:'write', question:'9 centenas + 3 decenas + 7 unidades = ?', correct:'937' },
+    { type:'mc', question:'Ordena de menor a mayor: 962, 849, 905', options:['849 < 905 < 962','962 < 905 < 849','905 < 849 < 962'], correct:'849 < 905 < 962' },
+    { type:'mc', question:'¿Cuánto vale el dígito 9 en el número 935?', options:['9','90','900'], correct:'900' },
+    // --- SUMAS ---
+    { type:'write', question:'587 + 364 = ?', correct:'951' },
+    { type:'write', question:'628 + 293 = ?', correct:'921' },
+    { type:'write', question:'435 + 478 = ?', correct:'913' },
+    { type:'write', question:'346 + 475 = ?', correct:'821' },
+    { type:'write', question:'529 + 384 = ?', correct:'913' },
+    { type:'mc', question:'¿Cuándo se lleva en una suma?', options:['Cuando la columna suma 10 o más','Siempre','Cuando hay un 9'], correct:'Cuando la columna suma 10 o más' },
+    { type:'mc', question:'7 + 4 = 11. ¿Qué escribes en las unidades?', options:['11','1 y llevas 1','0'], correct:'1 y llevas 1' },
+    { type:'mc', question:'8 + 5 = 13. ¿Qué llevas a la siguiente columna?', options:['3','1','13'], correct:'1' },
+    { type:'mc', question:'Al sumar, ¿por qué columna empezamos?', options:['Centenas','Decenas','Unidades'], correct:'Unidades' },
+    // --- PUNTO Y RECTA ---
+    { type:'mc', question:'¿Qué figura no tiene principio ni final?', options:['Punto','Recta','Segmento'], correct:'Recta' },
+    { type:'mc', question:'¿Cómo se llama el trozo de recta entre dos puntos?', options:['Punto','Segmento','Línea curva'], correct:'Segmento' },
+    { type:'mc', question:'¿Qué es la marca de la punta de un lápiz?', options:['Segmento','Recta','Punto'], correct:'Punto' },
+    { type:'mc', question:'¿Cuántos puntos necesitas para un segmento?', options:['1','2','3'], correct:'2' },
+    { type:'mc', question:'¿La recta es infinita?', options:['No, tiene inicio y fin','Sí, es infinita','Solo por un lado'], correct:'Sí, es infinita' },
+    // --- POLÍGONOS ---
+    { type:'mc', question:'¿Cuántos lados tiene un triángulo?', options:['2','3','4'], correct:'3' },
+    { type:'mc', question:'¿Cuántos lados tiene un pentágono?', options:['4','5','6'], correct:'5' },
+    { type:'mc', question:'¿Cuál NO es un polígono?', options:['Triángulo','Círculo','Cuadrado'], correct:'Círculo' },
+    { type:'mc', question:'¿Qué es un vértice?', options:['Un lado','El punto donde se unen dos lados','El interior'], correct:'El punto donde se unen dos lados' },
+    { type:'mc', question:'¿Cuántos vértices tiene un cuadrilátero?', options:['3','4','5'], correct:'4' },
+    { type:'mc', question:'¿Qué diferencia al cuadrado del rectángulo?', options:['El cuadrado tiene más lados','El cuadrado tiene los 4 lados iguales','El cuadrado tiene 3 lados'], correct:'El cuadrado tiene los 4 lados iguales' },
+    { type:'mc', question:'¿El rectángulo es un cuadrilátero?', options:['Sí','No'], correct:'Sí' },
+    { type:'mc', question:'¿Un rombo tiene todos los lados iguales?', options:['Sí','No'], correct:'Sí' },
+    // --- CÍRCULO Y CIRCUNFERENCIA ---
+    { type:'mc', question:'¿Qué es el círculo?', options:['Solo la línea curva','La línea curva y su interior','Un polígono'], correct:'La línea curva y su interior' },
+    { type:'mc', question:'¿La pizza entera es círculo o circunferencia?', options:['Circunferencia','Círculo','Ninguno'], correct:'Círculo' },
+    { type:'mc', question:'¿La circunferencia tiene interior?', options:['Sí','No, solo es la línea'], correct:'No, solo es la línea' },
+    { type:'mc', question:'¿El aro de una bicicleta es círculo o circunferencia?', options:['Círculo','Circunferencia'], correct:'Circunferencia' },
+    { type:'mc', question:'¿El círculo es un polígono?', options:['Sí, tiene lados','No, sus lados son curvos'], correct:'No, sus lados son curvos' },
+  ].sort(() => Math.random() - .5).slice(0, 20);
+  buildMiniTest(pool, 'examen-content', (pct) => {
+    progress.examen.score = pct; progress.examen.done = true; updateHome();
+    setTimeout(() => {
+      document.getElementById('examen-content').insertAdjacentHTML('beforeend', `
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="buildExamenStart()">Repetir examen 🔄</button>
+          <button class="btn btn-success" onclick="showScreen('progreso')">Ver mi progreso 📊</button>
+        </div>`);
+    }, 300);
+  });
+};
+
+// ============================================================
+// PROGRESO / DASHBOARD
+// ============================================================
+function buildProgreso() {
+  const topics = [
+    { key:'numeros',   icon:'🔢', name:'Clase 1 – Números 800–999' },
+    { key:'sumas',     icon:'➕', name:'Clase 2 – Sumas llevando' },
+    { key:'recta',     icon:'📏', name:'Clase 3 – Punto y recta' },
+    { key:'poligonos', icon:'🔷', name:'Clase 4 – Polígonos' },
+    { key:'circulo',   icon:'⭕', name:'Clase 5 – Círculo y circunf.' },
+    { key:'juego',     icon:'🎮', name:'Juego Memory' },
+    { key:'examen',    icon:'📝', name:'Examen Final' },
+  ];
+  const done = topics.filter(t => progress[t.key].done).length;
+  const avg  = done ? Math.round(topics.filter(t => progress[t.key].done).reduce((s, t) => s + progress[t.key].score, 0) / done) : 0;
+  document.getElementById('progreso-content').innerHTML = `
+    <div class="progress-stats">
+      <div class="progress-stat"><div class="ps-num">${done}/${topics.length}</div><div class="ps-label">Completados</div></div>
+      <div class="progress-stat"><div class="ps-num" style="color:${avg>=80?'#86efac':avg>=60?'#fcd34d':'#f87171'}">${avg}%</div><div class="ps-label">Nota media</div></div>
+    </div>
+    ${topics.map(t => `
+      <div class="progress-topic-row">
+        <span class="pt-icon">${t.icon}</span>
+        <span class="pt-name">${t.name}</span>
+        ${progress[t.key].done
+          ? `<div class="pt-bar"><div class="pt-fill" style="width:${progress[t.key].score}%"></div></div><span class="pt-score">${progress[t.key].score}%</span>`
+          : `<span style="font-size:12px;color:rgba(255,255,255,.3);font-weight:700">Sin empezar</span>`}
+      </div>`).join('')}`;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+updateHome();
+</script>
+
+<div id="app-footer-root"></div>
+
+<script type="module">
+import { CONFIG }           from '../components/config.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
+
+// ── Fecha examen en home ──
+const _today = new Date(); _today.setHours(0,0,0,0);
+const _next = (CONFIG.exams||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).find(e=>new Date(e.date+'T12:00:00')>=_today);
+const _dateEl = document.getElementById('home-exam-date');
+if (_dateEl && _next) {
+  _dateEl.textContent = new Date(_next.date+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'long'});
+} else if (_dateEl) { _dateEl.textContent = 'próximamente'; }
+
+// ── Header (mismo patrón que inglesUnit4) ──
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🔢 Matemáticas – <span>Tema 6</span> · ${s.class} · ${s.school} · ${s.location}</div>
+      <div class="header-sub">UNA TARDE DE JUEGOS · 2º PRIMARIA</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back" style="margin-right:12px">← Volver</a>
+      <div class="exam-countdown">
+        <div class="days" id="countdown-days">–</div>
+        <div class="label">DÍAS AL EXAMEN</div>
+      </div>
+    </div>
+  </div>`;
+
+// ── Footer ──
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+
+// ── Countdown ──
+if (_next) {
+  const diff = Math.floor((new Date(_next.date+'T12:00:00') - _today) / 86400000);
+  const el = document.getElementById('countdown-days');
+  if (el) el.textContent = Math.max(0, diff);
+}
+</script>
+
+</body>
+</html>
