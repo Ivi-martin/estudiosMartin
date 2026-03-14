@@ -558,7 +558,7 @@ body {
   <div class="phase-tabs">
     <div class="phase-tab active" id="ptab-1" onclick="showPoliPhase(1)">📖 1. Aprende</div>
     <div class="phase-tab" id="ptab-2" onclick="showPoliPhase(2)">🔢 2. Lados y vértices</div>
-    <div class="phase-tab" id="ptab-3" onclick="showPoliPhase(3)">🔴 3. Cuenta los puntos</div>
+    <div class="phase-tab" id="ptab-3" onclick="showPoliPhase(3)">⚡ 3. ¡Ronda rápida!</div>
     <div class="phase-tab" id="ptab-4" onclick="showPoliPhase(4)">🏷️ 4. ¿Qué figura es?</div>
     <div class="phase-tab" id="ptab-5" onclick="showPoliPhase(5)">📝 Mini Test</div>
   </div>
@@ -999,7 +999,6 @@ function showSumaPhase(n) {
 window.showSumaPhase = showSumaPhase;
 
 function buildSumaCalcula() {
-  // Batería amplia de sumas con llevadas — se eligen 3 al azar
   const ALL_SUMAS = [
     [587,364,951],[628,293,921],[435,478,913],[257,565,822],
     [346,475,821],[483,359,842],[567,285,852],[274,548,822],
@@ -1012,25 +1011,180 @@ function buildSumaCalcula() {
   ];
   const pool = ALL_SUMAS.sort(() => Math.random() - .5).slice(0, 3);
   const c = document.getElementById('suma-content');
-  c.innerHTML = pool.map(([a,b,res], i) => `
+
+  function getCarries(a, b) {
+    const dA = [Math.floor(a/100)%10, Math.floor(a/10)%10, a%10];
+    const dB = [Math.floor(b/100)%10, Math.floor(b/10)%10, b%10];
+    const sumU = dA[2] + dB[2];
+    const cD = sumU >= 10 ? 1 : 0;
+    const sumD = dA[1] + dB[1] + cD;
+    const cC = sumD >= 10 ? 1 : 0;
+    return { cD, cC }; // cD=llevada que entra en D, cC=llevada que entra en C
+  }
+
+  const inputCell = (i, suffix, dataV) => `
+    <input class="text-input sc-cell" id="sc-${i}-${suffix}"
+      maxlength="1" data-v="${dataV}" data-i="${i}"
+      style="width:48px;height:52px;font-size:24px;font-family:'Fredoka One',cursive;
+             text-align:center;padding:0;border-radius:10px;"
+      oninput="scAutoAdvance(this,'${suffix}')">`;
+
+  // Celda de llevada: pequeño input rojo en la fila superior
+  const carryInput = (i, suffix, dataV) => `
+    <input class="text-input sc-carry" id="sc-${i}-carry-${suffix}"
+      maxlength="1" data-v="${dataV}"
+      style="width:32px;height:26px;font-size:13px;font-family:'Fredoka One',cursive;
+             text-align:center;padding:0;border-radius:6px;
+             border:1.5px dashed #dc2626;color:#dc2626;background:#fff5f5;">`;
+
+  const emptyCarryCell = () => `<div style="width:32px;height:26px"></div>`;
+
+  const numCell = (digit) => `
+    <div style="width:48px;height:52px;display:flex;align-items:center;justify-content:center;
+                font-family:'Fredoka One',cursive;font-size:26px;color:var(--navy)">
+      ${digit}
+    </div>`;
+
+  c.innerHTML = pool.map(([a, b, res], i) => {
+    const dA = [Math.floor(a/100)%10, Math.floor(a/10)%10, a%10];
+    const dB = [Math.floor(b/100)%10, Math.floor(b/10)%10, b%10];
+    const dR = [Math.floor(res/100)%10, Math.floor(res/10)%10, res%10];
+    const { cD, cC } = getCarries(a, b);
+
+    return `
     <div class="exercise-box" id="sc-box-${i}">
-      <div class="q-num">Suma ${i+1} – Calcula el resultado</div>
-      <div style="font-family:'Fredoka One',cursive;font-size:34px;color:var(--navy);margin-bottom:16px">${a} + ${b} = ?</div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input class="text-input" id="sc-inp-${i}" placeholder="?" style="max-width:120px;font-size:22px;text-align:center">
-        <button class="btn btn-primary" onclick="checkSC(${i},${res})">Comprobar ✓</button>
+      <div class="q-num">Suma ${i+1} – Resuelve de derecha a izquierda</div>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:14px;font-style:italic">
+        💡 Empieza por las <strong>Unidades</strong>. Si la suma da 10 o más, escribe la <strong style="color:#dc2626">llevada</strong>
+        (en rojo, encima de la siguiente columna) y solo el resto en el resultado.
+      </p>
+
+      <div style="display:inline-flex;flex-direction:column;gap:0;
+                  border:2px solid var(--gray-200);border-radius:14px;
+                  background:var(--gray-50);padding:16px 20px;margin-bottom:16px">
+
+        <!-- Fila de llevadas: inputs que rellena el niño -->
+        <!-- Columna C recibe llevada desde D, columna D recibe desde U, U nunca recibe -->
+        <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:4px;padding-left:32px">
+          <div style="width:48px;display:flex;justify-content:center">
+            ${cC > 0 ? carryInput(i, 'c', cC) : emptyCarryCell()}
+          </div>
+          <div style="width:48px;display:flex;justify-content:center">
+            ${cD > 0 ? carryInput(i, 'd', cD) : emptyCarryCell()}
+          </div>
+          <div style="width:48px;display:flex;justify-content:center">
+            ${emptyCarryCell()}
+          </div>
+        </div>
+
+        <!-- Etiquetas C / D / U -->
+        <div style="display:flex;gap:8px;padding-left:32px;margin-bottom:4px">
+          ${['C','D','U'].map(l => `<div style="width:48px;text-align:center;font-size:11px;font-weight:900;
+            color:var(--blue);text-transform:uppercase;letter-spacing:1px">${l}</div>`).join('')}
+        </div>
+
+        <!-- Sumando A -->
+        <div style="display:flex;gap:8px;align-items:center;padding-left:32px">
+          ${dA.map(d => numCell(d)).join('')}
+        </div>
+
+        <!-- Sumando B con signo + -->
+        <div style="display:flex;gap:8px;align-items:center">
+          <div style="width:28px;font-family:'Fredoka One',cursive;font-size:22px;
+                      color:var(--green);line-height:52px;text-align:right">+</div>
+          ${dB.map(d => numCell(d)).join('')}
+        </div>
+
+        <!-- Línea separadora -->
+        <div style="border-top:3px solid var(--navy);margin:6px 0 6px 32px"></div>
+
+        <!-- Fila resultado: inputs C D U -->
+        <div style="display:flex;gap:8px;padding-left:32px">
+          ${inputCell(i,'c',dR[0])}
+          ${inputCell(i,'d',dR[1])}
+          ${inputCell(i,'u',dR[2])}
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-primary" id="sc-btn-${i}" onclick="checkSC(${i},${res},${cC},${cD})">Comprobar ✓</button>
+        <button class="btn" style="background:rgba(0,0,0,0.05);color:var(--gray-600);font-size:13px"
+          onclick="scReset(${i},${cC},${cD})">🔄 Borrar</button>
       </div>
       <div class="feedback" id="sc-fb-${i}"></div>
-    </div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showSumaPhase(3)">Siguiente →</button></div>`;
+    </div>`;
+  }).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showSumaPhase(3)">Siguiente →</button></div>`;
 }
-window.checkSC = function(i, res) {
-  const inp = document.getElementById('sc-inp-' + i);
-  const ok = inp.value.trim() === String(res);
-  inp.classList.add(ok ? 'correct' : 'wrong'); inp.disabled = true;
-  document.querySelector('#sc-box-' + i + ' .btn-primary').disabled = true;
+
+window.scAutoAdvance = function(inp, suffix) {
+  if (inp.value.length !== 1) return;
+  const i = inp.id.split('-')[1];
+  // Orden de avance: u → d → c (derecha a izquierda)
+  const next = suffix === 'u' ? `sc-${i}-d` : suffix === 'd' ? `sc-${i}-c` : null;
+  if (next) { const el = document.getElementById(next); if (el && !el.disabled) el.focus(); }
+};
+
+window.checkSC = function(i, res, cC, cD) {
+  const dR = [Math.floor(res/100)%10, Math.floor(res/10)%10, res%10];
+  let allOk = true;
+
+  // Comprobar resultado C, D, U
+  ['c','d','u'].forEach((s, idx) => {
+    const inp = document.getElementById(`sc-${i}-${s}`);
+    if (!inp) return;
+    const ok = inp.value.trim() === String(dR[idx]);
+    inp.classList.add(ok ? 'correct' : 'wrong');
+    inp.disabled = true;
+    if (!ok) allOk = false;
+  });
+
+  // Comprobar llevadas (solo las que existen)
+  if (cC > 0) {
+    const inp = document.getElementById(`sc-${i}-carry-c`);
+    if (inp) {
+      const ok = inp.value.trim() === String(cC);
+      inp.classList.add(ok ? 'correct' : 'wrong');
+      inp.disabled = true;
+      if (!ok) allOk = false;
+    }
+  }
+  if (cD > 0) {
+    const inp = document.getElementById(`sc-${i}-carry-d`);
+    if (inp) {
+      const ok = inp.value.trim() === String(cD);
+      inp.classList.add(ok ? 'correct' : 'wrong');
+      inp.disabled = true;
+      if (!ok) allOk = false;
+    }
+  }
+
+  document.getElementById('sc-btn-' + i).disabled = true;
   const fb = document.getElementById('sc-fb-' + i);
-  fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
-  fb.textContent = ok ? '✅ ¡Correcto!' : `❌ El resultado era ${res}`;
+  fb.className = 'feedback ' + (allOk ? 'correct' : 'wrong') + ' show';
+  fb.textContent = allOk
+    ? `✅ ¡Perfecto! ${res} es correcto 🎉`
+    : `❌ Revisa: el resultado era ${dR[0]}${dR[1]}${dR[2]} = ${res}`;
+};
+
+window.scReset = function(i, cC, cD) {
+  ['c','d','u'].forEach(s => {
+    const inp = document.getElementById(`sc-${i}-${s}`);
+    if (inp) { inp.value = ''; inp.disabled = false; inp.classList.remove('correct','wrong'); }
+  });
+  if (cC > 0) {
+    const inp = document.getElementById(`sc-${i}-carry-c`);
+    if (inp) { inp.value = ''; inp.disabled = false; inp.classList.remove('correct','wrong'); }
+  }
+  if (cD > 0) {
+    const inp = document.getElementById(`sc-${i}-carry-d`);
+    if (inp) { inp.value = ''; inp.disabled = false; inp.classList.remove('correct','wrong'); }
+  }
+  const btn = document.getElementById('sc-btn-' + i);
+  if (btn) btn.disabled = false;
+  const fb = document.getElementById('sc-fb-' + i);
+  if (fb) { fb.className = 'feedback'; fb.textContent = ''; }
+  const firstInp = document.getElementById(`sc-${i}-u`);
+  if (firstInp) firstInp.focus();
 };
 
 function buildSumaRapido() {
@@ -1254,248 +1408,207 @@ window.checkPL = function(i) {
 };
 
 // ══════════════════════════════════════════════════════════════
-// EJERCICIO 3: CONSTRUCTOR DE POLÍGONOS
-// El niño dibuja el polígono haciendo clic en los puntos correctos
+// EJERCICIO 3: ¡RONDA RÁPIDA! – memoria visual de polígonos
+// Aparece una figura unos segundos → se oculta → el niño
+// elige cuántos lados tenía. Velocidad + memoria + aprendizaje.
 // ══════════════════════════════════════════════════════════════
 
-const RETOS_CONSTRUCTOR = [
-  {
-    nombre: 'Triángulo', lados: 3, col: '#16a34a',
-    puntos: [[50,10],[85,80],[15,80]],
-    pista: 'Haz clic en los 3 vértices del triángulo para dibujarlo.'
-  },
-  {
-    nombre: 'Cuadrado', lados: 4, col: '#2563eb',
-    puntos: [[20,20],[80,20],[80,80],[20,80]],
-    pista: 'El cuadrado tiene 4 esquinas iguales. ¡Encuéntralas!'
-  },
-  {
-    nombre: 'Rectángulo', lados: 4, col: '#7c3aed',
-    puntos: [[10,30],[90,30],[90,70],[10,70]],
-    pista: 'Como el cuadrado pero más largo por un lado.'
-  },
-  {
-    nombre: 'Rombo', lados: 4, col: '#ea580c',
-    puntos: [[50,10],[88,50],[50,90],[12,50]],
-    pista: 'El rombo parece un cuadrado girado. 4 vértices.'
-  },
-  {
-    nombre: 'Pentágono', lados: 5, col: '#0891b2',
-    puntos: [[50,8],[91,38],[74,90],[26,90],[9,38]],
-    pista: '¡5 vértices! Como la estrella de los superhéroes sin las puntas.'
-  },
-  {
-    nombre: 'Hexágono', lados: 6, col: '#7c3aed',
-    puntos: [[50,8],[88,30],[88,70],[50,92],[12,70],[12,30]],
-    pista: '6 vértices — como las celdas de un panal de abejas 🐝'
-  },
-  {
-    nombre: 'Triángulo isósceles', lados: 3, col: '#16a34a',
-    puntos: [[50,8],[90,90],[10,90]],
-    pista: 'Otro tipo de triángulo. ¡Siempre 3 vértices!'
-  },
-  {
-    nombre: 'Trapecio', lados: 4, col: '#ea580c',
-    puntos: [[25,20],[75,20],[95,80],[5,80]],
-    pista: 'El trapecio tiene 4 vértices pero sus lados no son paralelos todos.'
-  },
+const RR_FIGURAS = [
+  { nombre:'Triángulo',          lados:3, col:'#16a34a', path:'M50,8 L92,88 L8,88 Z' },
+  { nombre:'Cuadrado',           lados:4, col:'#2563eb', path:'M12,12 L88,12 L88,88 L12,88 Z' },
+  { nombre:'Rectángulo',         lados:4, col:'#7c3aed', path:'M6,28 L94,28 L94,72 L6,72 Z' },
+  { nombre:'Rombo',              lados:4, col:'#ea580c', path:'M50,8 L92,50 L50,92 L8,50 Z' },
+  { nombre:'Pentágono',          lados:5, col:'#0891b2', path:'M50,8 L91,37 L74,88 L26,88 L9,37 Z' },
+  { nombre:'Hexágono',           lados:6, col:'#7c3aed', path:'M50,8 L86,28 L86,72 L50,92 L14,72 L14,28 Z' },
+  { nombre:'Triángulo rectángulo',lados:3, col:'#16a34a', path:'M12,88 L88,88 L12,14 Z' },
+  { nombre:'Trapecio',           lados:4, col:'#dc2626', path:'M28,15 L72,15 L92,85 L8,85 Z' },
+  { nombre:'Pentágono irregular', lados:5, col:'#0891b2', path:'M50,8 L88,30 L76,85 L24,85 L12,30 Z' },
+  { nombre:'Hexágono irregular',  lados:6, col:'#7c3aed', path:'M30,8 L70,8 L92,50 L70,92 L30,92 L8,50 Z' },
 ];
 
-// Estado del constructor (una instancia activa a la vez)
-let _cpState = null;
+// Opciones de respuesta para cada figura (lados correctos + 2 distractores)
+function rrOpciones(lados) {
+  const pool = [3,4,5,6].filter(n => n !== lados);
+  const dist = pool.sort(() => Math.random() - .5).slice(0, 2);
+  return [lados, ...dist].sort(() => Math.random() - .5);
+}
+
+let _rrState = null;
+let _rrTimer = null;
 
 function buildPoliCuentaPuntos() {
-  // Elegir 4 retos al azar de la lista
-  const retos = RETOS_CONSTRUCTOR.sort(() => Math.random() - .5).slice(0, 4);
-  _cpState = {
-    retos,
-    idx: 0,          // reto actual
-    clicks: [],       // vértices clicados hasta ahora
-    score: 0,
-    done: false,
+  // 6 rondas con figuras distintas al azar
+  const figuras = RR_FIGURAS.slice().sort(() => Math.random() - .5).slice(0, 6);
+  _rrState = {
+    figuras,
+    idx: 0,
+    fase: 'cuenta_atras', // cuenta_atras → muestra → oculta → respuesta → resultado
+    correctas: 0,
+    tiempoMs: 2500,  // ms que se muestra la figura (baja con cada acierto)
   };
 
-  const c = document.getElementById('poli-content');
-  c.innerHTML = `
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title">🖊️ Dibuja el polígono</div>
-      <p style="color:var(--gray-600);font-size:14px">
-        En cada reto verás una cuadrícula con <strong>puntos disponibles</strong> (gris).
-        Haz clic sobre los puntos correctos en orden para dibujar la figura pedida.
-        Cuando hayas marcado todos los vértices, ¡pulsa <strong>Comprobar</strong>!
-      </p>
-    </div>
-    <div id="cp-reto-wrap"></div>
-    <div class="btn-row" id="cp-next-btn" style="display:none">
-      <button class="btn btn-success" onclick="cpNextReto()">Siguiente reto →</button>
-    </div>
-    <div class="btn-row" id="cp-finish-btn" style="display:none">
-      <button class="btn btn-success" onclick="showPoliPhase(4)">¡Terminado! Siguiente →</button>
-    </div>`;
-
-  cpRenderReto();
+  document.getElementById('poli-content').innerHTML = `<div id="rr-wrap"></div>`;
+  rrRender();
 }
 window.buildPoliCuentaPuntos = buildPoliCuentaPuntos;
 
-// Genera la cuadrícula de puntos disponibles (5×5 grid con puntos extras en posiciones clave)
-function cpGridPoints() {
-  const pts = [];
-  // Cuadrícula base 5×5
-  for (let r = 0; r < 5; r++) {
-    for (let cc = 0; cc < 5; cc++) {
-      pts.push([10 + cc * 20, 10 + r * 20]);
-    }
+function rrRender() {
+  const st = _rrState;
+  const fig = st.figuras[st.idx];
+  const total = st.figuras.length;
+  const wrap = document.getElementById('rr-wrap');
+  if (!wrap) return;
+
+  if (st.fase === 'cuenta_atras') {
+    // Pantalla de preparación con cuenta atrás 3-2-1
+    wrap.innerHTML = `
+      <div class="card" style="text-align:center;padding:32px 20px">
+        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin-bottom:8px">
+          ⚡ ¡Ronda rápida! – Figura ${st.idx+1} de ${total}
+        </div>
+        <p style="color:var(--gray-600);font-size:14px;margin-bottom:24px">
+          Observa la figura que va a aparecer.<br>
+          Desaparecerá en segundos… ¡recuerda cuántos lados tiene!
+        </p>
+        <div id="rr-countdown"
+          style="font-family:'Fredoka One',cursive;font-size:80px;color:var(--blue);
+                 line-height:1;margin-bottom:8px">3</div>
+      </div>`;
+    let n = 3;
+    if (_rrTimer) clearInterval(_rrTimer);
+    _rrTimer = setInterval(() => {
+      n--;
+      const el = document.getElementById('rr-countdown');
+      if (!el) { clearInterval(_rrTimer); return; }
+      if (n > 0) {
+        el.textContent = n;
+        el.style.color = n === 2 ? '#f59e0b' : '#dc2626';
+      } else {
+        clearInterval(_rrTimer);
+        st.fase = 'muestra';
+        rrRender();
+      }
+    }, 800);
+
+  } else if (st.fase === 'muestra') {
+    // Muestra la figura durante tiempoMs
+    wrap.innerHTML = `
+      <div class="exercise-box" style="text-align:center">
+        <div class="q-num" style="margin-bottom:12px">
+          Figura ${st.idx+1}/${total} – ¡Memoriza!
+          <span style="font-size:12px;font-weight:400;color:var(--gray-600)"> (desaparecerá pronto)</span>
+        </div>
+        <div style="display:flex;justify-content:center;margin-bottom:8px">
+          <svg viewBox="0 0 100 100" width="220" height="220"
+               style="filter:drop-shadow(0 4px 16px ${fig.col}44)">
+            <path d="${fig.path}" fill="${fig.col}25" stroke="${fig.col}"
+                  stroke-width="3.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <!-- Barra de tiempo que se vacía -->
+        <div style="background:var(--gray-200);border-radius:99px;height:8px;overflow:hidden;margin:0 auto;max-width:220px">
+          <div id="rr-bar" style="height:100%;background:${fig.col};border-radius:99px;
+               width:100%;transition:width ${st.tiempoMs}ms linear"></div>
+        </div>
+      </div>`;
+    // Animar barra
+    setTimeout(() => { const b = document.getElementById('rr-bar'); if (b) b.style.width = '0%'; }, 30);
+    if (_rrTimer) clearTimeout(_rrTimer);
+    _rrTimer = setTimeout(() => { st.fase = 'oculta'; rrRender(); }, st.tiempoMs);
+
+  } else if (st.fase === 'oculta') {
+    // Solo pregunta y opciones — sin silueta
+    const opts = rrOpciones(fig.lados);
+    wrap.innerHTML = `
+      <div class="exercise-box" style="text-align:center">
+        <div class="q-num" style="margin-bottom:20px">
+          Figura ${st.idx+1}/${total} – ¿Cuántos lados tenía?
+        </div>
+
+        <!-- Opciones grandes y táctiles -->
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap" id="rr-opts">
+          ${opts.map(o => `
+            <button onclick="rrResponder(${o},${fig.lados})"
+              style="width:80px;height:80px;border-radius:16px;border:3px solid var(--gray-200);
+                     background:white;font-family:'Fredoka One',cursive;font-size:32px;
+                     color:var(--navy);cursor:pointer;transition:all .15s;box-shadow:var(--shadow-sm)"
+              onmouseover="this.style.borderColor='${fig.col}';this.style.transform='scale(1.08)'"
+              onmouseout="this.style.borderColor='var(--gray-200)';this.style.transform='scale(1)'">
+              ${o}
+            </button>`).join('')}
+        </div>
+        <div id="rr-fb" style="margin-top:14px"></div>
+      </div>`;
+
+  } else if (st.fase === 'resultado') {
+    // Última figura — mostrar resultados finales
+    const pct = Math.round(st.correctas / total * 100);
+    const stars = pct >= 90 ? '⭐⭐⭐' : pct >= 60 ? '⭐⭐' : '⭐';
+    const msg = pct === 100 ? '¡Memoria perfecta! 🧠🔥'
+              : pct >= 60  ? '¡Muy buen ojo! 👀'
+              : '¡Sigue practicando, cada vez mejor! 💪';
+    wrap.innerHTML = `
+      <div class="card" style="text-align:center;padding:32px 20px">
+        <div style="font-size:52px;margin-bottom:8px">${stars}</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--navy);margin-bottom:6px">
+          ${msg}
+        </div>
+        <div style="font-size:16px;color:var(--gray-600);margin-bottom:20px">
+          Has acertado <strong>${st.correctas}</strong> de <strong>${total}</strong> figuras
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="buildPoliCuentaPuntos()">🔄 Jugar otra vez</button>
+          <button class="btn btn-success" onclick="showPoliPhase(4)">Siguiente →</button>
+        </div>
+      </div>`;
   }
-  // Puntos extra intermedios (mitad de aristas)
-  const extras = [[50,10],[50,90],[10,50],[90,50],[50,50],[30,50],[70,50],[50,30],[50,70]];
-  extras.forEach(ep => { if (!pts.some(p => p[0]===ep[0] && p[1]===ep[1])) pts.push(ep); });
-  return pts;
 }
 
-function cpRenderReto() {
-  const st = _cpState;
-  const reto = st.retos[st.idx];
-  const total = st.retos.length;
-  const gridPts = cpGridPoints();
+window.rrResponder = function(elegido, correcto) {
+  const st = _rrState;
+  if (!st) return;
+  const fig = st.figuras[st.idx];
+  const ok = elegido === correcto;
+  if (ok) st.correctas++;
 
-  // Asegura que todos los vértices del polígono están en la grid
-  reto.puntos.forEach(vp => {
-    if (!gridPts.some(p => p[0]===vp[0] && p[1]===vp[1])) gridPts.push(vp);
+  // Deshabilitar todos los botones
+  document.querySelectorAll('#rr-opts button').forEach(b => {
+    b.disabled = true;
+    b.style.cursor = 'default';
+    const val = parseInt(b.textContent.trim());
+    if (val === correcto) {
+      b.style.background = '#dcfce7';
+      b.style.borderColor = '#16a34a';
+      b.style.color = '#16a34a';
+    } else if (val === elegido && !ok) {
+      b.style.background = '#fee2e2';
+      b.style.borderColor = '#dc2626';
+      b.style.color = '#dc2626';
+    }
   });
 
-  const clicks = st.clicks;
-
-  // Construye el path del polígono clicado hasta ahora
-  let pathEl = '';
-  if (clicks.length >= 2) {
-    const d = 'M' + clicks.map(p => p.join(',')).join(' L') + (clicks.length >= reto.lados ? ' Z' : '');
-    pathEl = `<path d="${d}" fill="${reto.col}18" stroke="${reto.col}" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="${clicks.length >= reto.lados ? 'none' : '6 3'}"/>`;
+  const fb = document.getElementById('rr-fb');
+  if (fb) {
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+    fb.innerHTML = ok
+      ? `✅ ¡Correcto! El <strong>${fig.nombre}</strong> tiene <strong>${correcto} lados</strong>.`
+      : `❌ Tenía <strong>${correcto} lados</strong> — era un <strong>${fig.nombre}</strong>.`;
   }
 
-  // Puntos de la grid
-  const dotEls = gridPts.map((p, di) => {
-    const isClicked = clicks.some(c => c[0]===p[0] && c[1]===p[1]);
-    const clickIdx  = clicks.findIndex(c => c[0]===p[0] && c[1]===p[1]);
-    const isTarget  = reto.puntos.some(v => v[0]===p[0] && v[1]===p[1]);
-    const size = isClicked ? 9 : 5;
-    const fill = isClicked ? reto.col : '#cbd5e1';
-    const stroke = isClicked ? 'white' : '#94a3b8';
-    const label = isClicked
-      ? `<text x="${p[0]}" y="${p[1]+1}" text-anchor="middle" dominant-baseline="middle"
-           font-family="Nunito,sans-serif" font-size="7" font-weight="900" fill="white">${clickIdx+1}</text>`
-      : '';
-    return `<g class="cp-dot" data-x="${p[0]}" data-y="${p[1]}" onclick="cpClickDot(${p[0]},${p[1]})" style="cursor:pointer">
-      <circle cx="${p[0]}" cy="${p[1]}" r="${size + 5}" fill="transparent"/>
-      <circle cx="${p[0]}" cy="${p[1]}" r="${size}" fill="${fill}" stroke="${stroke}" stroke-width="1.5"
-        style="transition:all 0.15s"/>
-      ${label}
-    </g>`;
-  }).join('');
+  // Reducir tiempo si acierta (mínimo 1200ms)
+  if (ok) st.tiempoMs = Math.max(1200, st.tiempoMs - 200);
 
-  const retoNum = st.idx + 1;
-  const wrap = document.getElementById('cp-reto-wrap');
-  wrap.innerHTML = `
-    <div class="exercise-box" id="cp-box-active">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
-        <div class="q-num" style="margin:0">Reto ${retoNum}/${total} – Dibuja un <span style="color:${reto.col};font-family:'Fredoka One',cursive">${reto.nombre}</span></div>
-        <div style="font-size:13px;color:var(--gray-600)">Vértices marcados: <strong id="cp-counter" style="color:${reto.col}">${clicks.length}</strong> / ${reto.lados}</div>
-      </div>
-      <p style="font-size:12px;color:var(--gray-600);margin-bottom:10px;font-style:italic">💡 ${reto.pista}</p>
-
-      <div style="display:flex;justify-content:center;margin-bottom:12px">
-        <svg id="cp-svg" viewBox="0 0 100 100" width="240" height="240"
-             style="border:2px solid var(--gray-200);border-radius:12px;background:#f8fafc;overflow:visible">
-          <!-- Grid lines suaves -->
-          ${[10,30,50,70,90].map(x => `<line x1="${x}" y1="10" x2="${x}" y2="90" stroke="#e2e8f0" stroke-width="0.5"/>`).join('')}
-          ${[10,30,50,70,90].map(y => `<line x1="10" y1="${y}" x2="90" y2="${y}" stroke="#e2e8f0" stroke-width="0.5"/>`).join('')}
-          ${pathEl}
-          ${dotEls}
-        </svg>
-      </div>
-
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <button class="btn btn-primary" id="cp-check-btn" onclick="cpComprobar()"
-          ${clicks.length === 0 ? 'disabled' : ''}>
-          Comprobar ✓
-        </button>
-        <button class="btn" style="background:rgba(0,0,0,0.06);color:var(--gray-600)"
-          onclick="cpBorrarUltimo()">← Borrar último</button>
-        <button class="btn" style="background:rgba(220,38,38,0.08);color:#dc2626"
-          onclick="cpReset()">🔄 Empezar de nuevo</button>
-      </div>
-      <div class="feedback" id="cp-fb" style="margin-top:10px"></div>
-    </div>`;
-}
-
-window.cpClickDot = function(x, y) {
-  const st = _cpState;
-  if (!st || st.done) return;
-  const reto = st.retos[st.idx];
-  // Desmarcar si ya estaba clicado
-  const existing = st.clicks.findIndex(c => c[0]===x && c[1]===y);
-  if (existing !== -1) {
-    st.clicks.splice(existing, 1);
-  } else {
-    if (st.clicks.length >= reto.lados + 2) return; // máximo lados+2 para no bloquear
-    st.clicks.push([x, y]);
-  }
-  cpRenderReto();
-};
-
-window.cpBorrarUltimo = function() {
-  if (_cpState && _cpState.clicks.length > 0) {
-    _cpState.clicks.pop();
-    cpRenderReto();
-  }
-};
-
-window.cpReset = function() {
-  if (_cpState) { _cpState.clicks = []; cpRenderReto(); }
-};
-
-window.cpComprobar = function() {
-  const st = _cpState;
-  const reto = st.retos[st.idx];
-  const clicks = st.clicks;
-  const fb = document.getElementById('cp-fb');
-
-  // Comprobación: ¿se han marcado exactamente los vértices correctos (en cualquier orden)?
-  const correctSet = reto.puntos.map(p => p.join(','));
-  const clickedSet = clicks.map(p => p.join(','));
-  const exactMatch = clicks.length === reto.lados &&
-    correctSet.every(v => clickedSet.includes(v)) &&
-    clickedSet.every(v => correctSet.includes(v));
-
-  if (exactMatch) {
-    st.score++;
-    fb.className = 'feedback correct show';
-    fb.innerHTML = `✅ ¡Perfecto! Has dibujado un <strong>${reto.nombre}</strong> con ${reto.lados} lados y ${reto.lados} vértices. 🎉`;
-    // Bloquear botones
-    ['cp-check-btn'].forEach(id => { const el = document.getElementById(id); if(el) el.disabled = true; });
-    st.done = true;
-
-    const isLast = st.idx === st.retos.length - 1;
-    setTimeout(() => {
-      document.getElementById(isLast ? 'cp-finish-btn' : 'cp-next-btn').style.display = '';
-    }, 600);
-
-  } else if (clicks.length !== reto.lados) {
-    fb.className = 'feedback wrong show';
-    fb.textContent = `❌ Un ${reto.nombre} tiene ${reto.lados} vértices — tú has marcado ${clicks.length}. ¡Ajusta!`;
-  } else {
-    // Número correcto pero puntos equivocados
-    fb.className = 'feedback wrong show';
-    fb.textContent = `❌ Tienes ${clicks.length} puntos pero no son los vértices correctos. ¡Fíjate bien en la figura!`;
-  }
-};
-
-window.cpNextReto = function() {
-  const st = _cpState;
-  st.idx++;
-  st.clicks = [];
-  st.done = false;
-  document.getElementById('cp-next-btn').style.display = 'none';
-  cpRenderReto();
+  const isLast = st.idx === st.figuras.length - 1;
+  setTimeout(() => {
+    if (isLast) {
+      st.fase = 'resultado';
+      rrRender();
+    } else {
+      st.idx++;
+      st.fase = 'cuenta_atras';
+      rrRender();
+    }
+  }, 1400);
 };
 
 function buildPoliClasifica() {
@@ -1857,10 +1970,10 @@ document.getElementById('app-header-root').innerHTML = `
     </div>
     <div class="header-right">
       <a href="../index.html" class="btn-back" style="margin-right:12px">← Volver</a>
-      <div class="exam-countdown">
+      ${_next ? `<div class="exam-countdown">
         <div class="days" id="countdown-days">–</div>
         <div class="label">DÍAS AL EXAMEN</div>
-      </div>
+      </div>` : ''}
     </div>
   </div>`;
 

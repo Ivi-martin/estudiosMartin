@@ -41,7 +41,7 @@ export function renderFooter() {
   return `
     <footer class="shared-footer">
       © Realizado por <span>Iván MOCA</span>
-      <div class="footer-disclaimer">⚠️ Web de uso personal, no oficial. El contenido puede contener errores e imprecisiones.</div>
+      <div class="footer-disclaimer">⚠️ Web de uso personal, no oficial.</div>
     </footer>`;
 }
 
