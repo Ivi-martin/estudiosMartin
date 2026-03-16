@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  :root { color-scheme: dark; --bg:#0f172a; }
+  html,body { background-color: #0f172a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌱 La Vida – Martín</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --green:#16a34a; --green-l:#22c55e; --green-bg:#dcfce7;
+  --teal:#0d9488; --teal-l:#14b8a6; --teal-bg:#ccfbf1;
+  --amber:#d97706; --amber-l:#f59e0b; --amber-bg:#fef3c7;
+  --rose:#e11d48; --rose-l:#f43f5e; --rose-bg:#ffe4e6;
+  --violet:#7c3aed; --violet-l:#8b5cf6; --violet-bg:#ede9fe;
+  --sky-c:#0284c7; --sky-bg:#e0f2fe;
+  --navy:#1a2744;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-600:#475569;--gray-800:#1e293b;
+  --shadow:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+  --radius:16px;--radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+
+/* Stars */
+.stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0f172a 0%,#064e3b 50%,#0f172a 100%);overflow:hidden}
+.stars-bg::before{content:'★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.06);
+  line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.5}to{opacity:1}}
+
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+/* Header */
+.header{background:linear-gradient(135deg,#064e3b 0%,#16a34a 100%);padding:16px 24px;
+  display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);
+  box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.header-logo span{color:#fbbf24}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+
+/* Progress strip */
+.progress-strip{background:rgba(0,0,0,.3);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+.progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:4px;transition:width .5s ease}
+.progress-pct{font-size:12px;color:#86efac;font-weight:800}
+
+.main{flex:1;display:flex;gap:0}
+
+/* Sidebar */
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+  padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+.sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+  color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+.nav-btn.active{background:rgba(22,163,74,.3);color:white;border:1px solid rgba(22,163,74,.5)}
+.nav-btn.completed{color:#86efac}
+.nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+.nav-btn .nav-stars{margin-left:auto;font-size:12px}
+
+.content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Home hero */
+.home-hero{background:linear-gradient(135deg,#064e3b 0%,#166534 60%,#1e3a5f 100%);
+  border-radius:24px;padding:40px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.home-hero::before{content:'🌱❤️🛌🥗🏃🧹';position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  font-size:48px;opacity:.15;writing-mode:vertical-rl;letter-spacing:12px}
+.home-hero h1{font-family:'Fredoka One',cursive;font-size:38px;color:white;margin-bottom:8px}
+.home-hero h1 span{color:#86efac}
+.home-hero p{color:rgba(255,255,255,.8);font-size:15px;max-width:500px;line-height:1.6}
+
+/* Class cards */
+.classes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+.class-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.class-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);border-color:rgba(255,255,255,.2)}
+.class-card.unlocked{background:rgba(255,255,255,.08)}
+.class-card.completed{border-color:rgba(22,163,74,.4);background:rgba(22,163,74,.07)}
+.class-number{font-size:11px;color:rgba(255,255,255,.4);font-weight:800;letter-spacing:1px;margin-bottom:8px}
+.class-icon{font-size:36px;margin-bottom:10px}
+.class-title{font-family:'Fredoka One',cursive;font-size:18px;color:white;margin-bottom:4px}
+.class-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.5}
+.class-status{position:absolute;top:14px;right:14px;font-size:18px}
+.class-stars{margin-top:12px;font-size:16px;color:#fbbf24}
+
+/* Lesson header */
+.lesson-header{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+.lesson-icon{font-size:42px}
+.lesson-info h2{font-family:'Fredoka One',cursive;font-size:26px;color:white}
+.lesson-info p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+
+/* Phase tabs */
+.phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+.phase-tab.active{background:var(--green);color:white;border-color:var(--green-l)}
+.phase-tab.done{background:rgba(22,163,74,.15);color:#86efac;border-color:rgba(22,163,74,.3)}
+
+/* Cards */
+.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* Theory highlight */
+.theory-highlight{background:var(--amber-bg);border-left:4px solid var(--amber-l);
+  border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+.theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
+.theory-highlight.rose{background:var(--rose-bg);border-color:var(--rose)}
+.theory-highlight.teal{background:var(--teal-bg);border-color:var(--teal)}
+.theory-highlight.violet{background:var(--violet-bg);border-color:var(--violet)}
+.theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky-c)}
+
+/* Exercise box */
+.exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+.exercise-box .q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--green);text-transform:uppercase;margin-bottom:8px}
+.exercise-box .q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+
+/* Options */
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+.option-btn:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.option-btn.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+.option-btn:disabled{cursor:not-allowed;opacity:.8}
+
+/* Text input */
+.text-input{padding:12px 16px;border:2px solid var(--gray-200);border-radius:10px;
+  font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;transition:all .2s;
+  background:#fff !important;color:#1a2744 !important}
+.text-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.text-input.correct{border-color:var(--green);background:var(--green-bg) !important}
+.text-input.wrong{border-color:var(--rose);background:var(--rose-bg) !important}
+
+/* Feedback */
+.feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+.feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+.feedback.correct{background:var(--green-bg);color:var(--green)}
+.feedback.wrong{background:var(--rose-bg);color:var(--rose)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* Buttons */
+.btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+  transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--green);color:white}
+.btn-primary:hover{background:var(--green-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(22,163,74,.4)}
+.btn-success{background:var(--teal);color:white}
+.btn-success:hover{background:var(--teal-l);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+/* Score card */
+.score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+.score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--green)}
+.score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+.stars-display{font-size:36px;letter-spacing:4px}
+
+/* Mini test dots */
+.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.test-dots{display:flex;gap:6px}
+.test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+.test-dot.current{background:var(--green);transform:scale(1.3)}
+.test-dot.done-correct{background:var(--green)}
+.test-dot.done-wrong{background:var(--rose)}
+
+/* True/False */
+.tf-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.tf-btn{padding:12px 28px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;
+  border:2px solid var(--gray-200);background:white;cursor:pointer;transition:all .2s;color:var(--navy)}
+.tf-btn:hover:not(:disabled){transform:scale(1.05)}
+.tf-btn.verd:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.tf-btn.fals:hover:not(:disabled){border-color:var(--rose);background:var(--rose-bg)}
+.tf-btn.correct{background:var(--green-bg) !important;border-color:var(--green) !important;color:var(--green) !important}
+.tf-btn.wrong{background:var(--rose-bg) !important;border-color:var(--rose) !important;color:var(--rose) !important}
+.tf-btn:disabled{cursor:not-allowed}
+
+/* Drag sort */
+.sort-list{list-style:none;margin:0;padding:0}
+.sort-item{background:white;border:2px solid var(--gray-200);border-radius:10px;padding:12px 16px;
+  margin-bottom:8px;cursor:grab;display:flex;align-items:center;gap:10px;
+  font-weight:700;font-size:14px;color:var(--navy);user-select:none;transition:all .15s}
+.sort-item:active{cursor:grabbing;box-shadow:var(--shadow)}
+.sort-item.drag-over{border-color:var(--green);background:var(--green-bg)}
+.sort-handle{color:var(--gray-400);font-size:18px}
+
+/* Progress screen */
+.progress-topic-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+.progress-topic-row .pt-icon{font-size:22px}
+.progress-topic-row .pt-name{font-weight:700;color:rgba(255,255,255,.8);flex:1;font-size:14px}
+.progress-topic-row .pt-score{font-family:'Fredoka One',cursive;font-size:22px;color:#86efac}
+.progress-topic-row .pt-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.progress-topic-row .pt-fill{height:100%;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:99px;transition:width .8s}
+
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+.content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+
+@media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+<div id="app-header-root"></div>
+
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO GENERAL</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+<div class="sidebar">
+  <div class="sidebar-section">Clases</div>
+  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span> Inicio
+  </button>
+  <button class="nav-btn" onclick="showLesson('sueno')" id="nav-sueno">
+    <span class="nav-icon">🛌</span> Sueño y descanso
+    <span class="nav-stars" id="stars-sueno"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('alim')" id="nav-alim">
+    <span class="nav-icon">🥗</span> Alimentación
+    <span class="nav-stars" id="stars-alim"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('move')" id="nav-move">
+    <span class="nav-icon">🏃</span> Movimiento
+    <span class="nav-stars" id="stars-move"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('emoc')" id="nav-emoc">
+    <span class="nav-icon">❤️</span> Emociones
+    <span class="nav-stars" id="stars-emoc"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('habit')" id="nav-habit">
+    <span class="nav-icon">🧹</span> Hábitos
+    <span class="nav-stars" id="stars-habit"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('vals')" id="nav-vals">
+    <span class="nav-icon">🌱</span> Valores
+    <span class="nav-stars" id="stars-vals"></span>
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Dashboard
+  </button>
+</div>
+
+<div class="content">
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <div>
+      <h1>🌱 <span>La Vida</span></h1>
+      <p>Aprende lo que importa de verdad: dormir bien, comer sano, moverte, conocer tus emociones, tener buenos hábitos y vivir con valores. ¡Cosas que nadie te enseña en el colegio!</p>
+    </div>
+  </div>
+  <div style="margin-bottom:16px;font-family:'Fredoka One',cursive;font-size:18px;color:white;opacity:.8">🗺️ Tus Clases</div>
+  <div class="classes-grid">
+    <div class="class-card unlocked" onclick="showLesson('sueno')">
+      <div class="class-number">CLASE 1</div>
+      <div class="class-icon">🛌</div>
+      <div class="class-title">Sueño y descanso</div>
+      <div class="class-desc">Por qué dormir 9–12 horas lo cambia todo: notas, humor, crecimiento.</div>
+      <div class="class-stars" id="home-stars-sueno"></div>
+      <div class="class-status" id="home-status-sueno">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('alim')">
+      <div class="class-number">CLASE 2</div>
+      <div class="class-icon">🥗</div>
+      <div class="class-title">Alimentación sana</div>
+      <div class="class-desc">Qué comer para crecer fuerte, listo y lleno de energía.</div>
+      <div class="class-stars" id="home-stars-alim"></div>
+      <div class="class-status" id="home-status-alim">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('move')">
+      <div class="class-number">CLASE 3</div>
+      <div class="class-icon">🏃</div>
+      <div class="class-title">Movimiento</div>
+      <div class="class-desc">Por qué tu cuerpo necesita moverse 60 minutos cada día.</div>
+      <div class="class-stars" id="home-stars-move"></div>
+      <div class="class-status" id="home-status-move">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('emoc')">
+      <div class="class-number">CLASE 4</div>
+      <div class="class-icon">❤️</div>
+      <div class="class-title">Emociones</div>
+      <div class="class-desc">Conocer y gestionar lo que sientes: el superpoder más importante.</div>
+      <div class="class-stars" id="home-stars-emoc"></div>
+      <div class="class-status" id="home-status-emoc">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('habit')">
+      <div class="class-number">CLASE 5</div>
+      <div class="class-icon">🧹</div>
+      <div class="class-title">Hábitos</div>
+      <div class="class-desc">Pequeñas acciones repetidas que cambian tu vida para siempre.</div>
+      <div class="class-stars" id="home-stars-habit"></div>
+      <div class="class-status" id="home-status-habit">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('vals')">
+      <div class="class-number">CLASE 6</div>
+      <div class="class-icon">🌱</div>
+      <div class="class-title">Valores</div>
+      <div class="class-desc">Honestidad, respeto, gratitud y empatía: ser buena persona.</div>
+      <div class="class-stars" id="home-stars-vals"></div>
+      <div class="class-status" id="home-status-vals">▶️</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUEÑO -->
+<div class="screen" id="screen-sueno">
+  <div class="lesson-header">
+    <div class="lesson-icon">🛌</div>
+    <div class="lesson-info">
+      <h2>Sueño y descanso</h2>
+      <p>Por qué dormir bien lo cambia todo · Clase 1</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-sueno"></div>
+  <div id="sueno-content"></div>
+</div>
+
+<!-- ALIMENTACIÓN -->
+<div class="screen" id="screen-alim">
+  <div class="lesson-header">
+    <div class="lesson-icon">🥗</div>
+    <div class="lesson-info">
+      <h2>Alimentación sana</h2>
+      <p>Comer bien para crecer fuerte y listo · Clase 2</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-alim"></div>
+  <div id="alim-content"></div>
+</div>
+
+<!-- MOVIMIENTO -->
+<div class="screen" id="screen-move">
+  <div class="lesson-header">
+    <div class="lesson-icon">🏃</div>
+    <div class="lesson-info">
+      <h2>Movimiento y ejercicio</h2>
+      <p>Tu cuerpo necesita moverse cada día · Clase 3</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-move"></div>
+  <div id="move-content"></div>
+</div>
+
+<!-- EMOCIONES -->
+<div class="screen" id="screen-emoc">
+  <div class="lesson-header">
+    <div class="lesson-icon">❤️</div>
+    <div class="lesson-info">
+      <h2>Inteligencia emocional</h2>
+      <p>Conocer y gestionar lo que sientes · Clase 4</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-emoc"></div>
+  <div id="emoc-content"></div>
+</div>
+
+<!-- HÁBITOS -->
+<div class="screen" id="screen-habit">
+  <div class="lesson-header">
+    <div class="lesson-icon">🧹</div>
+    <div class="lesson-info">
+      <h2>Hábitos y responsabilidad</h2>
+      <p>Pequeñas acciones, grandes resultados · Clase 5</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-habit"></div>
+  <div id="habit-content"></div>
+</div>
+
+<!-- VALORES -->
+<div class="screen" id="screen-vals">
+  <div class="lesson-header">
+    <div class="lesson-icon">🌱</div>
+    <div class="lesson-info">
+      <h2>Valores</h2>
+      <p>Quién eres de verdad · Clase 6</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-vals"></div>
+  <div id="vals-content"></div>
+</div>
+
+<!-- PROGRESO -->
+<div class="screen" id="screen-progreso">
+  <div id="progreso-content"></div>
+</div>
+
+</div><!-- .content -->
+</div><!-- .main -->
+</div><!-- .app -->
+<div id="app-footer-root"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// PROGRESO
+// ═══════════════════════════════════════════
+const progress = {
+  sueno:{done:false,score:0}, alim:{done:false,score:0},
+  move:{done:false,score:0},  emoc:{done:false,score:0},
+  habit:{done:false,score:0}, vals:{done:false,score:0},
+};
+
+function updateHome() {
+  const topics = ['sueno','alim','move','emoc','habit','vals'];
+  const done = topics.filter(t=>progress[t].done).length;
+  const pct = Math.round(done/topics.length*100);
+  document.getElementById('overall-progress').style.width = pct+'%';
+  document.getElementById('overall-pct').textContent = pct+'%';
+  topics.forEach(t => {
+    const stars = progress[t].done ? (progress[t].score>=80?'⭐⭐⭐':progress[t].score>=60?'⭐⭐':'⭐') : '';
+    const s = document.getElementById('home-stars-'+t);   if(s) s.textContent = stars;
+    const e = document.getElementById('home-status-'+t);  if(e) e.textContent = progress[t].done?'✅':'▶️';
+    const n = document.getElementById('stars-'+t);        if(n) n.textContent = stars;
+    const b = document.getElementById('nav-'+t);          if(b&&progress[t].done) b.classList.add('completed');
+  });
+}
+
+// ═══════════════════════════════════════════
+// NAVEGACIÓN
+// ═══════════════════════════════════════════
+let _inits = {};
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const nb = document.getElementById('nav-'+id); if(nb) nb.classList.add('active');
+  if(id==='progreso') buildProgreso();
+}
+window.showScreen = showScreen;
+
+function showLesson(id) {
+  showScreen(id);
+  if(!_inits[id]) { _inits[id]=true; PHASES[id].show(1); }
+}
+window.showLesson = showLesson;
+
+function setTab(id, n, total) {
+  const labels = PHASES[id].tabs;
+  const wrap = document.getElementById('tabs-'+id); if(!wrap) return;
+  wrap.innerHTML = labels.map((l,i)=>`
+    <div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// MINI TEST ENGINE (idéntico a mat6)
+// ═══════════════════════════════════════════
+function buildMiniTest(qs, containerId, onDone) {
+  let curr=0, correct=0, results=[];
+  const dots = qs.map(()=>'').join('');
+
+  function render() {
+    const c = document.getElementById(containerId); if(!c) return;
+    if(curr>=qs.length) {
+      const pct=Math.round(correct/qs.length*100);
+      const stars=pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      const msg=pct===100?'¡Perfecto! Eres un crack 🔥':pct>=80?'¡Muy bien! Casi perfecto 💪':pct>=60?'¡Bien hecho! Sigue así 👍':'Repasa el tema e inténtalo otra vez 📖';
+      c.innerHTML=`<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${msg}<br><small>${correct} de ${qs.length} correctas</small></div>
+      </div>`;
+      if(onDone) onDone(pct);
+      return;
+    }
+    const q=qs[curr];
+    const dotHTML=qs.map((_,i)=>`<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    const qid='mt'+curr;
+
+    if(q.type==='mc'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="options" id="${qid}_opts">
+            ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='tf'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Verdadero o Falso – Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="tf-row">
+            <button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button>
+            <button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='write'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Escribe tu respuesta – Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1;min-width:200px">
+            <button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    }
+  }
+
+  function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); }
+
+  window.mtAns = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true);
+    const ok=btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ La respuesta correcta era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtTF = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+    const ok=btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtWrite = function(qid,cid,correct){
+    if(containerId!==cid) return;
+    const inp=document.getElementById(qid+'_inp');
+    const ok=inp.value.trim().toLowerCase()===correct.toLowerCase();
+    inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+    document.querySelector(`button[onclick*="${qid}"]`).disabled=true;
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct;
+    next(ok);
+  };
+  render();
+}
+window.buildMiniTest = buildMiniTest;
+
+// ═══════════════════════════════════════════════════════════
+// CLASE 1: SUEÑO 🛌
+// ═══════════════════════════════════════════════════════════
+function showSuenoPhase(n) {
+  setTab('sueno',n,4);
+  const c=document.getElementById('sueno-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">🛌 ¿Por qué dormir bien lo cambia todo?</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">Mientras duermes parece que no pasa nada, pero en realidad tu cuerpo está trabajando a tope.</p>
+      <div class="theory-highlight green"><strong>🌙 Cuánto necesitas dormir:</strong><br>
+        Un niño de 8 años necesita entre <strong>9 y 12 horas</strong> cada noche.<br>
+        Y siempre mejor acostarse a la misma hora — el cuerpo tiene su propio reloj interno.</div>
+      <div class="theory-highlight"><strong>🔬 ¿Qué hace tu cuerpo mientras duermes?</strong><br>
+        🏗️ <strong>Fabrica hormona del crecimiento</strong> — los niños crecen literalmente durmiendo.<br>
+        🧠 <strong>Guarda en la memoria lo que aprendiste</strong> — los deberes de hoy se consolidan de noche.<br>
+        💪 <strong>Repara músculos y tejidos</strong> — el deporte de hoy da resultados mañana.<br>
+        🛡️ <strong>Fortalece las defensas</strong> — los que duermen bien se ponen menos enfermos.</div>
+      <div class="theory-highlight rose"><strong>⚠️ ¿Qué pasa cuando no duermes suficiente?</strong><br>
+        😠 Peor humor · 🧠 Peor concentración · 📉 Peores notas · 🤒 Más resfriados · 😮 Más accidentes</div>
+      <div class="theory-highlight sky"><strong>📱 La trampa de las pantallas:</strong><br>
+        La luz azul de las pantallas le dice a tu cerebro que aún es de día y bloquea la melatonina
+        (la hormona del sueño). Resultado: tardas mucho más en dormirte y el sueño es peor calidad.
+        Lo ideal es apagar pantallas <strong>1 hora antes de dormir</strong>.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showSuenoPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildSuenoEjercicios(); }
+  else if(n===3){ buildSuenoTF(); }
+  else if(n===4){ buildSuenoTest(); }
+}
+window.showSuenoPhase=showSuenoPhase;
+
+function buildSuenoEjercicios(){
+  const c=document.getElementById('sueno-content');
+  const conductas=[
+    {t:'Acostarse siempre a la misma hora',bueno:true},
+    {t:'Ver el móvil 30 minutos en la cama antes de dormir',bueno:false},
+    {t:'Dormir la habitación oscura y con fresco',bueno:true},
+    {t:'Tomar un refresco con cafeína por la noche',bueno:false},
+    {t:'Hacer una rutina tranquila antes de dormir (leer, ducha...)',bueno:true},
+    {t:'Dormir 6 horas porque hay partido tarde',bueno:false},
+    {t:'Dormir 10 horas los días de colegio',bueno:true},
+    {t:'Dejar la televisión encendida para dormirse',bueno:false},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  c.innerHTML=`<div class="card"><div class="card-title">🌙 ¿Buena o mala rutina de sueño?</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Di si cada hábito ayuda a dormir bien o lo perjudica.</p></div>
+    ${conductas.map((it,i)=>`
+    <div class="exercise-box" id="se-box-${i}">
+      <div class="q-num">Hábito ${i+1}</div>
+      <div class="q-text">${it.t}</div>
+      <div class="options">
+        <button class="option-btn" data-correct="${it.bueno?'bueno':'malo'}" data-chosen="bueno" onclick="checkSE(this,${i})">✅ Bueno para dormir</button>
+        <button class="option-btn" data-correct="${it.bueno?'bueno':'malo'}" data-chosen="malo" onclick="checkSE(this,${i})">❌ Malo para dormir</button>
+      </div>
+      <div class="feedback" id="se-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showSuenoPhase(3)">Siguiente →</button></div>`;
+}
+window.checkSE=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('se-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+(btn.dataset.correct==='bueno'?'Bueno para dormir':'Malo para dormir');
+};
+
+function buildSuenoTF(){
+  const c=document.getElementById('sueno-content');
+  const items=[
+    {q:'Un niño de 8 años necesita dormir entre 9 y 12 horas.',a:true},
+    {q:'Las pantallas antes de dormir ayudan a conciliar el sueño porque relajan.',a:false},
+    {q:'La hormona del crecimiento se produce principalmente mientras dormimos.',a:true},
+    {q:'Dormir poco no afecta a la concentración en el colegio.',a:false},
+    {q:'Tener una rutina antes de dormir (como leer o ducharse) mejora la calidad del sueño.',a:true},
+    {q:'Dormir en una habitación oscura y fresca ayuda a dormir mejor.',a:true},
+    {q:'El cuerpo repara los músculos durante el ejercicio, no mientras duermes.',a:false},
+    {q:'Dormir mal hace que te pongas enfermo más fácilmente.',a:true},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  c.innerHTML=`<div class="card"><div class="card-title">🧠 Verdadero o Falso — Sueño</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Decide si cada afirmación es verdadera o falsa.</p></div>
+    ${items.map((it,i)=>`
+    <div class="exercise-box" id="stf-box-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkSTF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkSTF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="stf-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showSuenoPhase(4)">Mini Test →</button></div>`;
+}
+window.checkSTF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('stf-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildSuenoTest(){
+  const ALL=[
+    {type:'mc',question:'¿Cuántas horas debe dormir un niño de 8 años?',options:['6–7 horas','9–12 horas','13–15 horas'],correct:'9–12 horas'},
+    {type:'mc',question:'¿Qué hormona fundamental se produce durmiendo?',options:['Adrenalina','Melatonina','Hormona del crecimiento'],correct:'Hormona del crecimiento'},
+    {type:'mc',question:'¿Por qué la luz de las pantallas perjudica el sueño?',options:['Calienta los ojos','Bloquea la melatonina','Hace ruido'],correct:'Bloquea la melatonina'},
+    {type:'tf',question:'Dormir siempre a la misma hora ayuda al cuerpo a regular su reloj interno.',correct:'verdadero'},
+    {type:'tf',question:'Con 6 horas de sueño un niño puede aprender igual de bien.',correct:'falso'},
+    {type:'mc',question:'¿Qué hace el cuerpo con lo aprendido durante el día mientras duermes?',options:['Lo borra','Lo guarda en la memoria','No hace nada'],correct:'Lo guarda en la memoria'},
+    {type:'tf',question:'Dormir mal aumenta las posibilidades de ponerse enfermo.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué condiciones favorecen un buen sueño?',options:['Habitación caliente y con luz','Habitación oscura, fresca y tranquila','Música alta y pantallas encendidas'],correct:'Habitación oscura, fresca y tranquila'},
+    {type:'mc',question:'¿Cuánto tiempo antes de dormir conviene apagar las pantallas?',options:['5 minutos','1 hora','No importa'],correct:'1 hora'},
+    {type:'tf',question:'Los deportistas profesionales duermen menos para entrenar más.',correct:'falso'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'sueno-content',pct=>{
+    progress.sueno.score=pct; progress.sueno.done=true; updateHome();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// CLASE 2: ALIMENTACIÓN 🥗
+// ═══════════════════════════════════════════════════════════
+function showAlimPhase(n){
+  setTab('alim',n,4);
+  const c=document.getElementById('alim-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">🥗 Comer bien = crecer fuerte y listo</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">Lo que comes es literalmente el material con el que construyes tu cuerpo y tu cerebro.</p>
+      <div class="theory-highlight green"><strong>🟢 Comer MUCHO de esto:</strong><br>
+        🥦 Verduras · 🍎 Fruta · 🥚 Huevos · 🐟 Pescado · 🫘 Legumbres (lentejas, garbanzos)<br>
+        🥜 Frutos secos · 🫒 Aceite de oliva · 🍞 Pan integral · 🥛 Lácteos</div>
+      <div class="theory-highlight rose"><strong>🔴 Comer MUY POCO o nada de esto:</strong><br>
+        🍬 Chuches · 🥤 Refrescos · 🍟 Comida rápida · 🍪 Bollería industrial · 🌭 Salchichas procesadas</div>
+      <div class="theory-highlight"><strong>🧠 Nutrientes que necesita tu cerebro:</strong><br>
+        🐟 <strong>Omega-3</strong> (salmón, sardinas) → memoria y concentración<br>
+        🥚 <strong>Proteína</strong> (huevos, carne, legumbres) → energía y músculos<br>
+        🥛 <strong>Calcio</strong> (leche, yogur, queso) → huesos fuertes<br>
+        🥩 <strong>Hierro</strong> (carne roja, lentejas) → cerebro activo y sin cansancio<br>
+        🌾 <strong>Carbohidratos integrales</strong> → energía lenta y estable para todo el día</div>
+      <div class="theory-highlight sky"><strong>💧 El agua es la mejor bebida del mundo:</strong><br>
+        Un refresco de lata tiene el equivalente a 9 terrones de azúcar. Tu cuerpo no está diseñado
+        para procesar eso. El agua tiene cero azúcar, cero calorías y es todo lo que necesitas beber.
+        Objetivo: <strong>6-8 vasos al día</strong>.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showAlimPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildAlimClasifica(); }
+  else if(n===3){ buildAlimTF(); }
+  else if(n===4){ buildAlimTest(); }
+}
+window.showAlimPhase=showAlimPhase;
+
+function buildAlimClasifica(){
+  const alimentos=[
+    {n:'🍎 Manzana',tipo:'saludable'},{n:'🥦 Brócoli',tipo:'saludable'},
+    {n:'🥚 Huevo',tipo:'saludable'},{n:'🐟 Sardinas',tipo:'saludable'},
+    {n:'🫘 Lentejas',tipo:'saludable'},{n:'🥜 Almendras',tipo:'saludable'},
+    {n:'🥕 Zanahoria',tipo:'saludable'},{n:'🍌 Plátano',tipo:'saludable'},
+    {n:'🍬 Gominolas',tipo:'evitar'},{n:'🥤 Refresco de cola',tipo:'evitar'},
+    {n:'🍟 Patatas fritas de bolsa',tipo:'evitar'},{n:'🍪 Galletas rellenas',tipo:'evitar'},
+    {n:'🌭 Salchicha frankfurt',tipo:'evitar'},{n:'🍩 Donut',tipo:'evitar'},
+    {n:'🧃 Zumo de caja (industrial)',tipo:'evitar'},{n:'🍫 Chocolate blanco industrial',tipo:'evitar'},
+  ].sort(()=>Math.random()-.5).slice(0,8);
+  document.getElementById('alim-content').innerHTML=`
+    <div class="card"><div class="card-title">🍎 ¿Saludable o mejor evitarlo?</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Clasifica cada alimento correctamente.</p></div>
+    ${alimentos.map((a,i)=>`
+    <div class="exercise-box" id="ac-box-${i}">
+      <div style="font-size:20px;font-weight:900;color:var(--navy);margin-bottom:10px">${a.n}</div>
+      <div class="options">
+        <button class="option-btn" data-correct="${a.tipo}" data-chosen="saludable" onclick="checkAC(this,${i})">✅ Saludable — comer a menudo</button>
+        <button class="option-btn" data-correct="${a.tipo}" data-chosen="evitar" onclick="checkAC(this,${i})">⚠️ Mejor poco o nada</button>
+      </div>
+      <div class="feedback" id="ac-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showAlimPhase(3)">Siguiente →</button></div>`;
+}
+window.checkAC=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('ac-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+(btn.dataset.correct==='saludable'?'Saludable':'Mejor poco o nada');
+};
+
+function buildAlimTF(){
+  const items=[
+    {q:'Los refrescos son una buena forma de hidratarse.',a:false},
+    {q:'El pescado azul (salmón, sardinas) es bueno para el cerebro porque tiene Omega-3.',a:true},
+    {q:'Desayunar bien ayuda a concentrarse mejor en el colegio.',a:true},
+    {q:'Las gominolas y la bollería son alimentos que debemos comer cada día.',a:false},
+    {q:'El calcio es importante para tener los huesos fuertes.',a:true},
+    {q:'Un niño debería beber entre 6 y 8 vasos de agua al día.',a:true},
+    {q:'Las legumbres como las lentejas o los garbanzos son malas para la salud.',a:false},
+    {q:'Comer verduras todos los días es importante para crecer sano.',a:true},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('alim-content').innerHTML=`
+    <div class="card"><div class="card-title">🥗 Verdadero o Falso — Alimentación</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Decide si cada afirmación sobre nutrición es verdadera o falsa.</p></div>
+    ${items.map((it,i)=>`
+    <div class="exercise-box" id="atf-box-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkATF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkATF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="atf-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showAlimPhase(4)">Mini Test →</button></div>`;
+}
+window.checkATF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('atf-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildAlimTest(){
+  const ALL=[
+    {type:'mc',question:'¿Qué nutriente del pescado azul es clave para el cerebro?',options:['Calcio','Omega-3','Hierro'],correct:'Omega-3'},
+    {type:'mc',question:'¿Para qué sirve el calcio?',options:['Para ver mejor','Para los huesos','Para la memoria'],correct:'Para los huesos'},
+    {type:'tf',question:'Los refrescos tienen mucha azúcar y no son una buena bebida habitual.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estos alimentos es ultraprocesado?',options:['Naranja','Lentejas','Patatas fritas de bolsa'],correct:'Patatas fritas de bolsa'},
+    {type:'tf',question:'Las verduras solo son importantes para los adultos, no para los niños.',correct:'falso'},
+    {type:'mc',question:'¿Cuántos vasos de agua aprox. necesita beber un niño al día?',options:['1-2 vasos','3-4 vasos','6-8 vasos'],correct:'6-8 vasos'},
+    {type:'mc',question:'¿Qué nutriente da energía lenta y estable para todo el día?',options:['Azúcar blanca','Carbohidratos integrales','Grasas saturadas'],correct:'Carbohidratos integrales'},
+    {type:'tf',question:'El hierro ayuda al cerebro a funcionar con más energía.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estos es la mejor bebida para un niño?',options:['Refresco','Zumo industrial de caja','Agua'],correct:'Agua'},
+    {type:'tf',question:'Las legumbres como las lentejas son una buena fuente de proteína.',correct:'verdadero'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'alim-content',pct=>{
+    progress.alim.score=pct; progress.alim.done=true; updateHome();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// CLASE 3: MOVIMIENTO 🏃
+// ═══════════════════════════════════════════════════════════
+function showMovePhase(n){
+  setTab('move',n,4);
+  const c=document.getElementById('move-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">🏃 Tu cuerpo necesita moverse cada día</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">El movimiento no es solo deporte: es una necesidad básica del cuerpo, como comer o dormir.</p>
+      <div class="theory-highlight" style="background:var(--amber-bg);border-color:var(--amber-l)"><strong>⏱️ ¿Cuánto?</strong><br>
+        Un niño de 8 años debería moverse al menos <strong>60 minutos al día</strong>.
+        No tiene que ser deporte organizado: correr, saltar, trepar, bailar, jugar al pillapilla… ¡todo cuenta!</div>
+      <div class="theory-highlight green"><strong>🧠 Lo que el ejercicio hace a tu cerebro:</strong><br>
+        🩸 Más sangre al cerebro → <strong>más concentración y memoria</strong><br>
+        😊 Se liberan endorfinas → <strong>mejor humor, menos estrés</strong><br>
+        😴 El cuerpo se cansa bien → <strong>mejor calidad del sueño</strong><br>
+        📚 Crece el hipocampo → <strong>aprende más rápido y mejor</strong></div>
+      <div class="theory-highlight"><strong>💪 ¿Qué ejercicios son mejores?</strong><br>
+        🏊 Nadar · 🚴 Montar en bici · ⚽ Fútbol · 🏀 Baloncesto · 🎾 Tenis<br>
+        🏃 Correr · 🤸 Gimnasia · 🧗 Trepar · 💃 Bailar<br>
+        <em style="color:var(--gray-600)">Cualquier actividad que acelere el corazón y haga sudar un poco.</em></div>
+      <div class="theory-highlight rose"><strong>📱 El problema del sedentarismo:</strong><br>
+        Cada hora frente a una pantalla es una hora sin moverse. Los niños sedentarios tienen peores notas,
+        peor humor, más ansiedad y peor salud a largo plazo. Estar quieto no es neutro: tiene consecuencias.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showMovePhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildMoveClasifica(); }
+  else if(n===3){ buildMoveTF(); }
+  else if(n===4){ buildMoveTest(); }
+}
+window.showMovePhase=showMovePhase;
+
+function buildMoveClasifica(){
+  const acts=[
+    {t:'⚽ Jugar al fútbol 1 hora',activo:true},
+    {t:'📱 Ver videos en el móvil 3 horas',activo:false},
+    {t:'🚴 Montar en bici 45 minutos',activo:true},
+    {t:'🛋️ Estar tumbado en el sofá toda la tarde',activo:false},
+    {t:'🏊 Nadar 30 minutos',activo:true},
+    {t:'🏃 Correr en el parque con amigos',activo:true},
+    {t:'🎮 Videojuegos sentado 4 horas seguidas',activo:false},
+    {t:'🤸 Hacer acrobacias y volteretas',activo:true},
+    {t:'📺 Ver la televisión 2 horas seguidas',activo:false},
+    {t:'💃 Bailar tus canciones favoritas 20 minutos',activo:true},
+    {t:'🚗 Ir al colegio en coche aunque esté cerca',activo:false},
+    {t:'🧗 Trepar por los columpios del parque',activo:true},
+  ].sort(()=>Math.random()-.5).slice(0,8);
+  document.getElementById('move-content').innerHTML=`
+    <div class="card"><div class="card-title">⚡ ¿Activo o sedentario?</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Clasifica cada actividad: ¿te mueves o estás quieto?</p></div>
+    ${acts.map((a,i)=>`
+    <div class="exercise-box" id="mv-box-${i}">
+      <div class="q-text">${a.t}</div>
+      <div class="options">
+        <button class="option-btn" data-correct="${a.activo?'activo':'sedentario'}" data-chosen="activo" onclick="checkMV(this,${i})">🏃 Activo / Me muevo</button>
+        <button class="option-btn" data-correct="${a.activo?'activo':'sedentario'}" data-chosen="sedentario" onclick="checkMV(this,${i})">🛋️ Sedentario / Quieto</button>
+      </div>
+      <div class="feedback" id="mv-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showMovePhase(3)">Siguiente →</button></div>`;
+}
+window.checkMV=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('mv-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildMoveTF(){
+  const items=[
+    {q:'Un niño de 8 años debería moverse al menos 60 minutos al día.',a:true},
+    {q:'El ejercicio solo sirve para el cuerpo, no afecta al cerebro.',a:false},
+    {q:'Las endorfinas que libera el ejercicio mejoran el humor.',a:true},
+    {q:'Estar quieto frente a una pantalla es neutro, no tiene consecuencias.',a:false},
+    {q:'Hacer deporte regularmente mejora la calidad del sueño.',a:true},
+    {q:'Solo cuenta como actividad física el deporte organizado (fútbol, natación...).',a:false},
+    {q:'Los niños que se mueven más suelen sacar mejores notas.',a:true},
+    {q:'Bailar o trepar no cuenta como ejercicio físico.',a:false},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('move-content').innerHTML=`
+    <div class="card"><div class="card-title">🏃 Verdadero o Falso — Movimiento</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">¿Verdad o mentira sobre el ejercicio?</p></div>
+    ${items.map((it,i)=>`
+    <div class="exercise-box" id="mtf-box-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkMTF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkMTF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="mtf-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showMovePhase(4)">Mini Test →</button></div>`;
+}
+window.checkMTF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('mtf-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildMoveTest(){
+  const ALL=[
+    {type:'mc',question:'¿Cuánto tiempo mínimo debería moverse un niño cada día?',options:['15 min','30 min','60 min'],correct:'60 min'},
+    {type:'mc',question:'¿Qué produce el cerebro durante el ejercicio que mejora el humor?',options:['Adrenalina','Endorfinas','Melatonina'],correct:'Endorfinas'},
+    {type:'tf',question:'El ejercicio mejora la concentración y la memoria.',correct:'verdadero'},
+    {type:'tf',question:'Solo el deporte de competición cuenta como actividad física.',correct:'falso'},
+    {type:'mc',question:'¿Qué le pasa al cerebro cuando haces ejercicio?',options:['Se ralentiza','Recibe más sangre y funciona mejor','No cambia nada'],correct:'Recibe más sangre y funciona mejor'},
+    {type:'tf',question:'Los niños que hacen ejercicio regularmente duermen mejor.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estos es un buen ejercicio para un niño?',options:['Ver videos 3 horas','Nadar 30 minutos','Estar tumbado en el sofá'],correct:'Nadar 30 minutos'},
+    {type:'tf',question:'Bailar es una forma válida de hacer ejercicio físico.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué pasa con la salud de los niños muy sedentarios?',options:['No les afecta','Tienen más ansiedad y peor rendimiento','Crecen más rápido'],correct:'Tienen más ansiedad y peor rendimiento'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'move-content',pct=>{
+    progress.move.score=pct; progress.move.done=true; updateHome();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// CLASE 4: EMOCIONES ❤️
+// ═══════════════════════════════════════════════════════════
+function showEmocPhase(n){
+  setTab('emoc',n,4);
+  const c=document.getElementById('emoc-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">❤️ Las emociones: tus señales internas</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">Las emociones no son buenas ni malas: son mensajes que tu cuerpo te manda para avisarte de algo.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+        ${[['😊','Alegría','Te dice que estás bien y disfrutas'],
+           ['😢','Tristeza','Avisa de que algo importante se perdió'],
+           ['😠','Enfado','Señal de que algo no te parece justo'],
+           ['😨','Miedo','Te protege de peligros reales'],
+           ['🥰','Amor','Te conecta con quienes más te importan'],
+           ['😮','Sorpresa','Te hace prestar atención extra']].map(([e,n,d])=>`
+        <div style="background:var(--gray-50);border-radius:12px;padding:12px;text-align:center;border:2px solid var(--gray-200)">
+          <div style="font-size:30px;margin-bottom:6px">${e}</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy)">${n}</div>
+          <div style="font-size:11px;color:var(--gray-600);margin-top:4px">${d}</div>
+        </div>`).join('')}
+      </div>
+      <div class="theory-highlight rose"><strong>😠 ¿Qué hacer cuando te enfadas mucho?</strong><br>
+        1️⃣ Para. Respira profundo: 4 segundos dentro, 4 fuera.<br>
+        2️⃣ Cuenta hasta 10 antes de reaccionar.<br>
+        3️⃣ Di cómo te sientes con palabras: "Estoy enfadado porque..."<br>
+        4️⃣ Si necesitas, aléjate un momento y vuelve cuando estés calmado.</div>
+      <div class="theory-highlight violet"><strong>😢 ¿Y cuando estás triste?</strong><br>
+        La tristeza no es una debilidad. Es la emoción que nos avisa de que algo nos importa mucho.
+        Lo mejor es: hablar de ello con alguien de confianza, no guardárselo solo.</div>
+      <div class="theory-highlight green"><strong>🧠 Inteligencia emocional:</strong><br>
+        Las personas con alta inteligencia emocional: reconocen sus emociones, las gestionan sin explotar,
+        entienden cómo se sienten los demás y resuelven conflictos hablando. Es una habilidad que se aprende.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showEmocPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildEmocSituaciones(); }
+  else if(n===3){ buildEmocTF(); }
+  else if(n===4){ buildEmocTest(); }
+}
+window.showEmocPhase=showEmocPhase;
+
+function buildEmocSituaciones(){
+  const situs=[
+    {s:'Tu mejor amigo falta a tu cumpleaños sin avisarte.',
+     emocion:'😢 Tristeza / 😠 Enfado',
+     consejo:'Es normal sentirse así. Antes de enfadarte mucho, habla con él: puede que haya pasado algo.'},
+    {s:'Sacas muy buena nota en un examen en el que habías estudiado mucho.',
+     emocion:'😊 Alegría / 🥰 Orgullo',
+     consejo:'¡Celébralo! Te lo ganaste con esfuerzo. Ese buen resultado viene de haber trabajado.'},
+    {s:'Tienes que hacer una presentación en clase y el corazón te va muy rápido.',
+     emocion:'😨 Miedo / Nervios',
+     consejo:'Los nervios son normales. Respira hondo, prepárate bien y recuerda que todos los demás también lo sienten.'},
+    {s:'Un compañero dice algo que crees que no es verdad sobre ti delante de todos.',
+     emocion:'😠 Enfado / 😢 Tristeza',
+     consejo:'En lugar de explotar, habla con él en privado. Explícale cómo te hizo sentir con calma.'},
+    {s:'Ves a un compañero solo en el recreo que parece triste.',
+     emocion:'❤️ Empatía / Compasión',
+     consejo:'Acércate a preguntarle cómo está. Un gesto pequeño puede cambiar el día de alguien.'},
+    {s:'Pierdes un partido de fútbol en el último segundo.',
+     emocion:'😢 Tristeza / 😠 Frustración',
+     consejo:'La frustración es parte del deporte. Perder con dignidad y aprender del error es de campeones.'},
+  ];
+  document.getElementById('emoc-content').innerHTML=`
+    <div class="card"><div class="card-title">😊 ¿Cómo te sentirías en esta situación?</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Lee cada situación, piensa qué emoción sentirías y luego descubre el consejo.</p></div>
+    ${situs.map((s,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Situación ${i+1}</div>
+      <div class="q-text">${s.s}</div>
+      <div id="emoc-ans-${i}" style="display:none">
+        <div style="background:var(--rose-bg);border-left:4px solid var(--rose-l);border-radius:0 10px 10px 0;padding:12px;margin-top:10px;font-size:14px">
+          <strong>Emoción probable:</strong> ${s.emocion}<br>
+          <strong>💡 Consejo:</strong> ${s.consejo}
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:10px;font-size:13px" id="emoc-btn-${i}"
+        onclick="this.style.display='none';document.getElementById('emoc-ans-${i}').style.display='block'">
+        Ver emoción y consejo →
+      </button>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showEmocPhase(3)">Siguiente →</button></div>`;
+}
+
+function buildEmocTF(){
+  const items=[
+    {q:'No hay emociones malas — todas tienen una función útil.',a:true},
+    {q:'El miedo siempre es negativo y no sirve para nada.',a:false},
+    {q:'Respirar profundo ayuda a calmarse cuando estás muy enfadado.',a:true},
+    {q:'Llorar es una señal de debilidad y no deberíamos hacerlo.',a:false},
+    {q:'La inteligencia emocional es una habilidad que se puede aprender y mejorar.',a:true},
+    {q:'Si estás triste, lo mejor es guardárselo solo y no hablar con nadie.',a:false},
+    {q:'Contar hasta 10 antes de reaccionar ayuda a no decir cosas de las que luego te arrepientes.',a:true},
+    {q:'La empatía es saber ponerse en el lugar de los demás.',a:true},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('emoc-content').innerHTML=`
+    <div class="card"><div class="card-title">❤️ Verdadero o Falso — Emociones</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">¿Verdad o mito sobre las emociones?</p></div>
+    ${items.map((it,i)=>`
+    <div class="exercise-box" id="etf-box-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkETF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkETF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="etf-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showEmocPhase(4)">Mini Test →</button></div>`;
+}
+window.checkETF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('etf-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildEmocTest(){
+  const ALL=[
+    {type:'mc',question:'¿Para qué sirve el miedo?',options:['Para fastidiarnos','Para protegernos de peligros','No sirve para nada'],correct:'Para protegernos de peligros'},
+    {type:'tf',question:'Todas las emociones tienen una función útil, incluso las negativas.',correct:'verdadero'},
+    {type:'mc',question:'Si estás muy enfadado, ¿qué es lo primero que debes hacer?',options:['Gritar fuerte','Respirar profundo y contar hasta 10','Golpear algo'],correct:'Respirar profundo y contar hasta 10'},
+    {type:'tf',question:'Llorar cuando estás triste es una señal de debilidad.',correct:'falso'},
+    {type:'mc',question:'¿Qué es la empatía?',options:['Ser muy inteligente','Saber ponerse en el lugar de los demás','Ganar siempre'],correct:'Saber ponerse en el lugar de los demás'},
+    {type:'tf',question:'La inteligencia emocional no se puede aprender, solo se nace con ella.',correct:'falso'},
+    {type:'mc',question:'¿Qué emoción te avisa de que algo que te importa mucho ha cambiado?',options:['Alegría','Tristeza','Sorpresa'],correct:'Tristeza'},
+    {type:'mc',question:'¿Cuál es la mejor manera de gestionar el enfado?',options:['Explotar y decir todo lo que piensas','Guardárselo para siempre','Hablar de cómo te sientes cuando estés calmado'],correct:'Hablar de cómo te sientes cuando estés calmado'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'emoc-content',pct=>{
+    progress.emoc.score=pct; progress.emoc.done=true; updateHome();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// CLASE 5: HÁBITOS 🧹
+// ═══════════════════════════════════════════════════════════
+function showHabitPhase(n){
+  setTab('habit',n,4);
+  const c=document.getElementById('habit-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">🧹 Los hábitos: pequeñas acciones, grandes resultados</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">Un hábito es algo que haces casi sin pensar porque lo has repetido muchas veces.</p>
+      <div class="theory-highlight violet"><strong>🔬 ¿Cómo se forma un hábito?</strong><br>
+        Todo hábito funciona igual: <strong>Señal → Rutina → Recompensa</strong>.<br>
+        Por ejemplo: oyes el despertador (señal) → te lavas los dientes (rutina) → te sientes bien con la boca limpia (recompensa).
+        Repetirlo unos <strong>21 días seguidos</strong> hace que se vuelva automático.</div>
+      <div class="theory-highlight green"><strong>🌟 Hábitos que cambian la vida de un niño:</strong><br>
+        🦷 Lavarse los dientes · 🛏️ Hacer la cama · 📚 Leer 20 min al día<br>
+        🎒 Preparar la mochila la noche anterior · 📴 Limitar pantallas<br>
+        🧹 Ordenar su habitación · 🙏 Decir gracias y por favor<br>
+        🌿 Salir a caminar · ✍️ Repasar los deberes nada llegar a casa</div>
+      <div class="theory-highlight"><strong>📚 La lectura: el hábito más poderoso que existe:</strong><br>
+        Solo 20 minutos de lectura al día = más de 10 libros al año.
+        Los lectores habituales tienen más vocabulario, más imaginación, mejor concentración y mejores notas.
+        No hace falta leer libros aburridos — cualquier libro que te guste vale.</div>
+      <div class="theory-highlight amber"><strong>⚡ El efecto bola de nieve:</strong><br>
+        Un buen hábito lleva a otro. Levantarte ordenado → ir al colegio tranquilo → concentrarte mejor →
+        aprender más → sentirte mejor contigo mismo → querer mejorar más. Todo empieza con el primer paso.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showHabitPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildHabitOrden(); }
+  else if(n===3){ buildHabitTF(); }
+  else if(n===4){ buildHabitTest(); }
+}
+window.showHabitPhase=showHabitPhase;
+
+function buildHabitOrden(){
+  const items=[
+    {t:'⏰ Suena el despertador',ord:1},
+    {t:'🛏️ Hacer la cama',ord:2},
+    {t:'🚿 Ducharse / lavarse',ord:3},
+    {t:'👕 Vestirse',ord:4},
+    {t:'🥣 Desayunar bien',ord:5},
+    {t:'🎒 Coger la mochila (preparada la noche anterior)',ord:6},
+  ].sort(()=>Math.random()-.5);
+  document.getElementById('habit-content').innerHTML=`
+    <div class="card"><div class="card-title">📋 Ordena la rutina perfecta de mañana</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Arrastra las tarjetas para ponerlas en el orden correcto y tener la mejor mañana posible.</p>
+    <ul class="sort-list" id="habit-sort">
+      ${items.map((it,i)=>`
+      <li class="sort-item" draggable="true" data-ord="${it.ord}" id="hs-${i}"
+        ondragstart="hsDragStart(event)" ondragover="hsDragOver(event)"
+        ondrop="hsDrop(event)" ondragleave="hsDragLeave(event)">
+        <span class="sort-handle">⠿</span><span>${it.t}</span>
+      </li>`).join('')}
+    </ul>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="hsCheck()">Comprobar ✓</button>
+      <button class="btn" style="background:rgba(0,0,0,.06);color:var(--gray-600)" onclick="buildHabitOrden()">🔄 Barajar</button>
+    </div>
+    <div class="feedback" id="hs-fb"></div></div>
+    <div class="btn-row"><button class="btn btn-success" onclick="showHabitPhase(3)">Siguiente →</button></div>`;
+}
+let _hsDrag=null;
+window.hsDragStart=e=>{_hsDrag=e.currentTarget;e.currentTarget.style.opacity='.4'};
+window.hsDragOver=e=>{e.preventDefault();e.currentTarget.classList.add('drag-over')};
+window.hsDragLeave=e=>e.currentTarget.classList.remove('drag-over');
+window.hsDrop=e=>{
+  e.preventDefault();e.currentTarget.classList.remove('drag-over');
+  if(_hsDrag&&_hsDrag!==e.currentTarget){
+    const l=document.getElementById('habit-sort'),a=[...l.children];
+    const fi=a.indexOf(_hsDrag),ti=a.indexOf(e.currentTarget);
+    if(fi<ti)l.insertBefore(_hsDrag,e.currentTarget.nextSibling);
+    else l.insertBefore(_hsDrag,e.currentTarget);
+  }
+  if(_hsDrag)_hsDrag.style.opacity='1';_hsDrag=null;
+};
+window.hsCheck=()=>{
+  const l=document.getElementById('habit-sort');
+  const ords=[...l.children].map(li=>parseInt(li.dataset.ord));
+  const ok=ords.every((v,i)=>i===0||ords[i-1]<=v);
+  const fb=document.getElementById('hs-fb');
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Perfecto! Esa es una rutina de mañana excelente.':'❌ Revisa el orden — ¿tiene sentido ese paso antes que el anterior?';
+};
+
+function buildHabitTF(){
+  const items=[
+    {q:'Un hábito se forma aproximadamente en 21 días de práctica continua.',a:true},
+    {q:'Una vez formado un hábito, requiere mucho esfuerzo mental para mantenerse.',a:false},
+    {q:'Leer 20 minutos al día puede equivaler a más de 10 libros al año.',a:true},
+    {q:'Los hábitos malos son imposibles de cambiar una vez formados.',a:false},
+    {q:'Preparar la mochila la noche anterior es un buen hábito que reduce el estrés matutino.',a:true},
+    {q:'Los pequeños hábitos no tienen un impacto real en la vida a largo plazo.',a:false},
+    {q:'La lectura habitual mejora el vocabulario y la concentración.',a:true},
+    {q:'Hacer la cama cada mañana es un hábito sin ningún beneficio real.',a:false},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('habit-content').innerHTML=`
+    <div class="card"><div class="card-title">🧹 Verdadero o Falso — Hábitos</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">¿Cuánto sabes sobre el poder de los hábitos?</p></div>
+    ${items.map((it,i)=>`
+    <div class="exercise-box" id="htf-box-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkHTF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkHTF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="htf-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showHabitPhase(4)">Mini Test →</button></div>`;
+}
+window.checkHTF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('htf-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildHabitTest(){
+  const ALL=[
+    {type:'mc',question:'¿Cuántos días aproximadamente se tarda en formar un nuevo hábito?',options:['3 días','21 días','1 año'],correct:'21 días'},
+    {type:'tf',question:'Una vez formado un hábito, requiere muy poco esfuerzo mantenerse.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estos es un ejemplo de buen hábito matutino?',options:['Mirar el móvil nada levantarse','Hacer la cama y preparar la mochila','Desayunar mientras ves la tele'],correct:'Hacer la cama y preparar la mochila'},
+    {type:'tf',question:'Leer 20 minutos al día tiene beneficios reales en vocabulario y concentración.',correct:'verdadero'},
+    {type:'mc',question:'¿Cómo funciona el ciclo del hábito?',options:['Señal → Rutina → Recompensa','Pensar → Decidir → Actuar','Dormirse → Soñar → Olvidar'],correct:'Señal → Rutina → Recompensa'},
+    {type:'tf',question:'Los hábitos malos también se forman por repetición, igual que los buenos.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué beneficio tiene preparar la mochila la noche anterior?',options:['Ninguno','Reduces el estrés por las mañanas y llegas más tranquilo al colegio','Te quita tiempo de juego'],correct:'Reduces el estrés por las mañanas y llegas más tranquilo al colegio'},
+    {type:'mc',question:'¿Qué libro debería leer un niño para desarrollar el hábito lector?',options:['Solo libros de texto','Cualquier libro que le guste e interese','Solo cómics'],correct:'Cualquier libro que le guste e interese'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'habit-content',pct=>{
+    progress.habit.score=pct; progress.habit.done=true; updateHome();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// CLASE 6: VALORES 🌱
+// ═══════════════════════════════════════════════════════════
+function showValsPhase(n){
+  setTab('vals',n,4);
+  const c=document.getElementById('vals-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">🌱 Los valores: quién eres de verdad</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">Los valores no son palabras bonitas. Son las decisiones que tomas cada día, especialmente cuando nadie te mira.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+        ${[['🤝','Honestidad','Decir la verdad, aunque sea difícil o te perjudique.'],
+           ['🌟','Respeto','Tratar a todos como quieres que te traten a ti.'],
+           ['💪','Esfuerzo','Dar lo mejor de ti, aunque nadie te mire.'],
+           ['🙏','Gratitud','Agradecer lo que tienes y lo que hacen por ti.'],
+           ['❤️','Empatía','Entender cómo se siente el otro y actuar en consecuencia.'],
+           ['🏆','Responsabilidad','Cumplir lo que te comprometiste, sin excusas.']].map(([ico,nom,def])=>`
+        <div style="background:var(--teal-bg);border:2px solid rgba(13,148,136,.2);border-radius:12px;padding:14px">
+          <div style="font-family:'Fredoka One',cursive;font-size:16px;color:var(--teal);margin-bottom:4px">${ico} ${nom}</div>
+          <div style="font-size:13px;color:var(--gray-600);line-height:1.5">${def}</div>
+        </div>`).join('')}
+      </div>
+      <div class="theory-highlight teal"><strong>💡 Los valores en acción:</strong><br>
+        Un niño honesto reconoce sus errores en lugar de culpar a otros.<br>
+        Un niño empático ayuda al compañero que está solo en el recreo.<br>
+        Un niño responsable hace sus deberes sin que se lo recuerden.<br>
+        <em>No es perfecto — nadie lo es. Lo importante es intentarlo cada día.</em></div>
+      <div class="theory-highlight green"><strong>🔬 ¿Por qué importan los valores?</strong><br>
+        Las personas con buenos valores tienen mejores amistades, más confianza en sí mismas,
+        mayor bienestar emocional y más éxito a largo plazo. No porque sean perfectas,
+        sino porque se ganan la confianza y el respeto de los demás.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showValsPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildValsDilemas(); }
+  else if(n===3){ buildValsTF(); }
+  else if(n===4){ buildValsTest(); }
+}
+window.showValsPhase=showValsPhase;
+
+function buildValsDilemas(){
+  const dilemas=[
+    {s:'Encuentras una cartera con dinero en el suelo del colegio y nadie te ha visto.',
+     ops:['Me lo quedo — ¡qué suerte!','Lo entrego al profesor por si alguien lo perdió','Lo dejo donde estaba y me voy'],
+     correct:'Lo entrego al profesor por si alguien lo perdió',
+     exp:'Honestidad en acción. Ese dinero puede ser muy importante para quien lo perdió.',val:'🤝 Honestidad'},
+    {s:'Tu equipo pierde por culpa de un error tuyo. Un compañero te echa la culpa.',
+     ops:['Le digo que él también falló','Reconozco mi error y pido disculpas al equipo','Me enfado y me voy a casa'],
+     correct:'Reconozco mi error y pido disculpas al equipo',
+     exp:'Reconocer los errores cuesta, pero es la base de la honestidad y el respeto mutuo.',val:'🤝 Honestidad + 🏆 Responsabilidad'},
+    {s:'Ves que un compañero está solo en el recreo y parece muy triste.',
+     ops:['No es mi problema, sigo jugando','Me acerco a preguntarle si está bien','Me río con mis amigos de que está solo'],
+     correct:'Me acerco a preguntarle si está bien',
+     exp:'Eso es empatía. Un gesto pequeño puede cambiar completamente el día de alguien.',val:'❤️ Empatía'},
+    {s:'Tu madre te pide que ordenes tu habitación, pero prefieres seguir jugando.',
+     ops:['Ordeno ahora y luego juego','Digo que sí pero no lo hago','Me enfado y discuto'],
+     correct:'Ordeno ahora y luego juego',
+     exp:'Cumplir con tus responsabilidades desarrolla la disciplina y la confianza propia.',val:'🏆 Responsabilidad'},
+    {s:'Un amigo te pide que guardes un secreto que puede perjudicar a alguien.',
+     ops:['Guardo el secreto pase lo que pase','Hablo con un adulto de confianza si alguien puede salir herido','Se lo cuento a todo el mundo'],
+     correct:'Hablo con un adulto de confianza si alguien puede salir herido',
+     exp:'La lealtad tiene límites. Si guardar un secreto puede hacer daño, es mejor buscar ayuda.',val:'🤝 Honestidad + ❤️ Empatía'},
+    {s:'Alguien te hace un favor importante y espera que lo agradezcas.',
+     ops:['No digo nada, ya sabe que estoy contento','Le doy las gracias de corazón y de forma concreta','Le digo que no era para tanto'],
+     correct:'Le doy las gracias de corazón y de forma concreta',
+     exp:'La gratitud sincera fortalece las relaciones y hace que la gente quiera ayudarte más.',val:'🙏 Gratitud'},
+  ];
+  document.getElementById('vals-content').innerHTML=`
+    <div class="card"><div class="card-title">🤔 ¿Qué harías tú?</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Lee cada dilema y elige la respuesta que crees que es la correcta. No hay trampa: piensa de verdad.</p></div>
+    ${dilemas.map((d,i)=>`
+    <div class="exercise-box" id="vd-box-${i}">
+      <div class="q-num">Dilema ${i+1} · Valor: ${d.val}</div>
+      <div class="q-text">${d.s}</div>
+      <div class="options" id="vd-opts-${i}">
+        ${d.ops.map(o=>`<button class="option-btn" data-correct="${d.correct}" data-chosen="${o}"
+          onclick="checkVD(this,${i},'${d.exp.replace(/'/g,'&#39;')}')">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="vd-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showValsPhase(3)">Siguiente →</button></div>`;
+}
+window.checkVD=function(btn,i,exp){
+  document.querySelectorAll('#vd-opts-'+i+' .option-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok)document.querySelectorAll('#vd-opts-'+i+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+  const fb=document.getElementById('vd-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.innerHTML=(ok?'✅ ':'❌ ')+exp;
+};
+
+function buildValsTF(){
+  const items=[
+    {q:'Los valores son principios que guían cómo actúamos, especialmente cuando nadie nos ve.',a:true},
+    {q:'Ser honesto significa decir siempre lo que pensamos, aunque haga daño innecesariamente.',a:false},
+    {q:'La empatía es saber ponerse en el lugar de los demás y actuar en consecuencia.',a:true},
+    {q:'Una persona responsable solo cumple sus compromisos cuando le apetece.',a:false},
+    {q:'La gratitud fortalece las relaciones con los demás.',a:true},
+    {q:'El respeto solo es necesario con los adultos, no con los compañeros.',a:false},
+    {q:'Reconocer los propios errores es una muestra de honestidad y valentía.',a:true},
+    {q:'Los valores solo son importantes para los adultos, no para los niños.',a:false},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('vals-content').innerHTML=`
+    <div class="card"><div class="card-title">🌱 Verdadero o Falso — Valores</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">¿Verdad o mito sobre los valores y la forma de ser persona?</p></div>
+    ${items.map((it,i)=>`
+    <div class="exercise-box" id="vtf-box-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkVTF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkVTF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="vtf-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showValsPhase(4)">Mini Test →</button></div>`;
+}
+window.checkVTF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('vtf-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildValsTest(){
+  const ALL=[
+    {type:'mc',question:'¿Qué es la empatía?',options:['Ser muy inteligente','Ponerse en el lugar del otro','Ganar siempre en los juegos'],correct:'Ponerse en el lugar del otro'},
+    {type:'tf',question:'Ser honesto significa decir la verdad aunque a veces sea difícil.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estos es un ejemplo de gratitud?',options:['Pedir más cosas','Dar las gracias de corazón','Ignorar lo que otros hacen por ti'],correct:'Dar las gracias de corazón'},
+    {type:'tf',question:'Una persona responsable cumple sus compromisos solo cuando le conviene.',correct:'falso'},
+    {type:'mc',question:'¿Por qué son importantes los valores?',options:['Para sacar mejores notas','Para ser mejor persona y tener mejores relaciones','Solo importan a los adultos'],correct:'Para ser mejor persona y tener mejores relaciones'},
+    {type:'tf',question:'El respeto implica tratar a los demás como quieres que te traten a ti.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué muestra una persona que reconoce sus errores?',options:['Debilidad','Honestidad y valentía','Que no sabe hacer las cosas'],correct:'Honestidad y valentía'},
+    {type:'mc',question:'Si encuentras algo perdido, ¿qué harías?',options:['Quedármelo sin decir nada','Entregarlo para que llegue a su dueño','Tirarlo a la basura'],correct:'Entregarlo para que llegue a su dueño'},
+    {type:'tf',question:'Los valores solo se demuestran cuando alguien nos está mirando.',correct:'falso'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'vals-content',pct=>{
+    progress.vals.score=pct; progress.vals.done=true; updateHome();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD PROGRESO
+// ═══════════════════════════════════════════════════════════
+function buildProgreso(){
+  const topics=[
+    {key:'sueno',icon:'🛌',name:'Sueño y descanso'},
+    {key:'alim', icon:'🥗',name:'Alimentación sana'},
+    {key:'move', icon:'🏃',name:'Movimiento'},
+    {key:'emoc', icon:'❤️',name:'Emociones'},
+    {key:'habit',icon:'🧹',name:'Hábitos'},
+    {key:'vals', icon:'🌱',name:'Valores'},
+  ];
+  const done=topics.filter(t=>progress[t.key].done).length;
+  const avg=done?Math.round(topics.filter(t=>progress[t.key].done).reduce((s,t)=>s+progress[t.key].score,0)/done):0;
+  document.getElementById('progreso-content').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;text-align:center">
+        <div style="font-family:'Fredoka One',cursive;font-size:40px;color:#fbbf24">${done}/6</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);font-weight:700;margin-top:4px">CLASES COMPLETADAS</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;text-align:center">
+        <div style="font-family:'Fredoka One',cursive;font-size:40px;color:#86efac">${avg}%</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);font-weight:700;margin-top:4px">MEDIA DE ACIERTOS</div>
+      </div>
+    </div>
+    ${topics.map(t=>{
+      const p=progress[t.key];
+      const stars=p.done?(p.score>=80?'⭐⭐⭐':p.score>=60?'⭐⭐':'⭐'):'–';
+      return `<div class="progress-topic-row">
+        <div class="pt-icon">${t.icon}</div>
+        <div class="pt-name">${t.name}</div>
+        ${p.done?`<div class="pt-bar"><div class="pt-fill" style="width:${p.score}%"></div></div>
+        <div class="pt-score">${p.score}%</div>`:'<div style="color:rgba(255,255,255,.3);font-size:12px">Pendiente</div>'}
+        <div style="font-size:16px">${stars}</div>
+      </div>`;
+    }).join('')}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// FASE MAP (para setTab)
+// ═══════════════════════════════════════════════════════════
+const PHASES={
+  sueno:{tabs:['📖 1. Aprende','✅ 2. Buenos/Malos hábitos','🔁 3. V o F','📝 Mini Test'],show:showSuenoPhase},
+  alim: {tabs:['📖 1. Aprende','🍎 2. Clasifica alimentos','🔁 3. V o F','📝 Mini Test'],show:showAlimPhase},
+  move: {tabs:['📖 1. Aprende','⚡ 2. Activo o sedentario','🔁 3. V o F','📝 Mini Test'],show:showMovePhase},
+  emoc: {tabs:['📖 1. Aprende','😊 2. Situaciones reales','🔁 3. V o F','📝 Mini Test'],show:showEmocPhase},
+  habit:{tabs:['📖 1. Aprende','📋 2. Ordena tu rutina','🔁 3. V o F','📝 Mini Test'],show:showHabitPhase},
+  vals: {tabs:['📖 1. Aprende','🤔 2. Dilemas morales','🔁 3. V o F','📝 Mini Test'],show:showValsPhase},
+};
+</script>
+
+<script type="module">
+import { CONFIG } from '../components/config.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
+
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🌱 La <span>Vida</span> · ${s.class} · ${s.school} · ${s.location}</div>
+      <div class="header-sub">LO QUE IMPORTA DE VERDAD · 2º PRIMARIA</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back">← Volver al portal</a>
+    </div>
+  </div>`;
+
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+updateHome();
+</script>
+</body>
+</html>
