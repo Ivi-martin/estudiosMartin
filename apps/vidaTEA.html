@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  :root { color-scheme: dark; --bg:#0f172a; }
+  html,body { background-color: #0f172a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧩 TEA – La Vida</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --green:#16a34a; --green-l:#22c55e; --green-bg:#dcfce7;
+  --teal:#0d9488; --teal-l:#14b8a6; --teal-bg:#ccfbf1;
+  --amber:#d97706; --amber-l:#f59e0b; --amber-bg:#fef3c7;
+  --rose:#e11d48; --rose-l:#f43f5e; --rose-bg:#ffe4e6;
+  --violet:#7c3aed; --violet-l:#8b5cf6; --violet-bg:#ede9fe;
+  --sky-c:#0284c7; --sky-bg:#e0f2fe;
+  --navy:#1a2744;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-600:#475569;--gray-800:#1e293b;
+  --shadow:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+  --radius:16px;--radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+
+/* Stars */
+.stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0f172a 0%,#064e3b 50%,#0f172a 100%);overflow:hidden}
+.stars-bg::before{content:'★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.06);
+  line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.5}to{opacity:1}}
+
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+/* Header */
+.header{background:linear-gradient(135deg,#064e3b 0%,#16a34a 100%);padding:16px 24px;
+  display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);
+  box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.header-logo span{color:#fbbf24}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+
+/* Progress strip */
+.progress-strip{background:rgba(0,0,0,.3);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+.progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:4px;transition:width .5s ease}
+.progress-pct{font-size:12px;color:#86efac;font-weight:800}
+
+.main{flex:1;display:flex;gap:0}
+
+/* Sidebar */
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+  padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+.sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+  color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+.nav-btn.active{background:rgba(22,163,74,.3);color:white;border:1px solid rgba(22,163,74,.5)}
+.nav-btn.completed{color:#86efac}
+.nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+.nav-btn .nav-stars{margin-left:auto;font-size:12px}
+
+.content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Home hero */
+.home-hero{background:linear-gradient(135deg,#064e3b 0%,#166534 60%,#1e3a5f 100%);
+  border-radius:24px;padding:40px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.home-hero::before{content:'🛌🥗🏃';position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  font-size:48px;opacity:.15;writing-mode:vertical-rl;letter-spacing:12px}
+.home-hero h1{font-family:'Fredoka One',cursive;font-size:38px;color:white;margin-bottom:8px}
+.home-hero h1 span{color:#86efac}
+.home-hero p{color:rgba(255,255,255,.8);font-size:15px;max-width:500px;line-height:1.6}
+
+/* Class cards */
+.classes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+.class-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.class-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);border-color:rgba(255,255,255,.2)}
+.class-card.unlocked{background:rgba(255,255,255,.08)}
+.class-card.completed{border-color:rgba(22,163,74,.4);background:rgba(22,163,74,.07)}
+.class-number{font-size:11px;color:rgba(255,255,255,.4);font-weight:800;letter-spacing:1px;margin-bottom:8px}
+.class-icon{font-size:36px;margin-bottom:10px}
+.class-title{font-family:'Fredoka One',cursive;font-size:18px;color:white;margin-bottom:4px}
+.class-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.5}
+.class-status{position:absolute;top:14px;right:14px;font-size:18px}
+.class-stars{margin-top:12px;font-size:16px;color:#fbbf24}
+
+/* Lesson header */
+.lesson-header{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+.lesson-icon{font-size:42px}
+.lesson-info h2{font-family:'Fredoka One',cursive;font-size:26px;color:white}
+.lesson-info p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+
+/* Phase tabs */
+.phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+.phase-tab.active{background:var(--green);color:white;border-color:var(--green-l)}
+.phase-tab.done{background:rgba(22,163,74,.15);color:#86efac;border-color:rgba(22,163,74,.3)}
+
+/* Cards */
+.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* Theory highlight */
+.theory-highlight{background:var(--amber-bg);border-left:4px solid var(--amber-l);
+  border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+.theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
+.theory-highlight.rose{background:var(--rose-bg);border-color:var(--rose)}
+.theory-highlight.teal{background:var(--teal-bg);border-color:var(--teal)}
+.theory-highlight.violet{background:var(--violet-bg);border-color:var(--violet)}
+.theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky-c)}
+
+/* Exercise box */
+.exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+.exercise-box .q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--green);text-transform:uppercase;margin-bottom:8px}
+.exercise-box .q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+
+/* Options */
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+.option-btn:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.option-btn.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+.option-btn:disabled{cursor:not-allowed;opacity:.8}
+
+/* Text input */
+.text-input{padding:12px 16px;border:2px solid var(--gray-200);border-radius:10px;
+  font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;transition:all .2s;
+  background:#fff !important;color:#1a2744 !important}
+.text-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.text-input.correct{border-color:var(--green);background:var(--green-bg) !important}
+.text-input.wrong{border-color:var(--rose);background:var(--rose-bg) !important}
+
+/* Feedback */
+.feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+.feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+.feedback.correct{background:var(--green-bg);color:var(--green)}
+.feedback.wrong{background:var(--rose-bg);color:var(--rose)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* Buttons */
+.btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+  transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--green);color:white}
+.btn-primary:hover{background:var(--green-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(22,163,74,.4)}
+.btn-success{background:var(--teal);color:white}
+.btn-success:hover{background:var(--teal-l);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+/* Score card */
+.score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+.score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--green)}
+.score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+.stars-display{font-size:36px;letter-spacing:4px}
+
+/* Mini test dots */
+.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.test-dots{display:flex;gap:6px}
+.test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+.test-dot.current{background:var(--green);transform:scale(1.3)}
+.test-dot.done-correct{background:var(--green)}
+.test-dot.done-wrong{background:var(--rose)}
+
+/* True/False */
+.tf-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.tf-btn{padding:12px 28px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;
+  border:2px solid var(--gray-200);background:white;cursor:pointer;transition:all .2s;color:var(--navy)}
+.tf-btn:hover:not(:disabled){transform:scale(1.05)}
+.tf-btn.verd:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.tf-btn.fals:hover:not(:disabled){border-color:var(--rose);background:var(--rose-bg)}
+.tf-btn.correct{background:var(--green-bg) !important;border-color:var(--green) !important;color:var(--green) !important}
+.tf-btn.wrong{background:var(--rose-bg) !important;border-color:var(--rose) !important;color:var(--rose) !important}
+.tf-btn:disabled{cursor:not-allowed}
+
+/* Drag sort */
+.sort-list{list-style:none;margin:0;padding:0}
+.sort-item{background:white;border:2px solid var(--gray-200);border-radius:10px;padding:12px 16px;
+  margin-bottom:8px;cursor:grab;display:flex;align-items:center;gap:10px;
+  font-weight:700;font-size:14px;color:var(--navy);user-select:none;transition:all .15s}
+.sort-item:active{cursor:grabbing;box-shadow:var(--shadow)}
+.sort-item.drag-over{border-color:var(--green);background:var(--green-bg)}
+.sort-handle{color:var(--gray-400);font-size:18px}
+
+/* Progress screen */
+.progress-topic-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+.progress-topic-row .pt-icon{font-size:22px}
+.progress-topic-row .pt-name{font-weight:700;color:rgba(255,255,255,.8);flex:1;font-size:14px}
+.progress-topic-row .pt-score{font-family:'Fredoka One',cursive;font-size:22px;color:#86efac}
+.progress-topic-row .pt-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.progress-topic-row .pt-fill{height:100%;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:99px;transition:width .8s}
+
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+.content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+
+@media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+<div id="app-header-root"></div>
+
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO DEL TEMA</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+<div class="sidebar">
+  <div class="sidebar-section">Navegación</div>
+  <button class="nav-btn active" onclick="showScreen('tema')" id="nav-tema">
+    <span class="nav-icon">🧩</span> TEA
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Resultados
+  </button>
+</div>
+
+<div class="content">
+<div class="screen active" id="screen-tema">
+  <div class="lesson-header">
+    <div class="lesson-icon">🧩</div>
+    <div class="lesson-info">
+      <h2>TEA</h2>
+      <p>El Trastorno del Espectro Autista</p>
+    </div>
+    <button class="btn-back" onclick="history.back()" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-tema"></div>
+  <div id="tema-content"></div>
+</div>
+<div class="screen" id="screen-progreso">
+  <div id="progreso-content"></div>
+</div>
+</div>
+</div>
+</div>
+<div id="app-footer-root"></div>
+
+<script>
+const progress = { tema:{done:false,score:0} };
+
+function updateHome() {
+  const pct = progress.tema.done ? progress.tema.score : 0;
+  document.getElementById('overall-progress').style.width = pct+'%';
+  document.getElementById('overall-pct').textContent = pct+'%';
+}
+
+let _init = false;
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const nb=document.getElementById('nav-'+id); if(nb) nb.classList.add('active');
+  if(id==='tema' && !_init) { _init=true; PHASES.tema.show(1); }
+  if(id==='progreso') buildProgreso();
+}
+window.showScreen=showScreen;
+
+function setTab(id, n) {
+  const labels = PHASES[id].tabs;
+  const wrap = document.getElementById('tabs-'+id); if(!wrap) return;
+  wrap.innerHTML = labels.map((l,i)=>`
+    <div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// MINI TEST ENGINE (idéntico a mat6)
+// ═══════════════════════════════════════════
+function buildMiniTest(qs, containerId, onDone) {
+  let curr=0, correct=0, results=[];
+  const dots = qs.map(()=>'').join('');
+
+  function render() {
+    const c = document.getElementById(containerId); if(!c) return;
+    if(curr>=qs.length) {
+      const pct=Math.round(correct/qs.length*100);
+      const stars=pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      const msg=pct===100?'¡Perfecto! Eres un crack 🔥':pct>=80?'¡Muy bien! Casi perfecto 💪':pct>=60?'¡Bien hecho! Sigue así 👍':'Repasa el tema e inténtalo otra vez 📖';
+      c.innerHTML=`<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${msg}<br><small>${correct} de ${qs.length} correctas</small></div>
+      </div>`;
+      if(onDone) onDone(pct);
+      return;
+    }
+    const q=qs[curr];
+    const dotHTML=qs.map((_,i)=>`<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    const qid='mt'+curr;
+
+    if(q.type==='mc'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="options" id="${qid}_opts">
+            ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='tf'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Verdadero o Falso – Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="tf-row">
+            <button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button>
+            <button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='write'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Escribe tu respuesta – Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1;min-width:200px">
+            <button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    }
+  }
+
+  function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); }
+
+  window.mtAns = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true);
+    const ok=btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ La respuesta correcta era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtTF = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+    const ok=btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtWrite = function(qid,cid,correct){
+    if(containerId!==cid) return;
+    const inp=document.getElementById(qid+'_inp');
+    const ok=inp.value.trim().toLowerCase()===correct.toLowerCase();
+    inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+    document.querySelector(`button[onclick*="${qid}"]`).disabled=true;
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct;
+    next(ok);
+  };
+  render();
+}
+window.buildMiniTest = buildMiniTest;
+
+// ═══════════════════════════════════════════════════════════
+// TEMA: TEA (Trastorno del Espectro Autista) 🧩
+// ═══════════════════════════════════════════════════════════
+function showTEAPhase(n){
+  setTab('tema',n,5);
+  const c=document.getElementById('tema-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">🧩 Tu cerebro funciona diferente — y eso es una fortaleza</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">Tener TEA, y concretamente síndrome de Asperger, significa que tu cerebro procesa el mundo de una forma distinta a la mayoría. No es mejor ni peor: <strong>es diferente</strong>. Y esa diferencia trae cosas muy difíciles... y también cosas extraordinarias.</p>
+
+      <div class="theory-highlight sky"><strong>🧠 ¿Qué es el síndrome de Asperger?</strong><br>
+        Es una forma de TEA en la que las personas suelen tener inteligencia normal o alta, hablan bien y son muy capaces — pero el mundo social puede resultar confuso y agotador, y algunas sensaciones físicas se sienten mucho más intensas que para los demás.<br><br>
+        <em>Puedes ser muy inteligente y al mismo tiempo necesitar más tiempo para entender ciertas situaciones sociales. Las dos cosas son verdad a la vez.</em></div>
+
+      <div class="theory-highlight green"><strong>🌟 Cosas que probablemente se te dan MUY bien:</strong><br>
+        🎯 <strong>Concentración profunda</strong> en lo que te apasiona — puedes saber más que los adultos de ciertos temas.<br>
+        🔍 <strong>Atención al detalle</strong> — notas cosas que los demás no ven.<br>
+        🤝 <strong>Honestidad</strong> — dices lo que piensas, sin falsedad.<br>
+        🧮 <strong>Pensamiento lógico</strong> — buscas patrones y reglas que tienen sentido.<br>
+        🎨 <strong>Creatividad e imaginación</strong> — tu forma de ver las cosas es original.<br>
+        📚 <strong>Memoria excelente</strong> para los temas que te importan.</div>
+
+      <div class="theory-highlight amber"><strong>⚡ Cosas que pueden costarte más (y por qué):</strong><br>
+        👥 <strong>Entender las reglas sociales no escritas</strong> — como cuándo hablar, cuándo callar, o qué quiere decir alguien cuando dice "nos vemos" pero no queda.<br>
+        😄 <strong>Las bromas, la ironía y las metáforas</strong> — tu cerebro procesa el lenguaje de forma muy literal, así que "me muero de risa" puede sonar raro.<br>
+        🔊 <strong>Ruidos fuertes, mucha gente, luces intensas</strong> — puede que te saturen más de lo normal. Eso no es debilidad: tu sistema nervioso recibe más información.<br>
+        🔄 <strong>Los cambios inesperados</strong> — cuando algo cambia sin aviso, puede generar mucha tensión. Las rutinas te dan seguridad, y eso está bien.</div>
+
+      <div class="theory-highlight violet"><strong>💡 Algo muy importante que saber:</strong><br>
+        Muchas de las dificultades que tienes no son culpa tuya ni de nadie. Son la consecuencia de vivir en un mundo diseñado para personas con un cerebro distinto al tuyo.<br><br>
+        <strong>Conocerte bien es tu mejor herramienta.</strong> Cuanto más sepas cómo funciona tu cerebro, mejor podrás explicarlo a los demás, pedir lo que necesitas y aprovechar tus fortalezas.</div>
+
+      <div class="theory-highlight rose"><strong>🦸 Personas famosas con Asperger o TEA:</strong><br>
+        🧑‍💻 Elon Musk · 🎮 Satoshi Tajiri (creador de Pokémon) · 🎵 Mozart · 🔬 Albert Einstein (posiblemente)<br>
+        🎥 Stanley Kubrick · 📚 Temple Grandin · 🖥️ Alan Turing<br>
+        <em>Su forma diferente de pensar no fue un obstáculo — fue parte de lo que les hizo extraordinarios.</em></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showTEAPhase(2)">Siguiente →</button></div>`;
+  }
+  else if(n===2){ buildTEAAutoconocimiento(); }
+  else if(n===3){ buildTEASituaciones(); }
+  else if(n===4){ buildTEATF(); }
+  else if(n===5){ buildTEATest(); }
+}
+window.showTEAPhase=showTEAPhase;
+
+function buildTEAAutoconocimiento(){
+  const c=document.getElementById('tema-content');
+  c.innerHTML=`
+    <div class="card">
+      <div class="card-title">🪞 Así soy yo — conócete mejor</div>
+      <p style="color:var(--gray-600);margin-bottom:16px">Estas preguntas no tienen respuesta correcta o incorrecta. Son para que pienses en ti mismo. Léelas con calma y reflexiona.</p>
+    </div>
+
+    <div class="exercise-box">
+      <div class="q-num">🌟 Mis fortalezas</div>
+      <div class="q-text">¿Sobre qué tema sabes muchísimo o podrías hablar durante horas?</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px">Ese interés intenso es una de tus mayores fortalezas. No es "raro" — es tu motor.</p>
+      <input class="text-input" placeholder="Escribe aquí tu tema favorito..." style="width:100%">
+    </div>
+
+    <div class="exercise-box">
+      <div class="q-num">⚡ Lo que me carga</div>
+      <div class="q-text">¿Hay situaciones que te agotan mucho aunque a otros no parezcan difíciles?</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px">Por ejemplo: mucho ruido, gente desconocida, cambios de planes, no entender por qué algo ha pasado...</p>
+      <div style="display:flex;flex-direction:column;gap:8px" id="carga-list">
+        ${[
+          ['🔊 El ruido en el recreo o en lugares llenos de gente','ruido'],
+          ['🔄 Cuando cambian los planes sin avisarme antes','cambios'],
+          ['👥 Estar mucho tiempo con personas que no conozco bien','gente'],
+          ['😄 No entender cuando alguien está bromeando o siendo irónico','bromas'],
+          ['💡 Las luces muy intensas o el sol directo','luces'],
+          ['🤝 No saber cómo empezar o terminar una conversación','conver'],
+          ['😡 Cuando las cosas no se hacen de la forma correcta o justa','injust'],
+        ].map(([label, id])=>`
+        <label style="display:flex;align-items:center;gap:10px;background:var(--gray-50);border:2px solid var(--gray-200);
+          border-radius:10px;padding:10px 14px;cursor:pointer;font-size:14px;font-weight:700;color:var(--navy)">
+          <input type="checkbox" style="width:18px;height:18px;accent-color:#16a34a;cursor:pointer">
+          ${label}
+        </label>`).join('')}
+      </div>
+      <div style="margin-top:12px;background:var(--teal-bg);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;padding:12px;font-size:13px;color:var(--gray-800)">
+        💡 Lo que marcaste no son defectos. Son señales de lo que tu cerebro procesa de forma diferente.
+        <strong>Conocerlos te ayuda a prepararte y a pedirle a otros que te ayuden.</strong>
+      </div>
+    </div>
+
+    <div class="exercise-box">
+      <div class="q-num">🔋 Lo que me recarga</div>
+      <div class="q-text">¿Qué cosas hacen que te sientas bien, tranquilo y con energía de nuevo?</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px">Tener un "plan de recarga" es importante. Cuando te sientas saturado, ¿qué te ayuda?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${[
+          ['🏠 Estar solo un rato en mi espacio tranquilo','solo'],
+          ['🎮 Hacer algo relacionado con mi tema favorito','tema'],
+          ['🎵 Escuchar música con auriculares','musica'],
+          ['🐾 Estar con animales','animales'],
+          ['📚 Leer o ver algo que me gusta mucho','leer'],
+          ['🌿 Salir a caminar o al aire libre','caminar'],
+          ['🧩 Hacer algo con mis manos (construir, dibujar...)','manos'],
+        ].map(([label])=>`
+        <label style="display:flex;align-items:center;gap:10px;background:var(--gray-50);border:2px solid var(--gray-200);
+          border-radius:10px;padding:10px 14px;cursor:pointer;font-size:14px;font-weight:700;color:var(--navy)">
+          <input type="checkbox" style="width:18px;height:18px;accent-color:#16a34a;cursor:pointer">
+          ${label}
+        </label>`).join('')}
+      </div>
+    </div>
+
+    <div class="exercise-box">
+      <div class="q-num">🗣️ Pedir lo que necesito</div>
+      <div class="q-text">A veces necesitamos ayuda o adaptaciones. ¿Sabes pedir lo que necesitas?</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px">Estas frases te pueden ayudar. No es quejarse: es comunicarte.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${[
+          ['Necesito que me avises antes de que algo cambie.','#0d9488'],
+          ['No entiendo lo que quieres decir con eso, ¿puedes explicarlo diferente?','#7c3aed'],
+          ['Estoy saturado ahora mismo, necesito un momento.','#e11d48'],
+          ['Cuando hablas en broma o con ironía, a veces no lo entiendo. No te enfades.','#d97706'],
+          ['Me cuesta mucho el ruido. ¿Puedo alejarme un momento?','#0284c7'],
+        ].map(([frase, col])=>`
+        <div style="background:white;border:2px solid ${col}30;border-left:4px solid ${col};
+          border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;font-weight:700;color:var(--navy);font-style:italic">
+          "${frase}"
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#064e3b,#1e3a5f);border-radius:16px;padding:20px;margin-bottom:16px;color:white">
+      <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#86efac;margin-bottom:10px">💛 Para recordar siempre</div>
+      <p style="font-size:14px;line-height:1.8;color:rgba(255,255,255,.9)">
+        Tu cerebro no está roto. Funciona diferente.<br>
+        Las cosas que te cuestan no son tu culpa.<br>
+        Las cosas que se te dan bien son extraordinarias.<br>
+        Y hay muchas personas — en tu familia, en tu colegio, en el mundo entero —<br>
+        que te quieren tal y como eres. 🧩❤️
+      </p>
+    </div>
+
+    <div class="btn-row"><button class="btn btn-success" onclick="showTEAPhase(3)">Siguiente →</button></div>`;
+}
+
+function buildTEASituaciones(){
+  const situs=[
+    {s:'Tu compañero con TEA tapa sus oídos cuando hay mucho ruido en el recreo.',
+     q:'¿Por qué hace eso?',
+     r:'Las personas con TEA a menudo tienen hipersensibilidad sensorial. Los sonidos altos pueden resultarles físicamente dolorosos o muy estresantes. Es su forma de protegerse, no un capricho.',
+     act:'Habla con él cuando esté calmado. Si puedes, evita hacer ruidos muy bruscos cerca de él.'},
+    {s:'Tu compañero se enfada mucho cuando cambian la hora del recreo sin avisar.',
+     q:'¿Por qué le afecta tanto el cambio?',
+     r:'Las rutinas dan seguridad a las personas con TEA. Un cambio inesperado puede generar mucha ansiedad, como si el suelo desapareciera bajo tus pies.',
+     act:'Avisarle con tiempo sobre los cambios le ayuda mucho a prepararse.'},
+    {s:'Le dices a tu compañero "estás como una cabra" en broma, y él se ofende o se confunde.',
+     q:'¿Por qué no entendió que era una broma?',
+     r:'Muchas personas con TEA interpretan el lenguaje de forma muy literal. "Estás como una cabra" puede sonar como un insulto o causar confusión real, porque para ellos las palabras significan exactamente lo que dicen.',
+     act:'Con él, habla de forma clara y directa. Evita metáforas o expresiones coloquiales confusas.'},
+    {s:'Tu compañero con TEA siempre quiere sentarse en el mismo sitio en clase.',
+     q:'¿Es necesario respetar eso?',
+     r:'Sí. Los lugares y rutinas familiares aportan calma y seguridad. Cambiar su sitio sin razón puede alterar mucho su día.',
+     act:'Respeta sus espacios. No es manía: es una necesidad real.'},
+  ];
+  document.getElementById('tema-content').innerHTML=`
+    <div class="card"><div class="card-title">🤝 Situaciones reales — ¿cómo actuar?</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Lee cada situación y reflexiona. Luego descubre la explicación y el consejo.</p></div>
+    ${situs.map((s,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Situación ${i+1}</div>
+      <div class="q-text" style="margin-bottom:6px">${s.s}</div>
+      <div style="font-size:14px;font-weight:700;color:var(--teal);margin-bottom:10px">🤔 ${s.q}</div>
+      <div id="tea-ans-${i}" style="display:none">
+        <div style="background:var(--teal-bg);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;padding:12px;margin-bottom:8px;font-size:14px">
+          <strong>💡 Por qué:</strong> ${s.r}
+        </div>
+        <div style="background:var(--green-bg);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:12px;font-size:14px">
+          <strong>✅ Cómo actuar:</strong> ${s.act}
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:10px;font-size:13px" id="tea-btn-${i}"
+        onclick="this.style.display='none';document.getElementById('tea-ans-${i}').style.display='block'">
+        Ver explicación →
+      </button>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showTEAPhase(4)">Siguiente →</button></div>`;
+}
+
+function buildTEATF(){
+  const items=[
+    {q:'El TEA es una enfermedad que se puede curar con medicación.',a:false},
+    {q:'Las personas con TEA pueden tener hipersensibilidad a los sonidos o luces.',a:true},
+    {q:'Todas las personas con TEA son exactamente iguales entre sí.',a:false},
+    {q:'Hablar claro y directo ayuda mucho a comunicarse con personas con TEA.',a:true},
+    {q:'Los cambios de rutina inesperados pueden generar mucha ansiedad en personas con TEA.',a:true},
+    {q:'Las personas con TEA no pueden tener amigos ni disfrutar de los juegos.',a:false},
+    {q:'Muchas personas con TEA tienen intereses muy intensos y saben muchísimo de ciertos temas.',a:true},
+    {q:'Burlarse de alguien porque tiene TEA está bien si es en broma.',a:false},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('tema-content').innerHTML=`
+    <div class="card"><div class="card-title">🧩 Verdadero o Falso — TEA</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">¿Cuánto sabes sobre el TEA?</p></div>
+    ${items.map((it,i)=>`
+    <div class="exercise-box" id="teatf-box-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkTEATF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkTEATF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="teatf-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showTEAPhase(5)">Mini Test →</button></div>`;
+}
+window.checkTEATF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('teatf-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildTEATest(){
+  const ALL=[
+    {type:'mc',question:'¿Qué significa que el autismo es un "espectro"?',options:['Que todos los autistas son iguales','Que hay muchas formas distintas de ser autista','Que es una enfermedad muy grave'],correct:'Que hay muchas formas distintas de ser autista'},
+    {type:'tf',question:'El TEA es una enfermedad infecciosa.',correct:'falso'},
+    {type:'mc',question:'¿Qué es la hipersensibilidad sensorial?',options:['No sentir nada','Sentir los estímulos (sonidos, luces) de forma muy intensa','Tener mucha energía'],correct:'Sentir los estímulos (sonidos, luces) de forma muy intensa'},
+    {type:'tf',question:'Las rutinas dan seguridad y calma a las personas con TEA.',correct:'verdadero'},
+    {type:'mc',question:'Si tu compañero con TEA interpreta todo literalmente, ¿cómo debes hablarle?',options:['Con muchas metáforas y bromas','De forma clara, directa y sin dobles sentidos','Con ironía para que aprenda'],correct:'De forma clara, directa y sin dobles sentidos'},
+    {type:'tf',question:'Las personas con TEA no pueden tener amigos ni relaciones sociales.',correct:'falso'},
+    {type:'mc',question:'¿Cuál es una fortaleza frecuente en personas con TEA?',options:['Falta de concentración','Gran atención al detalle y memoria excelente','Indiferencia por todo'],correct:'Gran atención al detalle y memoria excelente'},
+    {type:'mc',question:'¿Cuál es la mejor actitud con un compañero con TEA?',options:['Ignorarle para no molestarle','Incluirle con paciencia y respeto, adaptando la comunicación','Tratarle diferente para que se sienta especial'],correct:'Incluirle con paciencia y respeto, adaptando la comunicación'},
+    {type:'tf',question:'Burlarse de alguien con TEA causa daño real aunque sea "en broma".',correct:'verdadero'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'tema-content',pct=>{
+    progress.tema.score=pct; progress.tema.done=true; updateHome();
+  });
+}
+
+const PHASES={
+  tema:{tabs:['📖 1. Aprende','🪞 2. Así soy yo','🤝 3. Ayuda a otros','🔁 4. V o F','📝 Mini Test'],show:showTEAPhase},
+};
+
+function buildProgreso(){
+  const p=progress.tema;
+  const stars=p.done?(p.score>=80?'⭐⭐⭐':p.score>=60?'⭐⭐':'⭐'):'–';
+  document.getElementById('progreso-content').innerHTML=`
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:32px;text-align:center">
+      <div style="font-size:52px;margin-bottom:8px">${p.done?stars:'⏳'}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:${p.done?'#86efac':'rgba(255,255,255,.5)'}">
+        ${p.done?p.score+'%':'Aún no completado'}
+      </div>
+      <div style="font-size:14px;color:rgba(255,255,255,.5);margin-top:8px">
+        ${p.done?'Mini test completado · '+stars:'Completa el mini test para ver tu puntuación'}
+      </div>
+      <div style="margin-top:20px">
+        <button class="btn btn-primary" onclick="showScreen('tema')">← Ir al tema</button>
+      </div>
+    </div>`;
+}
+</script>
+
+<script type="module">
+import { CONFIG } from '../components/config.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🧩 La Vida — <span>TEA</span> · ${s.class} · ${s.school}</div>
+      <div class="header-sub">EL TRASTORNO DEL ESPECTRO AUTISTA · 2º PRIMARIA</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back">← Portal</a>
+    </div>
+  </div>`;
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+showScreen('tema');
+</script>
+</body>
+</html>

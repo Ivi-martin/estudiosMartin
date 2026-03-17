@@ -95,8 +95,14 @@ export const CONFIG = {
       id: 'vida', icon: '🌱', name: 'La Vida',
       color: '#16a34a', colorBg: 'rgba(22,163,74,0.12)', colorText: '#86efac',
       topics: [
-        { label: 'Sueño, alimentación y movimiento', url: 'apps/laVida.html' },
-        { label: 'Emociones, hábitos y valores',     url: 'apps/laVida.html' },
+        { label: '🛌 Sueño y descanso',        url: 'apps/vidaSueno.html' },
+        { label: '🥗 Alimentación sana',        url: 'apps/vidaAlim.html' },
+        { label: '🏃 Movimiento y ejercicio',   url: 'apps/vidaMove.html' },
+        { label: '❤️ Emociones',               url: 'apps/vidaEmoc.html' },
+        { label: '🧹 Hábitos',                 url: 'apps/vidaHabit.html' },
+        { label: '🌱 Valores',                  url: 'apps/vidaVals.html' },
+        { label: '🧩 TEA',                      url: 'apps/vidaTEA.html' },
+        { label: '🛡️ Bullying',               url: 'apps/vidaBullying.html' },
       ],
     },
   ],
@@ -104,7 +110,7 @@ export const CONFIG = {
   // ── Próximos exámenes ── edita aquí para añadir o quitar
   // Formato: { date: 'YYYY-MM-DD', subject: 'Nombre', topic: 'Descripción' }
   exams: [
-    //{ date: '2026-03-17', subject: 'Inglés',   topic: "Unit 4 – Animals & Can/Can't" },
+    { date: '2026-03-17', subject: 'Inglés',   topic: "Unit 4 – Animals & Can/Can't" },
   ],
 
   // ── Horario semanal ──

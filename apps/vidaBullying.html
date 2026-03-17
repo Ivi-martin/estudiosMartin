@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  :root { color-scheme: dark; --bg:#0f172a; }
+  html,body { background-color: #0f172a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🛡️ Bullying – La Vida</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
+<!-- End Cloudflare Web Analytics -->
+<style>
+:root {
+  --green:#16a34a; --green-l:#22c55e; --green-bg:#dcfce7;
+  --teal:#0d9488; --teal-l:#14b8a6; --teal-bg:#ccfbf1;
+  --amber:#d97706; --amber-l:#f59e0b; --amber-bg:#fef3c7;
+  --rose:#e11d48; --rose-l:#f43f5e; --rose-bg:#ffe4e6;
+  --violet:#7c3aed; --violet-l:#8b5cf6; --violet-bg:#ede9fe;
+  --sky-c:#0284c7; --sky-bg:#e0f2fe;
+  --navy:#1a2744;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-600:#475569;--gray-800:#1e293b;
+  --shadow:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+  --radius:16px;--radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+
+/* Stars */
+.stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0f172a 0%,#064e3b 50%,#0f172a 100%);overflow:hidden}
+.stars-bg::before{content:'★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.06);
+  line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.5}to{opacity:1}}
+
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+/* Header */
+.header{background:linear-gradient(135deg,#064e3b 0%,#16a34a 100%);padding:16px 24px;
+  display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);
+  box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.header-logo span{color:#fbbf24}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+
+/* Progress strip */
+.progress-strip{background:rgba(0,0,0,.3);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+.progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:4px;transition:width .5s ease}
+.progress-pct{font-size:12px;color:#86efac;font-weight:800}
+
+.main{flex:1;display:flex;gap:0}
+
+/* Sidebar */
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+  padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+.sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+  color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+.nav-btn.active{background:rgba(22,163,74,.3);color:white;border:1px solid rgba(22,163,74,.5)}
+.nav-btn.completed{color:#86efac}
+.nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+.nav-btn .nav-stars{margin-left:auto;font-size:12px}
+
+.content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Home hero */
+.home-hero{background:linear-gradient(135deg,#064e3b 0%,#166534 60%,#1e3a5f 100%);
+  border-radius:24px;padding:40px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.home-hero::before{content:'🛌🥗🏃';position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  font-size:48px;opacity:.15;writing-mode:vertical-rl;letter-spacing:12px}
+.home-hero h1{font-family:'Fredoka One',cursive;font-size:38px;color:white;margin-bottom:8px}
+.home-hero h1 span{color:#86efac}
+.home-hero p{color:rgba(255,255,255,.8);font-size:15px;max-width:500px;line-height:1.6}
+
+/* Class cards */
+.classes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+.class-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.class-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);border-color:rgba(255,255,255,.2)}
+.class-card.unlocked{background:rgba(255,255,255,.08)}
+.class-card.completed{border-color:rgba(22,163,74,.4);background:rgba(22,163,74,.07)}
+.class-number{font-size:11px;color:rgba(255,255,255,.4);font-weight:800;letter-spacing:1px;margin-bottom:8px}
+.class-icon{font-size:36px;margin-bottom:10px}
+.class-title{font-family:'Fredoka One',cursive;font-size:18px;color:white;margin-bottom:4px}
+.class-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.5}
+.class-status{position:absolute;top:14px;right:14px;font-size:18px}
+.class-stars{margin-top:12px;font-size:16px;color:#fbbf24}
+
+/* Lesson header */
+.lesson-header{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+.lesson-icon{font-size:42px}
+.lesson-info h2{font-family:'Fredoka One',cursive;font-size:26px;color:white}
+.lesson-info p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+
+/* Phase tabs */
+.phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+.phase-tab.active{background:var(--green);color:white;border-color:var(--green-l)}
+.phase-tab.done{background:rgba(22,163,74,.15);color:#86efac;border-color:rgba(22,163,74,.3)}
+
+/* Cards */
+.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* Theory highlight */
+.theory-highlight{background:var(--amber-bg);border-left:4px solid var(--amber-l);
+  border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+.theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
+.theory-highlight.rose{background:var(--rose-bg);border-color:var(--rose)}
+.theory-highlight.teal{background:var(--teal-bg);border-color:var(--teal)}
+.theory-highlight.violet{background:var(--violet-bg);border-color:var(--violet)}
+.theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky-c)}
+
+/* Exercise box */
+.exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+.exercise-box .q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--green);text-transform:uppercase;margin-bottom:8px}
+.exercise-box .q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+
+/* Options */
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+.option-btn:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.option-btn.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+.option-btn:disabled{cursor:not-allowed;opacity:.8}
+
+/* Text input */
+.text-input{padding:12px 16px;border:2px solid var(--gray-200);border-radius:10px;
+  font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;transition:all .2s;
+  background:#fff !important;color:#1a2744 !important}
+.text-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.text-input.correct{border-color:var(--green);background:var(--green-bg) !important}
+.text-input.wrong{border-color:var(--rose);background:var(--rose-bg) !important}
+
+/* Feedback */
+.feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+.feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+.feedback.correct{background:var(--green-bg);color:var(--green)}
+.feedback.wrong{background:var(--rose-bg);color:var(--rose)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* Buttons */
+.btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+  transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--green);color:white}
+.btn-primary:hover{background:var(--green-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(22,163,74,.4)}
+.btn-success{background:var(--teal);color:white}
+.btn-success:hover{background:var(--teal-l);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+/* Score card */
+.score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+.score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--green)}
+.score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+.stars-display{font-size:36px;letter-spacing:4px}
+
+/* Mini test dots */
+.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.test-dots{display:flex;gap:6px}
+.test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+.test-dot.current{background:var(--green);transform:scale(1.3)}
+.test-dot.done-correct{background:var(--green)}
+.test-dot.done-wrong{background:var(--rose)}
+
+/* True/False */
+.tf-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.tf-btn{padding:12px 28px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;
+  border:2px solid var(--gray-200);background:white;cursor:pointer;transition:all .2s;color:var(--navy)}
+.tf-btn:hover:not(:disabled){transform:scale(1.05)}
+.tf-btn.verd:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.tf-btn.fals:hover:not(:disabled){border-color:var(--rose);background:var(--rose-bg)}
+.tf-btn.correct{background:var(--green-bg) !important;border-color:var(--green) !important;color:var(--green) !important}
+.tf-btn.wrong{background:var(--rose-bg) !important;border-color:var(--rose) !important;color:var(--rose) !important}
+.tf-btn:disabled{cursor:not-allowed}
+
+/* Drag sort */
+.sort-list{list-style:none;margin:0;padding:0}
+.sort-item{background:white;border:2px solid var(--gray-200);border-radius:10px;padding:12px 16px;
+  margin-bottom:8px;cursor:grab;display:flex;align-items:center;gap:10px;
+  font-weight:700;font-size:14px;color:var(--navy);user-select:none;transition:all .15s}
+.sort-item:active{cursor:grabbing;box-shadow:var(--shadow)}
+.sort-item.drag-over{border-color:var(--green);background:var(--green-bg)}
+.sort-handle{color:var(--gray-400);font-size:18px}
+
+/* Progress screen */
+.progress-topic-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+.progress-topic-row .pt-icon{font-size:22px}
+.progress-topic-row .pt-name{font-weight:700;color:rgba(255,255,255,.8);flex:1;font-size:14px}
+.progress-topic-row .pt-score{font-family:'Fredoka One',cursive;font-size:22px;color:#86efac}
+.progress-topic-row .pt-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.progress-topic-row .pt-fill{height:100%;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:99px;transition:width .8s}
+
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+.content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+
+@media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+<div id="app-header-root"></div>
+
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO DEL TEMA</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+<div class="sidebar">
+  <div class="sidebar-section">Navegación</div>
+  <button class="nav-btn active" onclick="showScreen('tema')" id="nav-tema">
+    <span class="nav-icon">🛡️</span> Bullying
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Resultados
+  </button>
+</div>
+
+<div class="content">
+<div class="screen active" id="screen-tema">
+  <div class="lesson-header">
+    <div class="lesson-icon">🛡️</div>
+    <div class="lesson-info">
+      <h2>Bullying</h2>
+      <p>El acoso escolar: qué es y cómo pararlo</p>
+    </div>
+    <button class="btn-back" onclick="history.back()" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-tema"></div>
+  <div id="tema-content"></div>
+</div>
+<div class="screen" id="screen-progreso">
+  <div id="progreso-content"></div>
+</div>
+</div>
+</div>
+</div>
+<div id="app-footer-root"></div>
+
+<script>
+const progress = { tema:{done:false,score:0} };
+
+function updateHome() {
+  const pct = progress.tema.done ? progress.tema.score : 0;
+  document.getElementById('overall-progress').style.width = pct+'%';
+  document.getElementById('overall-pct').textContent = pct+'%';
+}
+
+let _init = false;
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const nb=document.getElementById('nav-'+id); if(nb) nb.classList.add('active');
+  if(id==='tema' && !_init) { _init=true; PHASES.tema.show(1); }
+  if(id==='progreso') buildProgreso();
+}
+window.showScreen=showScreen;
+
+function setTab(id, n) {
+  const labels = PHASES[id].tabs;
+  const wrap = document.getElementById('tabs-'+id); if(!wrap) return;
+  wrap.innerHTML = labels.map((l,i)=>`
+    <div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// MINI TEST ENGINE (idéntico a mat6)
+// ═══════════════════════════════════════════
+function buildMiniTest(qs, containerId, onDone) {
+  let curr=0, correct=0, results=[];
+  const dots = qs.map(()=>'').join('');
+
+  function render() {
+    const c = document.getElementById(containerId); if(!c) return;
+    if(curr>=qs.length) {
+      const pct=Math.round(correct/qs.length*100);
+      const stars=pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      const msg=pct===100?'¡Perfecto! Eres un crack 🔥':pct>=80?'¡Muy bien! Casi perfecto 💪':pct>=60?'¡Bien hecho! Sigue así 👍':'Repasa el tema e inténtalo otra vez 📖';
+      c.innerHTML=`<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${msg}<br><small>${correct} de ${qs.length} correctas</small></div>
+      </div>`;
+      if(onDone) onDone(pct);
+      return;
+    }
+    const q=qs[curr];
+    const dotHTML=qs.map((_,i)=>`<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    const qid='mt'+curr;
+
+    if(q.type==='mc'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="options" id="${qid}_opts">
+            ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='tf'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Verdadero o Falso – Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="tf-row">
+            <button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button>
+            <button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='write'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Escribe tu respuesta – Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1;min-width:200px">
+            <button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    }
+  }
+
+  function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); }
+
+  window.mtAns = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true);
+    const ok=btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ La respuesta correcta era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtTF = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+    const ok=btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtWrite = function(qid,cid,correct){
+    if(containerId!==cid) return;
+    const inp=document.getElementById(qid+'_inp');
+    const ok=inp.value.trim().toLowerCase()===correct.toLowerCase();
+    inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+    document.querySelector(`button[onclick*="${qid}"]`).disabled=true;
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct;
+    next(ok);
+  };
+  render();
+}
+window.buildMiniTest = buildMiniTest;
+
+// ═══════════════════════════════════════════════════════════
+// TEMA: BULLYING (Acoso escolar) 🛡️
+// ═══════════════════════════════════════════════════════════
+function showBullyingPhase(n){
+  setTab('tema',n,4);
+  const c=document.getElementById('tema-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">🛡️ El acoso escolar: qué es y cómo pararlo</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">El bullying es uno de los problemas más serios que puede ocurrir en un colegio. Conocerlo bien es el primer paso para poder pararlo.</p>
+      <div class="theory-highlight rose"><strong>❌ ¿Qué es el bullying?</strong><br>
+        Es cuando una persona o grupo <strong>agrede, insulta, excluye o intimida repetidamente</strong> a otra persona que no puede defenderse sola.<br><br>
+        Tiene tres características: es <strong>repetido</strong> (no es un conflicto puntual), hay <strong>desequilibrio de poder</strong> (el agresor tiene más fuerza, amigos o popularidad), y hay una <strong>víctima</strong> que sufre.</div>
+      <div class="theory-highlight amber"><strong>⚠️ Tipos de bullying:</strong><br>
+        👊 <strong>Físico</strong> — empujones, golpes, quitarle cosas.<br>
+        💬 <strong>Verbal</strong> — insultos, apodos, burlas constantes.<br>
+        👥 <strong>Social</strong> — excluirle de los grupos, ignorarle, hacer que nadie le hable.<br>
+        📱 <strong>Cyberbullying</strong> — acosar por redes sociales, mensajes o grupos de WhatsApp.</div>
+      <div class="theory-highlight"><strong>🤔 ¿Qué NO es bullying?</strong><br>
+        Una pelea puntual entre iguales · Una broma que les hace gracia a los dos · Un conflicto que se resuelve hablando.<br>
+        <em>El bullying es sistemático y hace que la víctima se sienta sola y sin salida.</em></div>
+      <div class="theory-highlight green"><strong>🦸 Los tres roles y el más importante:</strong><br>
+        😈 <strong>Agresor</strong> — el que hace daño.<br>
+        😢 <strong>Víctima</strong> — el que lo sufre.<br>
+        👀 <strong>Testigo</strong> — el que lo ve. <strong>Este rol es el más poderoso</strong>: si los testigos actúan, el bullying se para en la mayoría de los casos. Si callan, lo están permitiendo.</div>
+      <div class="theory-highlight violet"><strong>🆘 ¿Qué hacer si lo ves o lo sufres?</strong><br>
+        1️⃣ No lo guardes solo — <strong>cuéntaselo siempre a un adulto de confianza</strong> (padre, madre, profesor).<br>
+        2️⃣ No respondas con violencia — empeora las cosas.<br>
+        3️⃣ Apoya a la víctima aunque sea con una sonrisa o acompañarla.<br>
+        4️⃣ Si es cyberbullying, guarda capturas y bloquea al agresor.<br>
+        5️⃣ <strong>Pedir ayuda no es chivarse, es ser valiente.</strong></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showBullyingPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildBullySituaciones(); }
+  else if(n===3){ buildBullyTF(); }
+  else if(n===4){ buildBullyTest(); }
+}
+window.showBullyingPhase=showBullyingPhase;
+
+function buildBullySituaciones(){
+  const situs=[
+    {s:'Ves que cada día un grupo de compañeros le quita el bocadillo a un niño y se ríen de él. El niño no dice nada pero se le ve triste.',
+     q:'¿Es esto bullying? ¿Qué deberías hacer?',
+     bully:true,
+     r:'Sí, es bullying. Se repite, hay víctima y hay agresores. El hecho de que él no diga nada no significa que no lo sufra.',
+     act:'Habla con un profesor o tus padres. Puedes también hablar con él en privado para que sepa que no está solo.'},
+    {s:'Tú y un amigo discutís fuerte por el turno en el ordenador. Os enfadáis pero al día siguiente volvéis a jugar juntos.',
+     q:'¿Es esto bullying?',
+     bully:false,
+     r:'No. Es un conflicto puntual entre iguales que se resolvió. Ambos tenéis la misma "fuerza" y no hay repetición sistemática.',
+     act:'Los conflictos son normales. Lo importante es resolverlos hablando y con respeto.'},
+    {s:'Un grupo de tu clase ha creado un grupo de WhatsApp para enviar fotos graciosas de un compañero y reírse de él.',
+     q:'¿Qué tipo de bullying es? ¿Qué deberías hacer?',
+     bully:true,
+     r:'Es cyberbullying. Aunque sea "en broma", humillar a alguien online le hace un daño real y puede ser muy grave.',
+     act:'No participes, abandona el grupo y cuéntaselo a un adulto. Guarda capturas si puedes.'},
+    {s:'Una niña no invita a su fiesta a una compañera y además convence a las demás de que tampoco la inviten y de que no hablen con ella.',
+     q:'¿Es esto bullying?',
+     bully:true,
+     r:'Sí. Es bullying social. Aislar deliberadamente a alguien y organizarse para excluirla es acoso, aunque no haya violencia física.',
+     act:'Habla con la niña excluida, no la ignores. Y cuéntaselo a un adulto.'},
+  ];
+  document.getElementById('tema-content').innerHTML=`
+    <div class="card"><div class="card-title">🤔 ¿Bullying o no bullying?</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Lee cada situación y reflexiona. ¿Es bullying? ¿Qué harías?</p></div>
+    ${situs.map((s,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Situación ${i+1}</div>
+      <div class="q-text" style="margin-bottom:8px">${s.s}</div>
+      <div style="font-size:14px;font-weight:700;color:var(--rose);margin-bottom:12px">🤔 ${s.q}</div>
+      <div id="bully-ans-${i}" style="display:none">
+        <div style="background:${s.bully?'var(--rose-bg)':'var(--green-bg)'};border-left:4px solid ${s.bully?'var(--rose)':'var(--green)'};border-radius:0 10px 10px 0;padding:12px;margin-bottom:8px;font-size:14px">
+          <strong>${s.bully?'⚠️ SÍ es bullying':'✅ NO es bullying'}:</strong> ${s.r}
+        </div>
+        <div style="background:var(--violet-bg);border-left:4px solid var(--violet);border-radius:0 10px 10px 0;padding:12px;font-size:14px">
+          <strong>🦸 Cómo actuar:</strong> ${s.act}
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:4px;font-size:13px"
+        onclick="this.style.display='none';document.getElementById('bully-ans-${i}').style.display='block'">
+        Ver análisis →
+      </button>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showBullyingPhase(3)">Siguiente →</button></div>`;
+}
+
+function buildBullyTF(){
+  const items=[
+    {q:'El bullying es un conflicto puntual que ocurre solo una vez.',a:false},
+    {q:'El cyberbullying es tan dañino como el bullying físico.',a:true},
+    {q:'Si eres testigo de bullying y no haces nada, estás contribuyendo a que continúe.',a:true},
+    {q:'Pedir ayuda a un adulto cuando ves bullying es "chivarse".',a:false},
+    {q:'El bullying social (excluir, ignorar) es una forma real de acoso.',a:true},
+    {q:'Si la víctima no dice nada, significa que no le molesta.',a:false},
+    {q:'Los testigos que apoyan a la víctima pueden parar el bullying.',a:true},
+    {q:'Responder con violencia al bullying es la mejor forma de pararlo.',a:false},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('tema-content').innerHTML=`
+    <div class="card"><div class="card-title">🛡️ Verdadero o Falso — Bullying</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">¿Cuánto sabes sobre el acoso escolar?</p></div>
+    ${items.map((it,i)=>`
+    <div class="exercise-box" id="bully-tf-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkBullyTF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkBullyTF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="bully-tfb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showBullyingPhase(4)">Mini Test →</button></div>`;
+}
+window.checkBullyTF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('bully-tfb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildBullyTest(){
+  const ALL=[
+    {type:'mc',question:'¿Cuántas características definen el bullying?',options:['Es puntual y casual','Es repetido, hay desequilibrio de poder y hay una víctima','Es solo entre chicos'],correct:'Es repetido, hay desequilibrio de poder y hay una víctima'},
+    {type:'tf',question:'Una discusión puntual entre amigos que se resuelve es bullying.',correct:'falso'},
+    {type:'mc',question:'¿Cuál es el rol más poderoso para parar el bullying?',options:['El agresor','La víctima','El testigo'],correct:'El testigo'},
+    {type:'tf',question:'El cyberbullying no es tan grave porque ocurre online.',correct:'falso'},
+    {type:'mc',question:'Si sufres o ves bullying, ¿qué debes hacer primero?',options:['Vengarte','Ignorarlo y esperar que pase','Contárselo a un adulto de confianza'],correct:'Contárselo a un adulto de confianza'},
+    {type:'tf',question:'Excluir y aislar a alguien deliberadamente es una forma de bullying.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué tipo de bullying ocurre por mensajes o redes sociales?',options:['Bullying físico','Bullying verbal','Cyberbullying'],correct:'Cyberbullying'},
+    {type:'tf',question:'Pedir ayuda cuando hay bullying es ser valiente, no un chivato.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué debes hacer si recibes mensajes hirientes en un grupo de WhatsApp?',options:['Responder con más insultos','Guardarlo en secreto','Salir del grupo, guardar capturas y contárselo a un adulto'],correct:'Salir del grupo, guardar capturas y contárselo a un adulto'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'tema-content',pct=>{
+    progress.tema.score=pct; progress.tema.done=true; updateHome();
+  });
+}
+
+const PHASES={
+  tema:{tabs:['📖 1. Aprende','🤔 2. ¿Bullying o no?','🔁 3. V o F','📝 Mini Test'],show:showBullyingPhase},
+};
+
+function buildProgreso(){
+  const p=progress.tema;
+  const stars=p.done?(p.score>=80?'⭐⭐⭐':p.score>=60?'⭐⭐':'⭐'):'–';
+  document.getElementById('progreso-content').innerHTML=`
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:32px;text-align:center">
+      <div style="font-size:52px;margin-bottom:8px">${p.done?stars:'⏳'}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:${p.done?'#86efac':'rgba(255,255,255,.5)'}">
+        ${p.done?p.score+'%':'Aún no completado'}
+      </div>
+      <div style="font-size:14px;color:rgba(255,255,255,.5);margin-top:8px">
+        ${p.done?'Mini test completado · '+stars:'Completa el mini test para ver tu puntuación'}
+      </div>
+      <div style="margin-top:20px">
+        <button class="btn btn-primary" onclick="showScreen('tema')">← Ir al tema</button>
+      </div>
+    </div>`;
+}
+</script>
+
+<script type="module">
+import { CONFIG } from '../components/config.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🛡️ La Vida — <span>Bullying</span> · ${s.class} · ${s.school}</div>
+      <div class="header-sub">EL ACOSO ESCOLAR: QUÉ ES Y CÓMO PARARLO · 2º PRIMARIA</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back">← Portal</a>
+    </div>
+  </div>`;
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+showScreen('tema');
+</script>
+</body>
+</html>
