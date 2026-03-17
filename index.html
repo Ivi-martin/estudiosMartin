@@ -86,6 +86,19 @@
 .teacher-name    { color: rgba(255,255,255,.45); }
 .subject-chevron { font-size: 18px; color: var(--muted); transition: transform .3s; }
 .subject-card.open .subject-chevron { transform: rotate(90deg); }
+.activity-counter {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-width: 52px; height: 52px; border-radius: 14px;
+  background: rgba(34,197,94,.12); border: 1.5px solid rgba(34,197,94,.3);
+  flex-shrink: 0; margin-right: 4px;
+}
+.activity-counter .ac-num {
+  font-family: 'Fredoka One', cursive; font-size: 26px; color: #4ade80; line-height: 1;
+}
+.activity-counter .ac-label {
+  font-size: 9px; font-weight: 800; color: rgba(34,197,94,.7);
+  text-transform: uppercase; letter-spacing: .5px; margin-top: 1px;
+}
 
 .topics { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
 .subject-card.open .topics { max-height: 700px; border-top: 1px solid var(--border); }
@@ -221,6 +234,11 @@
           <div class="stat-label">Horario</div>
           <div class="stat-sub">Ver clases</div>
         </div>
+        <div class="stat clickable" onclick="location.href='foro.html'">
+          <div class="stat-num">💬</div>
+          <div class="stat-label">Foro</div>
+          <div class="stat-sub">Sugerencias</div>
+        </div>
       </div>
     </div>
 
@@ -276,6 +294,13 @@ document.getElementById('subjects-root').innerHTML = subjects.map(subj => {
     </div>`;
   }).join('');
 
+  const counterBadge = availableCount > 0
+    ? `<div class="activity-counter">
+        <div class="ac-num">${availableCount}</div>
+        <div class="ac-label">app${availableCount > 1 ? 's' : ''}</div>
+       </div>`
+    : '';
+
   return `
     <div class="subject-card ${subj.id}" id="card-${subj.id}" onclick="toggleSubject('${subj.id}')">
       <div class="subject-header">
@@ -284,6 +309,7 @@ document.getElementById('subjects-root').innerHTML = subjects.map(subj => {
           <div class="subject-name">${subj.name}</div>
           <div class="subject-teacher"><span>👤</span> <span class="teacher-name">${teacher}</span></div>
         </div>
+        ${counterBadge}
         <div class="subject-chevron">›</div>
       </div>
       <div class="topics"><div class="topics-inner">${topicsHTML}</div></div>

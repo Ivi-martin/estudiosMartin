@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💬 Foro – Estudios Martín</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
+<style>
+:root {
+  --bg: #0d1117; --surface: #161c2a; --surface2: #1e2638;
+  --border: rgba(255,255,255,.09); --text: #e6edf3; --muted: #7d8590;
+  --blue: #2563eb; --blue-l: #3b82f6; --green: #16a34a; --green-l: #22c55e;
+  --amber: #f59e0b; --rose: #e11d48; --violet: #7c3aed;
+  --admin-col: #f59e0b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* Background */
+.bg { position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0d1117 0%, #1e3a5f 50%, #0d1117 100%); }
+.bg::before { content: '★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position: absolute; inset: 0; font-size: 12px; color: rgba(255,255,255,.04);
+  line-height: 2.5; word-break: break-all; }
+
+.app { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 24px 16px 60px; }
+
+/* Header */
+.header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+  background: linear-gradient(135deg, #1e3a5f, #2563eb);
+  border-radius: 18px; padding: 18px 22px; box-shadow: 0 8px 32px rgba(37,99,235,.25); }
+.header-back { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+  color: white; text-decoration: none; padding: 8px 14px; border-radius: 10px;
+  font-weight: 800; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.header-back:hover { background: rgba(255,255,255,.2); }
+.header-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: white; }
+.header-title span { color: #fbbf24; }
+.header-sub { font-size: 12px; color: rgba(255,255,255,.65); margin-top: 2px; }
+.header-admin-btn { margin-left: auto; background: rgba(245,158,11,.15);
+  border: 1px solid rgba(245,158,11,.3); color: var(--amber);
+  padding: 8px 14px; border-radius: 10px; font-weight: 800; font-size: 12px;
+  cursor: pointer; transition: all .2s; white-space: nowrap; }
+.header-admin-btn:hover { background: rgba(245,158,11,.25); }
+.header-admin-btn.active { background: rgba(245,158,11,.3); border-color: var(--amber); }
+
+/* Firebase config notice */
+.config-notice { background: rgba(245,158,11,.1); border: 1.5px solid rgba(245,158,11,.3);
+  border-radius: 14px; padding: 16px 20px; margin-bottom: 20px; font-size: 13px; color: #fcd34d; display: none; }
+.config-notice strong { color: var(--amber); }
+
+/* New message form */
+.new-msg-card { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+.new-msg-card h3 { font-family: 'Fredoka One', cursive; font-size: 17px; color: white; margin-bottom: 14px; }
+.form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.form-input { flex: 1; min-width: 180px; background: var(--surface2); border: 1.5px solid var(--border);
+  color: var(--text); border-radius: 10px; padding: 10px 14px; font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 600; outline: none; transition: border-color .2s; }
+.form-input:focus { border-color: var(--blue-l); }
+.form-input::placeholder { color: var(--muted); }
+textarea.form-input { resize: vertical; min-height: 90px; }
+.form-privacy { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+.privacy-btn { padding: 7px 14px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: transparent; color: var(--muted); font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; }
+.privacy-btn.active.pub  { border-color: var(--blue-l); background: rgba(59,130,246,.15); color: var(--blue-l); }
+.privacy-btn.active.priv { border-color: var(--violet); background: rgba(124,58,237,.15); color: #a78bfa; }
+.privacy-hint { font-size: 12px; color: var(--muted); }
+.submit-btn { width: 100%; padding: 12px; border-radius: 12px; border: none;
+  background: var(--blue); color: white; font-family: 'Fredoka One', cursive;
+  font-size: 16px; cursor: pointer; transition: all .2s; }
+.submit-btn:hover { background: var(--blue-l); transform: translateY(-1px); }
+.submit-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* Filter bar */
+.filter-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.filter-btn { padding: 7px 14px; border-radius: 99px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--muted); font-family: 'Nunito', sans-serif;
+  font-size: 12px; font-weight: 800; cursor: pointer; transition: all .2s; }
+.filter-btn:hover { border-color: rgba(255,255,255,.2); color: white; }
+.filter-btn.active { background: rgba(37,99,235,.25); border-color: var(--blue-l); color: white; }
+.msg-count { margin-left: auto; font-size: 12px; color: var(--muted); font-weight: 700; }
+
+/* Messages */
+.msg-list { display: flex; flex-direction: column; gap: 12px; }
+.msg-card { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 18px; transition: border-color .2s; }
+.msg-card:hover { border-color: rgba(255,255,255,.15); }
+.msg-card.private { border-left: 3px solid #a78bfa; }
+.msg-card.admin-replied { border-left: 3px solid var(--amber); }
+.msg-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.msg-avatar { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center;
+  justify-content: center; font-size: 16px; font-weight: 900; flex-shrink: 0;
+  background: rgba(37,99,235,.2); color: var(--blue-l); font-family: 'Fredoka One', cursive; }
+.msg-meta { flex: 1; }
+.msg-author { font-weight: 800; font-size: 14px; color: var(--text); }
+.msg-date { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.msg-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
+.badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px;
+  text-transform: uppercase; letter-spacing: .4px; }
+.badge-priv  { background: rgba(124,58,237,.15); color: #a78bfa; border: 1px solid rgba(124,58,237,.3); }
+.badge-pub   { background: rgba(37,99,235,.12);  color: var(--blue-l); border: 1px solid rgba(37,99,235,.25); }
+.badge-admin { background: rgba(245,158,11,.15); color: var(--amber); border: 1px solid rgba(245,158,11,.3); }
+.msg-text { font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.6; }
+
+/* Admin reply block */
+.admin-reply { background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.2);
+  border-radius: 10px; padding: 12px 14px; margin-top: 10px; }
+.admin-reply-label { font-size: 11px; font-weight: 800; color: var(--amber);
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.admin-reply-text { font-size: 13px; color: rgba(255,255,255,.8); line-height: 1.6; }
+
+/* Admin reply form (inline) */
+.reply-form { margin-top: 10px; display: none; }
+.reply-form.open { display: block; }
+.reply-input { width: 100%; background: var(--surface2); border: 1.5px solid var(--border);
+  color: var(--text); border-radius: 10px; padding: 10px 14px; font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 600; resize: vertical; min-height: 70px; outline: none; }
+.reply-input:focus { border-color: var(--amber); }
+.reply-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.reply-send { padding: 8px 18px; border-radius: 8px; border: none; background: var(--amber);
+  color: #0d1117; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px;
+  cursor: pointer; transition: all .2s; }
+.reply-send:hover { filter: brightness(1.1); }
+.reply-cancel { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--muted); font-family: 'Nunito', sans-serif;
+  font-weight: 700; font-size: 13px; cursor: pointer; }
+.msg-actions { display: flex; gap: 6px; margin-top: 10px; }
+.action-btn { padding: 5px 12px; border-radius: 7px; border: 1px solid var(--border);
+  background: transparent; color: var(--muted); font-family: 'Nunito', sans-serif;
+  font-size: 12px; font-weight: 700; cursor: pointer; transition: all .2s; }
+.action-btn:hover { border-color: rgba(255,255,255,.2); color: white; }
+.action-btn.del:hover { border-color: var(--rose); color: var(--rose); }
+
+/* Admin panel */
+.admin-panel { background: rgba(245,158,11,.06); border: 1.5px solid rgba(245,158,11,.2);
+  border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; display: none; }
+.admin-panel.visible { display: block; }
+.admin-panel-title { font-family: 'Fredoka One', cursive; font-size: 15px; color: var(--amber); margin-bottom: 12px; }
+.admin-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.admin-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 16px; text-align: center; }
+.admin-stat .n { font-family: 'Fredoka One', cursive; font-size: 24px; color: var(--amber); }
+.admin-stat .l { font-size: 11px; color: var(--muted); font-weight: 700; }
+
+/* Admin login */
+.admin-login { background: var(--surface); border: 1.5px solid rgba(245,158,11,.2);
+  border-radius: 14px; padding: 20px; margin-bottom: 20px; display: none; }
+.admin-login.visible { display: block; }
+.admin-login h4 { font-family: 'Fredoka One', cursive; color: var(--amber); margin-bottom: 12px; }
+
+/* Empty / loading */
+.empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+.empty-icon { font-size: 48px; margin-bottom: 12px; }
+.loading { text-align: center; padding: 30px; color: var(--muted); font-weight: 700; }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: #1e293b; border: 1px solid rgba(255,255,255,.15); color: white;
+  padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 14px;
+  opacity: 0; transition: all .3s; z-index: 999; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 600px) {
+  .header { flex-wrap: wrap; }
+  .header-admin-btn { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <a href="index.html" class="header-back">← Portal</a>
+    <div>
+      <div class="header-title">💬 Foro de la <span>comunidad</span></div>
+      <div class="header-sub">Sugerencias, dudas y mensajes · Estudios Martín</div>
+    </div>
+    <button class="header-admin-btn" id="admin-toggle-btn" onclick="toggleAdminLogin()">🔐 Admin</button>
+  </div>
+
+  <!-- CONFIG NOTICE (shown if Firebase not configured) -->
+  <div class="config-notice" id="config-notice">
+    ⚠️ <strong>Firebase no configurado.</strong> Sigue las instrucciones del README para conectar la base de datos.
+    Los mensajes no se guardarán hasta que configures las credenciales.
+  </div>
+
+  <!-- ADMIN LOGIN -->
+  <div class="admin-login" id="admin-login">
+    <h4>🔐 Acceso de administrador</h4>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input type="password" class="form-input" id="admin-pwd-input" placeholder="Contraseña de administrador"
+        style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter')adminLogin()">
+      <button class="submit-btn" style="width:auto;padding:10px 20px;font-size:14px" onclick="adminLogin()">
+        Entrar
+      </button>
+    </div>
+    <div id="admin-pwd-error" style="color:#f87171;font-size:12px;margin-top:8px;display:none">
+      Contraseña incorrecta
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-panel" id="admin-panel">
+    <div class="admin-panel-title">⚙️ Panel de administrador</div>
+    <div class="admin-stats" id="admin-stats"></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="action-btn" onclick="filterMsgs('pendiente')" style="border-color:rgba(245,158,11,.4);color:var(--amber)">
+        ⏳ Ver sin responder
+      </button>
+      <button class="action-btn" onclick="adminLogout()" style="color:var(--rose);border-color:rgba(225,29,72,.3)">
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+
+  <!-- NEW MESSAGE FORM -->
+  <div class="new-msg-card">
+    <h3>✍️ Escribir un mensaje</h3>
+    <div class="form-row">
+      <input class="form-input" id="msg-author" placeholder="Tu nombre (ej: Mamá de Laura)" maxlength="40">
+    </div>
+    <textarea class="form-input" id="msg-text" placeholder="Escribe aquí tu sugerencia, duda o comentario..." maxlength="500"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 4px;flex-wrap:wrap;gap:8px">
+      <div class="form-privacy">
+        <span style="font-size:12px;color:var(--muted);font-weight:700;margin-right:4px">Visibilidad:</span>
+        <button class="privacy-btn pub active" id="btn-pub" onclick="setPrivacy(false)">🌍 Público</button>
+        <button class="privacy-btn priv" id="btn-priv" onclick="setPrivacy(true)">🔒 Privado</button>
+      </div>
+      <span class="privacy-hint" id="privacy-hint">Todos pueden ver este mensaje y la respuesta</span>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px" id="char-count">0 / 500 caracteres</div>
+    <button class="submit-btn" id="submit-btn" onclick="sendMessage()">Enviar mensaje 📨</button>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterMsgs('todos')" id="filter-todos">📋 Todos</button>
+    <button class="filter-btn" onclick="filterMsgs('publicos')" id="filter-publicos">🌍 Públicos</button>
+    <button class="filter-btn" onclick="filterMsgs('respondidos')" id="filter-respondidos">✅ Respondidos</button>
+    <span class="msg-count" id="msg-count"></span>
+  </div>
+
+  <!-- MESSAGE LIST -->
+  <div id="msg-list" class="msg-list">
+    <div class="loading">Cargando mensajes...</div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+// ═══════════════════════════════════════════════════════════
+// ⚙️  CONFIGURACIÓN DE FIREBASE
+// ───────────────────────────────────────────────────────────
+// INSTRUCCIONES:
+// 1. Ve a https://console.firebase.google.com
+// 2. Crea un proyecto nuevo (ej. "estudios-martin")
+// 3. En el proyecto, ve a "Firestore Database" y créala en modo "production"
+// 4. Ve a Configuración del proyecto (⚙️) → "Tus apps" → Añade app Web (</>)
+// 5. Copia los valores de firebaseConfig que te da Google y pégalos aquí:
+// ═══════════════════════════════════════════════════════════
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyBqk6R3pXft4WZg2I7a_Ly_SUbRfW6fZjQ",
+  authDomain:        "estudios-martin.firebaseapp.com",
+  projectId:         "estudios-martin",
+  storageBucket:     "estudios-martin.firebasestorage.app",
+  messagingSenderId: "835525284523",
+  appId:             "1:835525284523:web:3bafcbec02336e2b56ddee"
+};
+
+// ═══════════════════════════════════════════════════════════
+// 🔐 CONTRASEÑA DE ADMINISTRADOR
+// Cámbiala por la que quieras. Solo la verás tú.
+// ═══════════════════════════════════════════════════════════
+const ADMIN_PASSWORD = "martin2026";
+
+// ─── No tocar nada de aquí para abajo ─────────────────────
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc,
+         query, orderBy, onSnapshot, serverTimestamp }
+  from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "TU_API_KEY_AQUI";
+if (!IS_CONFIGURED) {
+  document.getElementById('config-notice').style.display = 'block';
+}
+
+let db, msgsRef, unsubscribe;
+if (IS_CONFIGURED) {
+  const app = initializeApp(FIREBASE_CONFIG);
+  db = getFirestore(app);
+  msgsRef = collection(db, 'foro_mensajes');
+}
+
+// ─── Estado ───────────────────────────────────────────────
+let allMessages  = [];
+let isAdmin      = false;
+let currentFilter = 'todos';
+let isPrivate    = false;
+
+// ─── Utilidades ───────────────────────────────────────────
+function toast(msg, duration = 2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+function formatDate(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
+    + ' · ' + d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+}
+
+function initials(name) {
+  return name.trim().split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+}
+
+// ─── Privacidad ───────────────────────────────────────────
+window.setPrivacy = function(priv) {
+  isPrivate = priv;
+  document.getElementById('btn-pub').className  = 'privacy-btn pub'  + (!priv ? ' active' : '');
+  document.getElementById('btn-priv').className = 'privacy-btn priv' + (priv  ? ' active' : '');
+  document.getElementById('privacy-hint').textContent = priv
+    ? '🔒 Solo el administrador verá este mensaje'
+    : '🌍 Todos pueden ver este mensaje y la respuesta';
+};
+
+document.getElementById('msg-text').addEventListener('input', function() {
+  document.getElementById('char-count').textContent = `${this.value.length} / 500 caracteres`;
+});
+
+// ─── Enviar mensaje ───────────────────────────────────────
+window.sendMessage = async function() {
+  const author = document.getElementById('msg-author').value.trim();
+  const text   = document.getElementById('msg-text').value.trim();
+  if (!author) { toast('✏️ Por favor escribe tu nombre'); return; }
+  if (!text)   { toast('✏️ El mensaje no puede estar vacío'); return; }
+  if (text.length < 5) { toast('✏️ El mensaje es demasiado corto'); return; }
+
+  if (!IS_CONFIGURED) {
+    toast('⚠️ Firebase no configurado — el mensaje no se guardó');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  try {
+    await addDoc(msgsRef, {
+      author, text,
+      private: isPrivate,
+      adminReply: null,
+      createdAt: serverTimestamp(),
+    });
+    document.getElementById('msg-author').value = '';
+    document.getElementById('msg-text').value   = '';
+    document.getElementById('char-count').textContent = '0 / 500 caracteres';
+    toast(isPrivate ? '🔒 Mensaje privado enviado' : '✅ Mensaje enviado. ¡Gracias!');
+  } catch(e) {
+    toast('❌ Error al enviar. Inténtalo de nuevo.');
+    console.error(e);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Enviar mensaje 📨';
+  }
+};
+
+// ─── Admin ────────────────────────────────────────────────
+window.toggleAdminLogin = function() {
+  if (isAdmin) { adminLogout(); return; }
+  const el = document.getElementById('admin-login');
+  el.classList.toggle('visible');
+  if (el.classList.contains('visible'))
+    document.getElementById('admin-pwd-input').focus();
+};
+
+window.adminLogin = function() {
+  const pwd = document.getElementById('admin-pwd-input').value;
+  if (pwd === ADMIN_PASSWORD) {
+    isAdmin = true;
+    document.getElementById('admin-login').classList.remove('visible');
+    document.getElementById('admin-pwd-input').value = '';
+    document.getElementById('admin-pwd-error').style.display = 'none';
+    document.getElementById('admin-toggle-btn').classList.add('active');
+    document.getElementById('admin-toggle-btn').textContent = '⚙️ Admin ✓';
+    document.getElementById('admin-panel').classList.add('visible');
+    renderMessages();
+    toast('✅ Sesión de admin iniciada');
+  } else {
+    document.getElementById('admin-pwd-error').style.display = 'block';
+  }
+};
+
+window.adminLogout = function() {
+  isAdmin = false;
+  document.getElementById('admin-toggle-btn').classList.remove('active');
+  document.getElementById('admin-toggle-btn').textContent = '🔐 Admin';
+  document.getElementById('admin-panel').classList.remove('visible');
+  renderMessages();
+  toast('👋 Sesión cerrada');
+};
+
+// ─── Filtros ──────────────────────────────────────────────
+window.filterMsgs = function(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('filter-' + f) || document.querySelector('.filter-btn');
+  if (btn) btn.classList.add('active');
+  renderMessages();
+};
+
+// ─── Render ───────────────────────────────────────────────
+function getVisibleMessages() {
+  let msgs = allMessages.filter(m => {
+    // Mensajes privados: solo los ve el admin
+    if (m.private && !isAdmin) return false;
+    return true;
+  });
+  if (currentFilter === 'publicos')    msgs = msgs.filter(m => !m.private);
+  if (currentFilter === 'respondidos') msgs = msgs.filter(m => m.adminReply);
+  if (currentFilter === 'pendiente')   msgs = msgs.filter(m => !m.adminReply);
+  return msgs;
+}
+
+function renderMessages() {
+  const list = document.getElementById('msg-list');
+  const msgs = getVisibleMessages();
+
+  // Admin stats
+  if (isAdmin) {
+    const total   = allMessages.length;
+    const priv    = allMessages.filter(m => m.private).length;
+    const pending = allMessages.filter(m => !m.adminReply).length;
+    document.getElementById('admin-stats').innerHTML = `
+      <div class="admin-stat"><div class="n">${total}</div><div class="l">Total</div></div>
+      <div class="admin-stat"><div class="n">${priv}</div><div class="l">Privados</div></div>
+      <div class="admin-stat"><div class="n">${pending}</div><div class="l">Sin responder</div></div>
+      <div class="admin-stat"><div class="n">${total - pending}</div><div class="l">Respondidos</div></div>`;
+  }
+
+  document.getElementById('msg-count').textContent =
+    msgs.length === 0 ? '' : `${msgs.length} mensaje${msgs.length !== 1 ? 's' : ''}`;
+
+  if (!IS_CONFIGURED) {
+    list.innerHTML = `<div class="empty">
+      <div class="empty-icon">⚙️</div>
+      <div style="font-weight:700;color:white;margin-bottom:6px">Firebase no configurado</div>
+      <div>Sigue las instrucciones para activar el foro.</div>
+    </div>`;
+    return;
+  }
+
+  if (msgs.length === 0) {
+    const emptyMsgs = {
+      todos: '¡Sé el primero en escribir un mensaje!',
+      publicos: 'Aún no hay mensajes públicos.',
+      respondidos: 'Aún no hay mensajes respondidos.',
+      pendiente: '✅ ¡No hay mensajes pendientes de respuesta!',
+    };
+    list.innerHTML = `<div class="empty">
+      <div class="empty-icon">💬</div>
+      <div>${emptyMsgs[currentFilter] || ''}</div>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = msgs.map(m => {
+    const av = initials(m.author);
+    const replyBlock = m.adminReply ? `
+      <div class="admin-reply">
+        <div class="admin-reply-label">💛 Respuesta de Iván</div>
+        <div class="admin-reply-text">${escHtml(m.adminReply)}</div>
+      </div>` : '';
+
+    const adminActions = isAdmin ? `
+      <div class="msg-actions">
+        <button class="action-btn" onclick="toggleReplyForm('${m.id}')">
+          ${m.adminReply ? '✏️ Editar respuesta' : '💬 Responder'}
+        </button>
+        <button class="action-btn del" onclick="deleteMsg('${m.id}')">🗑️ Borrar</button>
+      </div>
+      <div class="reply-form" id="reply-form-${m.id}">
+        <textarea class="reply-input" id="reply-inp-${m.id}"
+          placeholder="Escribe tu respuesta...">${escHtml(m.adminReply || '')}</textarea>
+        <div class="reply-actions">
+          <button class="reply-send" onclick="sendReply('${m.id}')">Guardar respuesta ✓</button>
+          <button class="reply-cancel" onclick="toggleReplyForm('${m.id}')">Cancelar</button>
+          ${m.adminReply ? `<button class="reply-cancel" style="color:var(--rose)" onclick="deleteReply('${m.id}')">Borrar respuesta</button>` : ''}
+        </div>
+      </div>` : '';
+
+    return `
+    <div class="msg-card ${m.private ? 'private' : ''} ${m.adminReply ? 'admin-replied' : ''}" id="msg-${m.id}">
+      <div class="msg-header">
+        <div class="msg-avatar">${av}</div>
+        <div class="msg-meta">
+          <div class="msg-author">${escHtml(m.author)}</div>
+          <div class="msg-date">${formatDate(m.createdAt)}</div>
+          <div class="msg-badges">
+            <span class="badge ${m.private ? 'badge-priv' : 'badge-pub'}">
+              ${m.private ? '🔒 Privado' : '🌍 Público'}
+            </span>
+            ${m.adminReply ? '<span class="badge badge-admin">✅ Respondido</span>' : ''}
+          </div>
+        </div>
+      </div>
+      <div class="msg-text">${escHtml(m.text)}</div>
+      ${replyBlock}
+      ${adminActions}
+    </div>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
+}
+
+// ─── Admin actions ────────────────────────────────────────
+window.toggleReplyForm = function(id) {
+  const form = document.getElementById('reply-form-' + id);
+  if (!form) return;
+  form.classList.toggle('open');
+  if (form.classList.contains('open'))
+    document.getElementById('reply-inp-' + id).focus();
+};
+
+window.sendReply = async function(id) {
+  const inp = document.getElementById('reply-inp-' + id);
+  const text = inp.value.trim();
+  if (!text) { toast('✏️ La respuesta no puede estar vacía'); return; }
+  try {
+    await updateDoc(doc(db, 'foro_mensajes', id), { adminReply: text });
+    toast('✅ Respuesta guardada');
+  } catch(e) { toast('❌ Error al guardar'); console.error(e); }
+};
+
+window.deleteReply = async function(id) {
+  if (!confirm('¿Borrar la respuesta?')) return;
+  try {
+    await updateDoc(doc(db, 'foro_mensajes', id), { adminReply: null });
+    toast('🗑️ Respuesta borrada');
+  } catch(e) { toast('❌ Error'); console.error(e); }
+};
+
+window.deleteMsg = async function(id) {
+  if (!confirm('¿Borrar este mensaje permanentemente?')) return;
+  try {
+    await deleteDoc(doc(db, 'foro_mensajes', id));
+    toast('🗑️ Mensaje borrado');
+  } catch(e) { toast('❌ Error al borrar'); console.error(e); }
+};
+
+// ─── Escuchar mensajes en tiempo real ─────────────────────
+if (IS_CONFIGURED) {
+  const q = query(msgsRef, orderBy('createdAt', 'desc'));
+  unsubscribe = onSnapshot(q, (snapshot) => {
+    allMessages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderMessages();
+  }, (err) => {
+    console.error('Firestore error:', err);
+    document.getElementById('msg-list').innerHTML =
+      `<div class="empty"><div class="empty-icon">⚠️</div><div>Error al cargar mensajes.<br>Revisa la configuración de Firebase.</div></div>`;
+  });
+} else {
+  // Sin Firebase: mostrar interfaz vacía
+  allMessages = [];
+  renderMessages();
+}
+</script>
+</body>
+</html>
