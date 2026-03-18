@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  :root { color-scheme: dark; }
+  html,body { background-color: #161c2a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧮 Cálculo – Sumas y Restas</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
+<style>
+:root {
+  --navy:#1a2744; --blue:#2563eb; --blue-light:#3b82f6; --sky:#dbeafe;
+  --green:#16a34a; --green-light:#22c55e; --green-bg:#dcfce7;
+  --red:#dc2626; --red-bg:#fee2e2;
+  --yellow:#f59e0b; --yellow-bg:#fef3c7;
+  --purple:#7c3aed; --purple-bg:#ede9fe;
+  --orange:#ea580c; --orange-bg:#ffedd5;
+  --white:#ffffff;
+  --gray-50:#f8fafc; --gray-100:#f1f5f9; --gray-200:#e2e8f0;
+  --gray-400:#94a3b8; --gray-600:#475569; --gray-800:#1e293b;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.12); --shadow:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.16); --radius:16px; --radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+
+.stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%);overflow:hidden}
+.stars-bg::before{content:'★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.06);
+  line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.5}to{opacity:1}}
+
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+.header{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);padding:16px 24px;
+  display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);
+  box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white}
+.header-logo span{color:#fbbf24}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+
+.progress-strip{background:rgba(0,0,0,.3);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+.progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#86efac);border-radius:4px;transition:width .5s ease}
+.progress-pct{font-size:12px;color:#86efac;font-weight:800}
+
+.main{flex:1;display:flex;gap:0}
+
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+  padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+.sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+  color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+.nav-btn.active{background:rgba(37,99,235,.3);color:white;border:1px solid rgba(37,99,235,.5)}
+.nav-btn.completed{color:#86efac}
+.nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+.nav-btn .nav-stars{margin-left:auto;font-size:12px}
+
+.content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.home-hero{background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 60%,#7c3aed 100%);
+  border-radius:24px;padding:40px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.home-hero::before{content:'➕➖🧮';position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  font-size:48px;opacity:.15;writing-mode:vertical-rl;letter-spacing:12px}
+.home-hero h1{font-family:'Fredoka One',cursive;font-size:38px;color:white;margin-bottom:8px}
+.home-hero h1 span{color:#fbbf24}
+.home-hero p{color:rgba(255,255,255,.8);font-size:15px;max-width:500px;line-height:1.6}
+
+.classes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+.class-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.class-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);border-color:rgba(255,255,255,.2)}
+.class-card.unlocked{background:rgba(255,255,255,.08)}
+.class-card.completed{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.06)}
+.class-number{font-size:11px;color:rgba(255,255,255,.4);font-weight:800;letter-spacing:1px;margin-bottom:8px}
+.class-icon{font-size:36px;margin-bottom:10px}
+.class-title{font-family:'Fredoka One',cursive;font-size:18px;color:white;margin-bottom:4px}
+.class-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.5}
+.class-status{position:absolute;top:14px;right:14px;font-size:18px}
+.class-stars{margin-top:12px;font-size:16px;color:#fbbf24}
+
+.lesson-header{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+.lesson-icon{font-size:42px}
+.lesson-info h2{font-family:'Fredoka One',cursive;font-size:26px;color:white}
+.lesson-info p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+
+.phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+.phase-tab.active{background:var(--blue);color:white;border-color:var(--blue-light)}
+
+.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.theory-highlight{background:var(--yellow-bg);border-left:4px solid var(--yellow);
+  border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+
+.exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+.q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--blue);text-transform:uppercase;margin-bottom:8px}
+.q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+.option-btn:hover:not(:disabled){border-color:var(--blue);background:var(--sky)}
+.option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.option-btn.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.option-btn:disabled{cursor:not-allowed;opacity:.8}
+
+.text-input{padding:12px 16px;border:2px solid var(--gray-200);border-radius:10px;
+  font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;transition:all .2s;
+  background:#ffffff !important;color:#1a2744 !important}
+.text-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.text-input.correct{border-color:var(--green);background:var(--green-bg) !important}
+.text-input.wrong{border-color:var(--red);background:var(--red-bg) !important}
+
+.feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+.feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+.feedback.correct{background:var(--green-bg);color:var(--green)}
+.feedback.wrong{background:var(--red-bg);color:var(--red)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+.btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+  transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--blue);color:white}
+.btn-primary:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-success{background:var(--green);color:white}
+.btn-success:hover{background:var(--green-light);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none !important}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+.score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+.score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--blue)}
+.score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+.stars-display{font-size:36px;letter-spacing:4px}
+.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.test-dots{display:flex;gap:6px}
+.test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+.test-dot.current{background:var(--blue);transform:scale(1.3)}
+.test-dot.done-correct{background:var(--green)}
+.test-dot.done-wrong{background:var(--red)}
+
+/* ── Vertical calc layout ── */
+.calc-box{display:inline-flex;flex-direction:column;gap:0;
+  border:2px solid var(--gray-200);border-radius:14px;
+  background:var(--gray-50);padding:16px 20px;margin-bottom:16px}
+.calc-num-cell{width:52px;height:56px;display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy)}
+.calc-inp{width:52px;height:56px;font-size:26px;font-family:'Fredoka One',cursive;
+  text-align:center;padding:0;border-radius:10px;border:2px solid var(--gray-200);
+  background:#ffffff !important;color:#1a2744 !important;outline:none;transition:all .2s}
+.calc-inp:focus{border-color:var(--blue)}
+.calc-inp.correct{border-color:var(--green);background:var(--green-bg) !important}
+.calc-inp.wrong{border-color:var(--red);background:var(--red-bg) !important}
+.calc-carry-inp{width:34px;height:28px;font-size:14px;font-family:'Fredoka One',cursive;
+  text-align:center;padding:0;border-radius:6px;
+  border:1.5px dashed #dc2626;color:#dc2626;background:#fff5f5 !important;outline:none}
+.calc-carry-inp.correct{border-color:var(--green);background:var(--green-bg) !important;color:var(--green)}
+.calc-carry-inp.wrong{border-color:var(--red);background:var(--red-bg) !important}
+.calc-sign{width:28px;font-family:'Fredoka One',cursive;font-size:24px;line-height:56px;text-align:right}
+.calc-sep{border-top:3px solid var(--navy);margin:6px 0}
+.cdu-label-row{display:flex;gap:8px;padding-left:36px;margin-bottom:4px}
+.cdu-lbl{width:52px;text-align:center;font-size:11px;font-weight:900;color:var(--blue);text-transform:uppercase;letter-spacing:1px}
+
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+.content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+@media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+<div id="app-header-root"></div>
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO GENERAL</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+<div class="main">
+
+<div class="sidebar">
+  <div class="sidebar-section">Clases</div>
+  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span> Inicio
+  </button>
+  <button class="nav-btn" onclick="showLesson('sumas')" id="nav-sumas">
+    <span class="nav-icon">➕</span> Sumas con llevadas
+    <span class="nav-stars" id="stars-sumas"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('restas')" id="nav-restas">
+    <span class="nav-icon">➖</span> Restas con llevadas
+    <span class="nav-stars" id="stars-restas"></span>
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Evaluación</div>
+  <button class="nav-btn" onclick="showScreen('examen')" id="nav-examen">
+    <span class="nav-icon">📝</span> Examen Final
+  </button>
+</div>
+
+<div class="content">
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <div>
+      <h1>🧮 <span>Cálculo</span></h1>
+      <p>Actividad Evaluable · Sumas y Restas de 3 cifras con llevadas. Practica el método correcto: de derecha a izquierda, columna a columna.</p>
+    </div>
+  </div>
+  <div style="margin-bottom:16px;font-family:'Fredoka One',cursive;font-size:18px;color:white;opacity:.8">📚 Tus Clases</div>
+  <div class="classes-grid">
+    <div class="class-card unlocked" onclick="showLesson('sumas')">
+      <div class="class-number">CLASE 1</div>
+      <div class="class-icon">➕</div>
+      <div class="class-title">Sumas con llevadas</div>
+      <div class="class-desc">Aprende y practica sumas de 3 cifras con llevadas, paso a paso.</div>
+      <div class="class-stars" id="home-stars-sumas"></div>
+      <div class="class-status" id="home-status-sumas">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('restas')">
+      <div class="class-number">CLASE 2</div>
+      <div class="class-icon">➖</div>
+      <div class="class-title">Restas con llevadas</div>
+      <div class="class-desc">Aprende y practica restas de 3 cifras con llevadas, paso a paso.</div>
+      <div class="class-stars" id="home-stars-restas"></div>
+      <div class="class-status" id="home-status-restas">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showScreen('examen')">
+      <div class="class-number">FINAL</div>
+      <div class="class-icon">📝</div>
+      <div class="class-title">Examen Final</div>
+      <div class="class-desc">5 sumas + 5 restas con llevadas. ¡A por la nota!</div>
+      <div class="class-stars" id="home-stars-examen"></div>
+      <div class="class-status" id="home-status-examen">🎯</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMAS -->
+<div class="screen" id="screen-sumas">
+  <div class="lesson-header">
+    <div class="lesson-icon">➕</div>
+    <div class="lesson-info">
+      <h2>Sumas con llevadas</h2>
+      <p>De derecha a izquierda · Clase 1</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-sumas"></div>
+  <div id="sumas-content"></div>
+</div>
+
+<!-- RESTAS -->
+<div class="screen" id="screen-restas">
+  <div class="lesson-header">
+    <div class="lesson-icon">➖</div>
+    <div class="lesson-info">
+      <h2>Restas con llevadas</h2>
+      <p>De derecha a izquierda · Clase 2</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-restas"></div>
+  <div id="restas-content"></div>
+</div>
+
+<!-- EXAMEN -->
+<div class="screen" id="screen-examen">
+  <div class="lesson-header">
+    <div class="lesson-icon">📝</div>
+    <div class="lesson-info">
+      <h2>Examen Final</h2>
+      <p>5 sumas + 5 restas con llevadas</p>
+    </div>
+    <button class="btn-back" onclick="showScreen('home')" style="margin-left:auto">← Volver</button>
+  </div>
+  <div id="examen-content"></div>
+</div>
+
+</div><!-- .content -->
+</div><!-- .main -->
+</div><!-- .app -->
+<div id="app-footer-root"></div>
+
+<script>
+// ── Progreso ──────────────────────────────────────────────
+const progress = {
+  sumas:  { done:false, score:0 },
+  restas: { done:false, score:0 },
+  examen: { done:false, score:0 },
+};
+
+function updateHome() {
+  const topics = ['sumas','restas'];
+  const done = topics.filter(t=>progress[t].done).length;
+  const pct = Math.round(done/topics.length*100);
+  document.getElementById('overall-progress').style.width = pct+'%';
+  document.getElementById('overall-pct').textContent = pct+'%';
+  topics.forEach(t => {
+    const stars = progress[t].done ? (progress[t].score>=80?'⭐⭐⭐':progress[t].score>=60?'⭐⭐':'⭐') : '';
+    ['home-stars-','home-status-','stars-'].forEach((pre,pi) => {
+      const el = document.getElementById(pre+t);
+      if(el) el.textContent = pi===1 ? (progress[t].done?'✅':'▶️') : stars;
+    });
+    const nb = document.getElementById('nav-'+t);
+    if(nb && progress[t].done) nb.classList.add('completed');
+  });
+}
+
+// ── Navegación ────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const nb = document.getElementById('nav-'+id); if(nb) nb.classList.add('active');
+  if(id==='examen') buildExamen(); // siempre regenera el examen
+}
+window.showScreen = showScreen;
+
+function showLesson(id) {
+  showScreen(id);
+  PHASES[id].show(1); // siempre empieza en fase 1
+}
+window.showLesson = showLesson;
+
+function setTab(id, n) {
+  const tabs = PHASES[id].tabs;
+  const wrap = document.getElementById('tabs-'+id); if(!wrap) return;
+  wrap.innerHTML = tabs.map((l,i)=>`
+    <div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join('');
+}
+
+// ── Helpers layout vertical C/D/U ─────────────────────────
+function numCell(d) {
+  return `<div class="calc-num-cell">${d}</div>`;
+}
+function resultInp(prefix, idx, suffix, val) {
+  return `<input class="calc-inp" id="${prefix}-${idx}-${suffix}"
+    maxlength="1" data-v="${val}"
+    oninput="calcAdvance(this,'${suffix}','${prefix}',${idx})">`;
+}
+function carryInp(prefix, idx, suffix, val) {
+  return `<input class="calc-carry-inp" id="${prefix}-${idx}-carry-${suffix}" maxlength="1" data-v="${val}">`;
+}
+function emptyCarry() { return `<div style="width:34px;height:28px"></div>`; }
+
+// ── Auto-avance derecha→izquierda ─────────────────────────
+window.calcAdvance = function(inp, suffix, prefix, idx) {
+  if(inp.value.length!==1) return;
+  const next = suffix==='u'?`${prefix}-${idx}-d`:suffix==='d'?`${prefix}-${idx}-c`:null;
+  if(next){const el=document.getElementById(next);if(el&&!el.disabled)el.focus();}
+};
+
+// ── Render una operación vertical ─────────────────────────
+function renderOp(prefix, idx, a, b, res, sign, carries) {
+  const dA = [Math.floor(a/100)%10, Math.floor(a/10)%10, a%10];
+  const dB = [Math.floor(b/100)%10, Math.floor(b/10)%10, b%10];
+  const dR = [Math.floor(Math.abs(res)/100)%10, Math.floor(Math.abs(res)/10)%10, Math.abs(res)%10];
+  const { cC=0, cD=0 } = carries || {};
+  const signColor = sign==='+' ? 'var(--green)' : '#dc2626';
+  const label = sign==='+' ? `Suma ${idx+1}` : `Resta ${idx+1}`;
+
+  return `
+  <div class="exercise-box" id="${prefix}-box-${idx}">
+    <div class="q-num">${label} – Resuelve de derecha a izquierda</div>
+    <p style="font-size:12px;color:var(--gray-600);margin-bottom:14px;font-style:italic">
+      💡 Empieza por las <strong>Unidades</strong>.
+      ${sign==='+' ? 'Si la suma da 10 o más, escribe la <strong style="color:#dc2626">llevada</strong> (en rojo, encima de la siguiente columna).' :
+        'Si no puedes restar, <strong style="color:#dc2626">pide prestado</strong> a la columna de la izquierda (escribe el 1 en rojo encima).'}
+    </p>
+
+    <div class="calc-box">
+      <!-- Fila llevadas / pedidos prestados -->
+      <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:4px;padding-left:36px">
+        <div style="width:52px;display:flex;justify-content:center">
+          ${cC>0 ? carryInp(prefix,idx,'c',cC) : emptyCarry()}
+        </div>
+        <div style="width:52px;display:flex;justify-content:center">
+          ${cD>0 ? carryInp(prefix,idx,'d',cD) : emptyCarry()}
+        </div>
+        <div style="width:52px;display:flex;justify-content:center">${emptyCarry()}</div>
+      </div>
+      <!-- Etiquetas C D U -->
+      <div class="cdu-label-row">
+        ${['C','D','U'].map(l=>`<div class="cdu-lbl">${l}</div>`).join('')}
+      </div>
+      <!-- Número A -->
+      <div style="display:flex;gap:8px;padding-left:36px">
+        ${dA.map(d=>numCell(d)).join('')}
+      </div>
+      <!-- Número B + signo -->
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="calc-sign" style="color:${signColor}">${sign}</div>
+        ${dB.map(d=>numCell(d)).join('')}
+      </div>
+      <!-- Línea separadora -->
+      <div class="calc-sep" style="margin-left:36px"></div>
+      <!-- Resultado: inputs -->
+      <div style="display:flex;gap:8px;padding-left:36px">
+        ${resultInp(prefix,idx,'c',dR[0])}
+        ${resultInp(prefix,idx,'d',dR[1])}
+        ${resultInp(prefix,idx,'u',dR[2])}
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" id="${prefix}-btn-${idx}"
+        onclick="checkOp('${prefix}',${idx},${res},${cC},${cD})">Comprobar ✓</button>
+      <button class="btn" style="background:rgba(0,0,0,.05);color:var(--gray-600);font-size:13px"
+        onclick="resetOp('${prefix}',${idx},${cC},${cD})">🔄 Borrar</button>
+    </div>
+    <div class="feedback" id="${prefix}-fb-${idx}"></div>
+  </div>`;
+}
+
+// ── Comprobar operación ───────────────────────────────────
+window.checkOp = function(prefix, idx, res, cC, cD) {
+  const absRes = Math.abs(res);
+  const dR = [Math.floor(absRes/100)%10, Math.floor(absRes/10)%10, absRes%10];
+  let ok = true;
+  ['c','d','u'].forEach((s,i) => {
+    const inp = document.getElementById(`${prefix}-${idx}-${s}`);
+    if(!inp) return;
+    const correct = inp.value.trim()===String(dR[i]);
+    inp.classList.add(correct?'correct':'wrong'); inp.disabled=true;
+    if(!correct) ok=false;
+  });
+  if(cC>0){const inp=document.getElementById(`${prefix}-${idx}-carry-c`);if(inp){const c=inp.value.trim()===String(cC);inp.classList.add(c?'correct':'wrong');inp.disabled=true;if(!c)ok=false;}}
+  if(cD>0){const inp=document.getElementById(`${prefix}-${idx}-carry-d`);if(inp){const c=inp.value.trim()===String(cD);inp.classList.add(c?'correct':'wrong');inp.disabled=true;if(!c)ok=false;}}
+  document.getElementById(`${prefix}-btn-${idx}`).disabled=true;
+  const fb=document.getElementById(`${prefix}-fb-${idx}`);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?`✅ ¡Perfecto! El resultado es ${res} 🎉`:`❌ Revisa: el resultado era ${dR[0]}${dR[1]}${dR[2]} = ${absRes}`;
+};
+
+window.resetOp = function(prefix, idx, cC, cD) {
+  ['c','d','u'].forEach(s=>{const el=document.getElementById(`${prefix}-${idx}-${s}`);if(el){el.value='';el.disabled=false;el.classList.remove('correct','wrong');}});
+  if(cC>0){const el=document.getElementById(`${prefix}-${idx}-carry-c`);if(el){el.value='';el.disabled=false;el.classList.remove('correct','wrong');}}
+  if(cD>0){const el=document.getElementById(`${prefix}-${idx}-carry-d`);if(el){el.value='';el.disabled=false;el.classList.remove('correct','wrong');}}
+  const btn=document.getElementById(`${prefix}-btn-${idx}`);if(btn)btn.disabled=false;
+  const fb=document.getElementById(`${prefix}-fb-${idx}`);if(fb){fb.className='feedback';fb.textContent='';}
+  const first=document.getElementById(`${prefix}-${idx}-u`);if(first)first.focus();
+};
+
+// ── Calcular carries de suma ──────────────────────────────
+function getSumaCarries(a, b) {
+  const dA=[Math.floor(a/100)%10,Math.floor(a/10)%10,a%10];
+  const dB=[Math.floor(b/100)%10,Math.floor(b/10)%10,b%10];
+  const cD=(dA[2]+dB[2])>=10?1:0;
+  const cC=(dA[1]+dB[1]+cD)>=10?1:0;
+  return {cC,cD};
+}
+
+// ── Calcular "pedidos prestados" en resta ─────────────────
+function getRestaCarries(a, b) {
+  const dA=[Math.floor(a/100)%10,Math.floor(a/10)%10,a%10];
+  const dB=[Math.floor(b/100)%10,Math.floor(b/10)%10,b%10];
+  // Pide prestado en U: si dA[2] < dB[2]
+  const pedD = dA[2]<dB[2] ? 1 : 0;
+  // Dígito D del minuendo ajustado (si prestó a U, pierde 1)
+  const dAd = dA[1] - pedD;
+  // Pide prestado en D
+  const pedC = dAd < dB[1] ? 1 : 0;
+  return { cC: pedC, cD: pedD };
+}
+
+// ─────────────────────────────────────────────────────────
+// CLASE 1: SUMAS CON LLEVADAS
+// ─────────────────────────────────────────────────────────
+const ALL_SUMAS = [
+  [587,364],[628,293],[435,478],[257,565],[346,475],[483,359],[567,285],[274,548],
+  [639,182],[456,376],[748,193],[529,384],[385,467],[674,258],[293,548],[817,164],
+  [546,387],[728,195],[463,479],[374,568],[685,247],[539,293],[467,375],[284,657],
+  [593,248],[376,485],[847,136],[264,579],[748,183],[357,486],[639,274],[485,367],
+  [576,348],[427,395],[638,284],[519,374],[468,375],[347,586],[726,185],[459,374],
+];
+
+function showSumaPhase(n) {
+  setTab('sumas', n);
+  const c = document.getElementById('sumas-content');
+  if(n===1) {
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">➕ Sumas con llevadas – cómo se hacen</div>
+      <p style="color:var(--gray-600);margin-bottom:16px">Siempre se suma <strong>de derecha a izquierda</strong>: primero Unidades, luego Decenas, luego Centenas.</p>
+
+      <div class="theory-highlight">
+        <strong>📐 Ejemplo paso a paso: 529 + 384</strong><br><br>
+        <strong>Paso 1 – Unidades:</strong> 9 + 4 = 13 → escribes <u>3</u> en el resultado y llevas <span style="color:#dc2626;font-weight:900">1</span> a las Decenas.<br>
+        <strong>Paso 2 – Decenas:</strong> <span style="color:#dc2626">1</span>(llevada) + 2 + 8 = 11 → escribes <u>1</u> en el resultado y llevas <span style="color:#dc2626;font-weight:900">1</span> a las Centenas.<br>
+        <strong>Paso 3 – Centenas:</strong> <span style="color:#dc2626">1</span>(llevada) + 5 + 3 = 9 → escribes <u>9</u> en el resultado.<br><br>
+        <strong>Resultado: 913 ✅</strong>
+      </div>
+
+      <div class="theory-highlight" style="background:var(--orange-bg);border-color:var(--orange)">
+        <strong>⚡ La regla de oro de la llevada:</strong><br>
+        Cuando la suma de una columna da <strong>10 o más</strong>:<br>
+        → Escribe en el resultado solo las <strong>Unidades</strong> de esa suma.<br>
+        → Escribe el <span style="color:#dc2626;font-weight:900">1</span> (la llevada) en rojo, encima de la columna siguiente.<br>
+        → Ese 1 se suma junto a los dígitos de la columna siguiente.
+      </div>
+
+      <div class="theory-highlight" style="background:var(--purple-bg);border-color:var(--purple)">
+        <strong>🧩 ¿Cómo se escribe en el papel?</strong><br>
+        La llevada se escribe en la parte de arriba, entre el primer sumando y la fila de las etiquetas C/D/U, encima de la columna donde va a sumar.
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showSumaPhase(2)">Practicar sumas →</button></div>`;
+  } else if(n===2) {
+    buildSumasPool('suma', ALL_SUMAS, 4, getSumaCarries, (a,b)=>a+b, '+', 'sumas-content', ()=>showSumaPhase(3));
+  } else if(n===3) {
+    buildSumasTest();
+  }
+}
+window.showSumaPhase = showSumaPhase;
+
+function buildSumasPool(prefix, pool, count, getCarries, calcRes, sign, containerId, nextFn) {
+  const ops = pool.slice().sort(()=>Math.random()-.5).slice(0,count);
+  const c = document.getElementById(containerId);
+  const carries = ops.map(([a,b])=>getCarries(a,b));
+  const results = ops.map(([a,b])=>calcRes(a,b));
+  c.innerHTML = ops.map(([a,b],i) =>
+    renderOp(prefix, i, a, b, results[i], sign, carries[i])
+  ).join('') +
+  `<div class="btn-row"><button class="btn btn-success" onclick="(${nextFn.toString()})()">Siguiente →</button></div>`;
+  setTimeout(()=>{const el=document.getElementById(`${prefix}-0-u`);if(el)el.focus();},100);
+}
+
+function buildSumasTest() {
+  const ops = ALL_SUMAS.slice().sort(()=>Math.random()-.5).slice(0,6);
+  const c = document.getElementById('sumas-content');
+  let curr=0, correct=0, results=[];
+
+  function renderQ() {
+    if(curr>=ops.length){
+      const pct=Math.round(correct/ops.length*100);
+      const stars=pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      c.innerHTML=`<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${pct===100?'¡Perfecto!':pct>=80?'¡Muy bien!':pct>=60?'¡Bien!':'Sigue practicando'}<br><small>${correct} de ${ops.length} correctas</small></div>
+        <div class="btn-row" style="justify-content:center;margin-top:16px">
+          <button class="btn btn-primary" onclick="showSumaPhase(3)">🔄 Repetir con nuevas sumas</button>
+        </div>
+      </div>`;
+      progress.sumas.score=pct; progress.sumas.done=true; updateHome();
+      return;
+    }
+    const [a,b]=ops[curr], res=a+b, carries=getSumaCarries(a,b);
+    const dots=ops.map((_,i)=>`<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Suma ${curr+1} de ${ops.length}</span><div class="test-dots">${dots}</div></div>
+    ${renderOp('st',curr,a,b,res,'+',carries)}`;
+    document.getElementById(`st-${curr}-u`)?.focus();
+
+    // override check button
+    document.getElementById(`st-btn-${curr}`).onclick = function() {
+      const absRes=res; const dR=[Math.floor(absRes/100)%10,Math.floor(absRes/10)%10,absRes%10];
+      let ok=true;
+      ['c','d','u'].forEach((s,i)=>{const inp=document.getElementById(`st-${curr}-${s}`);if(!inp)return;const cv=inp.value.trim()===String(dR[i]);inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;});
+      if(carries.cC>0){const inp=document.getElementById(`st-${curr}-carry-c`);if(inp){const cv=inp.value.trim()==='1';inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;}}
+      if(carries.cD>0){const inp=document.getElementById(`st-${curr}-carry-d`);if(inp){const cv=inp.value.trim()==='1';inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;}}
+      this.disabled=true;
+      const fb=document.getElementById(`st-fb-${curr}`);
+      fb.className='feedback '+(ok?'correct':'wrong')+' show';
+      fb.textContent=ok?`✅ ¡Correcto! ${res}`:`❌ Era ${dR[0]}${dR[1]}${dR[2]} = ${res}`;
+      results.push(ok); if(ok)correct++;
+      setTimeout(()=>{curr++;renderQ();}, ok?700:1600);
+    };
+    document.getElementById(`st-${curr}`+'_reset')?.remove();
+  }
+  renderQ();
+}
+
+// ─────────────────────────────────────────────────────────
+// CLASE 2: RESTAS CON LLEVADAS
+// ─────────────────────────────────────────────────────────
+const ALL_RESTAS = [
+  [742,318],[853,427],[961,435],[876,249],[543,218],[764,347],[832,415],[695,268],
+  [921,483],[743,216],[865,438],[952,317],[784,256],[631,248],[847,319],[973,456],
+  [762,348],[854,237],[931,416],[683,247],[742,518],[953,427],[861,345],[794,256],
+  [632,419],[843,217],[974,358],[561,238],[742,315],[863,427],[951,436],[874,249],
+  [763,418],[852,347],[941,368],[874,356],[962,437],[743,418],[851,326],[964,347],
+];
+
+function showRestaPhase(n) {
+  setTab('restas', n);
+  const c = document.getElementById('restas-content');
+  if(n===1) {
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">➖ Restas con llevadas – cómo se hacen</div>
+      <p style="color:var(--gray-600);margin-bottom:16px">Siempre se resta <strong>de derecha a izquierda</strong>: primero Unidades, luego Decenas, luego Centenas.</p>
+
+      <div class="theory-highlight">
+        <strong>📐 Ejemplo paso a paso: 743 – 216</strong><br><br>
+        <strong>Paso 1 – Unidades:</strong> 3 − 6 → no puedo (3 es menor que 6).<br>
+        Pido prestado 1 a las Decenas → el 3 se convierte en 13. Escribo <span style="color:#dc2626;font-weight:900">1</span> encima de las Decenas.<br>
+        13 − 6 = <u>7</u>. Escribo 7 en el resultado.<br><br>
+        <strong>Paso 2 – Decenas:</strong> 4 − <span style="color:#dc2626">1</span>(prestado) = 3. Ahora: 3 − 1 = <u>2</u>. Escribo 2.<br><br>
+        <strong>Paso 3 – Centenas:</strong> 7 − 2 = <u>5</u>. Escribo 5.<br><br>
+        <strong>Resultado: 527 ✅</strong>
+      </div>
+
+      <div class="theory-highlight" style="background:var(--orange-bg);border-color:var(--orange)">
+        <strong>⚡ La regla del "pido prestado":</strong><br>
+        Cuando el dígito de arriba es <strong>menor</strong> que el de abajo:<br>
+        → Pido prestado <strong>1</strong> a la columna de la izquierda.<br>
+        → El dígito de arriba se convierte en el mismo +10.<br>
+        → En la columna a la que pedí prestado, el dígito de arriba pierde 1.<br>
+        → Anoto el <span style="color:#dc2626;font-weight:900">1</span> en rojo encima de la columna a quien pedí.
+      </div>
+
+      <div class="theory-highlight" style="background:var(--purple-bg);border-color:var(--purple)">
+        <strong>🧩 Otro ejemplo: 832 – 415</strong><br>
+        U: 2 − 5 → pido prestado → 12 − 5 = <u>7</u>. Anoto 1 sobre Decenas.<br>
+        D: 3 − <span style="color:#dc2626">1</span> = 2. 2 − 1 = <u>1</u>.<br>
+        C: 8 − 4 = <u>4</u>.<br>
+        Resultado: <strong>417 ✅</strong>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showRestaPhase(2)">Practicar restas →</button></div>`;
+  } else if(n===2) {
+    buildSumasPool('resta', ALL_RESTAS, 4, getRestaCarries, (a,b)=>a-b, '−', 'restas-content', ()=>showRestaPhase(3));
+  } else if(n===3) {
+    buildRestasTest();
+  }
+}
+window.showRestaPhase = showRestaPhase;
+
+function buildRestasTest() {
+  const ops = ALL_RESTAS.slice().sort(()=>Math.random()-.5).slice(0,6);
+  const c = document.getElementById('restas-content');
+  let curr=0, correct=0, results=[];
+
+  function renderQ() {
+    if(curr>=ops.length){
+      const pct=Math.round(correct/ops.length*100);
+      const stars=pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      c.innerHTML=`<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${pct===100?'¡Perfecto!':pct>=80?'¡Muy bien!':pct>=60?'¡Bien!':'Sigue practicando'}<br><small>${correct} de ${ops.length} correctas</small></div>
+        <div class="btn-row" style="justify-content:center;margin-top:16px">
+          <button class="btn btn-primary" onclick="showRestaPhase(3)">🔄 Repetir con nuevas restas</button>
+        </div>
+      </div>`;
+      progress.restas.score=pct; progress.restas.done=true; updateHome();
+      return;
+    }
+    const [a,b]=ops[curr], res=a-b, carries=getRestaCarries(a,b);
+    const dots=ops.map((_,i)=>`<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Resta ${curr+1} de ${ops.length}</span><div class="test-dots">${dots}</div></div>
+    ${renderOp('rt',curr,a,b,res,'−',carries)}`;
+    document.getElementById(`rt-${curr}-u`)?.focus();
+
+    document.getElementById(`rt-btn-${curr}`).onclick = function() {
+      const dR=[Math.floor(res/100)%10,Math.floor(res/10)%10,res%10];
+      let ok=true;
+      ['c','d','u'].forEach((s,i)=>{const inp=document.getElementById(`rt-${curr}-${s}`);if(!inp)return;const cv=inp.value.trim()===String(dR[i]);inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;});
+      if(carries.cC>0){const inp=document.getElementById(`rt-${curr}-carry-c`);if(inp){const cv=inp.value.trim()==='1';inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;}}
+      if(carries.cD>0){const inp=document.getElementById(`rt-${curr}-carry-d`);if(inp){const cv=inp.value.trim()==='1';inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;}}
+      this.disabled=true;
+      const fb=document.getElementById(`rt-fb-${curr}`);
+      fb.className='feedback '+(ok?'correct':'wrong')+' show';
+      fb.textContent=ok?`✅ ¡Correcto! ${res}`:`❌ Era ${dR[0]}${dR[1]}${dR[2]} = ${res}`;
+      results.push(ok); if(ok)correct++;
+      setTimeout(()=>{curr++;renderQ();}, ok?700:1600);
+    };
+  }
+  renderQ();
+}
+
+// ─────────────────────────────────────────────────────────
+// EXAMEN FINAL: 5 sumas + 5 restas
+// ─────────────────────────────────────────────────────────
+function buildExamen() {
+  const sumas  = ALL_SUMAS.slice().sort(()=>Math.random()-.5).slice(0,5);
+  const restas = ALL_RESTAS.slice().sort(()=>Math.random()-.5).slice(0,5);
+  const c = document.getElementById('examen-content');
+
+  const sumaCarries  = sumas.map(([a,b])=>getSumaCarries(a,b));
+  const restaCarries = restas.map(([a,b])=>getRestaCarries(a,b));
+  const sumaRes  = sumas.map(([a,b])=>a+b);
+  const restaRes = restas.map(([a,b])=>a-b);
+
+  c.innerHTML = `
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">📝 Examen Final – Actividad Evaluable Cálculo</div>
+      <p style="color:var(--gray-600)">5 sumas y 5 restas con llevadas. Recuerda: empieza siempre por las Unidades (derecha), apunta las llevadas en rojo y rellena el resultado.</p>
+    </div>
+
+    <div style="font-family:'Fredoka One',cursive;font-size:16px;color:white;margin-bottom:12px;opacity:.8">➕ SUMAS</div>
+    ${sumas.map(([a,b],i)=>renderOp('ex-s',i,a,b,sumaRes[i],'+',sumaCarries[i])).join('')}
+
+    <div style="font-family:'Fredoka One',cursive;font-size:16px;color:white;margin:20px 0 12px;opacity:.8">➖ RESTAS</div>
+    ${restas.map(([a,b],i)=>renderOp('ex-r',i,a,b,restaRes[i],'−',restaCarries[i])).join('')}
+
+    <div class="btn-row">
+      <button class="btn btn-success" onclick="checkExamen(
+        [${sumaRes}],[${restaRes}],
+        [${sumaCarries.map(c=>JSON.stringify(c))}],
+        [${restaCarries.map(c=>JSON.stringify(c))}]
+      )">✅ Corregir examen</button>
+      <button class="btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)"
+        onclick="buildExamen()">🔄 Nuevo examen</button>
+    </div>
+    <div class="feedback" id="examen-fb" style="margin-top:14px;font-size:16px"></div>`;
+}
+
+window.checkExamen = function(sumaRes, restaRes, sumaCarries, restaCarries) {
+  let total=0, correct=0;
+
+  function check(prefix, idx, res, carries) {
+    const absRes=Math.abs(res);
+    const dR=[Math.floor(absRes/100)%10,Math.floor(absRes/10)%10,absRes%10];
+    let ok=true;
+    ['c','d','u'].forEach((s,i)=>{const inp=document.getElementById(`${prefix}-${idx}-${s}`);if(!inp)return;total++;const cv=inp.value.trim()===String(dR[i]);inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;});
+    if(carries.cC>0){const inp=document.getElementById(`${prefix}-${idx}-carry-c`);if(inp){total++;const cv=inp.value.trim()==='1';inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;}}
+    if(carries.cD>0){const inp=document.getElementById(`${prefix}-${idx}-carry-d`);if(inp){total++;const cv=inp.value.trim()==='1';inp.classList.add(cv?'correct':'wrong');inp.disabled=true;if(!cv)ok=false;}}
+    document.getElementById(`${prefix}-btn-${idx}`).disabled=true;
+    const fb=document.getElementById(`${prefix}-fb-${idx}`);
+    if(fb){fb.className='feedback '+(ok?'correct':'wrong')+' show';fb.textContent=ok?`✅ Correcto! ${res}`:`❌ Era ${dR[0]}${dR[1]}${dR[2]} = ${absRes}`;}
+    return ok;
+  }
+
+  sumaRes.forEach((r,i)=>{ if(check('ex-s',i,r,sumaCarries[i])) correct++; });
+  restaRes.forEach((r,i)=>{ if(check('ex-r',i,r,restaCarries[i])) correct++; });
+
+  const pct=Math.round(correct/10*100);
+  const nota=pct>=90?'¡SOBRESALIENTE! 🏆':pct>=70?'NOTABLE 🌟':pct>=50?'APROBADO 👍':'A seguir practicando 💪';
+  const fb=document.getElementById('examen-fb');
+  fb.className='feedback '+(pct>=50?'correct':'wrong')+' show';
+  fb.innerHTML=`${nota} — Has acertado <strong>${correct} de 10</strong> operaciones (${pct}%)`;
+  progress.examen.score=pct; progress.examen.done=true; updateHome();
+};
+
+// ─────────────────────────────────────────────────────────
+// PHASES MAP
+// ─────────────────────────────────────────────────────────
+const PHASES = {
+  sumas:  { tabs:['📖 1. Aprende','✏️ 2. Practica','📝 3. Mini Test'], show:showSumaPhase },
+  restas: { tabs:['📖 1. Aprende','✏️ 2. Practica','📝 3. Mini Test'], show:showRestaPhase },
+};
+</script>
+
+<script type="module">
+import { CONFIG } from '../components/config.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
+const s = CONFIG.student;
+const _today = new Date(); _today.setHours(0,0,0,0);
+const _next = (CONFIG.exams||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date))
+  .find(e=>new Date(e.date+'T12:00:00')>=_today);
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🧮 Matemáticas – <span>Cálculo</span> · ${s.class} · ${s.school} · ${s.location}</div>
+      <div class="header-sub">ACTIVIDAD EVALUABLE · SUMAS Y RESTAS CON LLEVADAS · 2º PRIMARIA</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back">← Volver al portal</a>
+      ${_next ? `<div class="exam-countdown"><div class="days" id="countdown-days">–</div><div class="label">DÍAS AL EXAMEN</div></div>` : ''}
+    </div>
+  </div>`;
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+updateHome();
+if(_next){const diff=Math.floor((new Date(_next.date+'T12:00:00')-_today)/86400000);const el=document.getElementById('countdown-days');if(el)el.textContent=Math.max(0,diff);}
+</script>
+</body>
+</html>

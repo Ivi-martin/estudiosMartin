@@ -35,7 +35,8 @@ export const CONFIG = {
         //{ label: 'Unidad 2 – Sumas y restas',       url: null },
         //{ label: 'Unidad 3 – Multiplicación',        url: null },
         //{ label: 'Unidad 4 – Geometría',             url: null },
-        { label: 'Unidad 6 – Una tarde de juegos',   url: 'apps/mat6.html' },
+        { label: 'Unidad 6 – Una tarde de juegos',         url: 'apps/mat6.html' },
+        { label: 'Act. Evaluable – Cálculo (sumas/restas)', url: 'apps/matCalculo.html' },
       ],
     },
     {
@@ -111,7 +112,7 @@ export const CONFIG = {
   // ── Próximos exámenes ── edita aquí para añadir o quitar
   // Formato: { date: 'YYYY-MM-DD', subject: 'Nombre', topic: 'Descripción' }
   exams: [
-    //{ date: '2026-03-17', subject: 'Inglés',   topic: "Unit 4 – Animals & Can/Can't" },
+    { date: '2026-03-20', subject: 'Matemáticas',   topic: "Actividad Evaluable Cálculo" },
   ],
 
   // ── Horario semanal ──
