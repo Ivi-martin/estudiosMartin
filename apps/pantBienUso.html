@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>:root{color-scheme:dark;}html,body{background-color:#0f172a !important;}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✅ Buen uso – Pantallas</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"2f62d02dae6f47348de2ad83cf623a43"}'></script>
+<style>
+:root {
+  --indigo:#4f46e5; --indigo-l:#6366f1; --indigo-bg:#eef2ff;
+  --violet:#7c3aed; --violet-l:#8b5cf6; --violet-bg:#ede9fe;
+  --rose:#e11d48; --rose-l:#f43f5e; --rose-bg:#ffe4e6;
+  --amber:#d97706; --amber-l:#f59e0b; --amber-bg:#fef3c7;
+  --green:#16a34a; --green-l:#22c55e; --green-bg:#dcfce7;
+  --sky:#0284c7; --sky-bg:#e0f2fe;
+  --navy:#1a2744;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-600:#475569;--gray-800:#1e293b;
+  --shadow:0 4px 16px rgba(0,0,0,.12); --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+  --radius:16px;--radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+.stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);overflow:hidden}
+.stars-bg::before{content:'★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.06);
+  line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.5}to{opacity:1}}
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+.header{background:linear-gradient(135deg,#1e1b4b 0%,#4f46e5 100%);padding:16px 24px;
+  display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white}
+.header-logo span{color:#fbbf24}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.progress-strip{background:rgba(0,0,0,.3);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+.progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#4f46e5,#818cf8);border-radius:4px;transition:width .5s ease}
+.progress-pct{font-size:12px;color:#818cf8;font-weight:800}
+.main{flex:1;display:flex;gap:0}
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+  padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+.sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+  color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+.nav-btn.active{background:rgba(79,70,229,.3);color:white;border:1px solid rgba(79,70,229,.5)}
+.nav-btn.completed{color:#818cf8}
+.nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+.nav-btn .nav-stars{margin-left:auto;font-size:12px}
+.content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.theory-highlight{background:var(--amber-bg);border-left:4px solid var(--amber-l);
+  border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+.theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
+.theory-highlight.rose{background:var(--rose-bg);border-color:var(--rose)}
+.theory-highlight.indigo{background:var(--indigo-bg);border-color:var(--indigo)}
+.theory-highlight.violet{background:var(--violet-bg);border-color:var(--violet)}
+.theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky)}
+.exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+.q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--indigo);text-transform:uppercase;margin-bottom:8px}
+.q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+.option-btn:hover:not(:disabled){border-color:var(--indigo);background:var(--indigo-bg)}
+.option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.option-btn.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+.option-btn:disabled{cursor:not-allowed;opacity:.8}
+.feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+.feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+.feedback.correct{background:var(--green-bg);color:var(--green)}
+.feedback.wrong{background:var(--rose-bg);color:var(--rose)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+  transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--indigo);color:white}
+.btn-primary:hover{background:var(--indigo-l);transform:translateY(-1px)}
+.btn-success{background:var(--green);color:white}
+.btn-success:hover{background:var(--green-l);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+.score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--indigo)}
+.score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+.stars-display{font-size:36px;letter-spacing:4px}
+.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.test-dots{display:flex;gap:6px}
+.test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+.test-dot.current{background:var(--indigo);transform:scale(1.3)}
+.test-dot.done-correct{background:var(--green)}
+.test-dot.done-wrong{background:var(--rose)}
+.tf-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.tf-btn{padding:12px 28px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;
+  border:2px solid var(--gray-200);background:white;cursor:pointer;transition:all .2s;color:var(--navy)}
+.tf-btn:hover:not(:disabled){transform:scale(1.05)}
+.tf-btn.verd:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.tf-btn.fals:hover:not(:disabled){border-color:var(--rose);background:var(--rose-bg)}
+.tf-btn.correct{background:var(--green-bg) !important;border-color:var(--green) !important;color:var(--green) !important}
+.tf-btn.wrong{background:var(--rose-bg) !important;border-color:var(--rose) !important;color:var(--rose) !important}
+.tf-btn:disabled{cursor:not-allowed}
+.phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+.phase-tab.active{background:var(--indigo);color:white;border-color:var(--indigo-l)}
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+.content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+@media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+<div id="app-header-root"></div>
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO DEL TEMA</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+<div class="main">
+<div class="sidebar">
+  <div class="sidebar-section">Navegación</div>
+  <button class="nav-btn active" onclick="showScreen('tema')" id="nav-tema">
+    <span class="nav-icon">✅</span> Buen uso
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Resultados
+  </button>
+</div>
+<div class="content">
+<div class="screen active" id="screen-tema">
+  <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px">
+    <div style="font-size:42px">✅</div>
+    <div>
+      <div style="font-family:'Fredoka One',cursive;font-size:26px;color:white">Buen uso</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:4px">Cuándo y cómo usar la tecnología con cabeza</div>
+    </div>
+    <button class="btn-back" onclick="history.back()" style="margin-left:auto">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-tema"></div>
+  <div id="tema-content"></div>
+</div>
+<div class="screen" id="screen-progreso">
+  <div id="progreso-content"></div>
+</div>
+</div></div></div>
+<div id="app-footer-root"></div>
+<script>
+const progress={tema:{done:false,score:0}};
+function updateHome(){
+  const pct=progress.tema.done?progress.tema.score:0;
+  document.getElementById('overall-progress').style.width=pct+'%';
+  document.getElementById('overall-pct').textContent=pct+'%';
+}
+let _init=false;
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const nb=document.getElementById('nav-'+id);if(nb)nb.classList.add('active');
+  if(id==='tema'&&!_init){_init=true;PHASES.tema.show(1);}
+  if(id==='progreso')buildProgreso();
+}
+window.showScreen=showScreen;
+const TABS=["📖 1. Aprende", "🎮 2. ¿Buen o mal uso?", "🔁 3. V o F", "📝 Mini Test"];
+function setTab(n){
+  const wrap=document.getElementById('tabs-tema');if(!wrap)return;
+  wrap.innerHTML=TABS.map((l,i)=>`<div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES.tema.show(${i+1})">${l}</div>`).join('');
+}
+
+function buildMiniTest(qs, containerId, onDone) {
+  let curr=0, correct=0, results=[];
+  function render() {
+    const c=document.getElementById(containerId); if(!c) return;
+    if(curr>=qs.length){
+      const pct=Math.round(correct/qs.length*100);
+      const stars=pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      const msg=pct===100?'¡Perfecto! Eres un crack 🔥':pct>=80?'¡Muy bien! 💪':pct>=60?'¡Bien! 👍':'Repasa e inténtalo 📖';
+      c.innerHTML=`<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${msg}<br><small>${correct} de ${qs.length} correctas</small></div>
+        <div class="btn-row" style="justify-content:center;margin-top:16px">
+          <button class="btn btn-primary" onclick="buildMiniTest(window['_mtqs_'+containerId],'${containerId}',window['_mtcb_'+containerId])">🔄 Repetir</button>
+        </div></div>`;
+      if(onDone) onDone(pct); return;
+    }
+    const q=qs[curr];
+    const dotHTML=qs.map((_,i)=>`<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    const qid='mt'+curr;
+    if(q.type==='mc'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="options" id="${qid}_opts">
+            ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='tf'){
+      c.innerHTML=`<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">¿Verdadero o Falso? – Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="tf-row">
+            <button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button>
+            <button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    }
+  }
+  function next(ok){results.push(ok);if(ok)correct++;curr++;setTimeout(render,ok?600:1500);}
+  window.mtAns=function(btn,qid,cid){
+    if(containerId!==cid)return;
+    document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true);
+    const ok=btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    if(!ok)document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ La respuesta era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtTF=function(btn,qid,cid){
+    if(containerId!==cid)return;
+    document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+    const ok=btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    const fb=document.getElementById(qid+'_fb');
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window['_mtqs_'+containerId]=qs;
+  window['_mtcb_'+containerId]=onDone;
+  render();
+}
+window.buildMiniTest=buildMiniTest;
+
+
+function showBienUsoPhase(n){
+  setTab(n);
+  const c=document.getElementById('tema-content');
+  if(n===1){
+    c.innerHTML=`
+    <div class="card">
+      <div class="card-title">✅ Cómo usar las pantallas con cabeza</div>
+      <p style="color:var(--gray-600);margin-bottom:14px">Las pantallas no son el enemigo. Son una herramienta. Y como toda herramienta, lo que importa es cómo la usas.</p>
+      <div class="theory-highlight green"><strong>✅ Cuándo las pantallas son positivas:</strong><br>
+        📚 <strong>Aprender</strong> — apps educativas, vídeos didácticos, este sitio web.<br>
+        🎨 <strong>Crear</strong> — hacer vídeos, música, diseño, programar.<br>
+        👨‍👩‍👧 <strong>Conectar</strong> — videollamada con los abuelos, hablar con amigos.<br>
+        🌍 <strong>Informarte</strong> — buscar información, leer noticias adecuadas a tu edad.</div>
+      <div class="theory-highlight indigo"><strong>📋 Reglas básicas de uso inteligente:</strong><br>
+        ⏰ <strong>Límite de tiempo</strong> — acuerda con tu familia cuánto tiempo al día.<br>
+        🌞 <strong>Espacios comunes</strong> — usa las pantallas en el salón, no en tu cuarto solo.<br>
+        🍽️ <strong>Sin pantallas en la mesa</strong> — las comidas son para hablar con la familia.<br>
+        🌙 <strong>Sin pantallas antes de dormir</strong> — mínimo 1 hora antes de acostarte.<br>
+        🏃 <strong>Primero lo primero</strong> — deberes, deporte y tareas antes que pantallas.</div>
+      <div class="theory-highlight amber"><strong>🧠 El truco del "uso activo":</strong><br>
+        Pregúntate siempre: <em>"¿Estoy creando o solo consumiendo?"</em><br>
+        Consumir sin más (vídeos, scroll) durante horas → malo.<br>
+        Usar la tecnología para aprender o crear algo → bueno.</div>
+      <div class="theory-highlight rose"><strong>⚠️ Señales de que estás usando mal las pantallas:</strong><br>
+        😡 Te pones de mal humor cuando te las quitan.<br>
+        😴 Tienes sueño en el colegio porque te acostaste tarde mirando el móvil.<br>
+        🏃 Has dejado de hacer deporte o de quedar con amigos.<br>
+        📚 Los deberes se te hacen eternos porque te distraes con el móvil.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showBienUsoPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildBienUsoSituaciones(); }
+  else if(n===3){ buildBienUsoTF(); }
+  else if(n===4){ buildBienUsoTest(); }
+}
+window.showBienUsoPhase=showBienUsoPhase;
+
+function buildBienUsoSituaciones(){
+  const situs=[
+    {s:'Ves un vídeo de experimentos de ciencia en YouTube con tu padre 30 minutos.',
+     bueno:true,exp:'Uso activo, tiempo limitado y acompañado. ¡Perfecto!'},
+    {s:'Juegas a la consola 4 horas seguidas y te saltas la merienda.',
+     bueno:false,exp:'Demasiado tiempo y sin comer. El cuerpo necesita descansos y comida.'},
+    {s:'Usas esta app para aprender y repasar antes de hacer los deberes.',
+     bueno:true,exp:'Uso educativo, tiempo razonable y antes de las obligaciones.'},
+    {s:'Llevas el móvil a la mesa y lo miras mientras comes con tu familia.',
+     bueno:false,exp:'Las comidas son para estar con la familia, no con la pantalla.'},
+    {s:'Haces una videollamada con tus abuelos que viven lejos.',
+     bueno:true,exp:'Uso social y afectivo de la tecnología. Estupendo.'},
+    {s:'Te quedas hasta las 23h mirando vídeos en la tablet porque no tienes sueño.',
+     bueno:false,exp:'Las pantallas antes de dormir empeoran el sueño. Y a las 23h un niño de 8 años debe estar durmiendo.'},
+    {s:'Creas un vídeo de tus juguetes favoritos para compartir con tus primos.',
+     bueno:true,exp:'Uso creativo. Mucho mejor que consumir pasivamente.'},
+    {s:'En cuanto llegas del colegio, lo primero que haces es coger el móvil.',
+     bueno:false,exp:'Primero los deberes, merendar y descansar. Las pantallas después.'},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('tema-content').innerHTML=`
+    <div class="card"><div class="card-title">🎮 ¿Buen uso o mal uso?</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">Lee cada situación y decide si es un buen uso o un mal uso de las pantallas. Luego descubre por qué.</p></div>
+    ${situs.map((s,i)=>`
+    <div class="exercise-box">
+      <div class="q-num">Situación ${i+1}</div>
+      <div class="q-text">${s.s}</div>
+      <div class="options" id="bu-opts-${i}">
+        <button class="option-btn" style="background:rgba(22,163,74,.08);border-color:rgba(22,163,74,.3)"
+          data-correct="${s.bueno?'bien':'mal'}" data-chosen="bien"
+          onclick="checkBU(this,${i},'${s.exp.replace(/'/g,'&#39;')}')">✅ Buen uso</button>
+        <button class="option-btn" style="background:rgba(225,29,72,.08);border-color:rgba(225,29,72,.3)"
+          data-correct="${s.bueno?'bien':'mal'}" data-chosen="mal"
+          onclick="checkBU(this,${i},'${s.exp.replace(/'/g,'&#39;')}')">❌ Mal uso</button>
+      </div>
+      <div class="feedback" id="bu-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showBienUsoPhase(3)">Siguiente →</button></div>`;
+}
+window.checkBU=function(btn,i,exp){
+  btn.closest('.exercise-box').querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('bu-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.innerHTML=(ok?'✅ ¡Correcto! ':'❌ ')+exp;
+};
+
+function buildBienUsoTF(){
+  const ALL=[
+    {q:'Las pantallas siempre son malas y no tienen ningún uso positivo.',a:false},
+    {q:'Usar pantallas para aprender o crear es más beneficioso que para consumir pasivamente.',a:true},
+    {q:'No hay problema en llevar el móvil a la mesa durante las comidas.',a:false},
+    {q:'Si te pones de mal humor cuando te quitan el móvil, puede ser señal de mal uso.',a:true},
+    {q:'Hacer los deberes con el móvil al lado ayuda a concentrarse mejor.',a:false},
+    {q:'Usar pantallas en espacios comunes de la casa (salón) es una práctica más saludable.',a:true},
+    {q:'Una videollamada con los abuelos es un buen uso de la tecnología.',a:true},
+    {q:'Las pantallas deben ir antes que los deberes y el deporte.',a:false},
+  ].sort(()=>Math.random()-.5).slice(0,6);
+  document.getElementById('tema-content').innerHTML=`
+    <div class="card"><div class="card-title">✅ Verdadero o Falso — Buen uso</div>
+    <p style="color:var(--gray-600);margin-bottom:16px">¿Sabes distinguir el buen uso del mal uso?</p></div>
+    ${ALL.map((it,i)=>`
+    <div class="exercise-box" id="butf-${i}">
+      <div class="q-num">Afirmación ${i+1}</div>
+      <div class="q-text">${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn verd" data-correct="${it.a?'verdadero':'falso'}" data-chosen="verdadero" onclick="checkBUTF(this,${i})">✅ Verdadero</button>
+        <button class="tf-btn fals" data-correct="${it.a?'verdadero':'falso'}" data-chosen="falso" onclick="checkBUTF(this,${i})">❌ Falso</button>
+      </div>
+      <div class="feedback" id="butf-fb-${i}"></div>
+    </div>`).join('')}
+    <div class="btn-row"><button class="btn btn-success" onclick="showBienUsoPhase(4)">Mini Test →</button></div>`;
+}
+window.checkBUTF=function(btn,i){
+  btn.closest('.exercise-box').querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  const ok=btn.dataset.chosen===btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('butf-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent=ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildBienUsoTest(){
+  const ALL=[
+    {type:'mc',question:'¿Cuál es un ejemplo de buen uso de las pantallas?',options:['Ver vídeos 5 horas solo','Aprender con una app educativa 20 minutos','Llevar el móvil a dormir'],correct:'Aprender con una app educativa 20 minutos'},
+    {type:'tf',question:'Las pantallas solo son malas y no tienen ningún uso positivo.',correct:'falso'},
+    {type:'mc',question:'¿Dónde es más recomendable usar las pantallas en casa?',options:['En la habitación con la puerta cerrada','En el baño','En espacios comunes como el salón'],correct:'En espacios comunes como el salón'},
+    {type:'tf',question:'Ponerse de mal humor al quitar el móvil puede ser una señal de enganche.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué debe ir ANTES de las pantallas?',options:['Nada, primero las pantallas','Los deberes, deporte y tareas','Los videojuegos'],correct:'Los deberes, deporte y tareas'},
+    {type:'tf',question:'Crear un vídeo con el móvil es mejor uso que ver vídeos pasivamente durante horas.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuándo NO se deben usar pantallas?',options:['Por la tarde','En las comidas familiares','Cuando llueve'],correct:'En las comidas familiares'},
+    {type:'mc',question:'¿Cuál es la pregunta clave para saber si haces buen uso?',options:['¿Cuánto tiempo llevo?','¿Estoy creando o solo consumiendo?','¿Está la batería cargada?'],correct:'¿Estoy creando o solo consumiendo?'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,6),'tema-content',pct=>{
+    progress.tema.score=pct;progress.tema.done=true;updateHome();
+  });
+}
+const PHASES={tema:{tabs:['📖 1. Aprende','🎮 2. ¿Buen o mal uso?','🔁 3. V o F','📝 Mini Test'],show:showBienUsoPhase}};
+
+function buildProgreso(){
+  const p=progress.tema;
+  const stars=p.done?(p.score>=80?'⭐⭐⭐':p.score>=60?'⭐⭐':'⭐'):'–';
+  document.getElementById('progreso-content').innerHTML=`
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:32px;text-align:center">
+      <div style="font-size:52px;margin-bottom:8px">${p.done?stars:'⏳'}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:${p.done?'#818cf8':'rgba(255,255,255,.5)'}">
+        ${p.done?p.score+'%':'Aún no completado'}
+      </div>
+      <div style="font-size:14px;color:rgba(255,255,255,.5);margin-top:8px">
+        ${p.done?'Tema completado · '+stars:'Completa el mini test para ver tu puntuación'}
+      </div>
+      <div style="margin-top:20px"><button class="btn btn-primary" onclick="showScreen('tema')">← Ir al tema</button></div>
+    </div>`;
+}
+</script>
+<script type="module">
+import {CONFIG} from '../components/config.js';
+import {MA,renderFooter} from '../components/components.js';
+window.CONFIG=CONFIG;
+const s=CONFIG.student;
+document.getElementById('app-header-root').innerHTML=`
+  <div class="header">
+    <div>
+      <div class="header-logo">✅ Pantallas — <span>Buen uso</span> · ${s.class} · ${s.school}</div>
+      <div class="header-sub">CUÁNDO Y CÓMO USAR LA TECNOLOGÍA CON CABEZA · 2º PRIMARIA</div>
+    </div>
+    <div class="header-right"><a href="../index.html" class="btn-back">← Portal</a></div>
+  </div>`;
+document.getElementById('app-footer-root').innerHTML=renderFooter();
+showScreen('tema');
+</script>
+</body>
+</html>

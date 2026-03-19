@@ -23,6 +23,7 @@ export const CONFIG = {
     pla:  'Nombre del/la profe',
     val:  'Nombre del/la profe',
     vida: 'Nombre del/la profe',
+    pant: 'Nombre del/la profe',
   },
 
   // ── Asignaturas ──
@@ -94,6 +95,16 @@ export const CONFIG = {
       ],
     },
     {
+      id: 'pant', icon: '📱', name: 'Pantallas',
+      color: '#4f46e5', colorBg: 'rgba(79,70,229,0.12)', colorText: '#818cf8',
+      topics: [
+        { label: '⏱️ Tiempo de pantallas',  url: 'apps/pantTiempo.html' },
+        { label: '⚠️ Riesgos digitales',    url: 'apps/pantRiesgos.html' },
+        { label: '✅ Buen uso',             url: 'apps/pantBienUso.html' },
+        { label: '📋 Mi Plan Digital',      url: 'apps/pantPlan.html' },
+      ],
+    },
+        {
       id: 'vida', icon: '🌱', name: 'La Vida',
       color: '#16a34a', colorBg: 'rgba(22,163,74,0.12)', colorText: '#86efac',
       topics: [
