@@ -419,7 +419,9 @@ function showAdjPhase(n) {
     </div>
     <div class="btn-row"><button class="btn btn-primary" onclick="showAdjPhase(2)">Siguiente →</button></div>`;
   } else if(n===2){ buildAdjEjercicios(); }
-  else if(n===3){ buildAdjTest(); }
+  else if(n===3){ buildAdjDesafio(); }
+  else if(n===4){ buildAdjJuego(); }
+  else if(n===5){ buildAdjTest(); }
 }
 window.showAdjPhase = showAdjPhase;
 
@@ -510,7 +512,7 @@ function buildAdjEjercicios(){
     </div>
   </div>
 
-  <div class="btn-row"><button class="btn btn-success" onclick="showAdjPhase(3)">Mini Test →</button></div>`;
+  <div class="btn-row"><button class="btn btn-success" onclick="showAdjPhase(3)">Desafío →</button></div>`;
 }
 window.checkAdj = function(btn, optsId, fbId){
   document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
@@ -521,6 +523,150 @@ window.checkAdj = function(btn, optsId, fbId){
   fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
   fb.textContent = ok ? '✅ ¡Correcto!' : '❌ Era: '+btn.dataset.correct;
 };
+
+function buildAdjDesafio(){
+  const c = document.getElementById('adj-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🔥 Desafío — Los adjetivos</div>
+  <p style="color:var(--gray-600);margin-bottom:0">Ejercicios más difíciles. ¡Piensa bien antes de responder!</p></div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 1 – Transforma el sustantivo</div>
+    <div class="q-text">El adjetivo "pequeño" está en masculino singular. ¿Cómo quedaría en femenino plural?</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input class="text-input" id="adj-d1" placeholder="Escribe la forma correcta..." style="flex:1;min-width:200px">
+      <button class="btn btn-primary" onclick="checkAdjWrite('adj-d1','pequeñas','adj-dfb1')">Comprobar ✓</button>
+    </div>
+    <div class="feedback" id="adj-dfb1"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 2 – Ponle tres adjetivos</div>
+    <div class="q-text">Lee el cuento: Juanchu celebraba su cumpleaños con una fiesta de dinosaurios.<br><br>
+    ¿Cuál de estas tres oraciones usa los adjetivos correctamente concordados con "fiesta"?</div>
+    <div class="options" id="adj-d2" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="Una fiesta grande, ruidosa y divertida" data-chosen="Una fiesta grande, ruidoso y divertida" onclick="checkAdj(this,'adj-d2','adj-dfb2')">Una fiesta grande, ruidoso y divertida</button>
+      <button class="option-btn" style="text-align:left" data-correct="Una fiesta grande, ruidosa y divertida" data-chosen="Una fiesta grande, ruidosa y divertida" onclick="checkAdj(this,'adj-d2','adj-dfb2')">Una fiesta grande, ruidosa y divertida</button>
+      <button class="option-btn" style="text-align:left" data-correct="Una fiesta grande, ruidosa y divertida" data-chosen="Un fiesta grande, ruidosas y divertido" onclick="checkAdj(this,'adj-d2','adj-dfb2')">Un fiesta grande, ruidosas y divertido</button>
+    </div>
+    <div class="feedback" id="adj-dfb2"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 3 – Adjetivo escondido</div>
+    <div class="q-text">Lee esta frase del cuento: <em>"El dinosaurio lanzó un descomunal rugido."</em><br>
+    ¿Cuál es el adjetivo y a qué sustantivo acompaña?</div>
+    <div class="options" id="adj-d3" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="descomunal → acompaña a rugido" data-chosen="lanzó → acompaña a dinosaurio" onclick="checkAdj(this,'adj-d3','adj-dfb3')">lanzó → acompaña a dinosaurio</button>
+      <button class="option-btn" style="text-align:left" data-correct="descomunal → acompaña a rugido" data-chosen="descomunal → acompaña a rugido" onclick="checkAdj(this,'adj-d3','adj-dfb3')">descomunal → acompaña a rugido</button>
+      <button class="option-btn" style="text-align:left" data-correct="descomunal → acompaña a rugido" data-chosen="enorme → acompaña a bestia" onclick="checkAdj(this,'adj-d3','adj-dfb3')">enorme → acompaña a bestia</button>
+    </div>
+    <div class="feedback" id="adj-dfb3"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 4 – Corrige el texto</div>
+    <div class="q-text">En este texto hay <strong>2 errores de concordancia</strong> de adjetivos. ¿Cuál opción los corrige ambos correctamente?<br><br>
+    <em>"Los niños estaban contentos. La fiesta fue muy bonito y las decoraciones eran colorido."</em></div>
+    <div class="options" id="adj-d4" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="bonita → concuerda con fiesta (f.s.) / coloridas → concuerda con decoraciones (f.pl.)" data-chosen="bonitos → concuerda con niños / colorida → concuerda con decoraciones" onclick="checkAdj(this,'adj-d4','adj-dfb4')">bonitos / colorida</button>
+      <button class="option-btn" style="text-align:left" data-correct="bonita → concuerda con fiesta (f.s.) / coloridas → concuerda con decoraciones (f.pl.)" data-chosen="bonita → concuerda con fiesta (f.s.) / coloridas → concuerda con decoraciones (f.pl.)" onclick="checkAdj(this,'adj-d4','adj-dfb4')">bonita / coloridas </button>
+      <button class="option-btn" style="text-align:left" data-correct="bonita → concuerda con fiesta (f.s.) / coloridas → concuerda con decoraciones (f.pl.)" data-chosen="bonito / coloridos" onclick="checkAdj(this,'adj-d4','adj-dfb4')">bonito / coloridos</button>
+    </div>
+    <div class="feedback" id="adj-dfb4"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 5 – ¿Cuántos adjetivos hay?</div>
+    <div class="q-text">Lee este fragmento del cuento y cuenta los adjetivos:<br><br>
+    <em>"Una enorme bestia azul lo miraba con cara de espanto. Aterrorizado, el dinosaurio salió corriendo."</em></div>
+    <div class="options" id="adj-d5">
+      <button class="option-btn" data-correct="3 (enorme, azul, aterrorizado)" data-chosen="1" onclick="checkAdj(this,'adj-d5','adj-dfb5')">1</button>
+      <button class="option-btn" data-correct="3 (enorme, azul, aterrorizado)" data-chosen="2" onclick="checkAdj(this,'adj-d5','adj-dfb5')">2</button>
+      <button class="option-btn" data-correct="3 (enorme, azul, aterrorizado)" data-chosen="3 (enorme, azul, aterrorizado)" onclick="checkAdj(this,'adj-d5','adj-dfb5')">3</button>
+      <button class="option-btn" data-correct="3 (enorme, azul, aterrorizado)" data-chosen="4" onclick="checkAdj(this,'adj-d5','adj-dfb5')">4</button>
+    </div>
+    <div class="feedback" id="adj-dfb5"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showAdjPhase(4)">Juego →</button></div>`;
+}
+window.checkAdjWrite = function(inputId, correct, fbId){
+  const inp = document.getElementById(inputId);
+  const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
+  inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+  document.querySelectorAll(`button[onclick*="${inputId}"]`).forEach(b=>b.disabled=true);
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+correct;
+};
+
+function buildAdjJuego(){
+  const c = document.getElementById('adj-content');
+  // Matching game: drag adjetivo to sustantivo
+  const pairs = [
+    {adj:'espectacular',sust:'cabalgata',emoji:'🎠'},
+    {adj:'enorme',sust:'dinosaurio',emoji:'🦕'},
+    {adj:'divertida',sust:'fiesta',emoji:'🎉'},
+    {adj:'impresionante',sust:'sombra',emoji:'👥'},
+    {adj:'descomunal',sust:'rugido',emoji:'📣'},
+    {adj:'festivos',sust:'días',emoji:'📅'},
+  ];
+  const shuffledAdj = [...pairs].sort(()=>Math.random()-.5);
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🎮 Juego — Une adjetivo y sustantivo</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Haz clic en un adjetivo y luego en el sustantivo con el que concuerda (género y número). ¡Son frases del cuento y del libro!</p></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div>
+      <div style="font-size:12px;font-weight:800;color:var(--violet);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">ADJETIVOS</div>
+      <div id="adj-game-adjs" style="display:flex;flex-direction:column;gap:8px">
+        ${shuffledAdj.map((p,i)=>`<button id="gadj-${i}" class="option-btn" style="text-align:center" onclick="selectAdj(${i},'${p.adj}')">${p.adj}</button>`).join('')}
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:800;color:var(--pink);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">SUSTANTIVOS</div>
+      <div id="adj-game-susts" style="display:flex;flex-direction:column;gap:8px">
+        ${pairs.sort(()=>Math.random()-.5).map((p,i)=>`<button id="gsust-${p.sust}" class="option-btn" style="text-align:center" onclick="selectSust('${p.sust}','${p.adj}')">${p.emoji} ${p.sust}</button>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div id="adj-game-msg" style="font-size:16px;font-weight:800;color:var(--violet);min-height:40px;text-align:center;padding:8px"></div>
+  <div id="adj-game-score" style="text-align:center;font-family:'Fredoka One',cursive;font-size:28px;color:var(--green);display:none"></div>
+  <div class="btn-row" style="justify-content:center"><button class="btn btn-success" onclick="showAdjPhase(5)">Mini Test →</button></div>`;
+
+  window._adjSelected = null;
+  window._adjMatched = 0;
+  window.selectAdj = function(i, adj){
+    document.querySelectorAll('#adj-game-adjs .option-btn').forEach(b=>{b.style.background='';b.style.borderColor='';});
+    const btn = document.getElementById('gadj-'+i);
+    if(btn.disabled) return;
+    btn.style.background='var(--violet-bg)'; btn.style.borderColor='var(--violet)';
+    window._adjSelected = {i, adj};
+    document.getElementById('adj-game-msg').textContent = '¡Ahora elige el sustantivo que le corresponde!';
+  };
+  window.selectSust = function(sust, correctAdj){
+    const sustBtn = document.getElementById('gsust-'+sust);
+    if(sustBtn.disabled || !window._adjSelected) return;
+    const {i, adj} = window._adjSelected;
+    const adjBtn = document.getElementById('gadj-'+i);
+    if(adj === correctAdj){
+      adjBtn.classList.add('correct'); adjBtn.disabled=true;
+      sustBtn.classList.add('correct'); sustBtn.disabled=true;
+      window._adjMatched++;
+      document.getElementById('adj-game-msg').textContent = '✅ ¡Correcto! '+adj+' → '+sust;
+      if(window._adjMatched === 6){
+        document.getElementById('adj-game-score').style.display='block';
+        document.getElementById('adj-game-score').textContent='🏆 ¡Lo has conseguido todo!';
+      }
+    } else {
+      adjBtn.classList.add('wrong'); sustBtn.classList.add('wrong');
+      document.getElementById('adj-game-msg').textContent = '❌ Ese adjetivo no concuerda con ese sustantivo. ¡Inténtalo de nuevo!';
+      setTimeout(()=>{ adjBtn.classList.remove('wrong'); adjBtn.style.background=''; adjBtn.style.borderColor=''; sustBtn.classList.remove('wrong'); }, 1000);
+    }
+    window._adjSelected = null;
+  };
+}
+
 
 function buildAdjTest(){
   const ALL = [
@@ -568,7 +714,9 @@ function showCompPhase(n) {
     </div>
     <div class="btn-row"><button class="btn btn-primary" onclick="showCompPhase(2)">Siguiente →</button></div>`;
   } else if(n===2){ buildCompEjercicio(); }
-  else if(n===3){ buildCompTest(); }
+  else if(n===3){ buildCompDesafio(); }
+  else if(n===4){ buildCompJuego(); }
+  else if(n===5){ buildCompTest(); }
 }
 window.showCompPhase = showCompPhase;
 
@@ -620,7 +768,7 @@ function buildCompEjercicio(){
     <div class="feedback" id="comp-xfb8"></div>
   </div>
 
-  <div class="btn-row"><button class="btn btn-success" onclick="showCompPhase(3)">Mini Test →</button></div>`;
+  <div class="btn-row"><button class="btn btn-success" onclick="showCompPhase(3)">Desafío →</button></div>`;
 }
 window.checkCompX = function(btn, optsId, fbId){
   document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
@@ -640,6 +788,138 @@ window.checkComp = function(i, correct){
   fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
   fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+correct;
 };
+
+function buildCompDesafio(){
+  const c = document.getElementById('comp-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🔥 Desafío — Palabras compuestas</div>
+  <p style="color:var(--gray-600);margin-bottom:0">¡Ahora viene lo difícil! Demuestra que dominas las palabras compuestas.</p></div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 1 – Divide la palabra compuesta</div>
+    <div class="q-text">Separa "rompecabezas" en sus dos palabras. Escribe cada parte separada por un +</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input class="text-input" id="comp-d1" placeholder="ej: cumple + años" style="flex:1;min-width:200px">
+      <button class="btn btn-primary" onclick="checkCompWrite('comp-d1','rompe + cabezas','comp-dfb1')">Comprobar ✓</button>
+    </div>
+    <div class="feedback" id="comp-dfb1"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 2 – Inventa el significado</div>
+    <div class="q-text">Si "sacapuntas" saca puntas y "lavavajillas" lava vajillas, ¿qué hace un "espantapájaros"?</div>
+    <div class="options" id="comp-d2" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="Espanta a los pájaros para que no se acerquen a los cultivos" data-chosen="Recoge pájaros del campo" onclick="checkCompX(this,'comp-d2','comp-dfb2')">Recoge pájaros del campo</button>
+      <button class="option-btn" style="text-align:left" data-correct="Espanta a los pájaros para que no se acerquen a los cultivos" data-chosen="Espanta a los pájaros para que no se acerquen a los cultivos" onclick="checkCompX(this,'comp-d2','comp-dfb2')">Espanta a los pájaros para que no se acerquen a los cultivos</button>
+      <button class="option-btn" style="text-align:left" data-correct="Espanta a los pájaros para que no se acerquen a los cultivos" data-chosen="Es un pájaro muy grande y asustadizo" onclick="checkCompX(this,'comp-d2','comp-dfb2')">Es un pájaro muy grande y asustadizo</button>
+    </div>
+    <div class="feedback" id="comp-dfb2"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 3 – Forma nuevas palabras compuestas</div>
+    <div class="q-text">Une estas palabras para formar 3 palabras compuestas diferentes:<br>
+    <strong>porta → aviones / porta → folios / saca → corchos</strong><br><br>
+    ¿Cuáles de estas combinaciones son palabras compuestas correctas?</div>
+    <div class="options" id="comp-d3" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="portaaviones, portafolios y sacacorchos (todas son correctas)" data-chosen="Solo portaaviones" onclick="checkCompX(this,'comp-d3','comp-dfb3')">Solo portaaviones</button>
+      <button class="option-btn" style="text-align:left" data-correct="portaaviones, portafolios y sacacorchos (todas son correctas)" data-chosen="portaaviones y sacacorchos, pero no portafolios" onclick="checkCompX(this,'comp-d3','comp-dfb3')">portaaviones y sacacorchos, pero no portafolios</button>
+      <button class="option-btn" style="text-align:left" data-correct="portaaviones, portafolios y sacacorchos (todas son correctas)" data-chosen="portaaviones, portafolios y sacacorchos (todas son correctas)" onclick="checkCompX(this,'comp-d3','comp-dfb3')">portaaviones, portafolios y sacacorchos (todas son correctas)</button>
+    </div>
+    <div class="feedback" id="comp-dfb3"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 4 – Usa la palabra compuesta en una frase</div>
+    <div class="q-text">¿Cuál de estas oraciones usa correctamente la palabra "paracaídas"?</div>
+    <div class="options" id="comp-d4" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="El paracaídas se abrió cuando el paracaidista saltó del avión." data-chosen="El paracaídas nació en el jardín de mi abuela." onclick="checkCompX(this,'comp-d4','comp-dfb4')">El paracaídas nació en el jardín de mi abuela.</button>
+      <button class="option-btn" style="text-align:left" data-correct="El paracaídas se abrió cuando el paracaidista saltó del avión." data-chosen="El paracaídas se abrió cuando el paracaidista saltó del avión." onclick="checkCompX(this,'comp-d4','comp-dfb4')">El paracaídas se abrió cuando el paracaidista saltó del avión.</button>
+      <button class="option-btn" style="text-align:left" data-correct="El paracaídas se abrió cuando el paracaidista saltó del avión." data-chosen="Comí un paracaídas de chocolate en la fiesta." onclick="checkCompX(this,'comp-d4','comp-dfb4')">Comí un paracaídas de chocolate en la fiesta.</button>
+    </div>
+    <div class="feedback" id="comp-dfb4"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 5 – Palabra compuesta misteriosa</div>
+    <div class="q-text">Pista: <em>"Sirve para girar hacia el sol. Es una flor amarilla con semillas."</em><br>¿Qué palabra compuesta es?</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input class="text-input" id="comp-d5" placeholder="Escribe la palabra compuesta..." style="flex:1;min-width:200px">
+      <button class="btn btn-primary" onclick="checkCompWrite('comp-d5','girasol','comp-dfb5')">Comprobar ✓</button>
+    </div>
+    <div class="feedback" id="comp-dfb5"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showCompPhase(4)">Juego →</button></div>`;
+}
+window.checkCompWrite = function(inputId, correct, fbId){
+  const inp = document.getElementById(inputId);
+  const val = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+  const ok = val === correct.toLowerCase();
+  inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+  document.querySelectorAll(`button[onclick*="${inputId}"]`).forEach(b=>b.disabled=true);
+  const fb = document.getElementById(fbId);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+correct;
+};
+
+function buildCompJuego(){
+  const c = document.getElementById('comp-content');
+  const words = [
+    {w1:'cumple',w2:'años',result:'cumpleaños',emoji:'🎂'},
+    {w1:'rompe',w2:'cabezas',result:'rompecabezas',emoji:'🧩'},
+    {w1:'gira',w2:'sol',result:'girasol',emoji:'🌻'},
+    {w1:'saca',w2:'puntas',result:'sacapuntas',emoji:'✏️'},
+    {w1:'para',w2:'caídas',result:'paracaídas',emoji:'🪂'},
+    {w1:'espanta',w2:'pájaros',result:'espantapájaros',emoji:'🌾'},
+  ];
+  let score=0, attempts=0;
+  const shuffled = [...words].sort(()=>Math.random()-.5);
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🎮 Juego — Fábrica de palabras</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Arrastra (o haz clic) la segunda parte para completar cada palabra compuesta. ¡Gana puntos por cada acierto!</p>
+  <div style="display:flex;justify-content:space-between;align-items:center;background:var(--violet-bg);border-radius:12px;padding:12px 16px;margin-bottom:4px">
+    <span style="font-weight:800;color:var(--violet)">🏆 Puntos: <span id="comp-game-pts">0</span></span>
+    <span style="font-weight:800;color:var(--gray-600)">Intentos: <span id="comp-game-att">0</span></span>
+  </div></div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px" id="comp-game-rows">
+    ${shuffled.map((w,i)=>`
+    <div class="exercise-box" id="cgrow-${i}" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-size:22px">${w.emoji}</span>
+      <span style="font-weight:800;font-size:16px;color:var(--navy)">${w.w1} + </span>
+      <select id="cgsel-${i}" style="padding:8px 12px;border-radius:8px;border:2px solid var(--gray-200);font-size:15px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--navy)">
+        <option value="">-- elige --</option>
+        ${words.sort(()=>Math.random()-.5).map(opt=>`<option value="${opt.w2}">${opt.w2}</option>`).join('')}
+      </select>
+      <button class="btn btn-primary" style="padding:8px 14px;font-size:13px" onclick="checkCompGame(${i},'${w.w2}','${w.result}')">✓</button>
+      <span id="cg-res-${i}" style="font-weight:800;font-size:15px"></span>
+    </div>`).join('')}
+  </div>
+  <div class="btn-row" style="justify-content:center"><button class="btn btn-success" onclick="showCompPhase(5)">Mini Test →</button></div>`;
+
+  window.checkCompGame = function(i, correct, result){
+    const sel = document.getElementById('cgsel-'+i);
+    const row = document.getElementById('cgrow-'+i);
+    const res = document.getElementById('cg-res-'+i);
+    attempts++;
+    document.getElementById('comp-game-att').textContent = attempts;
+    if(sel.value === correct){
+      score++;
+      document.getElementById('comp-game-pts').textContent = score;
+      sel.disabled=true;
+      document.querySelectorAll(`button[onclick*="checkCompGame(${i},"]`).forEach(b=>b.disabled=true);
+      row.style.borderColor='var(--green)';
+      res.style.color='var(--green)';
+      res.textContent = '✅ '+result;
+    } else {
+      row.style.borderColor='var(--rose)';
+      res.style.color='var(--rose)';
+      res.textContent = '❌ ¡Inténtalo de nuevo!';
+      setTimeout(()=>{ row.style.borderColor=''; res.textContent=''; }, 1200);
+    }
+  };
+}
+
 
 function buildCompTest(){
   const ALL = [
@@ -683,7 +963,9 @@ function showBrblPhase(n) {
     </div>
     <div class="btn-row"><button class="btn btn-primary" onclick="showBrblPhase(2)">Siguiente →</button></div>`;
   } else if(n===2){ buildBrblEjercicio(); }
-  else if(n===3){ buildBrblTest(); }
+  else if(n===3){ buildBrblDesafio(); }
+  else if(n===4){ buildBrblJuego(); }
+  else if(n===5){ buildBrblTest(); }
 }
 window.showBrblPhase = showBrblPhase;
 
@@ -738,7 +1020,7 @@ function buildBrblEjercicio(){
     <div class="feedback" id="brbl-advfb2"></div>
   </div>
 
-  <div class="btn-row"><button class="btn btn-success" onclick="showBrblPhase(3)">Mini Test →</button></div>`;
+  <div class="btn-row"><button class="btn btn-success" onclick="showBrblPhase(3)">Desafío →</button></div>`;
 }
 window.checkBrbl = function(btn, optsId, fbId){
   document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
@@ -749,6 +1031,140 @@ window.checkBrbl = function(btn, optsId, fbId){
   fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
   fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct.toUpperCase();
 };
+
+function buildBrblDesafio(){
+  const c = document.getElementById('brbl-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🔥 Desafío — Palabras con br y bl</div>
+  <p style="color:var(--gray-600);margin-bottom:0">¡Estos ejercicios requieren pensar más! Completa frases, detecta errores y escribe palabras.</p></div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 1 – Completa el dictado</div>
+    <div class="q-text">Elige la escritura correcta para completar esta frase del libro:<br><br>
+    <em>"_lanca y Pa_lo, los dueños de la li_rería de mi _arrio, son muy ama_les."</em></div>
+    <div class="options" id="brbl-d1" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="Blanca / Pablo / librería / barrio / amables (todas llevan bl o br)" data-chosen="Vlanca / Pavlo / livrería / varrio / amavles" onclick="checkBrbl(this,'brbl-d1','brbl-dfb1')">Vlanca / Pavlo / livrería / varrio / amavles</button>
+      <button class="option-btn" style="text-align:left" data-correct="Blanca / Pablo / librería / barrio / amables (todas llevan bl o br)" data-chosen="Blanca / Pablo / librería / barrio / amables (todas llevan bl o br)" onclick="checkBrbl(this,'brbl-d1','brbl-dfb1')">Blanca / Pablo / librería / barrio / amables (todas llevan bl o br)</button>
+      <button class="option-btn" style="text-align:left" data-correct="Blanca / Pablo / librería / barrio / amables (todas llevan bl o br)" data-chosen="Blanca / Pavlo / librería / varrio / amables" onclick="checkBrbl(this,'brbl-d1','brbl-dfb1')">Blanca / Pavlo / librería / varrio / amables</button>
+    </div>
+    <div class="feedback" id="brbl-dfb1"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 2 – Escribe la palabra (del libro)</div>
+    <div class="q-text">Persona que trabaja en la biblioteca. Empieza con BL. (Pista del libro: "persona que trabaja en la bi___oteca")</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input class="text-input" id="brbl-d2b" placeholder="Escribe la palabra..." style="flex:1;min-width:200px">
+      <button class="btn btn-primary" onclick="checkBrblWrite('brbl-d2b','bibliotecario','brbl-dfb2b')">Comprobar ✓</button>
+    </div>
+    <div class="feedback" id="brbl-dfb2b"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 3 – Encuentra las 4 palabras con br/bl</div>
+    <div class="q-text">Lee esta frase de la sección "De celebración" del libro:<br><br>
+    <em>"¡Qué elegante va Gabriel! Con su abrigo gris, la bufanda blanca y el sombrero negro."</em><br><br>
+    ¿Cuántas palabras con BR o BL hay?</div>
+    <div class="options" id="brbl-d3">
+      <button class="option-btn" data-correct="3 (Gabriel / abrigo / blanca)" data-chosen="1" onclick="checkBrbl(this,'brbl-d3','brbl-dfb3')">1</button>
+      <button class="option-btn" data-correct="3 (Gabriel / abrigo / blanca)" data-chosen="2" onclick="checkBrbl(this,'brbl-d3','brbl-dfb3')">2</button>
+      <button class="option-btn" data-correct="3 (Gabriel / abrigo / blanca)" data-chosen="3 (Gabriel / abrigo / blanca)" onclick="checkBrbl(this,'brbl-d3','brbl-dfb3')">3</button>
+      <button class="option-btn" data-correct="3 (Gabriel / abrigo / blanca)" data-chosen="4" onclick="checkBrbl(this,'brbl-d3','brbl-dfb3')">4</button>
+    </div>
+    <div class="feedback" id="brbl-dfb3"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 4 – Completa las sílabas (del libro)</div>
+    <div class="q-text">El libro habla de vajillas sostenibles. Completa estas palabras con <strong>bre, bres, ble o bles</strong>:<br><br>
+    • recia___  • flexi___  • li___  • reutiliza___ • desecha___</div>
+    <div class="options" id="brbl-d4" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="reciables / flexibles / libre / reutilizables / desechables (todas con ble/bles)" data-chosen="reciabre / flexibre / libre / reutilizabre / desechabre" onclick="checkBrbl(this,'brbl-d4','brbl-dfb4')">reciabres / flexibres / libre / reutilizabres / desechabres</button>
+      <button class="option-btn" style="text-align:left" data-correct="reciables / flexibles / libre / reutilizables / desechables (todas con ble/bles)" data-chosen="reciables / flexibles / libre / reutilizables / desechables (todas con ble/bles)" onclick="checkBrbl(this,'brbl-d4','brbl-dfb4')">reciables / flexibles / libre / reutilizables / desechables</button>
+      <button class="option-btn" style="text-align:left" data-correct="reciables / flexibles / libre / reutilizables / desechables (todas con ble/bles)" data-chosen="recivles / flexivles / livre / reutilizavles / desechavles" onclick="checkBrbl(this,'brbl-d4','brbl-dfb4')">recivles / flexivles / livre / reutilizavles / desechavles</button>
+    </div>
+    <div class="feedback" id="brbl-dfb4"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showBrblPhase(4)">Juego →</button></div>`;
+}
+window.checkBrblWrite = function(inputId, correct, fbId){
+  const inp = document.getElementById(inputId);
+  const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
+  inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+  document.querySelectorAll(`button[onclick*="${inputId}"]`).forEach(b=>b.disabled=true);
+  const fb = document.getElementById(fbId);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+correct;
+};
+
+function buildBrblJuego(){
+  const c = document.getElementById('brbl-content');
+  const brWords = ['brillo','bruja','abrigo','nombre','sombrero','bravo','bromear','bracero','abrazo','brisa'];
+  const blWords = ['blanco','tabla','pueblo','amable','hablar','blusa','doble','noble','cable','blancanieves'];
+  const allWords = [...brWords.slice(0,6),...blWords.slice(0,6)].sort(()=>Math.random()-.5);
+  let hits=0, total=allWords.length;
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🎮 Juego — Lluvia de palabras</div>
+  <p style="color:var(--gray-600);margin-bottom:12px">Clasifica cada palabra en su columna correcta: ¿lleva <strong>BR</strong> o <strong>BL</strong>? Haz clic en la palabra y luego en la columna.</p>
+  <div style="background:var(--amber-bg);border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px;color:var(--amber)">
+    ✅ Clasificadas: <span id="brbl-hits">0</span> / ${total}
+  </div></div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;justify-content:center" id="brbl-word-pool">
+    ${allWords.map(w=>`<button id="bw-${w}" class="option-btn" onclick="selectBrblWord('${w}')" style="font-size:15px;padding:10px 16px">${w}</button>`).join('')}
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div style="background:var(--violet-bg);border:2px dashed var(--violet);border-radius:14px;padding:16px;min-height:160px" id="brbl-zone-br">
+      <div style="font-family:'Fredoka One',cursive;font-size:18px;color:var(--violet);text-align:center;margin-bottom:10px">🔤 CON BR</div>
+      <div id="brbl-br-placed" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+    <div style="background:var(--pink-bg);border:2px dashed var(--pink);border-radius:14px;padding:16px;min-height:160px" id="brbl-zone-bl">
+      <div style="font-family:'Fredoka One',cursive;font-size:18px;color:var(--pink);text-align:center;margin-bottom:10px">🔤 CON BL</div>
+      <div id="brbl-bl-placed" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+  </div>
+  <div id="brbl-game-msg" style="text-align:center;font-size:16px;font-weight:800;min-height:36px;color:var(--violet)"></div>
+  <div class="btn-row" style="justify-content:center">
+    <button class="btn btn-primary" onclick="placeBrbl('br')">📥 Colocar en BR</button>
+    <button class="btn btn-primary" style="background:var(--pink)" onclick="placeBrbl('bl')">📥 Colocar en BL</button>
+    <button class="btn btn-success" onclick="showBrblPhase(5)">Mini Test →</button>
+  </div>`;
+
+  window._brblSel = null;
+  const brSet = new Set(brWords);
+  window.selectBrblWord = function(w){
+    document.querySelectorAll('#brbl-word-pool .option-btn').forEach(b=>{b.style.background='';b.style.borderColor='';});
+    const btn = document.getElementById('bw-'+w);
+    if(!btn||btn.disabled) return;
+    btn.style.background='var(--amber-bg)'; btn.style.borderColor='var(--amber)';
+    window._brblSel = w;
+    document.getElementById('brbl-game-msg').textContent = '¡Ahora haz clic en "Colocar en BR" o "Colocar en BL"!';
+  };
+  window.placeBrbl = function(zone){
+    const w = window._brblSel;
+    if(!w) { document.getElementById('brbl-game-msg').textContent = '⚠️ Primero haz clic en una palabra.'; return; }
+    const correct = brSet.has(w) ? 'br' : 'bl';
+    const btn = document.getElementById('bw-'+w);
+    const targetDiv = document.getElementById('brbl-'+zone+'-placed');
+    if(zone===correct){
+      hits++;
+      document.getElementById('brbl-hits').textContent=hits;
+      btn.disabled=true; btn.classList.add('correct');
+      const chip = document.createElement('span');
+      chip.textContent=w;
+      chip.style.cssText='background:var(--green-bg);color:var(--green);border-radius:8px;padding:4px 10px;font-weight:800;font-size:13px';
+      targetDiv.appendChild(chip);
+      document.getElementById('brbl-game-msg').textContent = '✅ ¡Correcto! '+w+' lleva '+zone.toUpperCase();
+      if(hits===total) document.getElementById('brbl-game-msg').textContent='🏆 ¡Has clasificado todas las palabras!';
+    } else {
+      btn.classList.add('wrong');
+      document.getElementById('brbl-game-msg').textContent='❌ '+w+' lleva '+correct.toUpperCase()+', ¡inténtalo de nuevo!';
+      setTimeout(()=>{ btn.classList.remove('wrong'); btn.style.background=''; btn.style.borderColor=''; },1200);
+    }
+    window._brblSel=null;
+  };
+}
+
 
 function buildBrblTest(){
   const ALL = [
@@ -799,7 +1215,9 @@ function showPaisajePhase(n) {
     </div>
     <div class="btn-row"><button class="btn btn-primary" onclick="showPaisajePhase(2)">Siguiente →</button></div>`;
   } else if(n===2){ buildPaisajeEjercicio(); }
-  else if(n===3){ buildPaisajeTest(); }
+  else if(n===3){ buildPaisajeDesafio(); }
+  else if(n===4){ buildPaisajeJuego(); }
+  else if(n===5){ buildPaisajeTest(); }
 }
 window.showPaisajePhase = showPaisajePhase;
 
@@ -877,7 +1295,7 @@ function buildPaisajeEjercicio(){
     <div class="feedback" id="pe-fb6"></div>
   </div>
 
-  <div class="btn-row"><button class="btn btn-success" onclick="showPaisajePhase(3)">Mini Test →</button></div>`;
+  <div class="btn-row"><button class="btn btn-success" onclick="showPaisajePhase(3)">Desafío →</button></div>`;
 }
 window.checkPais = function(btn, optsId, fbId){
   document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
@@ -888,6 +1306,164 @@ window.checkPais = function(btn, optsId, fbId){
   fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
   fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
 };
+
+function buildPaisajeDesafio(){
+  const c = document.getElementById('paisaje-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🔥 Desafío — Describir un paisaje</div>
+  <p style="color:var(--gray-600);margin-bottom:0">Ejercicios más complejos: ordena, completa y mejora descripciones de paisajes.</p></div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 1 – Ordena las frases</div>
+    <div class="q-text">Estas tres frases forman una descripción del santuario de Andújar, pero están desordenadas. ¿Cuál es el orden correcto?<br><br>
+    A) <em>Me gusta porque es un lugar tranquilo y lleno de naturaleza.</em><br>
+    B) <em>En lo más alto de un cerro se encuentra el santuario de la Virgen de la Cabeza.</em><br>
+    C) <em>A un lado hay un pequeño poblado y, a lo lejos, se ven las montañas.</em></div>
+    <div class="options" id="pais-d1" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="B → C → A (presentar el lugar, detalles ordenados, opinión)" data-chosen="A → B → C" onclick="checkPais(this,'pais-d1','pais-dfb1')">A → B → C</button>
+      <button class="option-btn" style="text-align:left" data-correct="B → C → A (presentar el lugar, detalles ordenados, opinión)" data-chosen="C → A → B" onclick="checkPais(this,'pais-d1','pais-dfb1')">C → A → B</button>
+      <button class="option-btn" style="text-align:left" data-correct="B → C → A (presentar el lugar, detalles ordenados, opinión)" data-chosen="B → C → A (presentar el lugar, detalles ordenados, opinión)" onclick="checkPais(this,'pais-d1','pais-dfb1')">B → C → A</button>
+    </div>
+    <div class="feedback" id="pais-dfb1"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 2 – Añade adjetivos</div>
+    <div class="q-text">Esta descripción es muy sosa. ¿Cuál de estas versiones la mejora añadiendo adjetivos y expresiones de posición?<br><br>
+    Original: <em>"Hay un cerro. Hay un santuario. Hay montañas."</em></div>
+    <div class="options" id="pais-d2" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="En lo más alto de un cerro verde se alza un santuario antiguo. A lo lejos se ven unas montañas majestuosas." data-chosen="Hay un cerro grande. Hay un santuario. Hay montañas altas." onclick="checkPais(this,'pais-d2','pais-dfb2')">Hay un cerro grande. Hay un santuario. Hay montañas altas.</button>
+      <button class="option-btn" style="text-align:left" data-correct="En lo más alto de un cerro verde se alza un santuario antiguo. A lo lejos se ven unas montañas majestuosas." data-chosen="En lo más alto de un cerro verde se alza un santuario antiguo. A lo lejos se ven unas montañas majestuosas." onclick="checkPais(this,'pais-d2','pais-dfb2')">En lo más alto de un cerro verde se alza un santuario antiguo. A lo lejos se ven unas montañas majestuosas.</button>
+      <button class="option-btn" style="text-align:left" data-correct="En lo más alto de un cerro verde se alza un santuario antiguo. A lo lejos se ven unas montañas majestuosas." data-chosen="Un día fui al cerro y vi el santuario y las montañas y fue genial." onclick="checkPais(this,'pais-d2','pais-dfb2')">Un día fui al cerro y vi el santuario y las montañas y fue genial.</button>
+    </div>
+    <div class="feedback" id="pais-dfb2"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 3 – Identifica las expresiones de posición</div>
+    <div class="q-text">Lee la descripción de la noticia sobre los farolillos de melón:<br><br>
+    <em>"La noche del 31 de octubre, niños y mayores recorren las calles. Los farolillos se cuelgan en las puertas y ventanas."</em><br><br>
+    ¿Qué expresión de posición podrías añadir para describir mejor dónde están los farolillos?</div>
+    <div class="options" id="pais-d3" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="A ambos lados de la calle, en las puertas y ventanas, cuelgan los farolillos." data-chosen="Los farolillos son muy bonitos y me gustan mucho." onclick="checkPais(this,'pais-d3','pais-dfb3')">Los farolillos son muy bonitos y me gustan mucho.</button>
+      <button class="option-btn" style="text-align:left" data-correct="A ambos lados de la calle, en las puertas y ventanas, cuelgan los farolillos." data-chosen="A ambos lados de la calle, en las puertas y ventanas, cuelgan los farolillos." onclick="checkPais(this,'pais-d3','pais-dfb3')">A ambos lados de la calle, en las puertas y ventanas, cuelgan los farolillos.</button>
+      <button class="option-btn" style="text-align:left" data-correct="A ambos lados de la calle, en las puertas y ventanas, cuelgan los farolillos." data-chosen="Los farolillos recorren las calles por la noche." onclick="checkPais(this,'pais-d3','pais-dfb3')">Los farolillos recorren las calles por la noche.</button>
+    </div>
+    <div class="feedback" id="pais-dfb3"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 4 – El intruso</div>
+    <div class="q-text">Una de estas frases NO pertenece a una descripción de paisaje. ¿Cuál es?</div>
+    <div class="options" id="pais-d4" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="Érase una vez un dragón que vivía en la montaña." data-chosen="A lo lejos se ven unas montañas nevadas." onclick="checkPais(this,'pais-d4','pais-dfb4')">A lo lejos se ven unas montañas nevadas.</button>
+      <button class="option-btn" style="text-align:left" data-correct="Érase una vez un dragón que vivía en la montaña." data-chosen="En el centro del valle hay un río cristalino." onclick="checkPais(this,'pais-d4','pais-dfb4')">En el centro del valle hay un río cristalino.</button>
+      <button class="option-btn" style="text-align:left" data-correct="Érase una vez un dragón que vivía en la montaña." data-chosen="Érase una vez un dragón que vivía en la montaña." onclick="checkPais(this,'pais-d4','pais-dfb4')">Érase una vez un dragón que vivía en la montaña.</button>
+      <button class="option-btn" style="text-align:left" data-correct="Érase una vez un dragón que vivía en la montaña." data-chosen="Cerca de aquí hay un pequeño pueblo tranquilo." onclick="checkPais(this,'pais-d4','pais-dfb4')">Cerca de aquí hay un pequeño pueblo tranquilo.</button>
+    </div>
+    <div class="feedback" id="pais-dfb4"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--rose)">
+    <div class="q-num" style="color:var(--rose)">Desafío 5 – Completa la descripción</div>
+    <div class="q-text">Completa esta descripción de un paisaje costero con la expresión de posición correcta:<br><br>
+    <em>"Es una playa larga y tranquila. ___ hay unos acantilados grises y rocosos. ___ se ve el horizonte azul del mar."</em></div>
+    <div class="options" id="pais-d5" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="A un lado / A lo lejos" data-chosen="En el centro / Arriba" onclick="checkPais(this,'pais-d5','pais-dfb5')">En el centro / Arriba</button>
+      <button class="option-btn" style="text-align:left" data-correct="A un lado / A lo lejos" data-chosen="A un lado / A lo lejos" onclick="checkPais(this,'pais-d5','pais-dfb5')">A un lado / A lo lejos</button>
+      <button class="option-btn" style="text-align:left" data-correct="A un lado / A lo lejos" data-chosen="Cerca de / En el fondo" onclick="checkPais(this,'pais-d5','pais-dfb5')">Cerca de / En el fondo</button>
+    </div>
+    <div class="feedback" id="pais-dfb5"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showPaisajePhase(4)">Juego →</button></div>`;
+}
+
+function buildPaisajeJuego(){
+  const c = document.getElementById('paisaje-content');
+  // Puzzle: build a description by selecting the right sentence for each position
+  const slots = [
+    {
+      label: '1️⃣ Presentación del lugar',
+      hint: '¿Cómo empieza una descripción?',
+      options: [
+        {text: 'En lo más alto de la sierra de Andújar se encuentra un santuario antiguo.', correct: true},
+        {text: 'Un día fui al santuario y me lo pasé muy bien.', correct: false},
+        {text: 'El santuario tiene muchos años de historia fascinante.', correct: false},
+      ]
+    },
+    {
+      label: '2️⃣ Detalle de posición (izquierda/derecha)',
+      hint: 'Usa expresiones como "a un lado", "al otro lado"...',
+      options: [
+        {text: 'Me gusta mucho el santuario porque es especial.', correct: false},
+        {text: 'A un lado del cerro hay un pequeño poblado de casas blancas.', correct: true},
+        {text: 'El santuario tiene una puerta grande y antigua.', correct: false},
+      ]
+    },
+    {
+      label: '3️⃣ Detalle de lejanía',
+      hint: 'Habla de algo que está muy lejos...',
+      options: [
+        {text: 'A lo lejos se ven las montañas verdes y majestuosas.', correct: true},
+        {text: 'Hay muchos peregrinos que visitan el santuario cada año.', correct: false},
+        {text: 'El santuario es famoso en toda Andalucía.', correct: false},
+      ]
+    },
+    {
+      label: '4️⃣ Opinión personal',
+      hint: '¿Por qué te gusta o qué te llama la atención?',
+      options: [
+        {text: 'Hay flores en el mes de abril alrededor del cerro.', correct: false},
+        {text: 'El santuario fue construido hace muchos siglos.', correct: false},
+        {text: 'Me parece un lugar precioso porque combina naturaleza e historia.', correct: true},
+      ]
+    }
+  ];
+
+  let slotsDone = 0;
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🎮 Juego — Construye una descripción</div>
+  <p style="color:var(--gray-600);margin-bottom:12px">Para cada parte de la descripción, elige la frase más adecuada. ¡Al terminar verás tu descripción completa!</p></div>
+  <div id="pais-game-built" style="background:var(--sky-bg);border:2px solid var(--sky-c);border-radius:14px;padding:16px;margin-bottom:20px;min-height:80px;font-size:15px;font-weight:600;color:var(--navy);line-height:1.8">
+    <em style="color:var(--gray-400)">Tu descripción aparecerá aquí...</em>
+  </div>
+  <div id="pais-game-slots">
+    ${slots.map((slot,i)=>`
+    <div class="exercise-box" id="pslot-${i}" style="margin-bottom:12px">
+      <div class="q-num" style="color:var(--teal)">${slot.label}</div>
+      <div class="q-text" style="font-size:14px;color:var(--gray-600);margin-bottom:12px">💡 ${slot.hint}</div>
+      <div class="options" id="pslot-opts-${i}" style="flex-direction:column;align-items:stretch">
+        ${slot.options.sort(()=>Math.random()-.5).map((opt,j)=>`
+        <button class="option-btn" style="text-align:left;font-size:14px" data-correct="${opt.correct}" data-text="${opt.text}" onclick="choosePaisSlot(${i},this)">${opt.text}</button>`).join('')}
+      </div>
+      <div class="feedback" id="pslot-fb-${i}"></div>
+    </div>`).join('')}
+  </div>
+  <div id="pais-final-msg" style="text-align:center;font-size:16px;font-weight:800;color:var(--green);min-height:36px"></div>
+  <div class="btn-row" style="justify-content:center"><button class="btn btn-success" onclick="showPaisajePhase(5)">Mini Test →</button></div>`;
+
+  const built = ['','','',''];
+  window.choosePaisSlot = function(i, btn){
+    document.querySelectorAll('#pslot-opts-'+i+' .option-btn').forEach(b=>b.disabled=true);
+    const ok = btn.dataset.correct === 'true';
+    btn.classList.add(ok?'correct':'wrong');
+    if(!ok) document.querySelectorAll('#pslot-opts-'+i+' .option-btn').forEach(b=>{if(b.dataset.correct==='true')b.classList.add('correct');});
+    const fb = document.getElementById('pslot-fb-'+i);
+    fb.className='feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok ? '✅ ¡Perfecto para esta parte!' : '❌ Esa frase no encaja aquí. La correcta ya aparece marcada.';
+    if(ok) built[i] = btn.dataset.text;
+    else built[i] = document.querySelector('#pslot-opts-'+i+' .option-btn[data-correct="true"]').dataset.text;
+    // Rebuild display
+    const display = built.filter(t=>t).join(' ');
+    document.getElementById('pais-game-built').innerHTML = display || '<em style="color:var(--gray-400)">Tu descripción aparecerá aquí...</em>';
+    slotsDone++;
+    if(slotsDone === 4){
+      document.getElementById('pais-final-msg').textContent = '🏆 ¡Has construido una descripción completa!';
+    }
+  };
+}
+
 
 function buildPaisajeTest(){
   const ALL = [
@@ -913,10 +1489,10 @@ function buildPaisajeTest(){
 // PHASES CONFIG
 // ══════════════════════════════════════════
 const PHASES = {
-  adj:     {tabs:['📖 1. Aprende','✏️ 2. Practica + Avanzado','📝 Mini Test'], show:showAdjPhase},
-  comp:    {tabs:['📖 1. Aprende','✏️ 2. Practica + Avanzado','📝 Mini Test'], show:showCompPhase},
-  brbl:    {tabs:['📖 1. Aprende','✏️ 2. Clasifica + Avanzado','📝 Mini Test'], show:showBrblPhase},
-  paisaje: {tabs:['📖 1. Aprende','✏️ 2. Practica + Avanzado','📝 Mini Test'], show:showPaisajePhase},
+  adj:     {tabs:['📖 1. Aprende','✏️ 2. Practica','🔥 3. Desafío','🎮 4. Juego','📝 Mini Test'], show:showAdjPhase},
+  comp:    {tabs:['📖 1. Aprende','✏️ 2. Practica','🔥 3. Desafío','🎮 4. Juego','📝 Mini Test'], show:showCompPhase},
+  brbl:    {tabs:['📖 1. Aprende','✏️ 2. Clasifica','🔥 3. Desafío','🎮 4. Juego','📝 Mini Test'], show:showBrblPhase},
+  paisaje: {tabs:['📖 1. Aprende','✏️ 2. Practica','🔥 3. Desafío','🎮 4. Juego','📝 Mini Test'], show:showPaisajePhase},
 };
 
 // ══════════════════════════════════════════
