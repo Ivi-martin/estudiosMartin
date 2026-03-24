@@ -480,6 +480,36 @@ function buildAdjEjercicios(){
     <div class="feedback" id="adj-fb5"></div>
   </div>
 
+  <div class="card" style="margin-top:8px"><div class="card-title" style="color:var(--violet)">🔥 Ejercicios de nivel avanzado</div>
+  <p style="color:var(--gray-600);margin-bottom:0">Ahora toca pensar un poco más...</p></div>
+
+  <div class="exercise-box" style="border-color:var(--violet)">
+    <div class="q-num" style="color:var(--violet)">Ejercicio 6 – Elige los DOS adjetivos correctos para completar la oración</div>
+    <div class="q-text">Las flores del jardín son ___ y ___.</div>
+    <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px">Elige la opción donde los dos adjetivos concuerdan bien con "flores" (femenino plural):</p>
+    <div class="options" id="adj-e6">
+      <button class="option-btn" data-correct="coloridas y perfumadas" data-chosen="colorido y perfumado" onclick="checkAdj(this,'adj-e6','adj-fb6')">colorido y perfumado</button>
+      <button class="option-btn" data-correct="coloridas y perfumadas" data-chosen="coloridas y perfumadas" onclick="checkAdj(this,'adj-e6','adj-fb6')">coloridas y perfumadas</button>
+      <button class="option-btn" data-correct="coloridas y perfumadas" data-chosen="coloridas y perfumado" onclick="checkAdj(this,'adj-e6','adj-fb6')">coloridas y perfumado</button>
+      <button class="option-btn" data-correct="coloridas y perfumadas" data-chosen="colorida y perfumada" onclick="checkAdj(this,'adj-e6','adj-fb6')">colorida y perfumada</button>
+    </div>
+    <div class="feedback" id="adj-fb6"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--violet)">
+    <div class="q-num" style="color:var(--violet)">Ejercicio 7 – Detecta el error</div>
+    <div class="q-text">Lee estas cuatro oraciones. Una tiene un error de concordancia del adjetivo. ¿Cuál es?</div>
+    <div class="options" id="adj-e7" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="Los niños están cansadas." data-chosen="El perro es pequeño." onclick="checkAdj(this,'adj-e7','adj-fb7')">El perro es pequeño.</button>
+      <button class="option-btn" style="text-align:left" data-correct="Los niños están cansadas." data-chosen="Las noches son frías." onclick="checkAdj(this,'adj-e7','adj-fb7')">Las noches son frías.</button>
+      <button class="option-btn" style="text-align:left" data-correct="Los niños están cansadas." data-chosen="Los niños están cansadas." onclick="checkAdj(this,'adj-e7','adj-fb7')">Los niños están cansadas.</button>
+      <button class="option-btn" style="text-align:left" data-correct="Los niños están cansadas." data-chosen="Un pueblo tranquilo." onclick="checkAdj(this,'adj-e7','adj-fb7')">Un pueblo tranquilo.</button>
+    </div>
+    <div class="feedback" id="adj-fb7">
+      <span id="adj-exp7"></span>
+    </div>
+  </div>
+
   <div class="btn-row"><button class="btn btn-success" onclick="showAdjPhase(3)">Mini Test →</button></div>`;
 }
 window.checkAdj = function(btn, optsId, fbId){
@@ -496,18 +526,20 @@ function buildAdjTest(){
   const ALL = [
     {type:'mc',question:'¿Qué son los adjetivos?',options:['Palabras que nombran cosas','Palabras que dicen cómo es algo o alguien','Palabras que indican acciones'],correct:'Palabras que dicen cómo es algo o alguien'},
     {type:'mc',question:'¿Cuál es el adjetivo en "Un pueblo precioso"?',options:['Un','pueblo','precioso'],correct:'precioso'},
-    {type:'mc',question:'El adjetivo "festivos" acompaña a:',options:['una fiesta (femenino singular)','los días (masculino plural)','el niño (masculino singular)'],correct:'los días (masculino plural)'},
+    {type:'mc',question:'El adjetivo "festivos" concuerda con:',options:['una fiesta (femenino singular)','los días (masculino plural)','el niño (masculino singular)'],correct:'los días (masculino plural)'},
     {type:'tf',question:'Los adjetivos siempre van en el mismo género y número que el sustantivo al que acompañan.',correct:'verdadero'},
-    {type:'mc',question:'"El libro está roto." ¿Cuál es el adjetivo?',options:['El','libro','roto'],correct:'roto'},
     {type:'tf',question:'El adjetivo solo puede ir detrás del sustantivo.',correct:'falso'},
     {type:'mc',question:'En "Las largas cadenetas", el adjetivo es:',options:['Las','largas','cadenetas'],correct:'largas'},
     {type:'mc',question:'¿Cuál de estas palabras es un adjetivo?',options:['correr','mesa','bonita'],correct:'bonita'},
-    {type:'tf',question:'En "Una fiesta divertida", el adjetivo es "fiesta".',correct:'falso'},
     {type:'mc',question:'"El coche está roto." El adjetivo "roto" es:',options:['masculino singular','femenino singular','masculino plural'],correct:'masculino singular'},
-    {type:'mc',question:'¿Cómo formas el femenino de "pequeño"?',options:['pequeños','pequeña','pequeñas'],correct:'pequeña'},
-    {type:'mc',question:'En "Los días festivos", ¿a qué género y número corresponde el adjetivo?',options:['femenino plural','masculino singular','masculino plural'],correct:'masculino plural'},
+    {type:'mc',question:'¿Cuál de estas oraciones tiene un error de concordancia?',options:['Las niñas están cansadas.','El libro está abierto.','Los chicos están contenta.'],correct:'Los chicos están contenta.'},
+    {type:'mc',question:'Elige el adjetivo correcto: "Las rosas son ___"',options:['rojo','roja','rojas'],correct:'rojas'},
+    {type:'mc',question:'"Un gran espectáculo". El adjetivo "gran" va:',options:['detrás del sustantivo','delante del sustantivo','no hay adjetivo'],correct:'delante del sustantivo'},
+    {type:'mc',question:'¿Qué género y número tiene el adjetivo en "Unos disfraces espectaculares"?',options:['femenino plural','masculino singular','masculino plural'],correct:'masculino plural'},
+    {type:'tf',question:'"Tranquilo, tranquila, tranquilos, tranquilas" son formas del mismo adjetivo.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuántas formas puede tener un adjetivo según el género y número?',options:['Solo una','Dos (masculino y femenino)','Hasta cuatro (masculino/femenino × singular/plural)'],correct:'Hasta cuatro (masculino/femenino × singular/plural)'},
   ];
-  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'adj-content', pct=>{
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,10), 'adj-content', pct=>{
     progress.adj.score=pct; progress.adj.done=true; updateHome();
   });
 }
@@ -563,8 +595,42 @@ function buildCompEjercicio(){
     </div>
     <div class="feedback" id="comp-fb-${i}"></div>
   </div>`).join('')}
+  <div class="card" style="margin-top:8px"><div class="card-title" style="color:var(--violet)">🔥 Ejercicios de nivel avanzado</div></div>
+
+  <div class="exercise-box" style="border-color:var(--violet)">
+    <div class="q-num" style="color:var(--violet)">Ejercicio 7 – ¿Cuál NO es una palabra compuesta?</div>
+    <div class="q-text">Cuatro palabras. Tres son compuestas y una no. ¿Cuál es la que NO está formada por dos palabras?</div>
+    <div class="options" id="comp-ex7">
+      <button class="option-btn" data-correct="fiesta" data-chosen="lavavajillas" onclick="checkCompX(this,'comp-ex7','comp-xfb7')">lavavajillas</button>
+      <button class="option-btn" data-correct="fiesta" data-chosen="paracaídas" onclick="checkCompX(this,'comp-ex7','comp-xfb7')">paracaídas</button>
+      <button class="option-btn" data-correct="fiesta" data-chosen="fiesta" onclick="checkCompX(this,'comp-ex7','comp-xfb7')">fiesta</button>
+      <button class="option-btn" data-correct="fiesta" data-chosen="girasol" onclick="checkCompX(this,'comp-ex7','comp-xfb7')">girasol</button>
+    </div>
+    <div class="feedback" id="comp-xfb7"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--violet)">
+    <div class="q-num" style="color:var(--violet)">Ejercicio 8 – Parte correcta de la palabra compuesta</div>
+    <div class="q-text">La palabra "salvapantallas" está formada por "salva" y "pantallas". ¿Qué significa la parte "salva" en esta palabra?</div>
+    <div class="options" id="comp-ex8">
+      <button class="option-btn" data-correct="salvar (evitar que se dañen)" data-chosen="nombre de persona" onclick="checkCompX(this,'comp-ex8','comp-xfb8')">nombre de persona</button>
+      <button class="option-btn" data-correct="salvar (evitar que se dañen)" data-chosen="salvar (evitar que se dañen)" onclick="checkCompX(this,'comp-ex8','comp-xfb8')">salvar (evitar que se dañen)</button>
+      <button class="option-btn" data-correct="salvar (evitar que se dañen)" data-chosen="el color salvia" onclick="checkCompX(this,'comp-ex8','comp-xfb8')">el color salvia</button>
+    </div>
+    <div class="feedback" id="comp-xfb8"></div>
+  </div>
+
   <div class="btn-row"><button class="btn btn-success" onclick="showCompPhase(3)">Mini Test →</button></div>`;
 }
+window.checkCompX = function(btn, optsId, fbId){
+  document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
 window.checkComp = function(i, correct){
   const inp = document.getElementById('comp-inp-'+i);
   const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
@@ -580,15 +646,17 @@ function buildCompTest(){
     {type:'mc',question:'¿Qué es una palabra compuesta?',options:['Una palabra muy larga','Una palabra formada por dos palabras unidas','Una palabra con muchas letras'],correct:'Una palabra formada por dos palabras unidas'},
     {type:'write',question:'¿Qué palabra compuesta forman "cumple" + "años"?',correct:'cumpleaños'},
     {type:'write',question:'¿Qué palabra compuesta forman "gira" + "sol"?',correct:'girasol'},
-    {type:'mc',question:'"Rompecabezas" está formado por:',options:['"rompe" + "cabezas"','"rompé" + "cabe" + "zas"','"rom" + "pe" + "cabezas"'],correct:'"rompe" + "cabezas"'},
-    {type:'tf',question:'"Sacapuntas" es una palabra compuesta.',correct:'verdadero'},
-    {type:'mc',question:'¿Cuál de estas es una palabra compuesta?',options:['fiesta','paracaídas','globo'],correct:'paracaídas'},
-    {type:'tf',question:'"Mesa" es una palabra compuesta.',correct:'falso'},
-    {type:'mc',question:'"Lavavajillas" está formado por:',options:['"lava" + "vajillas"','"lavar" + "vajilla"','"lavav" + "ajillas"'],correct:'"lava" + "vajillas"'},
     {type:'write',question:'¿Qué palabra compuesta forman "espanta" + "pájaros"?',correct:'espantapájaros'},
-    {type:'mc',question:'¿Cuál es el significado de "salvapantallas"?',options:['Lo que salva pantallas de quemarse','Una persona que salva','Un tipo de pantalla'],correct:'Lo que salva pantallas de quemarse'},
+    {type:'mc',question:'"Rompecabezas" está formado por:',options:['"rompe" + "cabezas"','"rompé" + "cabe" + "zas"','"rom" + "pe" + "cabezas"'],correct:'"rompe" + "cabezas"'},
+    {type:'mc',question:'¿Cuál de estas NO es una palabra compuesta?',options:['paracaídas','celebración','lavavajillas'],correct:'celebración'},
+    {type:'mc',question:'"Sacapuntas" hace referencia a:',options:['algo que saca la mina del lápiz','un tipo de punta','una marca comercial'],correct:'algo que saca la mina del lápiz'},
+    {type:'tf',question:'"Cumpleaños" y "paracaídas" son palabras compuestas.',correct:'verdadero'},
+    {type:'mc',question:'De las siguientes, ¿cuál también es una palabra compuesta?',options:['dinosaurio','globo','portaaviones'],correct:'portaaviones'},
+    {type:'mc',question:'¿Por qué "girasol" es una palabra compuesta?',options:['Porque es muy larga','Porque une "gira" (girar) + "sol"','Porque empieza por g'],correct:'Porque une "gira" (girar) + "sol"'},
+    {type:'write',question:'¿Qué palabra compuesta forman "lava" + "vajillas"?',correct:'lavavajillas'},
+    {type:'mc',question:'Si separamos "paracaídas" en sus dos partes, obtenemos:',options:['"para" + "caídas"','"par" + "acaídas"','"paracaí" + "das"'],correct:'"para" + "caídas"'},
   ];
-  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'comp-content', pct=>{
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,10), 'comp-content', pct=>{
     progress.comp.score=pct; progress.comp.done=true; updateHome();
   });
 }
@@ -644,6 +712,32 @@ function buildBrblEjercicio(){
     </div>
     <div class="feedback" id="brbl-fb${i}"></div>
   </div>`).join('')}
+  <div class="card" style="margin-top:8px"><div class="card-title" style="color:var(--violet)">🔥 Ejercicios de nivel avanzado</div></div>
+
+  <div class="exercise-box" style="border-color:var(--violet)">
+    <div class="q-num" style="color:var(--violet)">Ejercicio 9 – Completa las palabras en una frase</div>
+    <div class="q-text">Lee el texto y elige la opción correcta para cada hueco:<br><br>
+    <em>"___uno abrió el ___alcón. El día estaba nu___ado y el sol no ___illaba."</em></div>
+    <div class="options" id="brbl-adv1" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="Bruno / balcón / nublado / brillaba (todas con BR o BL)" data-chosen="Vruno / valcón / nuvlado / vrillava" onclick="checkBrbl(this,'brbl-adv1','brbl-advfb1')">Vruno / valcón / nuvlado / vrillava</button>
+      <button class="option-btn" style="text-align:left" data-correct="Bruno / balcón / nublado / brillaba (todas con BR o BL)" data-chosen="Bruno / balcón / nublado / brillaba (todas con BR o BL)" onclick="checkBrbl(this,'brbl-adv1','brbl-advfb1')">Bruno / balcón / nublado / brillaba (todas con BR o BL)</button>
+      <button class="option-btn" style="text-align:left" data-correct="Bruno / balcón / nublado / brillaba (todas con BR o BL)" data-chosen="Bruno / valcón / nublado / brillaba" onclick="checkBrbl(this,'brbl-adv1','brbl-advfb1')">Bruno / valcón / nublado / brillaba</button>
+    </div>
+    <div class="feedback" id="brbl-advfb1"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--violet)">
+    <div class="q-num" style="color:var(--violet)">Ejercicio 10 – Cuatro palabras, encuentra la incorrecta</div>
+    <div class="q-text">Una de estas palabras está mal escrita. ¿Cuál es?</div>
+    <div class="options" id="brbl-adv2">
+      <button class="option-btn" data-correct="vlanco" data-chosen="bruja" onclick="checkBrbl(this,'brbl-adv2','brbl-advfb2')">bruja</button>
+      <button class="option-btn" data-correct="vlanco" data-chosen="tabla" onclick="checkBrbl(this,'brbl-adv2','brbl-advfb2')">tabla</button>
+      <button class="option-btn" data-correct="vlanco" data-chosen="vlanco" onclick="checkBrbl(this,'brbl-adv2','brbl-advfb2')">vlanco</button>
+      <button class="option-btn" data-correct="vlanco" data-chosen="nombre" onclick="checkBrbl(this,'brbl-adv2','brbl-advfb2')">nombre</button>
+    </div>
+    <div class="feedback" id="brbl-advfb2"></div>
+  </div>
+
   <div class="btn-row"><button class="btn btn-success" onclick="showBrblPhase(3)">Mini Test →</button></div>`;
 }
 window.checkBrbl = function(btn, optsId, fbId){
@@ -661,17 +755,19 @@ function buildBrblTest(){
     {type:'mc',question:'¿Con qué letra se escribe siempre delante de R y L en estas combinaciones?',options:['V','B','P'],correct:'B'},
     {type:'mc',question:'"___uja" → ¿qué combinación lleva?',options:['br','bl','vr'],correct:'br'},
     {type:'mc',question:'"Ta___a" → ¿qué combinación lleva?',options:['br','bl','vl'],correct:'bl'},
-    {type:'tf',question:'"Bruja" se escribe con b delante de r.',correct:'verdadero'},
-    {type:'mc',question:'"___anco" → ¿qué combinación lleva?',options:['br','bl','vl'],correct:'bl'},
-    {type:'write',question:'El segundo mes del año con BR o BL: fe___ero',correct:'febrero'},
-    {type:'mc',question:'"Abrigo" lleva:',options:['br','bl','vr'],correct:'br'},
+    {type:'write',question:'El segundo mes del año empieza con BR. ¿Cómo se escribe? (fe___ero)',correct:'febrero'},
+    {type:'mc',question:'¿Cuál de estas palabras está BIEN escrita?',options:['vlanco','broja','blanco'],correct:'blanco'},
+    {type:'mc',question:'¿Cuál de estas palabras está BIEN escrita?',options:['vruja','bruja','bluja'],correct:'bruja'},
+    {type:'mc',question:'En el texto "Bruno abrió el balcón", ¿cuántas palabras llevan BR o BL?',options:['1','2','3'],correct:'3'},
     {type:'tf',question:'"Blancanieves" se escribe con v delante de l.',correct:'falso'},
-    {type:'mc',question:'¿Cuál de estas palabras lleva BL?',options:['bravo','tabla','bruma'],correct:'tabla'},
-    {type:'mc',question:'¿Cuál de estas palabras lleva BR?',options:['hablar','doble','nombre'],correct:'nombre'},
-    {type:'write',question:'Animal con rayas blancas y negras (lleva br): ce___a',correct:'cebra'},
-    {type:'tf',question:'"Bromear" lleva BR.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estas palabras lleva BL?',options:['sombrero','bravo','amable'],correct:'amable'},
+    {type:'mc',question:'¿Cuál de estas palabras lleva BR?',options:['hablar','doble','abrigo'],correct:'abrigo'},
+    {type:'write',question:'Escribe correctamente: "El ___illo del sol." (brillo)',correct:'brillo'},
+    {type:'mc',question:'De "sombrero", "blusa" y "globo", ¿cuál lleva BR?',options:['blusa','sombrero','globo'],correct:'sombrero'},
+    {type:'tf',question:'"Pueblo" se escribe con BL.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál es la regla de BR y BL?',options:['Se escribe V delante de R y L','Se escribe B delante de R y L','Se escribe P delante de R y L'],correct:'Se escribe B delante de R y L'},
   ];
-  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'brbl-content', pct=>{
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,10), 'brbl-content', pct=>{
     progress.brbl.score=pct; progress.brbl.done=true; updateHome();
   });
 }
@@ -756,6 +852,31 @@ function buildPaisajeEjercicio(){
     <div class="feedback" id="pe-fb4"></div>
   </div>
 
+  <div class="card" style="margin-top:8px"><div class="card-title" style="color:var(--violet)">🔥 Ejercicios de nivel avanzado</div></div>
+
+  <div class="exercise-box" style="border-color:var(--violet)">
+    <div class="q-num" style="color:var(--violet)">Ejercicio 5 – Mejora esta descripción</div>
+    <div class="q-text">Lee esta descripción de paisaje y di qué le falta para ser más completa:<br><br>
+    <em>"Hay montañas. También hay un río. Al fondo hay árboles."</em></div>
+    <div class="options" id="pe5" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="Adjetivos y expresiones de posición para que se entienda mejor" data-chosen="Nombres de los ríos y montañas" onclick="checkPais(this,'pe5','pe-fb5')">Nombres de los ríos y montañas</button>
+      <button class="option-btn" style="text-align:left" data-correct="Adjetivos y expresiones de posición para que se entienda mejor" data-chosen="Adjetivos y expresiones de posición para que se entienda mejor" onclick="checkPais(this,'pe5','pe-fb5')">Adjetivos y expresiones de posición para que se entienda mejor</button>
+      <button class="option-btn" style="text-align:left" data-correct="Adjetivos y expresiones de posición para que se entienda mejor" data-chosen="Una historia que pase en ese paisaje" onclick="checkPais(this,'pe5','pe-fb5')">Una historia que pase en ese paisaje</button>
+    </div>
+    <div class="feedback" id="pe-fb5"></div>
+  </div>
+
+  <div class="exercise-box" style="border-color:var(--violet)">
+    <div class="q-num" style="color:var(--violet)">Ejercicio 6 – Elige la descripción mejor escrita</div>
+    <div class="q-text">¿Cuál de estas tres descripciones del mismo paisaje está mejor redactada?</div>
+    <div class="options" id="pe6" style="flex-direction:column;align-items:stretch">
+      <button class="option-btn" style="text-align:left" data-correct="Es un valle amplio y verde. A un lado corre un río cristalino y, a lo lejos, se ven unas montañas nevadas y majestuosas." data-chosen="Hay un valle. Hay un río. Hay montañas con nieve." onclick="checkPais(this,'pe6','pe-fb6')">Hay un valle. Hay un río. Hay montañas con nieve.</button>
+      <button class="option-btn" style="text-align:left" data-correct="Es un valle amplio y verde. A un lado corre un río cristalino y, a lo lejos, se ven unas montañas nevadas y majestuosas." data-chosen="Es un valle amplio y verde. A un lado corre un río cristalino y, a lo lejos, se ven unas montañas nevadas y majestuosas." onclick="checkPais(this,'pe6','pe-fb6')">Es un valle amplio y verde. A un lado corre un río cristalino y, a lo lejos, se ven unas montañas nevadas y majestuosas.</button>
+      <button class="option-btn" style="text-align:left" data-correct="Es un valle amplio y verde. A un lado corre un río cristalino y, a lo lejos, se ven unas montañas nevadas y majestuosas." data-chosen="Un día fui a un valle y vi montañas con nieve y era muy bonito y el río también." onclick="checkPais(this,'pe6','pe-fb6')">Un día fui a un valle y vi montañas con nieve y era muy bonito y el río también.</button>
+    </div>
+    <div class="feedback" id="pe-fb6"></div>
+  </div>
+
   <div class="btn-row"><button class="btn btn-success" onclick="showPaisajePhase(3)">Mini Test →</button></div>`;
 }
 window.checkPais = function(btn, optsId, fbId){
@@ -770,18 +891,20 @@ window.checkPais = function(btn, optsId, fbId){
 
 function buildPaisajeTest(){
   const ALL = [
-    {type:'mc',question:'¿Qué expresión usas para hablar de algo que está en el fondo del paisaje?',options:['A un lado...','A lo lejos se ve...','En el centro...'],correct:'A lo lejos se ve...'},
+    {type:'mc',question:'¿Qué expresión usas para hablar de algo que está muy al fondo del paisaje?',options:['A un lado...','A lo lejos se ve...','En el centro...'],correct:'A lo lejos se ve...'},
     {type:'tf',question:'Para describir un paisaje hay que seguir un orden.',correct:'verdadero'},
     {type:'mc',question:'¿Qué hay que incluir en una descripción de paisaje?',options:['Solo los colores','Adjetivos que indiquen cómo es el lugar','Solo los animales que hay'],correct:'Adjetivos que indiquen cómo es el lugar'},
     {type:'mc',question:'"Al otro lado del río hay un bosque frondoso." ¿Qué indica "al otro lado"?',options:['La distancia','La posición','El tamaño'],correct:'La posición'},
-    {type:'tf',question:'En una descripción de paisaje podemos explicar por qué nos gusta ese lugar.',correct:'verdadero'},
-    {type:'mc',question:'¿Cuál de estas frases es un buen comienzo para describir un paisaje?',options:['Un día fui al parque y me divertí mucho.','El paisaje que voy a describir es una playa tranquila y luminosa.','El agua es muy fría.'],correct:'El paisaje que voy a describir es una playa tranquila y luminosa.'},
+    {type:'mc',question:'¿Cuál de estas es la descripción mejor escrita?',options:['"Hay cosas."','"Es una playa tranquila. A un lado hay acantilados grises y, a lo lejos, el mar azul."','"Fui a la playa y fue muy guay."'],correct:'"Es una playa tranquila. A un lado hay acantilados grises y, a lo lejos, el mar azul."'},
+    {type:'mc',question:'¿Qué hacemos primero al escribir una descripción de paisaje?',options:['Decir qué nos gusta','Presentar el lugar en general','Hablar de los detalles más pequeños'],correct:'Presentar el lugar en general'},
     {type:'mc',question:'"Cerca de la montaña hay un pueblo pequeño." ¿Qué indica "cerca de"?',options:['Tamaño','Posición en el espacio','Color'],correct:'Posición en el espacio'},
-    {type:'tf',question:'Los adjetivos no son importantes en una descripción de paisaje.',correct:'falso'},
-    {type:'mc',question:'¿Qué hacemos primero al escribir una descripción?',options:['Decir qué nos gusta','Presentar el lugar en general','Hablar de los detalles'],correct:'Presentar el lugar en general'},
-    {type:'mc',question:'"En el centro del valle hay un río azul." ¿Cuál es el adjetivo?',options:['centro','valle','azul'],correct:'azul'},
+    {type:'tf',question:'Los adjetivos son importantes en una descripción de paisaje porque dicen cómo es el lugar.',correct:'verdadero'},
+    {type:'mc',question:'Lee: "Hay montañas. Hay un río. Hay árboles." ¿Qué le falta?',options:['Nada, está perfecta','Adjetivos y expresiones de posición','Una historia de aventuras'],correct:'Adjetivos y expresiones de posición'},
+    {type:'mc',question:'"En el fondo del valle hay un lago tranquilo." ¿Cuál es el adjetivo?',options:['fondo','valle','tranquilo'],correct:'tranquilo'},
+    {type:'tf',question:'En una descripción de paisaje podemos explicar por qué nos gusta ese lugar.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estas expresiones NO sirve para ordenar una descripción de paisaje?',options:['A lo lejos se ve...','Érase una vez...','En el centro...'],correct:'Érase una vez...'},
   ];
-  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'paisaje-content', pct=>{
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,10), 'paisaje-content', pct=>{
     progress.paisaje.score=pct; progress.paisaje.done=true; updateHome();
   });
 }
@@ -790,10 +913,10 @@ function buildPaisajeTest(){
 // PHASES CONFIG
 // ══════════════════════════════════════════
 const PHASES = {
-  adj:     {tabs:['📖 1. Aprende','✏️ 2. Practica','📝 Mini Test'], show:showAdjPhase},
-  comp:    {tabs:['📖 1. Aprende','✏️ 2. Practica','📝 Mini Test'], show:showCompPhase},
-  brbl:    {tabs:['📖 1. Aprende','✏️ 2. Clasifica','📝 Mini Test'], show:showBrblPhase},
-  paisaje: {tabs:['📖 1. Aprende','✏️ 2. Practica','📝 Mini Test'], show:showPaisajePhase},
+  adj:     {tabs:['📖 1. Aprende','✏️ 2. Practica + Avanzado','📝 Mini Test'], show:showAdjPhase},
+  comp:    {tabs:['📖 1. Aprende','✏️ 2. Practica + Avanzado','📝 Mini Test'], show:showCompPhase},
+  brbl:    {tabs:['📖 1. Aprende','✏️ 2. Clasifica + Avanzado','📝 Mini Test'], show:showBrblPhase},
+  paisaje: {tabs:['📖 1. Aprende','✏️ 2. Practica + Avanzado','📝 Mini Test'], show:showPaisajePhase},
 };
 
 // ══════════════════════════════════════════
