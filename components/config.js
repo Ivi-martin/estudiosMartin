@@ -3,6 +3,10 @@
 // Edita aquí y cambia en todos los HTMLs a la vez
 // ============================================================
 
+// 🎮 JUEGOS EDUCATIVOS
+// Los juegos se añaden como topics con el prefijo 🎮
+// URL: 'apps/juegoDefensor.html'  → Martín: Defensor del Conocimiento
+
 export const CONFIG = {
   student: {
     name: 'Martín',
@@ -38,6 +42,7 @@ export const CONFIG = {
         //{ label: 'Unidad 4 – Geometría',             url: null },
         { label: 'Unidad 6 – Una tarde de juegos',         url: 'apps/mat6.html' },
         { label: 'Act. Evaluable – Cálculo (sumas/restas)', url: 'apps/matCalculo.html' },
+        //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
     {
@@ -47,6 +52,8 @@ export const CONFIG = {
         //{ label: 'Unidad 1 – El cuerpo humano', url: null },
         //{ label: 'Unidad 2 – Los animales',     url: null },
         //{ label: 'Unidad 3 – Las plantas',      url: null },
+        { label: 'Unidad 5 – Descubrimos el universo',      url: 'apps/cono5.html' },
+        //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
     {
@@ -56,6 +63,7 @@ export const CONFIG = {
         //{ label: 'Unidad 1 – Lectura y comprensión', url: null },
         //{ label: 'Unidad 2 – Ortografía',            url: null },
         //{ label: 'Unidad 3 – Gramática',             url: null },
+        { label: 'Unidad 6 – ¿Dónde es lka fiesta?',      url: 'apps/len6.html' },
       ],
     },
     {
@@ -68,6 +76,7 @@ export const CONFIG = {
         { label: "Unit 4 – Animals & Can/Can't",       url: 'apps/inglesUnit4.html' },
         //{ label: 'Unit 5 – Food & Drinks',             url: null },
         //{ label: 'Unit 6 – My Day',                    url: null },
+        //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
     {
@@ -102,6 +111,7 @@ export const CONFIG = {
         { label: '⚠️ Riesgos digitales',    url: 'apps/pantRiesgos.html' },
         { label: '✅ Buen uso',             url: 'apps/pantBienUso.html' },
         { label: '📋 Mi Plan Digital',      url: 'apps/pantPlan.html' },
+        //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
         {
@@ -116,6 +126,7 @@ export const CONFIG = {
         { label: '🌱 Valores',                  url: 'apps/vidaVals.html' },
         { label: '🧩 TEA',                      url: 'apps/vidaTEA.html' },
         { label: '🛡️ Bullying',               url: 'apps/vidaBullying.html' },
+        //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
   ],

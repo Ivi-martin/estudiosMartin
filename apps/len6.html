@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  :root { color-scheme: dark; --bg:#0f172a; }
+  html,body { background-color: #0f172a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📖 Lengua – Tema 6: ¿Dónde es la fiesta?</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
+<style>
+:root {
+  --pink:#db2777; --pink-l:#ec4899; --pink-bg:#fce7f3;
+  --violet:#7c3aed; --violet-l:#8b5cf6; --violet-bg:#ede9fe;
+  --amber:#d97706; --amber-l:#f59e0b; --amber-bg:#fef3c7;
+  --rose:#e11d48; --rose-l:#f43f5e; --rose-bg:#ffe4e6;
+  --green:#16a34a; --green-l:#22c55e; --green-bg:#dcfce7;
+  --teal:#0d9488; --teal-l:#14b8a6; --teal-bg:#ccfbf1;
+  --sky-c:#0284c7; --sky-bg:#e0f2fe;
+  --navy:#1a2744;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-600:#475569;--gray-800:#1e293b;
+  --shadow:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+  --radius:16px;--radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+.stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0f172a 0%,#4a1d96 50%,#0f172a 100%);overflow:hidden}
+.stars-bg::before{content:'★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦';
+  position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.06);
+  line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.5}to{opacity:1}}
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+.header{background:linear-gradient(135deg,#4a1d96 0%,#7c3aed 100%);padding:16px 24px;
+  display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);
+  box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.header-logo span{color:#fbbf24}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.progress-strip{background:rgba(0,0,0,.3);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+.progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#c4b5fd);border-radius:4px;transition:width .5s ease}
+.progress-pct{font-size:12px;color:#c4b5fd;font-weight:800}
+.main{flex:1;display:flex;gap:0}
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+  padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+.sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+  color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+.nav-btn.active{background:rgba(124,58,237,.3);color:white;border:1px solid rgba(124,58,237,.5)}
+.nav-btn.completed{color:#c4b5fd}
+.nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+.content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.lesson-header{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+.lesson-icon{font-size:42px}
+.lesson-info h2{font-family:'Fredoka One',cursive;font-size:26px;color:white}
+.lesson-info p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+.phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+.phase-tab.active{background:var(--violet);color:white;border-color:var(--violet-l)}
+.phase-tab.done{background:rgba(124,58,237,.15);color:#c4b5fd;border-color:rgba(124,58,237,.3)}
+.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.theory-highlight{background:var(--amber-bg);border-left:4px solid var(--amber-l);
+  border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+.theory-highlight.violet{background:var(--violet-bg);border-color:var(--violet)}
+.theory-highlight.pink{background:var(--pink-bg);border-color:var(--pink)}
+.theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
+.theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky-c)}
+.theory-highlight.teal{background:var(--teal-bg);border-color:var(--teal)}
+.exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+.exercise-box .q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--violet);text-transform:uppercase;margin-bottom:8px}
+.exercise-box .q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+.option-btn:hover:not(:disabled){border-color:var(--violet);background:var(--violet-bg)}
+.option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.option-btn.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+.option-btn:disabled{cursor:not-allowed;opacity:.8}
+.text-input{padding:12px 16px;border:2px solid var(--gray-200);border-radius:10px;
+  font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;transition:all .2s;
+  background:#fff !important;color:#1a2744 !important}
+.text-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.text-input.correct{border-color:var(--green);background:var(--green-bg) !important}
+.text-input.wrong{border-color:var(--rose);background:var(--rose-bg) !important}
+.feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+.feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+.feedback.correct{background:var(--green-bg);color:var(--green)}
+.feedback.wrong{background:var(--rose-bg);color:var(--rose)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+  transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--violet);color:white}
+.btn-primary:hover{background:var(--violet-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(124,58,237,.4)}
+.btn-success{background:var(--teal);color:white}
+.btn-success:hover{background:var(--teal-l);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+.score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--violet)}
+.score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+.stars-display{font-size:36px;letter-spacing:4px}
+.score-grade{display:inline-block;padding:8px 20px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:20px;margin-top:12px}
+.score-grade.excellent{background:var(--green-bg);color:var(--green)}
+.score-grade.good{background:var(--amber-bg);color:var(--amber)}
+.score-grade.ok{background:var(--rose-bg);color:var(--rose)}
+.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.test-dots{display:flex;gap:6px}
+.test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+.test-dot.current{background:var(--violet);transform:scale(1.3)}
+.test-dot.done-correct{background:var(--green)}
+.test-dot.done-wrong{background:var(--rose)}
+.tf-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.tf-btn{padding:12px 28px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;
+  border:2px solid var(--gray-200);background:white;cursor:pointer;transition:all .2s;color:var(--navy)}
+.tf-btn:hover:not(:disabled){transform:scale(1.05)}
+.tf-btn.verd:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.tf-btn.fals:hover:not(:disabled){border-color:var(--rose);background:var(--rose-bg)}
+.tf-btn.correct{background:var(--green-bg) !important;border-color:var(--green) !important;color:var(--green) !important}
+.tf-btn.wrong{background:var(--rose-bg) !important;border-color:var(--rose) !important;color:var(--rose) !important}
+.tf-btn:disabled{cursor:not-allowed}
+/* Word cards */
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:12px 0}
+.word-card{background:var(--violet-bg);border:2px solid var(--violet);border-radius:12px;
+  padding:12px 16px;text-align:center;font-weight:800;font-size:15px;color:var(--violet);cursor:pointer;
+  transition:all .2s}
+.word-card:hover{transform:scale(1.05);background:var(--violet);color:white}
+.word-card.selected{background:var(--violet);color:white}
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.5px}
+.badge-violet{background:var(--violet-bg);color:var(--violet)}
+.badge-pink{background:var(--pink-bg);color:var(--pink)}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.progress-topic-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+.progress-topic-row .pt-icon{font-size:22px}
+.progress-topic-row .pt-name{font-weight:700;color:rgba(255,255,255,.8);flex:1;font-size:14px}
+.progress-topic-row .pt-score{font-family:'Fredoka One',cursive;font-size:22px;color:#c4b5fd}
+.progress-topic-row .pt-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.progress-topic-row .pt-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#c4b5fd);border-radius:99px;transition:width .8s}
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+.content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+@media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+<div id="app-header-root"></div>
+
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO DEL TEMA</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+<div class="sidebar">
+  <div class="sidebar-section">Lengua – Tema 6</div>
+  <button class="nav-btn active" onclick="showScreen('adj')" id="nav-adj">
+    <span class="nav-icon">🏷️</span> Los adjetivos
+  </button>
+  <button class="nav-btn" onclick="showScreen('comp')" id="nav-comp">
+    <span class="nav-icon">🔗</span> Palabras compuestas
+  </button>
+  <button class="nav-btn" onclick="showScreen('brbl')" id="nav-brbl">
+    <span class="nav-icon">🔤</span> Palabras con br y bl
+  </button>
+  <button class="nav-btn" onclick="showScreen('paisaje')" id="nav-paisaje">
+    <span class="nav-icon">🌄</span> Describir un paisaje
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Resultados
+  </button>
+</div>
+
+<div class="content">
+
+<!-- ADJETIVOS -->
+<div class="screen active" id="screen-adj">
+  <div class="lesson-header">
+    <div class="lesson-icon">🏷️</div>
+    <div class="lesson-info">
+      <h2>Los adjetivos</h2>
+      <p>Palabras que dicen cómo es o cómo está algo · ⚠️ Prueba evaluable mañana</p>
+    </div>
+    <button class="btn btn-primary" onclick="history.back()" style="margin-left:auto;padding:8px 16px;font-size:13px">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-adj"></div>
+  <div id="adj-content"></div>
+</div>
+
+<!-- PALABRAS COMPUESTAS -->
+<div class="screen" id="screen-comp">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔗</div>
+    <div class="lesson-info">
+      <h2>Palabras compuestas</h2>
+      <p>Dos palabras unidas forman una nueva · ⚠️ Prueba evaluable mañana</p>
+    </div>
+  </div>
+  <div class="phase-tabs" id="tabs-comp"></div>
+  <div id="comp-content"></div>
+</div>
+
+<!-- BR Y BL -->
+<div class="screen" id="screen-brbl">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔤</div>
+    <div class="lesson-info">
+      <h2>Palabras con br y bl</h2>
+      <p>Se escribe b delante de r y de l · ⚠️ Prueba evaluable pasado mañana</p>
+    </div>
+  </div>
+  <div class="phase-tabs" id="tabs-brbl"></div>
+  <div id="brbl-content"></div>
+</div>
+
+<!-- DESCRIBIR UN PAISAJE -->
+<div class="screen" id="screen-paisaje">
+  <div class="lesson-header">
+    <div class="lesson-icon">🌄</div>
+    <div class="lesson-info">
+      <h2>Describir un paisaje</h2>
+      <p>Cómo explicar cómo es un lugar siguiendo un orden · ⚠️ Prueba evaluable pasado mañana</p>
+    </div>
+  </div>
+  <div class="phase-tabs" id="tabs-paisaje"></div>
+  <div id="paisaje-content"></div>
+</div>
+
+<!-- PROGRESO -->
+<div class="screen" id="screen-progreso">
+  <div id="progreso-content"></div>
+</div>
+
+</div><!-- content -->
+</div><!-- main -->
+</div><!-- app -->
+<div id="app-footer-root"></div>
+
+<script>
+const progress = {
+  adj:     {done:false, score:0},
+  comp:    {done:false, score:0},
+  brbl:    {done:false, score:0},
+  paisaje: {done:false, score:0},
+};
+
+function updateHome() {
+  const scores = Object.values(progress).map(p => p.done ? p.score : 0);
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0) / scores.length);
+  document.getElementById('overall-progress').style.width = avg + '%';
+  document.getElementById('overall-pct').textContent = avg + '%';
+  Object.entries(progress).forEach(([k,p]) => {
+    const nb = document.getElementById('nav-'+k);
+    if(nb && p.done) nb.classList.add('completed');
+  });
+}
+
+let _inited = {};
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const nb = document.getElementById('nav-'+id); if(nb) nb.classList.add('active');
+  if(!_inited[id]) {
+    _inited[id] = true;
+    const starters = {adj:()=>showAdjPhase(1), comp:()=>showCompPhase(1), brbl:()=>showBrblPhase(1), paisaje:()=>showPaisajePhase(1)};
+    if(starters[id]) starters[id]();
+  }
+  if(id === 'progreso') buildProgreso();
+}
+window.showScreen = showScreen;
+
+function setTab(id, n) {
+  const labels = PHASES[id].tabs;
+  const wrap = document.getElementById('tabs-'+id); if(!wrap) return;
+  wrap.innerHTML = labels.map((l,i) => `<div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// MINI TEST ENGINE
+// ══════════════════════════════════════════
+function buildMiniTest(qs, containerId, onDone) {
+  let curr=0, correct=0, results=[];
+  function render() {
+    const c = document.getElementById(containerId); if(!c) return;
+    if(curr >= qs.length) {
+      const pct = Math.round(correct/qs.length*100);
+      const stars = pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      const grade = pct>=80?'excellent':pct>=60?'good':'ok';
+      const msg = pct===100?'¡Perfecto! 🔥':pct>=80?'¡Muy bien! 💪':pct>=60?'¡Bien! 👍':'Repasa e inténtalo 📖';
+      c.innerHTML = `<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${msg}<br><small>${correct} de ${qs.length} correctas</small></div>
+        <div class="score-grade ${grade}">${pct>=80?'¡Aprobado!':pct>=60?'Notable':'A repasar'}</div>
+      </div>`;
+      if(onDone) onDone(pct);
+      return;
+    }
+    const q = qs[curr];
+    const dotHTML = qs.map((_,i) => `<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    const qid = 'mt'+curr;
+    if(q.type==='mc'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="options" id="${qid}_opts">
+            ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='tf'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Verdadero o Falso – ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="tf-row">
+            <button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button>
+            <button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='write'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Escribe – ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1;min-width:200px">
+            <button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    }
+  }
+  function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); }
+  window.mtAns = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true);
+    const ok = btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta correcta era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtTF = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+    const ok = btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtWrite = function(qid,cid,correct){
+    if(containerId!==cid) return;
+    const inp = document.getElementById(qid+'_inp');
+    const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
+    inp.classList.add(ok?'correct':'wrong'); inp.disabled = true;
+    const btns = document.querySelectorAll(`button[onclick*="${qid}"]`);
+    btns.forEach(b=>b.disabled=true);
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct;
+    next(ok);
+  };
+  render();
+}
+window.buildMiniTest = buildMiniTest;
+
+// ══════════════════════════════════════════
+// 1. LOS ADJETIVOS
+// ══════════════════════════════════════════
+function showAdjPhase(n) {
+  setTab('adj', n);
+  const c = document.getElementById('adj-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🏷️ ¿Qué son los adjetivos?</div>
+      <div class="theory-highlight violet"><strong>Los adjetivos</strong> son palabras que dicen <strong>cómo es</strong> o <strong>cómo está</strong> una persona, un animal o una cosa.<br><br>
+      Siempre van con un sustantivo y tienen <strong>el mismo género y número</strong> que él.</div>
+      <div class="theory-highlight pink"><strong>Ejemplos:</strong><br>
+        • Una fiesta <strong>divertida</strong> 🎉 → el adjetivo "divertida" acompaña a "fiesta" (femenino singular)<br>
+        • Un dinosaurio <strong>enorme</strong> 🦕 → "enorme" acompaña a "dinosaurio" (masculino singular)<br>
+        • Unos días <strong>festivos</strong> → "festivos" acompaña a "días" (masculino plural)<br>
+        • Las calles <strong>largas</strong> → "largas" acompaña a "calles" (femenino plural)</div>
+      <div class="theory-highlight green"><strong>El adjetivo puede ir DELANTE o DETRÁS del sustantivo:</strong><br>
+        • El <strong>gran</strong> dinosaurio / El dinosaurio <strong>grande</strong><br>
+        • Un <strong>precioso</strong> pueblo / Un pueblo <strong>precioso</strong></div>
+      <div class="theory-highlight"><strong>Concordancia en género:</strong><br>
+        Masculino: <em>rojo, bonito, pequeño</em> → Femenino: <em>roja, bonita, pequeña</em><br>
+        <strong>Concordancia en número:</strong><br>
+        Singular: <em>festivo</em> → Plural: <em>festivos</em></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showAdjPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildAdjEjercicios(); }
+  else if(n===3){ buildAdjTest(); }
+}
+window.showAdjPhase = showAdjPhase;
+
+function buildAdjEjercicios(){
+  const c = document.getElementById('adj-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🏷️ Practica los adjetivos</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Elige el adjetivo correcto en cada caso.</p></div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 1 – Elige el adjetivo correcto</div>
+    <div class="q-text">Una fiesta muy ___ (divertido / divertida)</div>
+    <div class="options" id="adj-e1">
+      <button class="option-btn" data-correct="divertida" data-chosen="divertido" onclick="checkAdj(this,'adj-e1','adj-fb1')">divertido</button>
+      <button class="option-btn" data-correct="divertida" data-chosen="divertida" onclick="checkAdj(this,'adj-e1','adj-fb1')">divertida</button>
+    </div>
+    <div class="feedback" id="adj-fb1"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 2 – Elige el adjetivo correcto</div>
+    <div class="q-text">Los días ___ (festivo / festivos)</div>
+    <div class="options" id="adj-e2">
+      <button class="option-btn" data-correct="festivos" data-chosen="festivo" onclick="checkAdj(this,'adj-e2','adj-fb2')">festivo</button>
+      <button class="option-btn" data-correct="festivos" data-chosen="festivos" onclick="checkAdj(this,'adj-e2','adj-fb2')">festivos</button>
+    </div>
+    <div class="feedback" id="adj-fb2"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 3 – ¿Es un adjetivo?</div>
+    <div class="q-text">En "Las largas cadenetas", ¿cuál es el adjetivo?</div>
+    <div class="options" id="adj-e3">
+      <button class="option-btn" data-correct="largas" data-chosen="Las" onclick="checkAdj(this,'adj-e3','adj-fb3')">Las</button>
+      <button class="option-btn" data-correct="largas" data-chosen="largas" onclick="checkAdj(this,'adj-e3','adj-fb3')">largas</button>
+      <button class="option-btn" data-correct="largas" data-chosen="cadenetas" onclick="checkAdj(this,'adj-e3','adj-fb3')">cadenetas</button>
+    </div>
+    <div class="feedback" id="adj-fb3"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 4 – Concuerda el adjetivo</div>
+    <div class="q-text">El gato está ___ (dormido / dormida)</div>
+    <div class="options" id="adj-e4">
+      <button class="option-btn" data-correct="dormido" data-chosen="dormido" onclick="checkAdj(this,'adj-e4','adj-fb4')">dormido</button>
+      <button class="option-btn" data-correct="dormido" data-chosen="dormida" onclick="checkAdj(this,'adj-e4','adj-fb4')">dormida</button>
+    </div>
+    <div class="feedback" id="adj-fb4"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 5 – Concordancia</div>
+    <div class="q-text">Unas zapatillas ___ (nuevas / nuevo)</div>
+    <div class="options" id="adj-e5">
+      <button class="option-btn" data-correct="nuevas" data-chosen="nuevo" onclick="checkAdj(this,'adj-e5','adj-fb5')">nuevo</button>
+      <button class="option-btn" data-correct="nuevas" data-chosen="nuevas" onclick="checkAdj(this,'adj-e5','adj-fb5')">nuevas</button>
+    </div>
+    <div class="feedback" id="adj-fb5"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showAdjPhase(3)">Mini Test →</button></div>`;
+}
+window.checkAdj = function(btn, optsId, fbId){
+  document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? '✅ ¡Correcto!' : '❌ Era: '+btn.dataset.correct;
+};
+
+function buildAdjTest(){
+  const ALL = [
+    {type:'mc',question:'¿Qué son los adjetivos?',options:['Palabras que nombran cosas','Palabras que dicen cómo es algo o alguien','Palabras que indican acciones'],correct:'Palabras que dicen cómo es algo o alguien'},
+    {type:'mc',question:'¿Cuál es el adjetivo en "Un pueblo precioso"?',options:['Un','pueblo','precioso'],correct:'precioso'},
+    {type:'mc',question:'El adjetivo "festivos" acompaña a:',options:['una fiesta (femenino singular)','los días (masculino plural)','el niño (masculino singular)'],correct:'los días (masculino plural)'},
+    {type:'tf',question:'Los adjetivos siempre van en el mismo género y número que el sustantivo al que acompañan.',correct:'verdadero'},
+    {type:'mc',question:'"El libro está roto." ¿Cuál es el adjetivo?',options:['El','libro','roto'],correct:'roto'},
+    {type:'tf',question:'El adjetivo solo puede ir detrás del sustantivo.',correct:'falso'},
+    {type:'mc',question:'En "Las largas cadenetas", el adjetivo es:',options:['Las','largas','cadenetas'],correct:'largas'},
+    {type:'mc',question:'¿Cuál de estas palabras es un adjetivo?',options:['correr','mesa','bonita'],correct:'bonita'},
+    {type:'tf',question:'En "Una fiesta divertida", el adjetivo es "fiesta".',correct:'falso'},
+    {type:'mc',question:'"El coche está roto." El adjetivo "roto" es:',options:['masculino singular','femenino singular','masculino plural'],correct:'masculino singular'},
+    {type:'mc',question:'¿Cómo formas el femenino de "pequeño"?',options:['pequeños','pequeña','pequeñas'],correct:'pequeña'},
+    {type:'mc',question:'En "Los días festivos", ¿a qué género y número corresponde el adjetivo?',options:['femenino plural','masculino singular','masculino plural'],correct:'masculino plural'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'adj-content', pct=>{
+    progress.adj.score=pct; progress.adj.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 2. PALABRAS COMPUESTAS
+// ══════════════════════════════════════════
+function showCompPhase(n) {
+  setTab('comp', n);
+  const c = document.getElementById('comp-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🔗 Palabras compuestas</div>
+      <div class="theory-highlight violet"><strong>Una palabra compuesta</strong> se forma uniendo <strong>dos palabras</strong> que ya existen para crear una nueva con un significado diferente.</div>
+      <div class="theory-highlight pink"><strong>Ejemplos del tema:</strong><br>
+        • <strong>cumple</strong> + <strong>años</strong> = <em>cumpleaños</em> 🎂<br>
+        • <strong>rompe</strong> + <strong>cabezas</strong> = <em>rompecabezas</em> 🧩<br>
+        • <strong>espanta</strong> + <strong>pájaros</strong> = <em>espantapájaros</em> 🌾<br>
+        • <strong>gira</strong> + <strong>sol</strong> = <em>girasol</em> 🌻<br>
+        • <strong>lava</strong> + <strong>vajillas</strong> = <em>lavavajillas</em> 🍽️<br>
+        • <strong>salva</strong> + <strong>pantallas</strong> = <em>salvapantallas</em> 💻<br>
+        • <strong>saca</strong> + <strong>puntas</strong> = <em>sacapuntas</em> ✏️<br>
+        • <strong>para</strong> + <strong>caídas</strong> = <em>paracaídas</em> 🪂</div>
+      <div class="theory-highlight green">Para identificar una palabra compuesta pregúntate: <br>¿está formada por dos palabras con significado propio que puedo separar?</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showCompPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildCompEjercicio(); }
+  else if(n===3){ buildCompTest(); }
+}
+window.showCompPhase = showCompPhase;
+
+function buildCompEjercicio(){
+  const pares = [
+    {a:'cumple',b:'años',result:'cumpleaños'},
+    {a:'rompe',b:'cabezas',result:'rompecabezas'},
+    {a:'espanta',b:'pájaros',result:'espantapájaros'},
+    {a:'gira',b:'sol',result:'girasol'},
+    {a:'saca',b:'puntas',result:'sacapuntas'},
+    {a:'para',b:'caídas',result:'paracaídas'},
+  ];
+  const c = document.getElementById('comp-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🔗 Forma palabras compuestas</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Escribe la palabra compuesta que resulta de unir las dos palabras.</p></div>
+  ${pares.map((p,i)=>`
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio ${i+1}</div>
+    <div class="q-text"><strong>${p.a}</strong> + <strong>${p.b}</strong> = ?</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input class="text-input" id="comp-inp-${i}" placeholder="Escribe la palabra compuesta..." style="flex:1;min-width:200px">
+      <button class="btn btn-primary" onclick="checkComp(${i},'${p.result}')">Comprobar ✓</button>
+    </div>
+    <div class="feedback" id="comp-fb-${i}"></div>
+  </div>`).join('')}
+  <div class="btn-row"><button class="btn btn-success" onclick="showCompPhase(3)">Mini Test →</button></div>`;
+}
+window.checkComp = function(i, correct){
+  const inp = document.getElementById('comp-inp-'+i);
+  const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
+  inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+  document.querySelectorAll(`button[onclick*="checkComp(${i},"]`).forEach(b=>b.disabled=true);
+  const fb = document.getElementById('comp-fb-'+i);
+  fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+correct;
+};
+
+function buildCompTest(){
+  const ALL = [
+    {type:'mc',question:'¿Qué es una palabra compuesta?',options:['Una palabra muy larga','Una palabra formada por dos palabras unidas','Una palabra con muchas letras'],correct:'Una palabra formada por dos palabras unidas'},
+    {type:'write',question:'¿Qué palabra compuesta forman "cumple" + "años"?',correct:'cumpleaños'},
+    {type:'write',question:'¿Qué palabra compuesta forman "gira" + "sol"?',correct:'girasol'},
+    {type:'mc',question:'"Rompecabezas" está formado por:',options:['"rompe" + "cabezas"','"rompé" + "cabe" + "zas"','"rom" + "pe" + "cabezas"'],correct:'"rompe" + "cabezas"'},
+    {type:'tf',question:'"Sacapuntas" es una palabra compuesta.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estas es una palabra compuesta?',options:['fiesta','paracaídas','globo'],correct:'paracaídas'},
+    {type:'tf',question:'"Mesa" es una palabra compuesta.',correct:'falso'},
+    {type:'mc',question:'"Lavavajillas" está formado por:',options:['"lava" + "vajillas"','"lavar" + "vajilla"','"lavav" + "ajillas"'],correct:'"lava" + "vajillas"'},
+    {type:'write',question:'¿Qué palabra compuesta forman "espanta" + "pájaros"?',correct:'espantapájaros'},
+    {type:'mc',question:'¿Cuál es el significado de "salvapantallas"?',options:['Lo que salva pantallas de quemarse','Una persona que salva','Un tipo de pantalla'],correct:'Lo que salva pantallas de quemarse'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'comp-content', pct=>{
+    progress.comp.score=pct; progress.comp.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 3. PALABRAS CON BR Y BL
+// ══════════════════════════════════════════
+function showBrblPhase(n) {
+  setTab('brbl', n);
+  const c = document.getElementById('brbl-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🔤 Palabras con br y bl</div>
+      <div class="theory-highlight violet" style="font-size:20px;text-align:center"><strong>Se escribe b delante de r → br<br>Se escribe b delante de l → bl</strong></div>
+      <div class="theory-highlight pink"><strong>Palabras con BR:</strong><br>
+        brillo, brisa, bruja, bromista, bromear, bracero, bravo, abrigo, abrir, sombrero, sobre, nombre, hombre</div>
+      <div class="theory-highlight green"><strong>Palabras con BL:</strong><br>
+        blanco, blusa, tabla, pueblo, cable, doble, noble, posible, amable, hablar, obligación, público</div>
+      <div class="theory-highlight sky"><strong>Del libro (ejercicios):</strong><br>
+        Con <strong>BR</strong>: <em>broma, bruja, bravo, broncear, abrazo</em><br>
+        Con <strong>BL</strong>: <em>blanco, blancanieves, blusa, tabla, habla</em></div>
+      <div class="theory-highlight"><strong>Truco:</strong> Cuando oigas el sonido /br/ o /bl/, recuerda que siempre se escribe con B (no V). La V nunca va delante de r o l de esta forma.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showBrblPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildBrblEjercicio(); }
+  else if(n===3){ buildBrblTest(); }
+}
+window.showBrblPhase = showBrblPhase;
+
+function buildBrblEjercicio(){
+  const items = [
+    {word:'_ruja',missing:'b',result:'bruja',tipo:'br'},
+    {word:'ta_la',missing:'b',result:'tabla',tipo:'bl'},
+    {word:'_lanco',missing:'b',result:'blanco',tipo:'bl'},
+    {word:'_roma',missing:'b',result:'broma',tipo:'br'},
+    {word:'ha_lar',missing:'b',result:'hablar',tipo:'bl'},
+    {word:'a_rigo',missing:'b',result:'abrigo',tipo:'br'},
+    {word:'_lancanieves',missing:'b',result:'blancanieves',tipo:'bl'},
+    {word:'nom_re',missing:'b',result:'nombre',tipo:'br'},
+  ];
+  const c = document.getElementById('brbl-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🔤 Escribe la B donde corresponde</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Clasifica las palabras: ¿llevan BR o BL?</p></div>
+  ${items.map((it,i)=>`
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio ${i+1}</div>
+    <div class="q-text">La palabra <strong>${it.result}</strong> lleva...</div>
+    <div class="options" id="brbl-e${i}">
+      <button class="option-btn" data-correct="${it.tipo}" data-chosen="br" onclick="checkBrbl(this,'brbl-e${i}','brbl-fb${i}')">🔤 BR</button>
+      <button class="option-btn" data-correct="${it.tipo}" data-chosen="bl" onclick="checkBrbl(this,'brbl-e${i}','brbl-fb${i}')">🔤 BL</button>
+    </div>
+    <div class="feedback" id="brbl-fb${i}"></div>
+  </div>`).join('')}
+  <div class="btn-row"><button class="btn btn-success" onclick="showBrblPhase(3)">Mini Test →</button></div>`;
+}
+window.checkBrbl = function(btn, optsId, fbId){
+  document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct.toUpperCase();
+};
+
+function buildBrblTest(){
+  const ALL = [
+    {type:'mc',question:'¿Con qué letra se escribe siempre delante de R y L en estas combinaciones?',options:['V','B','P'],correct:'B'},
+    {type:'mc',question:'"___uja" → ¿qué combinación lleva?',options:['br','bl','vr'],correct:'br'},
+    {type:'mc',question:'"Ta___a" → ¿qué combinación lleva?',options:['br','bl','vl'],correct:'bl'},
+    {type:'tf',question:'"Bruja" se escribe con b delante de r.',correct:'verdadero'},
+    {type:'mc',question:'"___anco" → ¿qué combinación lleva?',options:['br','bl','vl'],correct:'bl'},
+    {type:'write',question:'El segundo mes del año con BR o BL: fe___ero',correct:'febrero'},
+    {type:'mc',question:'"Abrigo" lleva:',options:['br','bl','vr'],correct:'br'},
+    {type:'tf',question:'"Blancanieves" se escribe con v delante de l.',correct:'falso'},
+    {type:'mc',question:'¿Cuál de estas palabras lleva BL?',options:['bravo','tabla','bruma'],correct:'tabla'},
+    {type:'mc',question:'¿Cuál de estas palabras lleva BR?',options:['hablar','doble','nombre'],correct:'nombre'},
+    {type:'write',question:'Animal con rayas blancas y negras (lleva br): ce___a',correct:'cebra'},
+    {type:'tf',question:'"Bromear" lleva BR.',correct:'verdadero'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'brbl-content', pct=>{
+    progress.brbl.score=pct; progress.brbl.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 4. DESCRIBIR UN PAISAJE
+// ══════════════════════════════════════════
+function showPaisajePhase(n) {
+  setTab('paisaje', n);
+  const c = document.getElementById('paisaje-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🌄 Describir un paisaje</div>
+      <div class="theory-highlight violet"><strong>Para describir un paisaje</strong> tenemos que explicar <strong>cómo es</strong> el lugar y hablar de los detalles más importantes <strong>siguiendo un orden</strong>.</div>
+      <div class="theory-highlight pink"><strong>Pasos para describir bien:</strong><br>
+        1️⃣ Di de qué lugar se trata y comenta cómo es en general<br>
+        2️⃣ Habla de lo que hay usando un orden (de cerca a lejos, de arriba a abajo...)<br>
+        3️⃣ Usa adjetivos para que la descripción sea más viva<br>
+        4️⃣ Explica por qué te gusta o qué te llama la atención</div>
+      <div class="theory-highlight green"><strong>Expresiones útiles para ordenar la descripción:</strong><br>
+        📍 <em>A un lado...</em> · <em>Al otro lado...</em><br>
+        📍 <em>En el centro...</em> · <em>En el fondo...</em><br>
+        📍 <em>Cerca de...</em> · <em>Lejos de...</em><br>
+        📍 <em>Arriba...</em> · <em>Abajo...</em><br>
+        📍 <em>A lo lejos se ve...</em></div>
+      <div class="theory-highlight sky"><strong>Ejemplo — Santuario en la sierra de Andújar:</strong><br>
+        <em>"En lo más alto de un cerro, entre las montañas de la sierra de Andújar, se encuentra el santuario de la Virgen de la Cabeza. <strong>A un lado</strong> hay un pequeño poblado de casas. <strong>En el centro</strong> del cerro destaca el santuario rodeado de monte verde. <strong>A lo lejos</strong> se ven las montañas."</em></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showPaisajePhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildPaisajeEjercicio(); }
+  else if(n===3){ buildPaisajeTest(); }
+}
+window.showPaisajePhase = showPaisajePhase;
+
+function buildPaisajeEjercicio(){
+  const c = document.getElementById('paisaje-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🌄 Practica la descripción</div></div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 1</div>
+    <div class="q-text">¿Qué expresión usarías para hablar de algo que está muy al fondo del paisaje?</div>
+    <div class="options" id="pe1">
+      <button class="option-btn" data-correct="A lo lejos se ve..." data-chosen="A un lado..." onclick="checkPais(this,'pe1','pe-fb1')">A un lado...</button>
+      <button class="option-btn" data-correct="A lo lejos se ve..." data-chosen="A lo lejos se ve..." onclick="checkPais(this,'pe1','pe-fb1')">A lo lejos se ve...</button>
+      <button class="option-btn" data-correct="A lo lejos se ve..." data-chosen="En el centro..." onclick="checkPais(this,'pe1','pe-fb1')">En el centro...</button>
+    </div>
+    <div class="feedback" id="pe-fb1"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 2</div>
+    <div class="q-text">En una buena descripción de paisaje, ¿qué es importante incluir?</div>
+    <div class="options" id="pe2">
+      <button class="option-btn" data-correct="Adjetivos para decir cómo es el lugar" data-chosen="Solo el nombre del lugar" onclick="checkPais(this,'pe2','pe-fb2')">Solo el nombre del lugar</button>
+      <button class="option-btn" data-correct="Adjetivos para decir cómo es el lugar" data-chosen="Adjetivos para decir cómo es el lugar" onclick="checkPais(this,'pe2','pe-fb2')">Adjetivos para decir cómo es el lugar</button>
+      <button class="option-btn" data-correct="Adjetivos para decir cómo es el lugar" data-chosen="Una historia de aventuras" onclick="checkPais(this,'pe2','pe-fb2')">Una historia de aventuras</button>
+    </div>
+    <div class="feedback" id="pe-fb2"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 3 – Ordena la descripción</div>
+    <div class="q-text">¿En qué orden correcto escribirías una descripción de paisaje?</div>
+    <div class="options" id="pe3">
+      <button class="option-btn" data-correct="Lugar general → detalles ordenados → qué te gusta" data-chosen="Qué te gusta → lugar general → detalles" onclick="checkPais(this,'pe3','pe-fb3')">Qué te gusta → lugar general → detalles</button>
+      <button class="option-btn" data-correct="Lugar general → detalles ordenados → qué te gusta" data-chosen="Lugar general → detalles ordenados → qué te gusta" onclick="checkPais(this,'pe3','pe-fb3')">Lugar general → detalles ordenados → qué te gusta</button>
+      <button class="option-btn" data-correct="Lugar general → detalles ordenados → qué te gusta" data-chosen="Detalles → qué te gusta → lugar general" onclick="checkPais(this,'pe3','pe-fb3')">Detalles → qué te gusta → lugar general</button>
+    </div>
+    <div class="feedback" id="pe-fb3"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 4</div>
+    <div class="q-text">¿Qué frase describe mejor la posición de algo que está en el medio del paisaje?</div>
+    <div class="options" id="pe4">
+      <button class="option-btn" data-correct="En el centro hay una gran montaña." data-chosen="A lo lejos hay una gran montaña." onclick="checkPais(this,'pe4','pe-fb4')">A lo lejos hay una gran montaña.</button>
+      <button class="option-btn" data-correct="En el centro hay una gran montaña." data-chosen="En el centro hay una gran montaña." onclick="checkPais(this,'pe4','pe-fb4')">En el centro hay una gran montaña.</button>
+      <button class="option-btn" data-correct="En el centro hay una gran montaña." data-chosen="Cerca de aquí hay una gran montaña." onclick="checkPais(this,'pe4','pe-fb4')">Cerca de aquí hay una gran montaña.</button>
+    </div>
+    <div class="feedback" id="pe-fb4"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showPaisajePhase(3)">Mini Test →</button></div>`;
+}
+window.checkPais = function(btn, optsId, fbId){
+  document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildPaisajeTest(){
+  const ALL = [
+    {type:'mc',question:'¿Qué expresión usas para hablar de algo que está en el fondo del paisaje?',options:['A un lado...','A lo lejos se ve...','En el centro...'],correct:'A lo lejos se ve...'},
+    {type:'tf',question:'Para describir un paisaje hay que seguir un orden.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué hay que incluir en una descripción de paisaje?',options:['Solo los colores','Adjetivos que indiquen cómo es el lugar','Solo los animales que hay'],correct:'Adjetivos que indiquen cómo es el lugar'},
+    {type:'mc',question:'"Al otro lado del río hay un bosque frondoso." ¿Qué indica "al otro lado"?',options:['La distancia','La posición','El tamaño'],correct:'La posición'},
+    {type:'tf',question:'En una descripción de paisaje podemos explicar por qué nos gusta ese lugar.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estas frases es un buen comienzo para describir un paisaje?',options:['Un día fui al parque y me divertí mucho.','El paisaje que voy a describir es una playa tranquila y luminosa.','El agua es muy fría.'],correct:'El paisaje que voy a describir es una playa tranquila y luminosa.'},
+    {type:'mc',question:'"Cerca de la montaña hay un pueblo pequeño." ¿Qué indica "cerca de"?',options:['Tamaño','Posición en el espacio','Color'],correct:'Posición en el espacio'},
+    {type:'tf',question:'Los adjetivos no son importantes en una descripción de paisaje.',correct:'falso'},
+    {type:'mc',question:'¿Qué hacemos primero al escribir una descripción?',options:['Decir qué nos gusta','Presentar el lugar en general','Hablar de los detalles'],correct:'Presentar el lugar en general'},
+    {type:'mc',question:'"En el centro del valle hay un río azul." ¿Cuál es el adjetivo?',options:['centro','valle','azul'],correct:'azul'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'paisaje-content', pct=>{
+    progress.paisaje.score=pct; progress.paisaje.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// PHASES CONFIG
+// ══════════════════════════════════════════
+const PHASES = {
+  adj:     {tabs:['📖 1. Aprende','✏️ 2. Practica','📝 Mini Test'], show:showAdjPhase},
+  comp:    {tabs:['📖 1. Aprende','✏️ 2. Practica','📝 Mini Test'], show:showCompPhase},
+  brbl:    {tabs:['📖 1. Aprende','✏️ 2. Clasifica','📝 Mini Test'], show:showBrblPhase},
+  paisaje: {tabs:['📖 1. Aprende','✏️ 2. Practica','📝 Mini Test'], show:showPaisajePhase},
+};
+
+// ══════════════════════════════════════════
+// PROGRESO
+// ══════════════════════════════════════════
+function buildProgreso(){
+  const topics = [
+    {key:'adj',     icon:'🏷️', name:'Los adjetivos'},
+    {key:'comp',    icon:'🔗', name:'Palabras compuestas'},
+    {key:'brbl',    icon:'🔤', name:'Palabras con br y bl'},
+    {key:'paisaje', icon:'🌄', name:'Describir un paisaje'},
+  ];
+  const done = topics.filter(t=>progress[t.key].done).length;
+  const avg  = done ? Math.round(topics.filter(t=>progress[t.key].done).reduce((s,t)=>s+progress[t.key].score,0)/done) : 0;
+  document.getElementById('progreso-content').innerHTML = `
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;margin-bottom:20px">
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:white;margin-bottom:4px">📊 Mi progreso</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.5)">${done}/${topics.length} secciones completadas · Nota media: <strong style="color:#c4b5fd">${avg}%</strong></div>
+    </div>
+    ${topics.map(t=>`
+    <div class="progress-topic-row">
+      <span class="pt-icon">${t.icon}</span>
+      <span class="pt-name">${t.name}</span>
+      ${progress[t.key].done
+        ? `<div class="pt-bar"><div class="pt-fill" style="width:${progress[t.key].score}%"></div></div><span class="pt-score">${progress[t.key].score}%</span>`
+        : `<span style="font-size:12px;color:rgba(255,255,255,.3);font-weight:700">Sin empezar</span>`}
+    </div>`).join('')}`;
+}
+</script>
+
+<script type="module">
+import { CONFIG } from '../components/config.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">📖 Lengua — <span>Tema 6</span> · ${s.class} · ${s.school}</div>
+      <div class="header-sub">¿DÓNDE ES LA FIESTA? · ADJETIVOS · PALABRAS COMPUESTAS · BR Y BL · PAISAJE</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back">← Portal</a>
+    </div>
+  </div>`;
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+showScreen('adj');
+</script>
+</body>
+</html>

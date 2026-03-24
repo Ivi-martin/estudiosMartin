@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  :root { color-scheme: dark; --bg:#0f172a; }
+  html,body { background-color: #0f172a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌍 Conocimiento del Medio – Tema 5: Descubrimos el universo</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
+<style>
+:root {
+  --cyan:#0891b2; --cyan-l:#06b6d4; --cyan-bg:#cffafe;
+  --indigo:#4338ca; --indigo-l:#6366f1; --indigo-bg:#e0e7ff;
+  --amber:#d97706; --amber-l:#f59e0b; --amber-bg:#fef3c7;
+  --rose:#e11d48; --rose-l:#f43f5e; --rose-bg:#ffe4e6;
+  --green:#16a34a; --green-l:#22c55e; --green-bg:#dcfce7;
+  --teal:#0d9488; --teal-l:#14b8a6; --teal-bg:#ccfbf1;
+  --violet:#7c3aed; --violet-l:#8b5cf6; --violet-bg:#ede9fe;
+  --sky-c:#0284c7; --sky-bg:#e0f2fe;
+  --navy:#1a2744;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-600:#475569;--gray-800:#1e293b;
+  --shadow:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+  --radius:16px;--radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+.stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#020617 0%,#0c1445 40%,#0f172a 100%);overflow:hidden}
+.stars-bg::before{content:'✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦';
+  position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.07);
+  line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.5}to{opacity:1}}
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+.header{background:linear-gradient(135deg,#020617 0%,#1e3a8a 60%,#0891b2 100%);padding:16px 24px;
+  display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);
+  box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.header-logo span{color:#fbbf24}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.progress-strip{background:rgba(0,0,0,.4);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+.progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#0891b2,#67e8f9);border-radius:4px;transition:width .5s ease}
+.progress-pct{font-size:12px;color:#67e8f9;font-weight:800}
+.main{flex:1;display:flex;gap:0}
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+  padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+.sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+  color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+.nav-btn.active{background:rgba(8,145,178,.3);color:white;border:1px solid rgba(8,145,178,.5)}
+.nav-btn.completed{color:#67e8f9}
+.nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+.content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.lesson-header{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+.lesson-icon{font-size:42px}
+.lesson-info h2{font-family:'Fredoka One',cursive;font-size:26px;color:white}
+.lesson-info p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+.phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+.phase-tab.active{background:var(--cyan);color:white;border-color:var(--cyan-l)}
+.phase-tab.done{background:rgba(8,145,178,.15);color:#67e8f9;border-color:rgba(8,145,178,.3)}
+.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.theory-highlight{background:var(--amber-bg);border-left:4px solid var(--amber-l);
+  border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+.theory-highlight.cyan{background:var(--cyan-bg);border-color:var(--cyan)}
+.theory-highlight.indigo{background:var(--indigo-bg);border-color:var(--indigo)}
+.theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
+.theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky-c)}
+.theory-highlight.violet{background:var(--violet-bg);border-color:var(--violet)}
+.theory-highlight.teal{background:var(--teal-bg);border-color:var(--teal)}
+.exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+.exercise-box .q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--cyan);text-transform:uppercase;margin-bottom:8px}
+.exercise-box .q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+.option-btn:hover:not(:disabled){border-color:var(--cyan);background:var(--cyan-bg)}
+.option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.option-btn.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+.option-btn:disabled{cursor:not-allowed;opacity:.8}
+.text-input{padding:12px 16px;border:2px solid var(--gray-200);border-radius:10px;
+  font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;transition:all .2s;
+  background:#fff !important;color:#1a2744 !important}
+.text-input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(8,145,178,.15)}
+.text-input.correct{border-color:var(--green);background:var(--green-bg) !important}
+.text-input.wrong{border-color:var(--rose);background:var(--rose-bg) !important}
+.feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+.feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+.feedback.correct{background:var(--green-bg);color:var(--green)}
+.feedback.wrong{background:var(--rose-bg);color:var(--rose)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+  transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--cyan);color:white}
+.btn-primary:hover{background:var(--cyan-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(8,145,178,.4)}
+.btn-success{background:var(--teal);color:white}
+.btn-success:hover{background:var(--teal-l);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+.score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--cyan)}
+.score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+.stars-display{font-size:36px;letter-spacing:4px}
+.score-grade{display:inline-block;padding:8px 20px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:20px;margin-top:12px}
+.score-grade.excellent{background:var(--green-bg);color:var(--green)}
+.score-grade.good{background:var(--amber-bg);color:var(--amber)}
+.score-grade.ok{background:var(--rose-bg);color:var(--rose)}
+.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.test-dots{display:flex;gap:6px}
+.test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+.test-dot.current{background:var(--cyan);transform:scale(1.3)}
+.test-dot.done-correct{background:var(--green)}
+.test-dot.done-wrong{background:var(--rose)}
+.tf-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.tf-btn{padding:12px 28px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;
+  border:2px solid var(--gray-200);background:white;cursor:pointer;transition:all .2s;color:var(--navy)}
+.tf-btn:hover:not(:disabled){transform:scale(1.05)}
+.tf-btn.verd:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.tf-btn.fals:hover:not(:disabled){border-color:var(--rose);background:var(--rose-bg)}
+.tf-btn.correct{background:var(--green-bg) !important;border-color:var(--green) !important;color:var(--green) !important}
+.tf-btn.wrong{background:var(--rose-bg) !important;border-color:var(--rose) !important;color:var(--rose) !important}
+.tf-btn:disabled{cursor:not-allowed}
+/* Planet grid */
+.planet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin:12px 0}
+.planet-card{background:linear-gradient(135deg,#0c1445,#1e3a8a);border:2px solid rgba(103,232,249,.3);
+  border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s}
+.planet-card:hover{transform:scale(1.05);border-color:var(--cyan-l)}
+.planet-card .p-emoji{font-size:28px;margin-bottom:6px}
+.planet-card .p-name{font-family:'Fredoka One',cursive;font-size:13px;color:#67e8f9}
+.planet-card .p-fact{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;line-height:1.4}
+/* Progress */
+.progress-topic-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+.progress-topic-row .pt-icon{font-size:22px}
+.progress-topic-row .pt-name{font-weight:700;color:rgba(255,255,255,.8);flex:1;font-size:14px}
+.progress-topic-row .pt-score{font-family:'Fredoka One',cursive;font-size:22px;color:#67e8f9}
+.progress-topic-row .pt-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.progress-topic-row .pt-fill{height:100%;background:linear-gradient(90deg,#0891b2,#67e8f9);border-radius:99px;transition:width .8s}
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+.content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+@media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+<div id="app-header-root"></div>
+
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO DEL TEMA</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+<div class="sidebar">
+  <div class="sidebar-section">Cono. Medio – Tema 5</div>
+  <button class="nav-btn active" onclick="showScreen('universo')" id="nav-universo">
+    <span class="nav-icon">🌌</span> El universo
+  </button>
+  <button class="nav-btn" onclick="showScreen('solar')" id="nav-solar">
+    <span class="nav-icon">☀️</span> Sistema solar
+  </button>
+  <button class="nav-btn" onclick="showScreen('tierra')" id="nav-tierra">
+    <span class="nav-icon">🌍</span> La Tierra
+  </button>
+  <button class="nav-btn" onclick="showScreen('movimientos')" id="nav-movimientos">
+    <span class="nav-icon">🔄</span> Movimientos de la Tierra
+  </button>
+  <button class="nav-btn" onclick="showScreen('luna')" id="nav-luna">
+    <span class="nav-icon">🌙</span> La Luna
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Resultados
+  </button>
+</div>
+
+<div class="content">
+
+<!-- UNIVERSO -->
+<div class="screen active" id="screen-universo">
+  <div class="lesson-header">
+    <div class="lesson-icon">🌌</div>
+    <div class="lesson-info">
+      <h2>¿Qué hay en el universo?</h2>
+      <p>Estrellas, planetas, satélites y el sistema solar</p>
+    </div>
+    <button class="btn btn-primary" onclick="history.back()" style="margin-left:auto;padding:8px 16px;font-size:13px">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-universo"></div>
+  <div id="universo-content"></div>
+</div>
+
+<!-- SISTEMA SOLAR -->
+<div class="screen" id="screen-solar">
+  <div class="lesson-header">
+    <div class="lesson-icon">☀️</div>
+    <div class="lesson-info">
+      <h2>El sistema solar</h2>
+      <p>Los 8 planetas y sus características</p>
+    </div>
+  </div>
+  <div class="phase-tabs" id="tabs-solar"></div>
+  <div id="solar-content"></div>
+</div>
+
+<!-- LA TIERRA -->
+<div class="screen" id="screen-tierra">
+  <div class="lesson-header">
+    <div class="lesson-icon">🌍</div>
+    <div class="lesson-info">
+      <h2>¿Cómo es la Tierra?</h2>
+      <p>Continentes, océanos, atmósfera y mapas</p>
+    </div>
+  </div>
+  <div class="phase-tabs" id="tabs-tierra"></div>
+  <div id="tierra-content"></div>
+</div>
+
+<!-- MOVIMIENTOS -->
+<div class="screen" id="screen-movimientos">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔄</div>
+    <div class="lesson-info">
+      <h2>Los movimientos de la Tierra</h2>
+      <p>Rotación, traslación y las estaciones</p>
+    </div>
+  </div>
+  <div class="phase-tabs" id="tabs-movimientos"></div>
+  <div id="movimientos-content"></div>
+</div>
+
+<!-- LA LUNA -->
+<div class="screen" id="screen-luna">
+  <div class="lesson-header">
+    <div class="lesson-icon">🌙</div>
+    <div class="lesson-info">
+      <h2>¿Qué vemos en el cielo de noche?</h2>
+      <p>La Luna, las estrellas y las fases lunares</p>
+    </div>
+  </div>
+  <div class="phase-tabs" id="tabs-luna"></div>
+  <div id="luna-content"></div>
+</div>
+
+<!-- PROGRESO -->
+<div class="screen" id="screen-progreso">
+  <div id="progreso-content"></div>
+</div>
+
+</div>
+</div>
+</div>
+<div id="app-footer-root"></div>
+
+<script>
+const progress = {
+  universo:    {done:false, score:0},
+  solar:       {done:false, score:0},
+  tierra:      {done:false, score:0},
+  movimientos: {done:false, score:0},
+  luna:        {done:false, score:0},
+};
+
+function updateHome() {
+  const scores = Object.values(progress).map(p => p.done ? p.score : 0);
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0) / scores.length);
+  document.getElementById('overall-progress').style.width = avg + '%';
+  document.getElementById('overall-pct').textContent = avg + '%';
+  Object.entries(progress).forEach(([k,p]) => {
+    const nb = document.getElementById('nav-'+k);
+    if(nb && p.done) nb.classList.add('completed');
+  });
+}
+
+let _inited = {};
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const nb = document.getElementById('nav-'+id); if(nb) nb.classList.add('active');
+  if(!_inited[id]) {
+    _inited[id] = true;
+    const starters = {
+      universo:    ()=>showUniversoPhase(1),
+      solar:       ()=>showSolarPhase(1),
+      tierra:      ()=>showTierraPhase(1),
+      movimientos: ()=>showMovPhase(1),
+      luna:        ()=>showLunaPhase(1),
+    };
+    if(starters[id]) starters[id]();
+  }
+  if(id === 'progreso') buildProgreso();
+}
+window.showScreen = showScreen;
+
+function setTab(id, n) {
+  const labels = PHASES[id].tabs;
+  const wrap = document.getElementById('tabs-'+id); if(!wrap) return;
+  wrap.innerHTML = labels.map((l,i) => `<div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// MINI TEST ENGINE
+// ══════════════════════════════════════════
+function buildMiniTest(qs, containerId, onDone) {
+  let curr=0, correct=0, results=[];
+  function render() {
+    const c = document.getElementById(containerId); if(!c) return;
+    if(curr >= qs.length) {
+      const pct = Math.round(correct/qs.length*100);
+      const stars = pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      const grade = pct>=80?'excellent':pct>=60?'good':'ok';
+      const msg = pct===100?'¡Perfecto! 🔥':pct>=80?'¡Muy bien! 💪':pct>=60?'¡Bien! 👍':'Repasa e inténtalo 📖';
+      c.innerHTML = `<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${msg}<br><small>${correct} de ${qs.length} correctas</small></div>
+        <div class="score-grade ${grade}">${pct>=80?'¡Aprobado!':pct>=60?'Notable':'A repasar'}</div>
+      </div>`;
+      if(onDone) onDone(pct);
+      return;
+    }
+    const q = qs[curr];
+    const dotHTML = qs.map((_,i) => `<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    const qid = 'mt'+curr;
+    if(q.type==='mc'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="options" id="${qid}_opts">
+            ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='tf'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Verdadero o Falso – ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="tf-row">
+            <button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button>
+            <button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='write'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Escribe – ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1;min-width:200px">
+            <button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    }
+  }
+  function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); }
+  window.mtAns = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true);
+    const ok = btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta correcta era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtTF = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+    const ok = btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtWrite = function(qid,cid,correct){
+    if(containerId!==cid) return;
+    const inp = document.getElementById(qid+'_inp');
+    const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
+    inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+    const btns = document.querySelectorAll(`button[onclick*="${qid}"]`);
+    btns.forEach(b=>b.disabled=true);
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct;
+    next(ok);
+  };
+  render();
+}
+window.buildMiniTest = buildMiniTest;
+
+// ══════════════════════════════════════════
+// 1. EL UNIVERSO
+// ══════════════════════════════════════════
+function showUniversoPhase(n){
+  setTab('universo', n);
+  const c = document.getElementById('universo-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🌌 ¿Qué hay en el universo?</div>
+      <div class="theory-highlight cyan">El universo está formado por distintos tipos de <strong>ASTROS</strong>: estrellas, planetas y satélites.</div>
+      <div class="theory-highlight indigo"><strong>⭐ ESTRELLAS:</strong> emiten luz y calor propios.<br>
+        El <strong>Sol</strong> es la estrella más cercana a la Tierra.</div>
+      <div class="theory-highlight" style="background:#fef3c7;border-color:#f59e0b"><strong>🪐 PLANETAS:</strong> astros que giran alrededor de las estrellas y <strong>no</strong> tienen luz propia.<br>
+        Nuestro planeta es la <strong>Tierra</strong>.</div>
+      <div class="theory-highlight green"><strong>🌙 SATÉLITES:</strong> no tienen luz propia y giran alrededor de los planetas.<br>
+        La <strong>Luna</strong> es el satélite de la Tierra.</div>
+      <div class="theory-highlight sky">El Sol, los <strong>8 planetas</strong> que giran a su alrededor y otros astros más pequeños forman el <strong>SISTEMA SOLAR</strong>.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showUniversoPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildUniversoClasifica(); }
+  else if(n===3){ buildUniversoTest(); }
+}
+window.showUniversoPhase = showUniversoPhase;
+
+function buildUniversoClasifica(){
+  const items = [
+    {n:'☀️ El Sol',tipo:'estrella'},
+    {n:'🌍 La Tierra',tipo:'planeta'},
+    {n:'🌙 La Luna',tipo:'satélite'},
+    {n:'⭐ Sirio (brilla en el cielo nocturno)',tipo:'estrella'},
+    {n:'🔴 Marte',tipo:'planeta'},
+    {n:'🪐 Saturno',tipo:'planeta'},
+    {n:'🌑 Un satélite natural de Saturno',tipo:'satélite'},
+    {n:'💫 Una estrella que emite luz propia',tipo:'estrella'},
+  ];
+  const c = document.getElementById('universo-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🌌 Clasifica cada astro</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">¿Es una estrella, un planeta o un satélite?</p></div>
+  ${items.map((it,i)=>`
+  <div class="exercise-box">
+    <div class="q-text">${it.n}</div>
+    <div class="options" id="uc-e${i}">
+      <button class="option-btn" data-correct="${it.tipo}" data-chosen="estrella" onclick="checkOpt(this,'uc-e${i}','uc-fb${i}')">⭐ Estrella</button>
+      <button class="option-btn" data-correct="${it.tipo}" data-chosen="planeta" onclick="checkOpt(this,'uc-e${i}','uc-fb${i}')">🪐 Planeta</button>
+      <button class="option-btn" data-correct="${it.tipo}" data-chosen="satélite" onclick="checkOpt(this,'uc-e${i}','uc-fb${i}')">🌙 Satélite</button>
+    </div>
+    <div class="feedback" id="uc-fb${i}"></div>
+  </div>`).join('')}
+  <div class="btn-row"><button class="btn btn-success" onclick="showUniversoPhase(3)">Mini Test →</button></div>`;
+}
+window.checkOpt = function(btn, optsId, fbId){
+  document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildUniversoTest(){
+  const ALL = [
+    {type:'mc',question:'¿Qué es una estrella?',options:['Un astro que gira alrededor de un planeta','Un astro que emite luz y calor propios','Un astro sin luz propia'],correct:'Un astro que emite luz y calor propios'},
+    {type:'mc',question:'¿Cuál es la estrella más cercana a la Tierra?',options:['Sirio','La Luna','El Sol'],correct:'El Sol'},
+    {type:'tf',question:'Los planetas tienen luz propia.',correct:'falso'},
+    {type:'mc',question:'¿Qué es un satélite?',options:['Un astro que emite luz','Un astro que gira alrededor de un planeta','Una estrella pequeña'],correct:'Un astro que gira alrededor de un planeta'},
+    {type:'mc',question:'¿Cómo se llama el satélite de la Tierra?',options:['El Sol','Marte','La Luna'],correct:'La Luna'},
+    {type:'tf',question:'El sistema solar está formado por el Sol y los 8 planetas que giran a su alrededor.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuántos planetas tiene el sistema solar?',options:['7','8','9'],correct:'8'},
+    {type:'mc',question:'La Tierra es:',options:['Una estrella','Un satélite','Un planeta'],correct:'Un planeta'},
+    {type:'tf',question:'La Luna emite su propia luz.',correct:'falso'},
+    {type:'mc',question:'¿Qué forman el Sol, los 8 planetas y otros astros menores?',options:['El universo','El sistema solar','La Vía Láctea'],correct:'El sistema solar'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'universo-content', pct=>{
+    progress.universo.score=pct; progress.universo.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 2. SISTEMA SOLAR
+// ══════════════════════════════════════════
+function showSolarPhase(n){
+  setTab('solar', n);
+  const c = document.getElementById('solar-content');
+  if(n===1){
+    const planetas = [
+      {e:'🟠',n:'Mercurio',f:'El más cercano al Sol. ¡Hace muchísimo calor!'},
+      {e:'🟡',n:'Venus',f:'El más brillante en el cielo. Se llama "planeta azul"… espera, ¡eso es la Tierra!'},
+      {e:'🔵',n:'Tierra',f:'El "planeta azul". ¡El único donde sabemos que hay vida!'},
+      {e:'🔴',n:'Marte',f:'El "planeta rojo". Tiene el volcán más alto del sistema solar.'},
+      {e:'🟤',n:'Júpiter',f:'¡El más grande de todos! Tiene una gran mancha roja (una tormenta gigante).'},
+      {e:'🪐',n:'Saturno',f:'Famoso por sus hermosos anillos. ¡Los más espectaculares!'},
+      {e:'🔵',n:'Urano',f:'Gira de lado, como si estuviera tumbado. Muy frío.'},
+      {e:'🌑',n:'Neptuno',f:'El más lejano del Sol. Tiene los vientos más fuertes del sistema solar.'},
+    ];
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">☀️ Los planetas del sistema solar</div>
+      <div class="theory-highlight cyan">Los planetas se ordenan del más cercano al más lejano del Sol:<br>
+        <strong>Mercurio · Venus · Tierra · Marte · Júpiter · Saturno · Urano · Neptuno</strong><br>
+        <em>Truco para recordarlos: "Mi Vecino Tom Me Juntó Su Ukelele Negro"</em></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px">
+    ${planetas.map(p=>`
+      <div style="background:linear-gradient(135deg,#0c1445,#1e3a8a);border:1px solid rgba(103,232,249,.2);border-radius:14px;padding:16px;text-align:center">
+        <div style="font-size:32px;margin-bottom:6px">${p.e}</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:16px;color:#67e8f9;margin-bottom:6px">${p.n}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.4">${p.f}</div>
+      </div>`).join('')}
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showSolarPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildSolarEjercicio(); }
+  else if(n===3){ buildSolarTest(); }
+}
+window.showSolarPhase = showSolarPhase;
+
+function buildSolarEjercicio(){
+  const preguntas = [
+    {q:'¿Qué planeta está en el centro del sistema solar?',opts:['La Tierra','El Sol','Júpiter'],r:'El Sol'},
+    {q:'¿Qué planeta es el más cercano al Sol?',opts:['Venus','Mercurio','Marte'],r:'Mercurio'},
+    {q:'¿Qué planeta tiene anillos muy llamativos?',opts:['Urano','Júpiter','Saturno'],r:'Saturno'},
+    {q:'¿Cuál es el planeta más grande del sistema solar?',opts:['Saturno','Júpiter','Neptuno'],r:'Júpiter'},
+    {q:'¿En qué planeta sabemos que hay seres vivos?',opts:['Marte','Venus','Tierra'],r:'Tierra'},
+    {q:'¿Qué planeta es el más alejado del Sol?',opts:['Urano','Saturno','Neptuno'],r:'Neptuno'},
+    {q:'¿Qué planeta está entre Mercurio y la Tierra?',opts:['Marte','Venus','Júpiter'],r:'Venus'},
+    {q:'¿Cuál se conoce como el "planeta rojo"?',opts:['Marte','Mercurio','Urano'],r:'Marte'},
+  ];
+  const c = document.getElementById('solar-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">☀️ ¿Conoces los planetas?</div>
+  <p style="color:var(--gray-600);margin-bottom:8px">Responde sobre las características de cada planeta.</p></div>
+  ${preguntas.map((p,i)=>`
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio ${i+1}</div>
+    <div class="q-text">${p.q}</div>
+    <div class="options" id="se-e${i}">
+      ${p.opts.map(o=>`<button class="option-btn" data-correct="${p.r}" data-chosen="${o}" onclick="checkOpt(this,'se-e${i}','se-fb${i}')">${o}</button>`).join('')}
+    </div>
+    <div class="feedback" id="se-fb${i}"></div>
+  </div>`).join('')}
+  <div class="btn-row"><button class="btn btn-success" onclick="showSolarPhase(3)">Mini Test →</button></div>`;
+}
+
+function buildSolarTest(){
+  const ALL = [
+    {type:'write',question:'¿Cómo se llama el planeta entre Marte y Saturno (el más grande)?',correct:'Júpiter'},
+    {type:'mc',question:'¿Cuántos planetas tiene el sistema solar?',options:['7','8','9'],correct:'8'},
+    {type:'mc',question:'¿Qué planeta está entre Mercurio y la Tierra?',options:['Marte','Venus','Júpiter'],correct:'Venus'},
+    {type:'tf',question:'Saturno tiene anillos muy llamativos.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál es el planeta más lejano del Sol?',options:['Saturno','Urano','Neptuno'],correct:'Neptuno'},
+    {type:'write',question:'¿Cómo se llama el planeta conocido como el "planeta rojo"?',correct:'Marte'},
+    {type:'mc',question:'¿Qué planeta es el más cercano al Sol?',options:['Venus','Mercurio','La Tierra'],correct:'Mercurio'},
+    {type:'tf',question:'Júpiter es el planeta más pequeño del sistema solar.',correct:'falso'},
+    {type:'mc',question:'¿Qué planeta es el único donde sabemos que hay vida?',options:['Marte','Venus','La Tierra'],correct:'La Tierra'},
+    {type:'write',question:'¿Qué astro está en el centro del sistema solar?',correct:'el Sol'},
+    {type:'mc',question:'El orden correcto de los primeros cuatro planetas (de más cercano a más lejano del Sol) es:',options:['Tierra, Venus, Mercurio, Marte','Mercurio, Venus, Tierra, Marte','Venus, Mercurio, Marte, Tierra'],correct:'Mercurio, Venus, Tierra, Marte'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'solar-content', pct=>{
+    progress.solar.score=pct; progress.solar.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 3. LA TIERRA
+// ══════════════════════════════════════════
+function showTierraPhase(n){
+  setTab('tierra', n);
+  const c = document.getElementById('tierra-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🌍 ¿Cómo es la Tierra?</div>
+      <div class="theory-highlight cyan">La Tierra es el <strong>único planeta</strong> del sistema solar donde tenemos certeza de que existe vida.<br>
+        Su superficie está cubierta por <strong>tierra</strong> y por <strong>agua</strong>. La rodea una capa de aire llamada <strong>atmósfera</strong>.</div>
+      <div class="theory-highlight indigo"><strong>Los continentes (6):</strong><br>
+        🌍 África · 🌎 América · 🌏 Asia · 🌍 Europa · 🌏 Oceanía · ❄️ Antártida</div>
+      <div class="theory-highlight green"><strong>Los océanos (5):</strong><br>
+        🌊 Pacífico · Atlántico · Índico · Glacial Ártico · Glacial Antártico</div>
+      <div class="theory-highlight sky"><strong>Los mapas y el planisferio:</strong><br>
+        Para representar la superficie de la Tierra usamos los <strong>mapas</strong>.<br>
+        El <strong>planisferio</strong> (o mapamundi) es un mapa donde aparecen todos los océanos y continentes.<br>
+        Los mapas incluyen la <strong>rosa de los vientos</strong> con los puntos cardinales: Norte, Sur, Este, Oeste.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showTierraPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildTierraEjercicio(); }
+  else if(n===3){ buildTierraTest(); }
+}
+window.showTierraPhase = showTierraPhase;
+
+function buildTierraEjercicio(){
+  const c = document.getElementById('tierra-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🌍 Practica sobre la Tierra</div></div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 1</div>
+    <div class="q-text">¿Cuántos continentes hay en la Tierra?</div>
+    <div class="options" id="te1">
+      <button class="option-btn" data-correct="6" data-chosen="5" onclick="checkOpt(this,'te1','te-fb1')">5</button>
+      <button class="option-btn" data-correct="6" data-chosen="6" onclick="checkOpt(this,'te1','te-fb1')">6</button>
+      <button class="option-btn" data-correct="6" data-chosen="7" onclick="checkOpt(this,'te1','te-fb1')">7</button>
+    </div>
+    <div class="feedback" id="te-fb1"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 2</div>
+    <div class="q-text">¿Cuántos océanos hay en la Tierra?</div>
+    <div class="options" id="te2">
+      <button class="option-btn" data-correct="5" data-chosen="4" onclick="checkOpt(this,'te2','te-fb2')">4</button>
+      <button class="option-btn" data-correct="5" data-chosen="5" onclick="checkOpt(this,'te2','te-fb2')">5</button>
+      <button class="option-btn" data-correct="5" data-chosen="6" onclick="checkOpt(this,'te2','te-fb2')">6</button>
+    </div>
+    <div class="feedback" id="te-fb2"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 3</div>
+    <div class="q-text">¿Cómo se llama la capa de aire que rodea la Tierra?</div>
+    <div class="options" id="te3">
+      <button class="option-btn" data-correct="Atmósfera" data-chosen="Estratosfera" onclick="checkOpt(this,'te3','te-fb3')">Estratosfera</button>
+      <button class="option-btn" data-correct="Atmósfera" data-chosen="Atmósfera" onclick="checkOpt(this,'te3','te-fb3')">Atmósfera</button>
+      <button class="option-btn" data-correct="Atmósfera" data-chosen="Ionosfera" onclick="checkOpt(this,'te3','te-fb3')">Ionosfera</button>
+    </div>
+    <div class="feedback" id="te-fb3"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 4</div>
+    <div class="q-text">¿Dónde está Europa en relación a África?</div>
+    <div class="options" id="te4">
+      <button class="option-btn" data-correct="Al norte" data-chosen="Al sur" onclick="checkOpt(this,'te4','te-fb4')">Al sur</button>
+      <button class="option-btn" data-correct="Al norte" data-chosen="Al norte" onclick="checkOpt(this,'te4','te-fb4')">Al norte</button>
+      <button class="option-btn" data-correct="Al norte" data-chosen="Al este" onclick="checkOpt(this,'te4','te-fb4')">Al este</button>
+    </div>
+    <div class="feedback" id="te-fb4"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 5</div>
+    <div class="q-text">¿Cómo se llama el mapa donde aparecen todos los océanos y continentes?</div>
+    <div class="options" id="te5">
+      <button class="option-btn" data-correct="Planisferio" data-chosen="Mapa físico" onclick="checkOpt(this,'te5','te-fb5')">Mapa físico</button>
+      <button class="option-btn" data-correct="Planisferio" data-chosen="Planisferio" onclick="checkOpt(this,'te5','te-fb5')">Planisferio</button>
+      <button class="option-btn" data-correct="Planisferio" data-chosen="Globo terráqueo" onclick="checkOpt(this,'te5','te-fb5')">Globo terráqueo</button>
+    </div>
+    <div class="feedback" id="te-fb5"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showTierraPhase(3)">Mini Test →</button></div>`;
+}
+
+function buildTierraTest(){
+  const ALL = [
+    {type:'mc',question:'¿Cuántos continentes hay en la Tierra?',options:['5','6','7'],correct:'6'},
+    {type:'mc',question:'¿Cuántos océanos hay en la Tierra?',options:['4','5','6'],correct:'5'},
+    {type:'tf',question:'La atmósfera es la capa de aire que rodea la Tierra.',correct:'verdadero'},
+    {type:'mc',question:'¿Cómo se llama el mapa donde aparecen todos los continentes y océanos?',options:['Globo terráqueo','Planisferio','Mapa físico'],correct:'Planisferio'},
+    {type:'mc',question:'¿Cuál es el océano más grande?',options:['Atlántico','Índico','Pacífico'],correct:'Pacífico'},
+    {type:'tf',question:'En la Tierra hay 7 continentes.',correct:'falso'},
+    {type:'mc',question:'¿Cuál de estos es un continente?',options:['Pacífico','Oceanía','Atlántico'],correct:'Oceanía'},
+    {type:'mc',question:'Europa está al _____ de África.',options:['sur','este','norte'],correct:'norte'},
+    {type:'tf',question:'La rosa de los vientos indica los puntos cardinales.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estos NO es un océano?',options:['Atlántico','Sahara','Pacífico'],correct:'Sahara'},
+    {type:'write',question:'¿Cómo se llama el continente situado en el Polo Sur?',correct:'Antártida'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'tierra-content', pct=>{
+    progress.tierra.score=pct; progress.tierra.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 4. MOVIMIENTOS DE LA TIERRA
+// ══════════════════════════════════════════
+function showMovPhase(n){
+  setTab('movimientos', n);
+  const c = document.getElementById('movimientos-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🔄 Los movimientos de la Tierra</div>
+      <div class="theory-highlight cyan" style="font-size:16px;text-align:center"><strong>La Tierra realiza DOS movimientos: ROTACIÓN y TRASLACIÓN</strong></div>
+      <div class="theory-highlight indigo"><strong>🔄 MOVIMIENTO DE ROTACIÓN:</strong><br>
+        • La Tierra gira <strong>sobre sí misma</strong><br>
+        • Tarda <strong>1 día</strong> (24 horas) en dar una vuelta completa<br>
+        • Causa el <strong>día y la noche</strong><br>
+        • La parte que recibe luz del Sol = <strong>día</strong>; la parte en sombra = <strong>noche</strong></div>
+      <div class="theory-highlight" style="background:#fef3c7;border-color:#f59e0b"><strong>🌍 MOVIMIENTO DE TRASLACIÓN:</strong><br>
+        • La Tierra se desplaza <strong>alrededor del Sol</strong><br>
+        • Tarda <strong>1 año</strong> (365 días) en dar una vuelta completa<br>
+        • Causa las <strong>estaciones del año</strong></div>
+      <div class="theory-highlight green"><strong>🍂 LAS ESTACIONES:</strong><br>
+        🌸 <strong>Primavera:</strong> los días son cada vez más largos<br>
+        ☀️ <strong>Verano:</strong> días más largos y noches más cortas<br>
+        🍂 <strong>Otoño:</strong> los días son cada vez más cortos<br>
+        ❄️ <strong>Invierno:</strong> días más cortos y noches más largas</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showMovPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildMovEjercicio(); }
+  else if(n===3){ buildMovTest(); }
+}
+window.showMovPhase = showMovPhase;
+
+function buildMovEjercicio(){
+  const c = document.getElementById('movimientos-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🔄 Rotación y Traslación</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Elige si cada dato corresponde a la rotación o la traslación.</p></div>
+
+  ${[
+    {q:'La Tierra gira sobre sí misma',r:'rotación'},
+    {q:'Dura 24 horas (1 día)',r:'rotación'},
+    {q:'Causa el día y la noche',r:'rotación'},
+    {q:'La Tierra se desplaza alrededor del Sol',r:'traslación'},
+    {q:'Dura 365 días (1 año)',r:'traslación'},
+    {q:'Causa las estaciones del año',r:'traslación'},
+  ].map((it,i)=>`
+  <div class="exercise-box">
+    <div class="q-text">${it.q}</div>
+    <div class="options" id="mv-e${i}">
+      <button class="option-btn" data-correct="${it.r}" data-chosen="rotación" onclick="checkOpt(this,'mv-e${i}','mv-fb${i}')">🔄 Rotación</button>
+      <button class="option-btn" data-correct="${it.r}" data-chosen="traslación" onclick="checkOpt(this,'mv-e${i}','mv-fb${i}')">🌍 Traslación</button>
+    </div>
+    <div class="feedback" id="mv-fb${i}"></div>
+  </div>`).join('')}
+
+  <div class="card" style="margin-top:8px"><div class="card-title">🍂 Las estaciones</div></div>
+  ${[
+    {q:'En esta estación los días son más cortos y las noches más largas.',r:'invierno'},
+    {q:'En esta estación los días son más largos y las noches más cortas.',r:'verano'},
+    {q:'En esta estación los días son cada vez más largos (empieza a haber más luz).',r:'primavera'},
+    {q:'En esta estación los días son cada vez más cortos.',r:'otoño'},
+  ].map((it,i)=>`
+  <div class="exercise-box">
+    <div class="q-text">${it.q}</div>
+    <div class="options" id="es-e${i}" style="flex-wrap:wrap">
+      <button class="option-btn" data-correct="${it.r}" data-chosen="primavera" onclick="checkOpt(this,'es-e${i}','es-fb${i}')">🌸 Primavera</button>
+      <button class="option-btn" data-correct="${it.r}" data-chosen="verano" onclick="checkOpt(this,'es-e${i}','es-fb${i}')">☀️ Verano</button>
+      <button class="option-btn" data-correct="${it.r}" data-chosen="otoño" onclick="checkOpt(this,'es-e${i}','es-fb${i}')">🍂 Otoño</button>
+      <button class="option-btn" data-correct="${it.r}" data-chosen="invierno" onclick="checkOpt(this,'es-e${i}','es-fb${i}')">❄️ Invierno</button>
+    </div>
+    <div class="feedback" id="es-fb${i}"></div>
+  </div>`).join('')}
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showMovPhase(3)">Mini Test →</button></div>`;
+}
+
+function buildMovTest(){
+  const ALL = [
+    {type:'mc',question:'¿Cuánto tarda la Tierra en completar el movimiento de rotación?',options:['1 año','1 mes','1 día (24 horas)'],correct:'1 día (24 horas)'},
+    {type:'mc',question:'¿Qué provoca el movimiento de rotación?',options:['Las estaciones','El día y la noche','Los meses del año'],correct:'El día y la noche'},
+    {type:'mc',question:'¿Cuánto tarda la Tierra en completar el movimiento de traslación?',options:['1 día','1 mes','1 año (365 días)'],correct:'1 año (365 días)'},
+    {type:'mc',question:'¿Qué provoca el movimiento de traslación?',options:['El día y la noche','Las mareas','Las estaciones del año'],correct:'Las estaciones del año'},
+    {type:'tf',question:'En invierno, los días son más cortos y las noches más largas.',correct:'verdadero'},
+    {type:'mc',question:'En verano, ¿cómo son los días?',options:['Más cortos que las noches','Igual que las noches','Más largos y las noches más cortas'],correct:'Más largos y las noches más cortas'},
+    {type:'mc',question:'La Tierra gira sobre sí misma en el movimiento de:',options:['Traslación','Rotación','Revolución'],correct:'Rotación'},
+    {type:'tf',question:'En primavera, los días son cada vez más largos.',correct:'verdadero'},
+    {type:'mc',question:'¿En qué estación los días son cada vez más cortos?',options:['Primavera','Verano','Otoño'],correct:'Otoño'},
+    {type:'tf',question:'La Tierra tarda 365 días en dar una vuelta alrededor del Sol.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué movimiento hace la Tierra alrededor del Sol?',options:['Rotación','Traslación','Revolución'],correct:'Traslación'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'movimientos-content', pct=>{
+    progress.movimientos.score=pct; progress.movimientos.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 5. LA LUNA
+// ══════════════════════════════════════════
+function showLunaPhase(n){
+  setTab('luna', n);
+  const c = document.getElementById('luna-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🌙 ¿Qué vemos en el cielo de noche?</div>
+      <div class="theory-highlight cyan">Durante la noche podemos ver la <strong>Luna</strong> y las <strong>estrellas</strong>, que la luz del Sol no nos deja observar de día.</div>
+      <div class="theory-highlight indigo"><strong>⭐ Las estrellas:</strong> son astros brillantes a enorme distancia. Por eso nos parecen tan pequeñas.</div>
+      <div class="theory-highlight" style="background:#fef3c7;border-color:#f59e0b"><strong>🌙 La Luna:</strong><br>
+        • No tiene luz propia: <strong>refleja la luz del Sol</strong><br>
+        • Gira sobre sí misma y alrededor de la Tierra<br>
+        • Tarda unos <strong>28 días</strong> en dar una vuelta completa a la Tierra<br>
+        • Por eso no siempre la vemos iluminada por completo</div>
+      <div class="theory-highlight green"><strong>🌕 Las fases de la Luna (de más a menos iluminada):</strong><br>
+        🌕 <strong>Luna llena:</strong> la Luna se ve completa<br>
+        🌗 <strong>Cuarto menguante:</strong> tiene forma de D al revés<br>
+        🌑 <strong>Luna nueva:</strong> no se ve (está sin iluminar)<br>
+        🌓 <strong>Cuarto creciente:</strong> tiene forma de C o D</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showLunaPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildLunaEjercicio(); }
+  else if(n===3){ buildLunaTest(); }
+}
+window.showLunaPhase = showLunaPhase;
+
+function buildLunaEjercicio(){
+  const fases = [
+    {desc:'La Luna se ve completa e iluminada.',f:'Luna llena'},
+    {desc:'La Luna no se ve (está sin iluminar).',f:'Luna nueva'},
+    {desc:'La Luna tiene forma de C o D (va creciendo).',f:'Cuarto creciente'},
+    {desc:'La Luna tiene forma de D al revés (va menguando).',f:'Cuarto menguante'},
+  ];
+  const c = document.getElementById('luna-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🌙 Las fases de la Luna</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Identifica cada fase según su descripción.</p></div>
+  ${fases.map((f,i)=>`
+  <div class="exercise-box">
+    <div class="q-text">${f.desc}</div>
+    <div class="options" id="lu-e${i}" style="flex-wrap:wrap">
+      <button class="option-btn" data-correct="${f.f}" data-chosen="Luna llena" onclick="checkOpt(this,'lu-e${i}','lu-fb${i}')">🌕 Luna llena</button>
+      <button class="option-btn" data-correct="${f.f}" data-chosen="Luna nueva" onclick="checkOpt(this,'lu-e${i}','lu-fb${i}')">🌑 Luna nueva</button>
+      <button class="option-btn" data-correct="${f.f}" data-chosen="Cuarto creciente" onclick="checkOpt(this,'lu-e${i}','lu-fb${i}')">🌓 Cuarto creciente</button>
+      <button class="option-btn" data-correct="${f.f}" data-chosen="Cuarto menguante" onclick="checkOpt(this,'lu-e${i}','lu-fb${i}')">🌗 Cuarto menguante</button>
+    </div>
+    <div class="feedback" id="lu-fb${i}"></div>
+  </div>`).join('')}
+  <div class="btn-row"><button class="btn btn-success" onclick="showLunaPhase(3)">Mini Test →</button></div>`;
+}
+
+function buildLunaTest(){
+  const ALL = [
+    {type:'mc',question:'¿Tiene la Luna luz propia?',options:['Sí, emite luz propia','No, refleja la luz del Sol','Sí, pero muy poca'],correct:'No, refleja la luz del Sol'},
+    {type:'mc',question:'¿Cuánto tarda la Luna en dar una vuelta completa a la Tierra?',options:['7 días','28 días','365 días'],correct:'28 días'},
+    {type:'mc',question:'¿Cómo se llama la fase en que la Luna se ve completa?',options:['Luna nueva','Cuarto creciente','Luna llena'],correct:'Luna llena'},
+    {type:'mc',question:'¿Cómo se llama la fase en que la Luna no se ve?',options:['Luna llena','Luna nueva','Cuarto menguante'],correct:'Luna nueva'},
+    {type:'tf',question:'La Luna gira alrededor de la Tierra.',correct:'verdadero'},
+    {type:'mc',question:'¿Por qué no siempre vemos la Luna completamente iluminada?',options:['Porque se esconde','Porque el Sol la ilumina de diferentes formas según su posición','Porque cambia de tamaño'],correct:'Porque el Sol la ilumina de diferentes formas según su posición'},
+    {type:'tf',question:'Las estrellas que vemos de noche están muy cerca de nosotros.',correct:'falso'},
+    {type:'mc',question:'¿Cuántas fases principales tiene la Luna?',options:['2','4','8'],correct:'4'},
+    {type:'mc',question:'La Luna es el satélite de:',options:['El Sol','Marte','La Tierra'],correct:'La Tierra'},
+    {type:'tf',question:'En la fase de luna llena, la Luna se ve completa e iluminada.',correct:'verdadero'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'luna-content', pct=>{
+    progress.luna.score=pct; progress.luna.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// PHASES CONFIG
+// ══════════════════════════════════════════
+const PHASES = {
+  universo:    {tabs:['📖 1. Aprende','🔍 2. Clasifica','📝 Mini Test'], show:showUniversoPhase},
+  solar:       {tabs:['🪐 1. Planetas','✏️ 2. Practica','📝 Mini Test'], show:showSolarPhase},
+  tierra:      {tabs:['📖 1. Aprende','✏️ 2. Practica','📝 Mini Test'], show:showTierraPhase},
+  movimientos: {tabs:['📖 1. Aprende','🔄 2. Ejercicios','📝 Mini Test'], show:showMovPhase},
+  luna:        {tabs:['🌙 1. Aprende','🌕 2. Fases','📝 Mini Test'],    show:showLunaPhase},
+};
+
+// ══════════════════════════════════════════
+// PROGRESO
+// ══════════════════════════════════════════
+function buildProgreso(){
+  const topics = [
+    {key:'universo',    icon:'🌌', name:'¿Qué hay en el universo?'},
+    {key:'solar',       icon:'☀️', name:'El sistema solar'},
+    {key:'tierra',      icon:'🌍', name:'¿Cómo es la Tierra?'},
+    {key:'movimientos', icon:'🔄', name:'Movimientos de la Tierra'},
+    {key:'luna',        icon:'🌙', name:'La Luna y las fases'},
+  ];
+  const done = topics.filter(t=>progress[t.key].done).length;
+  const avg  = done ? Math.round(topics.filter(t=>progress[t.key].done).reduce((s,t)=>s+progress[t.key].score,0)/done) : 0;
+  document.getElementById('progreso-content').innerHTML = `
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;margin-bottom:20px">
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:white;margin-bottom:4px">📊 Mi progreso</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.5)">${done}/${topics.length} secciones completadas · Nota media: <strong style="color:#67e8f9">${avg}%</strong></div>
+    </div>
+    ${topics.map(t=>`
+    <div class="progress-topic-row">
+      <span class="pt-icon">${t.icon}</span>
+      <span class="pt-name">${t.name}</span>
+      ${progress[t.key].done
+        ? `<div class="pt-bar"><div class="pt-fill" style="width:${progress[t.key].score}%"></div></div><span class="pt-score">${progress[t.key].score}%</span>`
+        : `<span style="font-size:12px;color:rgba(255,255,255,.3);font-weight:700">Sin empezar</span>`}
+    </div>`).join('')}`;
+}
+</script>
+
+<script type="module">
+import { CONFIG } from '../components/config.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🌍 Conocimiento del Medio — <span>Tema 5</span> · ${s.class} · ${s.school}</div>
+      <div class="header-sub">DESCUBRIMOS EL UNIVERSO · SISTEMA SOLAR · MOVIMIENTOS DE LA TIERRA · LA LUNA</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back">← Portal</a>
+    </div>
+  </div>`;
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+showScreen('universo');
+</script>
+</body>
+</html>
