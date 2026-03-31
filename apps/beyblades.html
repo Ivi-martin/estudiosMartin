@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  :root { color-scheme: dark; }
+  html, body { background-color: #0d0d1a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌀 Torneo de Beyblades – Martín Academy</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #0d0d1a;
+  --surface:#1e1e3a;
+  --card:   #1a1a32;
+  --card2:  #22223e;
+  --gold:   #fbbf24;
+  --gold2:  #f59e0b;
+  --silver: #94a3b8;
+  --bronze: #cd7c3a;
+  --red:    #ef4444;
+  --green:  #22c55e;
+  --purple: #a855f7;
+  --text:   #e2e8f0;
+  --muted:  #64748b;
+  --border: rgba(255,255,255,0.08);
+  --shadow: 0 4px 24px rgba(0,0,0,0.6);
+  --radius: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 100vh; color: var(--text); overflow-x: hidden; }
+
+/* BG */
+.arena-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse at 50% 0%, #1a0a3a 0%, #0d0d1a 70%); }
+.arena-bg::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 30%, rgba(168,85,247,0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(59,130,246,0.07) 0%, transparent 50%); }
+.rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; opacity: 0.03; }
+.ring { position: absolute; inset: 0; border: 2px solid white; border-radius: 50%; animation: spin linear infinite; }
+.ring:nth-child(1) { animation-duration: 8s; }
+.ring:nth-child(2) { inset: 40px; animation-duration: 12s; animation-direction: reverse; }
+.ring:nth-child(3) { inset: 80px; animation-duration: 6s; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* LAYOUT */
+.app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+.content { flex: 1; padding: 24px 20px; max-width: 900px; margin: 0 auto; width: 100%; }
+
+/* HEADER */
+.header { background: linear-gradient(135deg, #1a0a3a 0%, #2d1b69 50%, #1a0a3a 100%); padding: 13px 20px; display: flex; align-items: center; gap: 14px; border-bottom: 2px solid rgba(168,85,247,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+.header-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--gold); }
+.header-sub { font-size: 11px; color: rgba(255,255,255,0.45); font-weight: 700; }
+.header-right { margin-left: auto; }
+
+/* SCREEN */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* CARDS */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 14px; box-shadow: var(--shadow); }
+.card-title { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--gold); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+/* BTNS */
+.btn { padding: 9px 20px; border-radius: 11px; font-size: 14px; font-weight: 800; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; display: inline-flex; align-items: center; gap: 7px; transition: all .2s; }
+.btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #1a0a3a; }
+.btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-ghost { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { background: rgba(255,255,255,0.11); }
+.btn-red { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.35); }
+.btn-red:hover { background: rgba(239,68,68,0.3); }
+.btn-row { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 14px; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; filter: none !important; }
+
+/* PHASE BADGE */
+.phase-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(168,85,247,0.13); border: 1px solid rgba(168,85,247,0.28); color: #c084fc; padding: 4px 13px; border-radius: 99px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
+
+/* HERO */
+.hero { background: linear-gradient(135deg, #1a0a3a 0%, #2d1b69 60%, #1a0a3a 100%); border-radius: 20px; padding: 26px; margin-bottom: 18px; position: relative; overflow: hidden; border: 1px solid rgba(168,85,247,0.22); }
+.hero::after { content: '🌀'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 68px; opacity: 0.07; }
+.hero h1 { font-family: 'Fredoka One', cursive; font-size: 28px; color: white; margin-bottom: 5px; }
+.hero h1 span { color: var(--gold); }
+.hero p { color: rgba(255,255,255,0.5); font-size: 13px; line-height: 1.6; }
+
+/* TABS */
+.tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.tab { flex: 1; padding: 9px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); transition: all .2s; text-align: center; font-family: 'Nunito', sans-serif; }
+.tab.active { background: rgba(168,85,247,0.18); border-color: rgba(168,85,247,0.4); color: #d8b4fe; }
+
+/* REGISTRO GRID */
+.blades-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 11px; margin-bottom: 16px; }
+
+.blade-card { background: var(--card2); border: 1px solid var(--border); border-radius: 13px; overflow: hidden; display: flex; flex-direction: column; transition: all .2s; }
+.blade-card:hover { border-color: rgba(168,85,247,0.35); transform: translateY(-2px); }
+.blade-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(251,191,36,0.22); }
+
+.blade-img-wrap { position: relative; width: 100%; aspect-ratio: 1; background: rgba(168,85,247,0.07); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.blade-img { width: 100%; height: 100%; object-fit: cover; }
+.blade-img-ph { font-size: 46px; opacity: 0.3; }
+.sel-check { display: none; position: absolute; top: 6px; right: 6px; background: var(--gold); color: #1a0a3a; border-radius: 50%; width: 22px; height: 22px; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; }
+.blade-card.selected .sel-check { display: flex; }
+
+.blade-info { padding: 7px 9px 9px; }
+.blade-name { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--text); text-align: center; line-height: 1.3; margin-bottom: 7px; }
+.blade-actions { display: flex; gap: 5px; justify-content: center; }
+.blade-action-btn { padding: 3px 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); font-family: 'Nunito', sans-serif; transition: all .15s; }
+.blade-action-btn:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+.blade-action-btn.del:hover { background: rgba(239,68,68,0.18); color: #f87171; border-color: rgba(239,68,68,0.3); }
+
+/* FORM NUEVA BEYBLADE */
+.new-blade-form { background: var(--card2); border: 1px solid rgba(168,85,247,0.18); border-radius: 13px; padding: 16px; margin-bottom: 15px; }
+.form-row { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+.form-col { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+.form-input { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 14px; font-family: 'Nunito', sans-serif; transition: border-color .2s; min-width: 180px; }
+.form-input:focus { outline: none; border-color: rgba(168,85,247,0.5); }
+
+/* IMAGE UPLOAD */
+.img-upload-area { width: 78px; height: 78px; border-radius: 10px; border: 2px dashed rgba(168,85,247,0.33); background: rgba(168,85,247,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; overflow: hidden; position: relative; }
+.img-upload-area:hover { border-color: rgba(168,85,247,0.6); background: rgba(168,85,247,0.11); }
+.img-upload-label { font-size: 9px; color: var(--muted); font-weight: 700; text-align: center; line-height: 1.3; margin-top: 3px; pointer-events: none; }
+
+/* SELECTION BAR */
+.selection-bar { display: flex; align-items: center; justify-content: space-between; background: var(--card2); border: 1px solid var(--border); border-radius: 11px; padding: 11px 15px; margin-bottom: 13px; }
+.sel-count { font-family: 'Fredoka One', cursive; font-size: 15px; }
+.sel-count span { color: var(--gold); }
+.sel-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* PROGRESS BAR */
+.prog-wrap { margin-bottom: 16px; }
+.prog-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 800; margin-bottom: 5px; }
+.prog-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, #a855f7, #3b82f6); border-radius: 3px; transition: width .5s; }
+
+/* COMBATE */
+.match-card { background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 16px; margin-bottom: 10px; transition: border-color .2s; }
+.match-card.decided { border-color: rgba(34,197,94,0.28); }
+.match-num { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 9px; text-transform: uppercase; }
+.fighters { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+.fighter { flex: 1; text-align: center; }
+.fighter-name { font-family: 'Fredoka One', cursive; font-size: 14px; color: var(--text); margin-bottom: 2px; }
+.fighter-score { font-family: 'Fredoka One', cursive; font-size: 32px; line-height: 1; color: var(--text); }
+.fighter.winner .fighter-name { color: var(--green); }
+.fighter.winner .fighter-score { color: var(--green); text-shadow: 0 0 16px rgba(34,197,94,0.4); }
+.vs-badge { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--muted); background: rgba(255,255,255,0.04); padding: 5px 9px; border-radius: 7px; flex-shrink: 0; }
+
+/* ROUND BUTTONS */
+.rounds-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+.round-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.round-label { font-size: 10px; color: var(--muted); font-weight: 800; }
+.round-btns { display: flex; gap: 5px; }
+.round-btn { padding: 5px 11px; font-size: 12px; font-weight: 700; border: 1px solid var(--border); border-radius: 7px; background: rgba(255,255,255,0.04); color: var(--text); cursor: pointer; transition: all .15s; font-family: 'Nunito', sans-serif; }
+.round-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+.round-btn.win { background: rgba(34,197,94,0.18); border-color: rgba(34,197,94,0.42); color: #4ade80; }
+.round-btn.lost { background: transparent; color: var(--muted); border-color: transparent; }
+.round-btn:disabled { cursor: not-allowed; opacity: 0.4; }
+.match-result-label { text-align: center; font-size: 12px; font-weight: 700; min-height: 17px; color: var(--green); }
+
+/* SECTION SEP */
+.section-sep { font-family: 'Fredoka One', cursive; font-size: 14px; color: var(--purple); padding: 8px 0 5px; border-bottom: 1px solid rgba(168,85,247,0.16); margin-bottom: 11px; }
+
+/* PODIO */
+.podium { display: flex; flex-direction: column; gap: 10px; }
+.podium-item { display: flex; align-items: center; gap: 13px; background: var(--card2); border-radius: var(--radius); padding: 13px 16px; border: 1px solid var(--border); transition: transform .2s; }
+.podium-item:hover { transform: translateX(3px); }
+.podium-item.gold   { border-color: rgba(251,191,36,0.38); background: rgba(251,191,36,0.05); }
+.podium-item.silver { border-color: rgba(148,163,184,0.33); }
+.podium-item.bronze { border-color: rgba(205,124,58,0.33); }
+.podium-medal { font-size: 30px; width: 40px; text-align: center; }
+.podium-name { font-family: 'Fredoka One', cursive; font-size: 19px; }
+.podium-pts { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.podium-item.gold   .podium-name { color: var(--gold); }
+.podium-item.silver .podium-name { color: var(--silver); }
+.podium-item.bronze .podium-name { color: var(--bronze); }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 36px 20px; color: var(--muted); }
+.empty-state .es-icon { font-size: 48px; margin-bottom: 11px; opacity: 0.45; }
+.empty-state p { font-size: 13px; line-height: 1.6; }
+
+/* MODAL */
+.modal-bg { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 20px; }
+.modal-bg.open { display: flex; }
+.modal-box { background: #1a1a32; border: 1px solid rgba(168,85,247,0.22); border-radius: 16px; padding: 22px; max-width: 360px; width: 100%; box-shadow: 0 24px 60px rgba(0,0,0,0.7); }
+.modal-title { font-family: 'Fredoka One', cursive; font-size: 17px; color: var(--gold); margin-bottom: 13px; }
+
+@media (max-width: 600px) {
+  .blades-grid { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
+  .content { padding: 12px; }
+  .form-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="arena-bg">
+  <div class="rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+</div>
+
+<div class="app">
+<div id="app-header-root"></div>
+<div class="content">
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA PRINCIPAL
+  ══════════════════════════════════════════ -->
+  <div class="screen active" id="s-home">
+    <div class="hero">
+      <h1>🌀 Arena <span>Beyblade</span></h1>
+      <p>Registra tus Beyblades con foto, edítalos o elimínalos cuando quieras. Cuando tengas 12 o más, selecciona los que lucharán en el torneo.</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="tab-registro" onclick="switchTab('registro')">⚙️ Mis Beyblades</div>
+      <div class="tab" id="tab-torneo" onclick="switchTab('torneo')">🏆 Nuevo torneo</div>
+    </div>
+
+    <!-- ── TAB REGISTRO ── -->
+    <div id="panel-registro">
+      <div class="new-blade-form">
+        <div style="font-family:'Fredoka One',cursive;font-size:15px;color:var(--gold);margin-bottom:11px" id="form-title">➕ Añadir Beyblade</div>
+        <div class="form-row">
+          <div class="form-col">
+            <div class="form-label">Foto</div>
+            <div class="img-upload-area" id="upload-area" onclick="document.getElementById('img-input').click()">
+              <span style="font-size:24px">📷</span>
+              <span class="img-upload-label">Subir foto</span>
+            </div>
+            <input type="file" accept="image/*" style="display:none" id="img-input" onchange="onImageSelected(event)">
+          </div>
+          <div class="form-col" style="flex:1">
+            <div class="form-label">Nombre</div>
+            <input class="form-input" id="blade-name-input" placeholder="Ej: Storm Pegasus..." maxlength="30">
+            <div class="btn-row" style="margin-top:9px">
+              <button class="btn btn-gold" onclick="saveBlade()">💾 Guardar</button>
+              <button class="btn btn-ghost" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none">Cancelar</button>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="editing-id">
+      </div>
+
+      <div class="blades-grid" id="blades-grid"></div>
+    </div>
+
+    <!-- ── TAB TORNEO ── -->
+    <div id="panel-torneo" style="display:none">
+      <div class="selection-bar">
+        <div>
+          <div class="sel-count">Seleccionados: <span id="sel-count">0</span> / 12</div>
+          <div class="sel-hint">Toca las cartas para marcar los 12 participantes</div>
+        </div>
+        <button class="btn btn-gold" id="start-tournament-btn" disabled onclick="startTournament()">🌀 ¡Empezar!</button>
+      </div>
+      <div class="blades-grid" id="blades-selection-grid"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       FASE 1 — CLASIFICACIÓN
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="s-round1">
+    <div class="phase-badge">🌀 FASE 1 · Clasificación</div>
+    <div class="prog-wrap">
+      <div class="prog-info"><span>Combates completados</span><span id="prog1-txt">0 / 6</span></div>
+      <div class="prog-track"><div class="prog-fill" id="prog1" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🥊 6 Combates · Mejor de 3 Rondas</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:13px">Gana quien consiga 2 victorias · Si gana las 2 primeras no se juega la 3ª</p>
+      <div id="matches-r1"></div>
+    </div>
+    <div id="btn-r1-wrap" style="display:none">
+      <div style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.22);border-radius:11px;padding:12px 16px;margin-bottom:12px;font-weight:700;color:#4ade80;font-size:13px">✅ ¡Fase 1 completada! 6 Beyblades pasan a semifinales.</div>
+      <button class="btn btn-gold" onclick="advanceToSemis()">⚔️ Semifinales →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       FASE 2 — SEMIFINALES
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="s-round2">
+    <div class="phase-badge">⚔️ FASE 2 · Semifinales</div>
+    <div class="prog-wrap">
+      <div class="prog-info"><span>Combates completados</span><span id="prog2-txt">0 / 3</span></div>
+      <div class="prog-track"><div class="prog-fill" id="prog2" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏆 3 Combates · Mejor de 3 Rondas</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:13px">Los 3 ganadores pasan a la Gran Final.</p>
+      <div id="matches-r2"></div>
+    </div>
+    <div id="btn-r2-wrap" style="display:none">
+      <div style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.22);border-radius:11px;padding:12px 16px;margin-bottom:12px;font-weight:700;color:#4ade80;font-size:13px">✅ ¡Semifinales completadas! Los 3 finalistas están listos.</div>
+      <button class="btn btn-gold" onclick="advanceToFinal()">🏆 Gran Final →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       GRAN FINAL
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="s-final">
+    <div class="phase-badge">🏆 GRAN FINAL · Round Robin</div>
+    <div class="prog-wrap">
+      <div class="prog-info"><span>Combates completados</span><span id="prog3-txt">0 / 6</span></div>
+      <div class="prog-track"><div class="prog-fill" id="prog3" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌀 Todos contra todos · Mejor de 3</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Cada victoria suma 1 punto. Gana quien más puntos acumule.</p>
+      <div style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap" id="final-scores-live"></div>
+      <div id="matches-final"></div>
+    </div>
+    <div id="btn-final-wrap" style="display:none">
+      <button class="btn btn-gold" onclick="showPodium()">🏆 Ver el Podio →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PODIO
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="s-podium">
+    <div class="card" style="text-align:center;padding:26px 20px;border-color:rgba(251,191,36,0.28);background:rgba(251,191,36,0.04)">
+      <div style="font-size:52px;margin-bottom:8px">🏆</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);margin-bottom:10px">¡Campeón del torneo!</div>
+      <div id="champion-img-wrap" style="margin:0 auto 10px;width:88px;height:88px"></div>
+      <div id="champion-name" style="font-family:'Fredoka One',cursive;font-size:34px;color:white;margin-bottom:5px"></div>
+      <div id="champion-pts" style="font-size:13px;color:var(--muted)"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🥇 Podio final</div>
+      <div class="podium" id="podium"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="backToHome()">🔄 Nuevo torneo</button>
+    </div>
+  </div>
+
+</div>
+<div id="app-footer-root"></div>
+</div>
+
+<!-- MODAL borrar -->
+<div class="modal-bg" id="modal-delete">
+  <div class="modal-box">
+    <div class="modal-title">🗑️ Eliminar Beyblade</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">¿Seguro que quieres eliminar <strong id="modal-del-name" style="color:var(--text)"></strong>? Esta acción no se puede deshacer.</p>
+    <div class="btn-row">
+      <button class="btn btn-red" onclick="confirmDelete()">Sí, eliminar</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// STORAGE
+// ============================================================
+const STORAGE_KEY = 'beyblade_registry_v1';
+function loadRegistry() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
+function saveRegistry(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+let registry = loadRegistry();
+
+// ============================================================
+// UTILS
+// ============================================================
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function pairUp(arr) { const p=[]; for(let i=0;i<arr.length;i+=2) p.push([arr[i],arr[i+1]]); return p; }
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function getBlade(id) { return registry.find(b=>b.id===id); }
+
+// Genera HTML de imagen o placeholder para un blade
+function bladeImgHTML(blade, size, radius) {
+  if (blade && blade.img)
+    return `<img src="${blade.img}" style="width:${size}px;height:${size}px;border-radius:${radius}px;object-fit:cover;display:block;margin:0 auto 5px;" alt="${blade.name}">`;
+  return `<div style="width:${size}px;height:${size}px;border-radius:${radius}px;background:rgba(168,85,247,0.1);display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.42)}px;margin:0 auto 5px;">🌀</div>`;
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(tab) {
+  document.getElementById('tab-registro').classList.toggle('active', tab==='registro');
+  document.getElementById('tab-torneo').classList.toggle('active', tab==='torneo');
+  document.getElementById('panel-registro').style.display = tab==='registro' ? 'block' : 'none';
+  document.getElementById('panel-torneo').style.display   = tab==='torneo'   ? 'block' : 'none';
+  if (tab==='torneo') renderSelectionGrid();
+}
+
+// ============================================================
+// IMAGEN UPLOAD
+// ============================================================
+let pendingImg = '';
+
+function onImageSelected(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    pendingImg = ev.target.result;
+    document.getElementById('upload-area').innerHTML =
+      `<img src="${pendingImg}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:8px;">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ============================================================
+// GUARDAR / EDITAR
+// ============================================================
+function saveBlade() {
+  const name = document.getElementById('blade-name-input').value.trim();
+  if (!name) { alert('Escribe un nombre para el Beyblade'); return; }
+  const editingId = document.getElementById('editing-id').value;
+
+  if (editingId) {
+    const b = getBlade(editingId);
+    if (b) { b.name = name; if (pendingImg) b.img = pendingImg; }
+  } else {
+    registry.push({ id: uid(), name, img: pendingImg });
+  }
+  saveRegistry(registry);
+  resetForm();
+  renderRegistry();
+}
+
+function editBlade(id) {
+  const b = getBlade(id); if (!b) return;
+  document.getElementById('editing-id').value = id;
+  document.getElementById('blade-name-input').value = b.name;
+  document.getElementById('form-title').textContent = '✏️ Editar Beyblade';
+  document.getElementById('cancel-edit-btn').style.display = 'inline-flex';
+  const area = document.getElementById('upload-area');
+  if (b.img) area.innerHTML = `<img src="${b.img}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:8px;">`;
+  else area.innerHTML = `<span style="font-size:24px">📷</span><span class="img-upload-label">Subir foto</span>`;
+  pendingImg = '';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function cancelEdit() { resetForm(); }
+
+function resetForm() {
+  document.getElementById('editing-id').value = '';
+  document.getElementById('blade-name-input').value = '';
+  document.getElementById('form-title').textContent = '➕ Añadir Beyblade';
+  document.getElementById('cancel-edit-btn').style.display = 'none';
+  document.getElementById('upload-area').innerHTML = `<span style="font-size:24px">📷</span><span class="img-upload-label">Subir foto</span>`;
+  document.getElementById('img-input').value = '';
+  pendingImg = '';
+}
+
+// ============================================================
+// ELIMINAR
+// ============================================================
+let deleteTargetId = null;
+
+function askDelete(id) {
+  deleteTargetId = id;
+  const b = getBlade(id);
+  document.getElementById('modal-del-name').textContent = b ? b.name : '';
+  document.getElementById('modal-delete').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-delete').classList.remove('open'); deleteTargetId = null; }
+function confirmDelete() {
+  if (!deleteTargetId) return;
+  registry = registry.filter(b => b.id !== deleteTargetId);
+  saveRegistry(registry);
+  closeModal();
+  renderRegistry();
+}
+
+// ============================================================
+// RENDER REGISTRO
+// ============================================================
+function renderRegistry() {
+  const g = document.getElementById('blades-grid');
+  if (registry.length === 0) {
+    g.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">🌀</div><p>Aún no tienes Beyblades registrados.<br>¡Añade el primero usando el formulario!</p></div>`;
+    return;
+  }
+  g.innerHTML = registry.map(b => `
+    <div class="blade-card">
+      <div class="blade-img-wrap">
+        ${b.img ? `<img class="blade-img" src="${b.img}" alt="${b.name}">` : `<div class="blade-img-ph">🌀</div>`}
+      </div>
+      <div class="blade-info">
+        <div class="blade-name">${b.name}</div>
+        <div class="blade-actions">
+          <button class="blade-action-btn" onclick="editBlade('${b.id}')">✏️ Editar</button>
+          <button class="blade-action-btn del" onclick="askDelete('${b.id}')">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ============================================================
+// RENDER SELECCIÓN
+// ============================================================
+let selected = new Set();
+
+function renderSelectionGrid() {
+  selected.clear();
+  updateSelCounter();
+  const g = document.getElementById('blades-selection-grid');
+  if (registry.length < 12) {
+    g.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">⚠️</div><p>Necesitas al menos <strong style="color:var(--gold)">12 Beyblades</strong> registrados.<br>Ahora tienes <strong style="color:var(--text)">${registry.length}</strong>. ¡Añade más en "Mis Beyblades"!</p></div>`;
+    return;
+  }
+  g.innerHTML = registry.map(b => `
+    <div class="blade-card" id="sel-${b.id}" onclick="toggleSelect('${b.id}')">
+      <div class="blade-img-wrap">
+        ${b.img ? `<img class="blade-img" src="${b.img}" alt="${b.name}">` : `<div class="blade-img-ph">🌀</div>`}
+        <div class="sel-check">✓</div>
+      </div>
+      <div class="blade-info">
+        <div class="blade-name">${b.name}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleSelect(id) {
+  if (selected.has(id)) {
+    selected.delete(id);
+    document.getElementById('sel-'+id).classList.remove('selected');
+  } else {
+    if (selected.size >= 12) return;
+    selected.add(id);
+    document.getElementById('sel-'+id).classList.add('selected');
+  }
+  updateSelCounter();
+}
+
+function updateSelCounter() {
+  const n = selected.size;
+  document.getElementById('sel-count').textContent = n;
+  document.getElementById('start-tournament-btn').disabled = n !== 12;
+}
+
+// ============================================================
+// TORNEO
+// ============================================================
+let r1Matches=[], r2Matches=[], fMatches=[], finalistas=[];
+
+function createMatch(id, a, b) { return {id, a, b, rounds:[null,null,null], winner:null}; }
+function winsOf(m, side) { return m.rounds.filter(r=>r===side).length; }
+
+function startTournament() {
+  if (selected.size !== 12) return;
+  const blades = shuffle([...selected].map(id => getBlade(id)));
+  r1Matches = pairUp(blades).map((p,i) => createMatch('r1_'+i, p[0], p[1]));
+  renderMatchList('matches-r1', r1Matches, 'r1');
+  showScreen('s-round1');
+}
+
+// ── Render lista de combates ──
+function renderMatchList(cid, matches, phase) {
+  document.getElementById(cid).innerHTML = matches.map((m,i) => renderMatchCard(m,i,phase)).join('');
+  updateProgress(matches, phase);
+}
+
+function renderMatchCard(m, idx, phase) {
+  const wA = winsOf(m,'a'), wB = winsOf(m,'b');
+  const decided = m.winner !== null;
+
+  const roundsHTML = [0,1,2].map(r => {
+    const played = m.rounds[r] !== null;
+    const skipped = decided && !played;
+    if (skipped) return `<div class="round-group"><span class="round-label">R${r+1}</span><div class="round-btns"><span style="font-size:10px;color:var(--muted);padding:5px 7px">—</span></div></div>`;
+    const aCls = played ? (m.rounds[r]==='a' ? 'win' : 'lost') : '';
+    const bCls = played ? (m.rounds[r]==='b' ? 'win' : 'lost') : '';
+    const dis = (decided || played) ? 'disabled' : '';
+    const sA = m.a.name.split(' ')[0], sB = m.b.name.split(' ')[0];
+    return `<div class="round-group"><span class="round-label">R${r+1}</span><div class="round-btns">
+      <button class="round-btn ${aCls}" ${dis} onclick="setRound('${m.id}','${phase}',${r},'a')">${sA}</button>
+      <button class="round-btn ${bCls}" ${dis} onclick="setRound('${m.id}','${phase}',${r},'b')">${sB}</button>
+    </div></div>`;
+  }).join('');
+
+  const winA = decided && m.winner.id === m.a.id;
+  const winB = decided && m.winner.id === m.b.id;
+  const resultLabel = decided ? `🏆 ¡${m.winner.name} gana!` : (wA>0||wB>0 ? `Parcial: ${wA}–${wB}` : 'En juego...');
+
+  return `<div class="match-card ${decided?'decided':''}" id="card_${m.id}">
+    <div class="match-num">Combate ${idx+1}</div>
+    <div class="fighters">
+      <div class="fighter ${winA?'winner':''}">
+        ${bladeImgHTML(m.a, 58, 9)}
+        <div class="fighter-name">${m.a.name}</div>
+        <div class="fighter-score">${wA}</div>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="fighter ${winB?'winner':''}">
+        ${bladeImgHTML(m.b, 58, 9)}
+        <div class="fighter-name">${m.b.name}</div>
+        <div class="fighter-score">${wB}</div>
+      </div>
+    </div>
+    <div class="rounds-row">${roundsHTML}</div>
+    <div class="match-result-label">${resultLabel}</div>
+  </div>`;
+}
+
+// ── Lógica ronda ──
+function getMatches(phase) { if(phase==='r1') return r1Matches; if(phase==='r2') return r2Matches; return fMatches; }
+
+function setRound(matchId, phase, roundIdx, winner) {
+  const matches = getMatches(phase);
+  const m = matches.find(x=>x.id===matchId);
+  if (!m || m.winner) return;
+  m.rounds[roundIdx] = winner;
+  const wA=winsOf(m,'a'), wB=winsOf(m,'b');
+  if (wA===2||wB===2) m.winner = wA===2 ? m.a : m.b;
+  const card = document.getElementById('card_'+matchId);
+  if (card) card.outerHTML = renderMatchCard(m, matches.indexOf(m), phase);
+  updateProgress(matches, phase);
+  if (phase==='final') updateFinalScoresLive();
+}
+
+// ── Progreso ──
+function updateProgress(matches, phase) {
+  const done=matches.filter(m=>m.winner).length, total=matches.length;
+  const pct=Math.round(done/total*100);
+  if (phase==='r1') {
+    document.getElementById('prog1').style.width=pct+'%';
+    document.getElementById('prog1-txt').textContent=done+' / '+total;
+    if (done===total) document.getElementById('btn-r1-wrap').style.display='block';
+  } else if (phase==='r2') {
+    document.getElementById('prog2').style.width=pct+'%';
+    document.getElementById('prog2-txt').textContent=done+' / '+total;
+    if (done===total) document.getElementById('btn-r2-wrap').style.display='block';
+  } else {
+    document.getElementById('prog3').style.width=pct+'%';
+    document.getElementById('prog3-txt').textContent=done+' / '+total;
+    if (done===total) document.getElementById('btn-final-wrap').style.display='block';
+  }
+}
+
+// ── Avanzar fases ──
+function advanceToSemis() {
+  r2Matches = pairUp(shuffle(r1Matches.map(m=>m.winner))).map((p,i)=>createMatch('r2_'+i,p[0],p[1]));
+  renderMatchList('matches-r2', r2Matches, 'r2');
+  showScreen('s-round2');
+}
+
+function advanceToFinal() {
+  finalistas = shuffle(r2Matches.map(m=>m.winner));
+  const [f1,f2,f3]=finalistas;
+  fMatches = [
+    createMatch('f0',f1,f2), createMatch('f1',f1,f3),
+    createMatch('f2',f2,f1), createMatch('f3',f2,f3),
+    createMatch('f4',f3,f1), createMatch('f5',f3,f2),
+  ];
+  updateFinalScoresLive();
+  const groups=[
+    {title:`Combates de ${f1.name}`,ids:['f0','f1']},
+    {title:`Combates de ${f2.name}`,ids:['f2','f3']},
+    {title:`Combates de ${f3.name}`,ids:['f4','f5']},
+  ];
+  document.getElementById('matches-final').innerHTML = groups.map(g=>
+    `<div class="section-sep">🌀 ${g.title}</div>`+
+    g.ids.map(id=>{ const m=fMatches.find(x=>x.id===id); return renderMatchCard(m,fMatches.indexOf(m),'final'); }).join('')
+  ).join('');
+  updateProgress(fMatches,'final');
+  showScreen('s-final');
+}
+
+function updateFinalScoresLive() {
+  const pts={};
+  finalistas.forEach(f=>pts[f.id]=0);
+  fMatches.forEach(m=>{ if(m.winner) pts[m.winner.id]=(pts[m.winner.id]||0)+1; });
+  document.getElementById('final-scores-live').innerHTML = finalistas.map(f=>`
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:9px 13px;text-align:center;min-width:110px">
+      ${bladeImgHTML(f,42,8)}
+      <div style="font-family:'Fredoka One',cursive;font-size:11px;color:var(--muted);margin-bottom:1px">${f.name}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:26px;color:var(--gold)">${pts[f.id]}</div>
+    </div>`).join('');
+}
+
+// ── Podio ──
+function showPodium() {
+  const pts={};
+  finalistas.forEach(f=>pts[f.id]=0);
+  fMatches.forEach(m=>{ if(m.winner) pts[m.winner.id]=(pts[m.winner.id]||0)+1; });
+  const sorted=[...finalistas].sort((a,b)=>pts[b.id]-pts[a.id]);
+  const medals=['🥇','🥈','🥉'], classes=['gold','silver','bronze'];
+  const labels=['1.º CAMPEÓN','2.º Subcampeón','3.º Tercer puesto'];
+  const champ=sorted[0];
+  document.getElementById('champion-name').textContent=champ.name;
+  document.getElementById('champion-pts').textContent=`${pts[champ.id]} punto${pts[champ.id]!==1?'s':''} en la gran final`;
+  document.getElementById('champion-img-wrap').innerHTML=bladeImgHTML(champ,88,13);
+  document.getElementById('podium').innerHTML=sorted.map((b,i)=>`
+    <div class="podium-item ${classes[i]}">
+      <div class="podium-medal">${medals[i]}</div>
+      ${bladeImgHTML(b,50,8)}
+      <div>
+        <div class="podium-name">${b.name}</div>
+        <div class="podium-pts">${labels[i]} · ${pts[b.id]} punto${pts[b.id]!==1?'s':''}</div>
+      </div>
+    </div>`).join('');
+  showScreen('s-podium');
+}
+
+function backToHome() {
+  r1Matches=[]; r2Matches=[]; fMatches=[]; finalistas=[];
+  showScreen('s-home');
+  switchTab('torneo');
+}
+
+// ── INIT ──
+renderRegistry();
+</script>
+
+<script type="module">
+import { CONFIG } from '../components/config.js';
+import { renderFooter } from '../components/components.js';
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-title">🌀 Torneo de Beyblades</div>
+      <div class="header-sub">${s.name} · ${s.class} · ${s.school} · ${s.location}</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:6px 14px;border-radius:9px;font-size:12px;font-weight:700;text-decoration:none;font-family:'Nunito',sans-serif;">← Volver</a>
+    </div>
+  </div>`;
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+</script>
+
+</body>
+</html>

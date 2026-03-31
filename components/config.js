@@ -129,6 +129,13 @@ export const CONFIG = {
         //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
+    {
+      id: 'beyblade', icon: '🌀', name: 'Torneos Beyblade',
+      color: '#a855f7', colorBg: 'rgba(168,85,247,0.12)', colorText: '#d8b4fe',
+      topics: [
+        { label: '🏆 Torneo Beyblade', url: 'apps/beyblades.html' },
+      ],
+    },
   ],
 
   // ── Próximos exámenes ── edita aquí para añadir o quitar
