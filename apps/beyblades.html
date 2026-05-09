@@ -52,6 +52,20 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
 .header-sub { font-size: 11px; color: rgba(255,255,255,0.45); font-weight: 700; }
 .header-right { margin-left: auto; }
 
+/* Logo del Header */
+.header-logo {
+  height: 45px; /* Ajusta según prefieras */
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 /* SCREEN */
 .screen { display: none; }
 .screen.active { display: block; animation: fadeIn .3s ease; }
@@ -178,17 +192,208 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
 .empty-state .es-icon { font-size: 48px; margin-bottom: 11px; opacity: 0.45; }
 .empty-state p { font-size: 13px; line-height: 1.6; }
 
+/* DESTRUCCIÓN */
+.destroy-row { display: flex; gap: 6px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
+.destroy-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px dashed rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  width: 100%;
+  margin-top: 10px;
+}
+.destroy-btn:hover:not(:disabled) { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.4); color: #f87171; }
+.destroy-btn.chosen {
+  background: #ef4444; /* Rojo sólido */
+  border-color: #ef4444;
+  color: white;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  border-style: solid;
+}
+.destroy-btn:hover {
+  transform: scale(1.02);
+}
+.destroy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.pts-badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 99px; font-size: 10px; font-weight: 800; margin-left: 3px; }
+.pts-badge.normal { background: rgba(34,197,94,0.15); color: #4ade80; }
+.pts-badge.destroy { background: rgba(239,68,68,0.18); color: #f87171; }
+
+/* LIGA */
+.liga-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.liga-table th { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+.liga-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+.liga-table tr:last-child td { border-bottom: none; }
+.liga-table tr:hover td { background: rgba(255,255,255,0.02); }
+.liga-pos { font-family: 'Fredoka One', cursive; font-size: 16px; color: var(--muted); width: 28px; }
+.liga-pos.top1 { color: var(--gold); }
+.liga-pos.top2 { color: var(--silver); }
+.liga-pos.top3 { color: var(--bronze); }
+.liga-blade-cell { display: flex; align-items: center; gap: 9px; }
+.liga-pts { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--gold); text-align: right; }
+.liga-stat { font-size: 12px; color: var(--muted); text-align: center; }
+.liga-stat.highlight { color: var(--text); font-weight: 800; }
+.liga-progress { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 3px; overflow: hidden; }
+.liga-progress-fill { height: 100%; background: linear-gradient(90deg,#a855f7,#3b82f6); border-radius: 2px; }
+.match-group-title { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--purple); padding: 6px 0 4px; border-bottom: 1px solid rgba(168,85,247,0.14); margin-bottom: 9px; margin-top: 16px; }
+.match-group-title:first-child { margin-top: 0; }
+
 /* MODAL */
 .modal-bg { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 20px; }
 .modal-bg.open { display: flex; }
 .modal-box { background: #1a1a32; border: 1px solid rgba(168,85,247,0.22); border-radius: 16px; padding: 22px; max-width: 360px; width: 100%; box-shadow: 0 24px 60px rgba(0,0,0,0.7); }
 .modal-title { font-family: 'Fredoka One', cursive; font-size: 17px; color: var(--gold); margin-bottom: 13px; }
 
+.rank-badge {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--gold);
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.fighter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.liga-table th {
+  padding: 10px 5px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.liga-stat {
+  font-weight: 700;
+  font-family: monospace;
+}
+
 @media (max-width: 600px) {
   .blades-grid { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
   .content { padding: 12px; }
   .form-row { flex-direction: column; }
 }
+
+/* ══ BATTLE ANIMATION OVERLAY ══ */
+.battle-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: #000; align-items: center; justify-content: center;
+}
+.battle-overlay.active { display: flex; }
+.battle-overlay video { width: 90%; height: 90%; object-fit: cover; }
+
+/* ══ COMBATE UNO A UNO ══ */
+.match-nav-header {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 11px; padding: 10px 15px; margin-bottom: 13px; gap: 10px;
+}
+.match-nav-counter { font-family: 'Fredoka One', cursive; font-size: 15px; color: var(--gold); white-space: nowrap; }
+.match-nav-dots { display: flex; gap: 5px; flex-wrap: wrap; flex: 1; justify-content: center; }
+.match-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid var(--border); transition: all .2s; }
+.match-dot.done { background: var(--green); border-color: var(--green); }
+.match-dot.current { background: var(--gold); border-color: var(--gold); transform: scale(1.3); }
+.btn-next-match {
+  background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #1a0a3a;
+  padding: 11px 22px; border-radius: 11px; font-size: 14px; font-weight: 900;
+  cursor: pointer; border: none; font-family: 'Nunito', sans-serif;
+  display: inline-flex; align-items: center; gap: 8px; transition: all .2s;
+  margin-top: 14px; width: 100%; justify-content: center;
+}
+.btn-next-match:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-next-match:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; filter: none !important; }
+
+/* ══ DUELO ÉPICO ══ */
+.duelo-mode-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.duelo-mode-card { background: var(--card2); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; transition: all .2s; }
+.duelo-mode-card:hover { border-color: rgba(168,85,247,0.4); transform: translateY(-1px); }
+.duelo-mode-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(251,191,36,0.15); background: rgba(251,191,36,0.04); }
+.duelo-mode-title { font-family: 'Fredoka One', cursive; font-size: 16px; color: var(--gold); margin-bottom: 3px; }
+.duelo-mode-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.duelo-mode-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+.duelo-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
+.db-purple { background: rgba(168,85,247,0.15); color: #c084fc; }
+.db-teal   { background: rgba(20,184,166,0.15); color: #5eead4; }
+.db-amber  { background: rgba(251,191,36,0.15); color: var(--gold); }
+.db-red    { background: rgba(239,68,68,0.15); color: #f87171; }
+
+/* Player header */
+.duelo-player-hdr { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius); margin-bottom: 14px; }
+.duelo-player-hdr.p1 { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.22); }
+.duelo-player-hdr.p2 { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.22); }
+.duelo-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; background: rgba(255,255,255,0.05); }
+
+/* Order list */
+.order-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+.order-item { display: flex; align-items: center; gap: 9px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 7px 11px; }
+.order-pos { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--gold); width: 26px; text-align: center; flex-shrink: 0; }
+.order-name { flex: 1; font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--text); }
+.order-btns { display: flex; flex-direction: column; gap: 3px; }
+.order-btn { padding: 2px 9px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); border-radius: 5px; background: rgba(255,255,255,0.04); color: var(--muted); font-family: 'Nunito', sans-serif; transition: all .15s; }
+.order-btn:hover:not(:disabled) { background: rgba(255,255,255,0.11); color: var(--text); }
+.order-btn:disabled { opacity: 0.22; cursor: not-allowed; }
+
+/* Flip screen */
+.flip-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 340px; text-align: center; padding: 30px 20px; }
+.flip-icon-big { font-size: 70px; margin-bottom: 14px; }
+.flip-title { font-family: 'Fredoka One', cursive; font-size: 26px; color: var(--gold); margin-bottom: 8px; }
+.flip-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+
+/* Roles */
+.role-item { display: flex; align-items: center; gap: 9px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 8px 11px; margin-bottom: 7px; }
+.role-toggle { display: flex; gap: 6px; margin-left: auto; flex-shrink: 0; }
+.role-btn { padding: 5px 10px; border-radius: 7px; border: 1px solid var(--border); font-size: 11px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all .15s; background: rgba(255,255,255,0.04); color: var(--muted); white-space: nowrap; }
+.role-btn.explorador.active { background: rgba(99,102,241,0.2); border-color: #818cf8; color: #a5b4fc; }
+.role-btn.campeon.active   { background: rgba(251,191,36,0.18); border-color: var(--gold); color: var(--gold); }
+
+/* Guerra pick */
+.guerra-phase-strip { display: flex; align-items: center; justify-content: space-between; background: var(--card2); border: 1px solid var(--border); border-radius: 11px; padding: 10px 15px; margin-bottom: 13px; }
+.guerra-phase-label { font-family: 'Fredoka One', cursive; font-size: 15px; }
+.guerra-phase-label.exp { color: #a5b4fc; }
+.guerra-phase-label.camp { color: var(--gold); }
+.guerra-phase-label.desemp { color: #f87171; }
+
+/* Score header */
+.duelo-score-bar { display: flex; align-items: center; justify-content: space-between; background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 18px; margin-bottom: 12px; }
+.duel-player-col { text-align: center; min-width: 80px; }
+.duel-pname { font-size: 11px; font-weight: 800; color: var(--muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+.duel-pts { font-family: 'Fredoka One', cursive; font-size: 38px; }
+.duel-pts.p1c { color: #60a5fa; }
+.duel-pts.p2c { color: #f87171; }
+
+/* Supervivencia queues */
+.superv-queues-wrap { display: flex; gap: 10px; margin-bottom: 12px; }
+.superv-queue-card { flex: 1; background: var(--card2); border: 1px solid var(--border); border-radius: 11px; padding: 10px 12px; }
+.superv-queue-title { font-size: 10px; font-weight: 800; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.superv-queue-blades { display: flex; flex-wrap: wrap; gap: 5px; }
+.queue-blade.active-blade { opacity: 1; }
+.queue-blade.waiting-blade { opacity: 0.4; }
+.queue-blade.elim-blade { opacity: 0.15; filter: grayscale(100%); }
+.queue-blade.legend-blade::after { content: '⭐'; position: absolute; top: -3px; right: -3px; font-size: 10px; }
+.queue-blade { position: relative; }
+
+/* Comodin */
+.comodin-row { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 9px; }
+.comodin-btn { background: rgba(168,85,247,0.1); border: 1px dashed rgba(168,85,247,0.38); color: #c084fc; padding: 7px 13px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 12px; transition: all .2s; font-family: 'Nunito', sans-serif; }
+.comodin-btn:hover { background: rgba(168,85,247,0.2); }
+.comodin-btn.used { background: rgba(100,116,139,0.08); border-color: var(--muted); color: var(--muted); border-style: solid; cursor: not-allowed; }
+
+/* Duelo podium */
+.duelo-winner-hero { text-align: center; padding: 26px 20px; }
+.duelo-winner-icon { font-size: 56px; margin-bottom: 10px; }
+.duelo-winner-name { font-family: 'Fredoka One', cursive; font-size: 32px; color: var(--gold); }
 </style>
 </head>
 <body>
@@ -201,21 +406,18 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
 <div id="app-header-root"></div>
 <div class="content">
 
-  <!-- ══════════════════════════════════════════
-       PANTALLA PRINCIPAL
-  ══════════════════════════════════════════ -->
   <div class="screen active" id="s-home">
     <div class="hero">
       <h1>🌀 Arena <span>Beyblade</span></h1>
-      <p>Registra tus Beyblades con foto, edítalos o elimínalos cuando quieras. Cuando tengas 12 o más, selecciona los que lucharán en el torneo.</p>
+      <p>Registra tus Beyblades con foto, edítalos o elimínalos cuando quieras. Cuando tengas 2 o más, selecciona un número par de participantes para el torneo.</p>
     </div>
 
     <div class="tabs">
       <div class="tab active" id="tab-registro" onclick="switchTab('registro')">⚙️ Mis Beyblades</div>
-      <div class="tab" id="tab-torneo" onclick="switchTab('torneo')">🏆 Nuevo torneo</div>
+      <div class="tab" id="tab-torneo" onclick="switchTab('torneo')">🏆 Torneo</div>
+      <div class="tab" id="tab-duelo" onclick="switchTab('duelo')">⚔️ Duelo Épico</div>
     </div>
 
-    <!-- ── TAB REGISTRO ── -->
     <div id="panel-registro">
       <div class="new-blade-form">
         <div style="font-family:'Fredoka One',cursive;font-size:15px;color:var(--gold);margin-bottom:11px" id="form-title">➕ Añadir Beyblade</div>
@@ -243,22 +445,70 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
       <div class="blades-grid" id="blades-grid"></div>
     </div>
 
-    <!-- ── TAB TORNEO ── -->
     <div id="panel-torneo" style="display:none">
-      <div class="selection-bar">
+      <div class="selection-bar" style="flex-wrap: wrap; gap: 15px;">
         <div>
-          <div class="sel-count">Seleccionados: <span id="sel-count">0</span> / 12</div>
-          <div class="sel-hint">Toca las cartas para marcar los 12 participantes</div>
+          <div class="sel-count">Seleccionados: <span id="sel-count">0</span></div>
+          <div class="sel-hint" id="sel-hint">Selecciona un número par de Beyblades (mín. 2)</div>
         </div>
+        
+        <div style="display:flex; flex-direction:column; gap:5px;">
+          <div class="form-label">Modo de Torneo</div>
+          <select id="tournament-mode" class="form-input" style="min-width: 160px; background: var(--card);" onchange="onModeChange()">
+            <option value="corto">🏆 Torneo (Mejor de 3)</option>
+            <option value="largo">🏆 Torneo (Mejor de 5)</option>
+            <option value="liga">⚽ Liga (Todos vs todos)</option>
+          </select>
+        </div>
+
         <button class="btn btn-gold" id="start-tournament-btn" disabled onclick="startTournament()">🌀 ¡Empezar!</button>
+      </div>
+      <div id="liga-info" style="display:none; background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.2); border-radius:11px; padding:11px 15px; margin-bottom:13px; font-size:13px; color:#c084fc;">
+        ⚽ <strong>Modo Liga:</strong> todos los Beyblades seleccionados se enfrentan entre sí una vez. Cada victoria vale <strong>3 puntos</strong>. Las destrucciones suman <strong>+1 pt extra</strong> al ganador. Se muestra la clasificación en tiempo real.
       </div>
       <div class="blades-grid" id="blades-selection-grid"></div>
     </div>
+
+    <!-- PANEL DUELO ÉPICO -->
+    <div id="panel-duelo" style="display:none">
+      <div class="duelo-mode-grid">
+        <div class="duelo-mode-card" id="dm-draft" onclick="selectDueloMode('draft')">
+          <div class="duelo-mode-title">⚔️ Modo Draft — Orden Secreto</div>
+          <div class="duelo-mode-desc">Cada jugador ordena sus 6 Beyblades en secreto. Se enfrentan en ese orden: el 1º contra el 1º, el 2º contra el 2º… La clave está en anticipar al rival. Incluye comodín para un cambio de último momento.</div>
+          <div class="duelo-mode-badges">
+            <span class="duelo-badge db-purple">Estrategia</span>
+            <span class="duelo-badge db-teal">6 combates</span>
+            <span class="duelo-badge db-amber">~45 min</span>
+          </div>
+        </div>
+        <div class="duelo-mode-card" id="dm-guerra" onclick="selectDueloMode('guerra')">
+          <div class="duelo-mode-title">🏴 Guerra de Clanes — Roles Secretos</div>
+          <div class="duelo-mode-desc">Cada jugador asigna 3 Beyblades como Campeones y 3 como Exploradores. Primero luchan los Exploradores (1 pt), luego los Campeones (2 pts). Gestiona cuándo usar tus mejores piezas.</div>
+          <div class="duelo-mode-badges">
+            <span class="duelo-badge db-purple">Roles secretos</span>
+            <span class="duelo-badge db-teal">6 batallas</span>
+            <span class="duelo-badge db-red">Desempate épico</span>
+          </div>
+        </div>
+        <div class="duelo-mode-card" id="dm-supervivencia" onclick="selectDueloMode('supervivencia')">
+          <div class="duelo-mode-title">💀 Supervivencia — El Último en Pie</div>
+          <div class="duelo-mode-desc">Los Beyblades van cayendo uno a uno. El ganador sigue en la arena y el derrotado es eliminado. El siguiente de la cola del perdedor entra a combatir. 3 victorias seguidas = ¡Legendario! (+3 pts).</div>
+          <div class="duelo-mode-badges">
+            <span class="duelo-badge db-red">Eliminación</span>
+            <span class="duelo-badge db-amber">Remontadas</span>
+            <span class="duelo-badge db-purple">Legendarios</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.18);border-radius:11px;padding:11px 15px;margin-bottom:14px;font-size:12px;color:#c084fc;" id="duelo-mode-hint">
+        👆 Selecciona un modo de juego para empezar
+      </div>
+      <button class="btn btn-gold" id="btn-start-duelo" disabled onclick="launchDuelo()" style="width:100%;justify-content:center;padding:12px">⚔️ ¡Al combate!</button>
+    </div>
+
   </div>
 
-  <!-- ══════════════════════════════════════════
-       FASE 1 — CLASIFICACIÓN
-  ══════════════════════════════════════════ -->
+  <!-- ══ FASE 1 ══ -->
   <div class="screen" id="s-round1">
     <div class="phase-badge">🌀 FASE 1 · Clasificación</div>
     <div class="prog-wrap">
@@ -266,8 +516,8 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
       <div class="prog-track"><div class="prog-fill" id="prog1" style="width:0%"></div></div>
     </div>
     <div class="card">
-      <div class="card-title">🥊 6 Combates · Mejor de 3 Rondas</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:13px">Gana quien consiga 2 victorias · Si gana las 2 primeras no se juega la 3ª</p>
+      <div class="card-title" id="r1-title">🥊 6 Combates</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:13px">Gana quien llegue al límite de victorias · Si se alcanza el límite no se juegan más rondas.</p>
       <div id="matches-r1"></div>
     </div>
     <div id="btn-r1-wrap" style="display:none">
@@ -276,9 +526,6 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       FASE 2 — SEMIFINALES
-  ══════════════════════════════════════════ -->
   <div class="screen" id="s-round2">
     <div class="phase-badge">⚔️ FASE 2 · Semifinales</div>
     <div class="prog-wrap">
@@ -296,9 +543,6 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       GRAN FINAL
-  ══════════════════════════════════════════ -->
   <div class="screen" id="s-final">
     <div class="phase-badge">🏆 GRAN FINAL · Round Robin</div>
     <div class="prog-wrap">
@@ -316,9 +560,6 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       PODIO
-  ══════════════════════════════════════════ -->
   <div class="screen" id="s-podium">
     <div class="card" style="text-align:center;padding:26px 20px;border-color:rgba(251,191,36,0.28);background:rgba(251,191,36,0.04)">
       <div style="font-size:52px;margin-bottom:8px">🏆</div>
@@ -336,11 +577,226 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
     </div>
   </div>
 
+  <!-- ══ LIGA ══ -->
+  <div class="screen" id="s-liga">
+    <div class="phase-badge">⚽ LIGA · Todos contra todos</div>
+    <div class="prog-wrap">
+      <div class="prog-info"><span>Combates completados</span><span id="liga-prog-txt">0 / 66</span></div>
+      <div class="prog-track"><div class="prog-fill" id="liga-prog" style="width:0%"></div></div>
+    </div>
+
+    <!-- Clasificación live -->
+    <div class="card" id="liga-tabla-card">
+      <div class="card-title">📊 Clasificación</div>
+      <table class="liga-table">
+        <thead>
+          <tr>
+            <th style="width:28px">Pos</th>
+            <th style="width:40px">Escudo</th>
+            <th>Beyblade</th>
+            <th style="text-align:center">PJ</th>
+            <th style="text-align:center">V</th>
+            <th style="text-align:center">💥</th>
+            <th style="text-align:center; color:var(--green)">PG</th>
+            <th style="text-align:center; color:var(--red)">PP</th>
+            <th style="text-align:right">PTS</th>
+          </tr>
+        </thead>
+        <tbody id="liga-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Combates -->
+    <div class="card">
+      <div class="card-title">🥊 Combates</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:13px">Victoria = <span style="color:#4ade80;font-weight:800">3 pts</span> · Destrucción = <span style="color:#f87171;font-weight:800">4 pts</span> al ganador</p>
+      <div id="liga-matches"></div>
+    </div>
+
+    <div id="btn-liga-wrap" style="display:none">
+      <div style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.22);border-radius:11px;padding:12px 16px;margin-bottom:12px;font-weight:700;color:#4ade80;font-size:13px">🏆 ¡Liga completada! Consulta la clasificación final.</div>
+      <button class="btn btn-gold" onclick="showLigaPodium()">🥇 Ver el Podio →</button>
+    </div>
+  </div>
+
+  <!-- ══ PODIO LIGA ══ -->
+  <div class="screen" id="s-liga-podium">
+    <div class="card" style="text-align:center;padding:26px 20px;border-color:rgba(251,191,36,0.28);background:rgba(251,191,36,0.04)">
+      <div style="font-size:52px;margin-bottom:8px">⚽</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);margin-bottom:10px">¡Campeón de la Liga!</div>
+      <div id="liga-champion-img" style="margin:0 auto 10px;width:88px;height:88px"></div>
+      <div id="liga-champion-name" style="font-family:'Fredoka One',cursive;font-size:34px;color:white;margin-bottom:5px"></div>
+      <div id="liga-champion-pts" style="font-size:13px;color:var(--muted)"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🥇 Clasificación final</div>
+      <table class="liga-table">
+        <thead>
+          <tr>
+            <th style="width:28px">Pos</th>
+            <th style="width:40px">Escudo</th>
+            <th>Beyblade</th>
+            <th style="text-align:center">PJ</th>
+            <th style="text-align:center">V</th>
+            <th style="text-align:center">💥</th>
+            <th style="text-align:center; color:var(--green)">PG</th>
+            <th style="text-align:center; color:var(--red)">PP</th>
+            <th style="text-align:right">PTS</th>
+          </tr>
+        </thead>
+        <tbody id="liga-final-tbody"></tbody>
+      </table>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="backToHome()">🔄 Nueva competición</button>
+    </div>
+  </div>
+
+  <!-- ══ DUELO: SETUP JUGADOR ══ -->
+  <div class="screen" id="s-duelo-setup">
+    <div id="duelo-player-hdr-wrap"></div>
+    <div class="card">
+      <div class="phase-badge" id="duelo-setup-phase-badge">⚔️ CONFIGURACIÓN</div>
+      <div class="card-title" id="duelo-setup-title">Configura al Jugador</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:14px" id="duelo-setup-subtitle"></p>
+
+      <!-- NOMBRE -->
+      <div class="form-col" style="margin-bottom:14px">
+        <div class="form-label">Nombre de guerra</div>
+        <input class="form-input" id="duelo-player-name-input" placeholder="Ej: El Maestro del Trompo..." maxlength="24" style="max-width:280px">
+      </div>
+
+      <!-- SELECCIÓN -->
+      <div id="duelo-select-section">
+        <div class="selection-bar" style="margin-bottom:12px">
+          <div>
+            <div class="sel-count">Seleccionados: <span id="duelo-sel-count">0</span> / 6</div>
+            <div class="sel-hint" id="duelo-sel-hint">Elige exactamente 6 Beyblades para tu equipo</div>
+          </div>
+        </div>
+        <div class="blades-grid" id="duelo-setup-grid"></div>
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn btn-gold" id="btn-duelo-to-order" disabled onclick="showDueloOrder()">✅ Confirmar selección →</button>
+          <button class="btn btn-ghost" onclick="cancelDuelo()">✖ Cancelar</button>
+        </div>
+      </div>
+
+      <!-- ORDENACIÓN -->
+      <div id="duelo-order-section" style="display:none">
+        <div style="background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.18);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#c084fc;">
+          🔒 Esta pantalla es <strong>secreta</strong>. El orden que establezcas aquí no lo verá el rival.
+        </div>
+        <div class="order-list" id="duelo-order-list"></div>
+        <div class="btn-row">
+          <button class="btn btn-gold" onclick="confirmDueloOrder()">✅ Confirmar orden →</button>
+          <button class="btn btn-ghost" onclick="showDueloSelectAgain()">← Cambiar selección</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DUELO: FLIP SCREEN ══ -->
+  <div class="screen" id="s-duelo-flip">
+    <div class="card">
+      <div class="flip-wrap">
+        <div class="flip-icon-big" id="flip-icon">🔄</div>
+        <div class="flip-title" id="flip-title">¡Listo!</div>
+        <div class="flip-sub" id="flip-sub">Pasa el dispositivo al siguiente jugador</div>
+        <button class="btn btn-gold" style="padding:13px 32px;font-size:15px" onclick="onFlipReady()">✅ ¡Estoy listo!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GUERRA: ASIGNAR ROLES ══ -->
+  <div class="screen" id="s-guerra-roles">
+    <div id="guerra-roles-hdr-wrap"></div>
+    <div class="card">
+      <div class="phase-badge">🏴 GUERRA DE CLANES · Asignación de Roles</div>
+      <div class="card-title">Asigna los roles en secreto</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:5px">Marca 3 Beyblades como <strong style="color:var(--gold)">Campeones</strong> y 3 como <strong style="color:#a5b4fc">Exploradores</strong>.</p>
+      <div style="background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.18);border-radius:10px;padding:9px 13px;margin-bottom:13px;font-size:12px;color:#c084fc;">
+        🔒 Esta pantalla es <strong>secreta</strong>. El rival no verá tus roles.
+      </div>
+      <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:10px" id="guerra-roles-count">Campeones: 0/3 · Exploradores: 0/3</div>
+      <div id="guerra-roles-list"></div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn btn-gold" id="btn-confirm-roles" disabled onclick="confirmGuerraRoles()">✅ Confirmar roles →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GUERRA: ELEGIR BEYBLADE ══ -->
+  <div class="screen" id="s-guerra-pick">
+    <div id="guerra-pick-hdr-wrap"></div>
+    <div class="card">
+      <div class="guerra-phase-strip">
+        <div class="guerra-phase-label" id="guerra-pick-phase-label">⚡ Fase Exploradores</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:800" id="guerra-pick-round">Batalla 1 de 3</div>
+      </div>
+      <div class="card-title">¿Qué Beyblade envías?</div>
+      <div style="background:rgba(168,85,247,0.07);border:1px solid rgba(168,85,247,0.18);border-radius:10px;padding:9px 13px;margin-bottom:13px;font-size:12px;color:#c084fc;">
+        🔒 Elige en secreto. El rival no verá tu selección hasta después.
+      </div>
+      <div class="blades-grid" id="guerra-pick-grid"></div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn btn-gold" id="btn-confirm-guerra-pick" disabled onclick="confirmGuerraPick()">✅ Elegido →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DUELO: BATALLA ══ -->
+  <div class="screen" id="s-duelo-battle">
+    <div class="duelo-score-bar">
+      <div class="duel-player-col">
+        <div class="duel-pname" id="duelo-pname-0">Jugador 1</div>
+        <div class="duel-pts p1c" id="duelo-score-0">0</div>
+      </div>
+      <div style="font-family:'Fredoka One',cursive;font-size:15px;color:var(--muted)">VS</div>
+      <div class="duel-player-col">
+        <div class="duel-pname" id="duelo-pname-1">Jugador 2</div>
+        <div class="duel-pts p2c" id="duelo-score-1">0</div>
+      </div>
+    </div>
+
+    <!-- Supervivencia queues -->
+    <div class="superv-queues-wrap" id="superv-queues-wrap" style="display:none">
+      <div class="superv-queue-card">
+        <div class="superv-queue-title" id="superv-qtitle-0">Cola J1</div>
+        <div class="superv-queue-blades" id="superv-queue-0"></div>
+      </div>
+      <div class="superv-queue-card">
+        <div class="superv-queue-title" id="superv-qtitle-1">Cola J2</div>
+        <div class="superv-queue-blades" id="superv-queue-1"></div>
+      </div>
+    </div>
+
+    <div id="duelo-battle-inner"></div>
+  </div>
+
+  <!-- ══ DUELO: PODIO ══ -->
+  <div class="screen" id="s-duelo-podium">
+    <div class="card" style="text-align:center;padding:26px 20px;border-color:rgba(251,191,36,0.28);background:rgba(251,191,36,0.04)">
+      <div class="duelo-winner-icon" id="duelo-podium-winner-icon">🏆</div>
+      <div class="duelo-winner-name" id="duelo-podium-winner-name"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Resultado final</div>
+      <div id="duelo-podium-breakdown"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚔️ Historial de batallas</div>
+      <div id="duelo-podium-history"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-gold" onclick="revanchaDuelo()">🔄 Revancha</button>
+      <button class="btn btn-ghost" onclick="backToDueloHome()">🏠 Menú principal</button>
+    </div>
+  </div>
+
 </div>
 <div id="app-footer-root"></div>
 </div>
 
-<!-- MODAL borrar -->
 <div class="modal-bg" id="modal-delete">
   <div class="modal-box">
     <div class="modal-title">🗑️ Eliminar Beyblade</div>
@@ -353,6 +809,8 @@ body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 1
 </div>
 
 <script>
+const BATTLE_VIDEO_SRC = "../assets/bbmartin.mp4";</script>
+<script>
 // ============================================================
 // STORAGE
 // ============================================================
@@ -361,6 +819,14 @@ function loadRegistry() { try { return JSON.parse(localStorage.getItem(STORAGE_K
 function saveRegistry(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
 
 let registry = loadRegistry();
+let tournamentMode = 'corto';
+let tieBreakActive = false;
+
+// Precargar las voces del sistema
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
 
 // ============================================================
 // UTILS
@@ -379,7 +845,6 @@ function showScreen(id) {
 }
 function getBlade(id) { return registry.find(b=>b.id===id); }
 
-// Genera HTML de imagen o placeholder para un blade
 function bladeImgHTML(blade, size, radius) {
   if (blade && blade.img)
     return `<img src="${blade.img}" style="width:${size}px;height:${size}px;border-radius:${radius}px;object-fit:cover;display:block;margin:0 auto 5px;" alt="${blade.name}">`;
@@ -392,8 +857,10 @@ function bladeImgHTML(blade, size, radius) {
 function switchTab(tab) {
   document.getElementById('tab-registro').classList.toggle('active', tab==='registro');
   document.getElementById('tab-torneo').classList.toggle('active', tab==='torneo');
+  document.getElementById('tab-duelo').classList.toggle('active', tab==='duelo');
   document.getElementById('panel-registro').style.display = tab==='registro' ? 'block' : 'none';
   document.getElementById('panel-torneo').style.display   = tab==='torneo'   ? 'block' : 'none';
+  document.getElementById('panel-duelo').style.display    = tab==='duelo'    ? 'block' : 'none';
   if (tab==='torneo') renderSelectionGrid();
 }
 
@@ -414,7 +881,7 @@ function onImageSelected(e) {
 }
 
 // ============================================================
-// GUARDAR / EDITAR
+// GUARDAR / EDITAR / BORRAR
 // ============================================================
 function saveBlade() {
   const name = document.getElementById('blade-name-input').value.trim();
@@ -430,7 +897,107 @@ function saveBlade() {
   saveRegistry(registry);
   resetForm();
   renderRegistry();
+  renderSelectionGrid();
 }
+// ============================================================
+// VIDEO & ONE-AT-A-TIME SYSTEM
+
+function playBattleAnimation(cb) {
+  const overlay = document.getElementById('battle-overlay');
+  const video = document.getElementById('battle-video');
+
+  if (!video.src) video.src = BATTLE_VIDEO_SRC;
+
+  video.currentTime = 0;
+  overlay.classList.add('active');
+  video.play().catch(()=>{});
+
+  let done = false;
+
+  function finish() {
+    if (done) return;
+    done = true;
+
+    // 🔊 VOZ FINAL
+    const speech = new SpeechSynthesisUtterance("Beyblade Martín");
+
+    speech.lang = "es-ES";
+    speech.rate = 0.85;
+    speech.pitch = 0.8;
+
+    // intentar voz masculina
+    const voces = speechSynthesis.getVoices();
+    const voz = voces.find(v =>
+      v.name.toLowerCase().includes("male") ||
+      v.name.toLowerCase().includes("es")
+    );
+
+    if (voz) speech.voice = voz;
+
+    speechSynthesis.speak(speech);
+
+    // cerrar animación después de la voz
+    setTimeout(() => {
+      overlay.classList.remove('active');
+      video.pause();
+      if (cb) cb();
+    }, 1200); // pequeño delay para que se escuche bien
+  }
+
+  video.onended = finish;
+
+  setTimeout(finish, 9000);
+}
+
+// State for current one-at-a-time match
+let _curCid='', _curPhase='', _curIdx=0, _curTotal=0;
+
+function showMatchOne(cid, matches, phase, idx) {
+  _curCid = cid; _curPhase = phase; _curIdx = idx; _curTotal = matches.length;
+  const container = document.getElementById(cid);
+  const m = matches[idx];
+  const total = matches.length;
+  const isLast = idx >= total - 1;
+  const phaseLabel = phase==='r1'?'Fase 1':phase==='r2'?'Semifinales':'Gran Final';
+
+  const dots = matches.map((_,i) => {
+    const cls = i < idx ? 'done' : i === idx ? 'current' : '';
+    return '<div class="match-dot ' + cls + '"></div>';
+  }).join('');
+
+  const btnLabel = isLast ? '🏆 Ver resultados →' : '⚡ Siguiente combate →';
+  const btnDis = m.winner ? '' : 'disabled';
+
+  container.innerHTML =
+    '<div class="match-nav-header">' +
+      '<div class="match-nav-counter">⚔️ ' + (idx+1) + ' / ' + total + '</div>' +
+      '<div class="match-nav-dots">' + dots + '</div>' +
+      '<div style="font-size:11px;color:var(--muted);font-weight:800;white-space:nowrap">' + phaseLabel + '</div>' +
+    '</div>' +
+    '<div id="single-match-wrap">' + renderMatchCard(m, idx, phase) + '</div>' +
+    '<button class="btn-next-match" id="btn-next-match" ' + btnDis + ' onclick="onNextMatch()">' +
+      btnLabel +
+    '</button>';
+}
+
+function onNextMatch() {
+  const cid = _curCid, phase = _curPhase, idx = _curIdx, total = _curTotal;
+  const isLast = idx >= total - 1;
+  const matches = getMatches(phase);
+  if (isLast) {
+    if (phase === 'r1') advanceToSemis();
+    else if (phase === 'r2') advanceToFinal();
+    else showPodium();
+    return;
+  }
+  playBattleAnimation(() => {
+    showMatchOne(cid, matches, phase, idx + 1);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+
+renderRegistry();
+
 
 function editBlade(id) {
   const b = getBlade(id); if (!b) return;
@@ -457,11 +1024,7 @@ function resetForm() {
   pendingImg = '';
 }
 
-// ============================================================
-// ELIMINAR
-// ============================================================
 let deleteTargetId = null;
-
 function askDelete(id) {
   deleteTargetId = id;
   const b = getBlade(id);
@@ -478,7 +1041,7 @@ function confirmDelete() {
 }
 
 // ============================================================
-// RENDER REGISTRO
+// RENDERS
 // ============================================================
 function renderRegistry() {
   const g = document.getElementById('blades-grid');
@@ -501,17 +1064,13 @@ function renderRegistry() {
     </div>`).join('');
 }
 
-// ============================================================
-// RENDER SELECCIÓN
-// ============================================================
 let selected = new Set();
-
 function renderSelectionGrid() {
   selected.clear();
   updateSelCounter();
   const g = document.getElementById('blades-selection-grid');
-  if (registry.length < 12) {
-    g.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">⚠️</div><p>Necesitas al menos <strong style="color:var(--gold)">12 Beyblades</strong> registrados.<br>Ahora tienes <strong style="color:var(--text)">${registry.length}</strong>. ¡Añade más en "Mis Beyblades"!</p></div>`;
+  if (registry.length < 2) {
+    g.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">⚠️</div><p>Necesitas al menos <strong style="color:var(--gold)">2 Beyblades</strong> registrados.<br>Ahora tienes <strong style="color:var(--text)">${registry.length}</strong>. ¡Añade más en "Mis Beyblades"!</p></div>`;
     return;
   }
   g.innerHTML = registry.map(b => `
@@ -531,7 +1090,6 @@ function toggleSelect(id) {
     selected.delete(id);
     document.getElementById('sel-'+id).classList.remove('selected');
   } else {
-    if (selected.size >= 12) return;
     selected.add(id);
     document.getElementById('sel-'+id).classList.add('selected');
   }
@@ -541,36 +1099,67 @@ function toggleSelect(id) {
 function updateSelCounter() {
   const n = selected.size;
   document.getElementById('sel-count').textContent = n;
-  document.getElementById('start-tournament-btn').disabled = n !== 12;
+  const isValid = n >= 2 && n % 2 === 0;
+  document.getElementById('start-tournament-btn').disabled = !isValid;
+  const hint = document.getElementById('sel-hint');
+  if (n === 0) {
+    hint.textContent = 'Selecciona un número par de Beyblades (mín. 2)';
+    hint.style.color = '';
+  } else if (n % 2 !== 0) {
+    hint.textContent = `${n} seleccionado${n>1?'s':''} — necesitas un número par`;
+    hint.style.color = 'var(--red)';
+  } else {
+    hint.textContent = `✅ ${n} seleccionados — ¡listo para empezar!`;
+    hint.style.color = 'var(--green)';
+  }
 }
 
 // ============================================================
-// TORNEO
+// TORNEO - LÓGICA Y DESEMPATES
 // ============================================================
 let r1Matches=[], r2Matches=[], fMatches=[], finalistas=[];
+let ligaMatches=[], ligaBlades=[];
 
-function createMatch(id, a, b) { return {id, a, b, rounds:[null,null,null], winner:null}; }
+function createMatch(id, a, b) { return {id, a, b, rounds:[null,null,null,null,null], winner:null}; }
 function winsOf(m, side) { return m.rounds.filter(r=>r===side).length; }
 
 function startTournament() {
-  if (selected.size !== 12) return;
+  const n = selected.size;
+  if (n < 2 || n % 2 !== 0) return;
+  tournamentMode = document.getElementById('tournament-mode').value;
+  tieBreakActive = false;
+  
   const blades = shuffle([...selected].map(id => getBlade(id)));
+
+  if (tournamentMode === 'liga') {
+    startLiga(blades);
+    return;
+  }
+
+  // Fase 1: todos los pares
   r1Matches = pairUp(blades).map((p,i) => createMatch('r1_'+i, p[0], p[1]));
+  const numPairs = r1Matches.length;
+  
+  document.getElementById('r1-title').textContent = `🥊 ${numPairs} Combate${numPairs>1?'s':''} · Modo ${tournamentMode === 'largo' ? 'Largo (Mejor de 5)' : 'Corto (Mejor de 3)'}`;
+  document.getElementById('prog1-txt').textContent = `0 / ${numPairs}`;
+  document.getElementById('btn-r1-wrap').querySelector('div').textContent = `✅ ¡Fase 1 completada! ${numPairs} Beyblades pasan a la siguiente fase.`;
   renderMatchList('matches-r1', r1Matches, 'r1');
   showScreen('s-round1');
 }
 
-// ── Render lista de combates ──
 function renderMatchList(cid, matches, phase) {
-  document.getElementById(cid).innerHTML = matches.map((m,i) => renderMatchCard(m,i,phase)).join('');
   updateProgress(matches, phase);
+  showMatchOne(cid, matches, phase, 0);
 }
 
 function renderMatchCard(m, idx, phase) {
   const wA = winsOf(m,'a'), wB = winsOf(m,'b');
   const decided = m.winner !== null;
+  
+  const targetWins = (phase === 'r1' && tournamentMode === 'largo') ? 3 : 2;
+  const maxRoundsPossible = (targetWins === 3) ? 5 : 3;
 
-  const roundsHTML = [0,1,2].map(r => {
+  const roundsHTML = Array.from({length: maxRoundsPossible}, (_, r) => {
     const played = m.rounds[r] !== null;
     const skipped = decided && !played;
     if (skipped) return `<div class="round-group"><span class="round-label">R${r+1}</span><div class="round-btns"><span style="font-size:10px;color:var(--muted);padding:5px 7px">—</span></div></div>`;
@@ -586,11 +1175,26 @@ function renderMatchCard(m, idx, phase) {
 
   const winA = decided && m.winner.id === m.a.id;
   const winB = decided && m.winner.id === m.b.id;
-  const resultLabel = decided ? `🏆 ¡${m.winner.name} gana!` : (wA>0||wB>0 ? `Parcial: ${wA}–${wB}` : 'En juego...');
+  const resultLabel = decided ? `🏆 ¡${m.winner.name} gana!${m.destruction?' 💥':''}` : (wA>0||wB>0 ? `Parcial: ${wA}–${wB}` : 'En juego...');
+
+  // Botón destrucción solo en la gran final y si hay ganador
+  const destroyHTML = (phase === 'final' && decided) ? `
+    <div class="destroy-row">
+      <button class="destroy-btn ${m.destruction?'chosen':''}" onclick="if(!${m.destruction}) finishExplosivo(); toggleDestruction('${m.id}')">
+        💥 ${m.destruction ? 'Con destrucción (1.5 pts) ✓' : 'Marcar destrucción (+0.5 pts)'}
+      </button>
+    </div>` : '';
 
   return `<div class="match-card ${decided?'decided':''}" id="card_${m.id}">
-    <div class="match-num">Combate ${idx+1}</div>
+    <div class="match-num">${tieBreakActive ? 'DESEMPATE' : 'Combate ' + (idx+1)}</div>
+    <div style="text-align:center;margin-bottom:8px;">
+        <button class="round-btn"
+          onclick="iniciarCombate('${m.a.name}','${m.b.name}')">
+          ▶ Iniciar combate
+        </button>
+      </div>
     <div class="fighters">
+      
       <div class="fighter ${winA?'winner':''}">
         ${bladeImgHTML(m.a, 58, 9)}
         <div class="fighter-name">${m.a.name}</div>
@@ -605,11 +1209,38 @@ function renderMatchCard(m, idx, phase) {
     </div>
     <div class="rounds-row">${roundsHTML}</div>
     <div class="match-result-label">${resultLabel}</div>
+    ${destroyHTML}
   </div>`;
 }
 
-// ── Lógica ronda ──
-function getMatches(phase) { if(phase==='r1') return r1Matches; if(phase==='r2') return r2Matches; return fMatches; }
+function iniciarCombate(nombreA, nombreB) {
+  const texto = `${nombreA} versus ${nombreB}`;
+  narrarCombate(texto);
+}
+
+function finishExplosivo() {
+  window.speechSynthesis.cancel(); // Detiene la narración anterior si seguía hablando
+  
+  const audio = new Audio('https://www.soundjay.com/explosion/sounds/explosion-01.mp3');
+  audio.volume = 0.4;
+  audio.play().catch(() => {});
+
+  const speech = new SpeechSynthesisUtterance("¡Finish explosivo!");
+  const voces = window.speechSynthesis.getVoices();
+  const vozEspanola = voces.find(v => v.lang.startsWith('es'));
+  
+  if (vozEspanola) speech.voice = vozEspanola;
+  speech.lang = 'es-ES';
+  speech.rate = 1.2; 
+  
+  window.speechSynthesis.speak(speech);
+}
+
+function getMatches(phase) { 
+  if(phase==='r1') return r1Matches; 
+  if(phase==='r2') return r2Matches; 
+  return fMatches; 
+}
 
 function setRound(matchId, phase, roundIdx, winner) {
   const matches = getMatches(phase);
@@ -617,14 +1248,18 @@ function setRound(matchId, phase, roundIdx, winner) {
   if (!m || m.winner) return;
   m.rounds[roundIdx] = winner;
   const wA=winsOf(m,'a'), wB=winsOf(m,'b');
-  if (wA===2||wB===2) m.winner = wA===2 ? m.a : m.b;
+  const targetWins = (phase === 'r1' && tournamentMode === 'largo') ? 3 : 2;
+  if (wA===targetWins || wB===targetWins) m.winner = wA===targetWins ? m.a : m.b;
   const card = document.getElementById('card_'+matchId);
   if (card) card.outerHTML = renderMatchCard(m, matches.indexOf(m), phase);
   updateProgress(matches, phase);
   if (phase==='final') updateFinalScoresLive();
+  if (m.winner) {
+    const btn = document.getElementById('btn-next-match');
+    if (btn) btn.disabled = false;
+  }
 }
 
-// ── Progreso ──
 function updateProgress(matches, phase) {
   const done=matches.filter(m=>m.winner).length, total=matches.length;
   const pct=Math.round(done/total*100);
@@ -643,39 +1278,64 @@ function updateProgress(matches, phase) {
   }
 }
 
-// ── Avanzar fases ──
 function advanceToSemis() {
-  r2Matches = pairUp(shuffle(r1Matches.map(m=>m.winner))).map((p,i)=>createMatch('r2_'+i,p[0],p[1]));
+  const winners = shuffle(r1Matches.map(m=>m.winner));
+  
+  if (winners.length <= 3) {
+    finalistas = winners;
+    if (winners.length === 2) {
+      fMatches = [createMatch('f0', winners[0], winners[1])];
+    } else {
+      const [f1,f2,f3] = finalistas;
+      fMatches = [
+        createMatch('f0',f1,f2), createMatch('f1',f1,f3),
+        createMatch('f2',f2,f1), createMatch('f3',f2,f3),
+        createMatch('f4',f3,f1), createMatch('f5',f3,f2),
+      ];
+    }
+    updateFinalScoresLive();
+    updateProgress(fMatches,'final');
+    showMatchOne('matches-final', fMatches, 'final', 0);
+    showScreen('s-final');
+    return;
+  }
+
+  r2Matches = pairUp(winners).map((p,i)=>createMatch('r2_'+i,p[0],p[1]));
+  const numR2 = r2Matches.length;
+  document.getElementById('prog2-txt').textContent = `0 / ${numR2}`;
   renderMatchList('matches-r2', r2Matches, 'r2');
   showScreen('s-round2');
 }
 
 function advanceToFinal() {
   finalistas = shuffle(r2Matches.map(m=>m.winner));
-  const [f1,f2,f3]=finalistas;
-  fMatches = [
-    createMatch('f0',f1,f2), createMatch('f1',f1,f3),
-    createMatch('f2',f2,f1), createMatch('f3',f2,f3),
-    createMatch('f4',f3,f1), createMatch('f5',f3,f2),
-  ];
+  const n = finalistas.length;
+
+  if (n === 2) {
+    fMatches = [createMatch('f0', finalistas[0], finalistas[1])];
+  } else if (n === 3) {
+    const [f1,f2,f3]=finalistas;
+    fMatches = [
+      createMatch('f0',f1,f2), createMatch('f1',f1,f3),
+      createMatch('f2',f2,f1), createMatch('f3',f2,f3),
+      createMatch('f4',f3,f1), createMatch('f5',f3,f2),
+    ];
+  } else {
+    fMatches = pairUp(finalistas).map((p,i) => createMatch('f'+i, p[0], p[1]));
+  }
+
   updateFinalScoresLive();
-  const groups=[
-    {title:`Combates de ${f1.name}`,ids:['f0','f1']},
-    {title:`Combates de ${f2.name}`,ids:['f2','f3']},
-    {title:`Combates de ${f3.name}`,ids:['f4','f5']},
-  ];
-  document.getElementById('matches-final').innerHTML = groups.map(g=>
-    `<div class="section-sep">🌀 ${g.title}</div>`+
-    g.ids.map(id=>{ const m=fMatches.find(x=>x.id===id); return renderMatchCard(m,fMatches.indexOf(m),'final'); }).join('')
-  ).join('');
   updateProgress(fMatches,'final');
+  showMatchOne('matches-final', fMatches, 'final', 0);
   showScreen('s-final');
 }
 
 function updateFinalScoresLive() {
   const pts={};
   finalistas.forEach(f=>pts[f.id]=0);
-  fMatches.forEach(m=>{ if(m.winner) pts[m.winner.id]=(pts[m.winner.id]||0)+1; });
+  fMatches.forEach(m=>{
+    if(m.winner) pts[m.winner.id]=(pts[m.winner.id]||0)+(m.destruction?1.5:1);
+  });
   document.getElementById('final-scores-live').innerHTML = finalistas.map(f=>`
     <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:9px 13px;text-align:center;min-width:110px">
       ${bladeImgHTML(f,42,8)}
@@ -684,25 +1344,66 @@ function updateFinalScoresLive() {
     </div>`).join('');
 }
 
-// ── Podio ──
 function showPodium() {
   const pts={};
   finalistas.forEach(f=>pts[f.id]=0);
-  fMatches.forEach(m=>{ if(m.winner) pts[m.winner.id]=(pts[m.winner.id]||0)+1; });
-  const sorted=[...finalistas].sort((a,b)=>pts[b.id]-pts[a.id]);
+  fMatches.forEach(m=>{
+    if(m.winner) pts[m.winner.id]=(pts[m.winner.id]||0)+(m.destruction?1.5:1);
+  });
+  
+  if (finalistas.length <= 2) {
+    // Direct final: no tie-break needed (match already determines winner)
+    renderFinalPodium(pts);
+    return;
+  }
+
+  const maxPts = Math.max(...Object.values(pts));
+  const leaders = finalistas.filter(f => pts[f.id] === maxPts);
+
+  if (leaders.length > 1) {
+    handleTie(leaders);
+    return;
+  }
+  renderFinalPodium(pts);
+}
+
+function handleTie(leaders) {
+  tieBreakActive = true;
+  alert("¡HAY UN EMPATE! Se jugarán combates extra para desempatar.");
+  if (leaders.length === 2) {
+    fMatches = [createMatch('tie_2', leaders[0], leaders[1])];
+  } else {
+    const [f1, f2, f3] = shuffle(leaders);
+    fMatches = [
+      createMatch('tf0', f1, f2), createMatch('tf1', f1, f3),
+      createMatch('tf2', f2, f1), createMatch('tf3', f2, f3),
+      createMatch('tf4', f3, f1), createMatch('tf5', f3, f2),
+    ];
+  }
+  document.getElementById('btn-final-wrap').style.display = 'none';
+  const container = document.getElementById('matches-final');
+  container.innerHTML = `<div class="section-sep" style="color:var(--red)">🔥 DESEMPATE FINAL 🔥</div>`;
+  container.innerHTML += fMatches.map((m, i) => renderMatchCard(m, i, 'final')).join('');
+  updateFinalScoresLive();
+  updateProgress(fMatches, 'final');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderFinalPodium(pts) {
+  const sorted = [...finalistas].sort((a,b) => pts[b.id] - pts[a.id]);
   const medals=['🥇','🥈','🥉'], classes=['gold','silver','bronze'];
   const labels=['1.º CAMPEÓN','2.º Subcampeón','3.º Tercer puesto'];
   const champ=sorted[0];
   document.getElementById('champion-name').textContent=champ.name;
-  document.getElementById('champion-pts').textContent=`${pts[champ.id]} punto${pts[champ.id]!==1?'s':''} en la gran final`;
+  document.getElementById('champion-pts').textContent=`${pts[champ.id]} puntos en la gran final`;
   document.getElementById('champion-img-wrap').innerHTML=bladeImgHTML(champ,88,13);
   document.getElementById('podium').innerHTML=sorted.map((b,i)=>`
-    <div class="podium-item ${classes[i]}">
-      <div class="podium-medal">${medals[i]}</div>
+    <div class="podium-item ${classes[i]||''}">
+      <div class="podium-medal">${medals[i]||i+1}</div>
       ${bladeImgHTML(b,50,8)}
       <div>
         <div class="podium-name">${b.name}</div>
-        <div class="podium-pts">${labels[i]} · ${pts[b.id]} punto${pts[b.id]!==1?'s':''}</div>
+        <div class="podium-pts">${labels[i]||`${i+1}.º puesto`} · ${pts[b.id]} punto${pts[b.id]!==1?'s':''}</div>
       </div>
     </div>`).join('');
   showScreen('s-podium');
@@ -710,11 +1411,1069 @@ function showPodium() {
 
 function backToHome() {
   r1Matches=[]; r2Matches=[]; fMatches=[]; finalistas=[];
+  ligaMatches=[]; ligaBlades=[];
   showScreen('s-home');
   switchTab('torneo');
 }
 
-// ── INIT ──
+// ============================================================
+// DESTRUCCIÓN EN FINAL — marcar/desmarcar por combate
+// ============================================================
+function toggleDestruction(matchId) {
+  const m = fMatches.find(x=>x.id===matchId);
+  if (!m || !m.winner) return;
+  m.destruction = !m.destruction;
+  const card = document.getElementById('card_'+matchId);
+  if (card) card.outerHTML = renderMatchCard(m, fMatches.indexOf(m), 'final');
+  updateFinalScoresLive();
+}
+
+// ============================================================
+// MODO LIGA
+// ============================================================
+function onModeChange() {
+  const mode = document.getElementById('tournament-mode').value;
+  document.getElementById('liga-info').style.display = mode === 'liga' ? 'block' : 'none';
+}
+
+let ligaCurrentIdx = 0;
+
+function startLiga(blades) {
+  ligaBlades = blades;
+  ligaMatches = [];
+
+  let n = blades.length;
+  let teams = [...blades];
+  let numDays = n - 1; // El número total de jornadas siempre es N-1
+  let half = n / 2;
+  let tournamentDays = [];
+
+  // 1. Algoritmo Round-Robin (Método del Círculo)
+  // Garantiza matemáticamente que todos juegan contra todos sin repetir rival.
+  for (let day = 0; day < numDays; day++) {
+    let dayMatches = [];
+    
+    // Emparejar los extremos hacia el centro
+    for (let i = 0; i < half; i++) {
+      let team1 = teams[i];
+      let team2 = teams[n - 1 - i];
+
+      // Alternar posición "local/visitante" aleatoriamente
+      if (Math.random() > 0.5) {
+        dayMatches.push({ a: team1, b: team2 });
+      } else {
+        dayMatches.push({ a: team2, b: team1 });
+      }
+    }
+    tournamentDays.push(dayMatches);
+    
+    // 2. Rotación: El primer elemento (índice 0) se queda fijo.
+    // El último elemento de la lista pasa a ser el segundo (índice 1).
+    teams.splice(1, 0, teams.pop());
+  }
+
+  // 3. Aleatorización
+  // Mezclamos el orden en el que se juegan las jornadas
+  tournamentDays = shuffle(tournamentDays);
+  
+  // Mezclamos el orden de los combates dentro de cada jornada (Corrección aplicada)
+  tournamentDays = tournamentDays.map(day => shuffle(day));
+
+  // 4. Aplanamos la estructura para el sistema de combate uno a uno
+  let globalIdx = 0;
+  tournamentDays.forEach((day, dIdx) => {
+    day.forEach(m => {
+       ligaMatches.push({
+         id: 'lg_' + globalIdx,
+         jornada: dIdx + 1, // Asignamos el número de jornada final
+         a: m.a,
+         b: m.b,
+         rounds: [null, null, null],
+         winner: null,
+         destruction: false
+       });
+       globalIdx++;
+    });
+  });
+
+  ligaCurrentIdx = 0;
+  renderLigaStandings();
+  updateLigaProgress();
+  showLigaMatchOne(0);
+  showScreen('s-liga');
+}
+
+function renderLiga() {
+  renderLigaStandings();
+  updateLigaProgress();
+}
+
+function renderLigaStandings() {
+  const stats = {};
+  // Inicializamos estadísticas para cada beyblade
+  ligaBlades.forEach(b => {
+    stats[b.id] = { 
+      blade: b, wins: 0, played: 0, pts: 0, 
+      destructions: 0, pg: 0, pp: 0 
+    };
+  });
+
+  // Calculamos resultados de los combates finalizados
+  ligaMatches.forEach(m => {
+    if (!m.winner) return;
+    stats[m.a.id].played++;
+    stats[m.b.id].played++;
+    
+    const roundsA = m.rounds.filter(r => r === 'a').length;
+    const roundsB = m.rounds.filter(r => r === 'b').length;
+    
+    stats[m.a.id].pg += roundsA;
+    stats[m.a.id].pp += roundsB;
+    stats[m.b.id].pg += roundsB;
+    stats[m.b.id].pp += roundsA;
+
+    if (m.winner.id === m.a.id) {
+      stats[m.a.id].wins++;
+      stats[m.a.id].pts += (m.destruction ? 4 : 3); // 3 pts victoria + 1 pt por explosión
+    } else {
+      stats[m.b.id].wins++;
+      stats[m.b.id].pts += (m.destruction ? 4 : 3);
+    }
+    if (m.destruction) {
+      stats[m.winner.id].destructions++;
+    }
+  });
+
+  // NUEVO SISTEMA DE DESEMPATE PROFESIONAL
+  const sorted = Object.values(stats).sort((statsA, statsB) => {
+    // 1. Mayor cantidad de Puntos (PTS)
+    if (statsB.pts !== statsA.pts) return statsB.pts - statsA.pts;
+    
+    // 2. Mayor cantidad de Parciales Ganados (PG)
+    if (statsB.pg !== statsA.pg) return statsB.pg - statsA.pg;
+    
+    // 3. Menor cantidad de Parciales Perdidos (PP)
+    if (statsA.pp !== statsB.pp) return statsA.pp - statsB.pp;
+    
+    // 4. Enfrentamiento Directo (Head-to-Head)
+    const headToHeadMatch = ligaMatches.find(m => 
+      (m.a.id === statsA.blade.id && m.b.id === statsB.blade.id) || 
+      (m.a.id === statsB.blade.id && m.b.id === statsA.blade.id)
+    );
+    
+    if (headToHeadMatch && headToHeadMatch.winner) {
+      return headToHeadMatch.winner.id === statsA.blade.id ? -1 : 1;
+    }
+    
+    return 0; // Empate total
+  });
+
+  const tbody = document.getElementById('liga-tbody');
+  if (tbody) {
+    tbody.innerHTML = sorted.map((s, idx) => `
+      <tr>
+        <td style="text-align:center; font-weight:800; color:var(--gold)">${idx + 1}</td>
+        <td>${bladeImgHTML(s.blade, 32, 4)}</td>
+        <td style="text-align:left; font-weight:600;">${s.blade.name}</td>
+        <td style="text-align:center">${s.played}</td>
+        <td style="text-align:center">${s.wins}</td>
+        <td style="text-align:center">${s.destructions}</td>
+        <td style="text-align:center; color:var(--green)">${s.pg}</td>
+        <td style="text-align:center; color:var(--red)">${s.pp}</td>
+        <td style="text-align:right; font-weight:800; color:var(--gold)">
+          ${s.pts % 1 === 0 ? s.pts : s.pts.toFixed(1)}
+        </td>
+      </tr>
+    `).join('');
+  }
+  
+  return stats; 
+}
+
+function buildLigaStats() {
+  const stats = {};
+  ligaBlades.forEach(b => { stats[b.id] = {pts:0, wins:0, played:0, destructions:0}; });
+  ligaMatches.forEach(m => {
+    if (!m.winner) return;
+    const ws = stats[m.winner.id];
+    const pts = m.destruction ? 3.5 : 3;
+    ws.pts += pts;
+    ws.wins++;
+    ws.played++;
+    if (m.destruction) ws.destructions++;
+    // loser
+    const loser = m.winner.id === m.a.id ? m.b : m.a;
+    stats[loser.id].played++;
+  });
+  return stats;
+}
+
+function renderLigaMatches() {
+  // replaced by showLigaMatchOne
+}
+
+function showLigaMatchOne(idx) {
+  ligaCurrentIdx = idx;
+  const currentStats = renderLigaStandings(); // Obtenemos stats actuales
+  
+  const total = ligaMatches.length;
+  const m = ligaMatches[idx];
+  const container = document.getElementById('liga-matches');
+  const isLast = idx >= total - 1;
+
+  // Calculamos posición y puntos de los contendientes actuales
+  const sorted = Object.values(currentStats).sort((a, b) => b.pts - a.pts);
+  const posA = sorted.findIndex(s => s.blade.id === m.a.id) + 1;
+  const posB = sorted.findIndex(s => s.blade.id === m.b.id) + 1;
+  const ptsA = currentStats[m.a.id].pts;
+  const ptsB = currentStats[m.b.id].pts;
+
+  const dots = ligaMatches.map((match, i) => {
+    const cls = i < idx ? 'done' : i === idx ? 'current' : '';
+    const margin = (i > 0 && ligaMatches[i].jornada !== ligaMatches[i-1].jornada) ? 'margin-left: 7px;' : '';
+    return `<div class="match-dot ${cls}" style="${margin}"></div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="match-nav-header">
+      <div class="match-nav-counter">⚽ JORNADA ${m.jornada}</div>
+      <div class="match-nav-dots">${dots}</div>
+    </div>
+    <div id="single-liga-wrap">
+      ${renderLigaMatchCard(m, idx, posA, ptsA, posB, ptsB)}
+    </div>
+    <button class="btn-next-match" id="btn-next-liga" ${m.winner?'':'disabled'} onclick="onNextLigaMatch()">
+      ${isLast ? '🏆 Ver clasificación final' : '⚡ Siguiente combate'}
+    </button>
+  `;
+}
+
+function onNextLigaMatch() {
+  const idx = ligaCurrentIdx;
+  const isLast = idx >= ligaMatches.length - 1;
+  if (isLast) { showLigaPodium(); return; }
+  playBattleAnimation(() => {
+    showLigaMatchOne(idx + 1);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+
+function renderLigaMatchCard(m, idx, posA, ptsA, posB, ptsB) {
+  const wA = m.rounds.filter(r=>r==='a').length;
+  const wB = m.rounds.filter(r=>r==='b').length;
+  const decided = m.winner !== null;
+
+  const roundsHTML = [0,1,2].map(r => {
+    const played = m.rounds[r] !== null;
+    const sA = m.a.name.split(' ')[0], sB = m.b.name.split(' ')[0];
+    return `<div class="round-group">
+      <span class="round-label">R${r+1}</span>
+      <div class="round-btns">
+        <button class="round-btn ${played && m.rounds[r]==='a'?'win':''}" ${decided?'disabled':''} onclick="setLigaRound('${m.id}',${r},'a')">${sA}</button>
+        <button class="round-btn ${played && m.rounds[r]==='b'?'win':''}" ${decided?'disabled':''} onclick="setLigaRound('${m.id}',${r},'b')">${sB}</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="match-card ${decided?'decided':''}">
+    <div class="match-num">📅 Jornada ${m.jornada}</div>
+    <div style="text-align:center;margin-bottom:8px;">
+      <button class="round-btn" onclick="narrarCombate('${m.a.name}', '${m.b.name}')">▶ Iniciar</button>
+    </div>
+    <div class="fighters">
+      <div class="fighter">
+        <div class="rank-badge">#${posA} • ${ptsA} pts</div>
+        ${bladeImgHTML(m.a,64,8)}
+        <div class="fighter-name">${m.a.name}</div>
+        <div class="fighter-score">${wA}</div>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="fighter">
+        <div class="rank-badge">#${posB} • ${ptsB} pts</div>
+        ${bladeImgHTML(m.b,64,8)}
+        <div class="fighter-name">${m.b.name}</div>
+        <div class="fighter-score">${wB}</div>
+      </div>
+    </div>
+    <div class="rounds-row">${roundsHTML}</div>
+    <div class="match-result-label">${decided ? '¡Combate Finalizado!' : 'En juego...'}</div>
+    ${decided ? `<button class="destroy-btn ${m.destruction?'chosen':''}" onclick="if(!${m.destruction}) finishExplosivo(); toggleLigaDestruction('${m.id}')">💥 Finish Explosivo (+1)</button>` : ''}
+  </div>`;
+}
+
+function setLigaRound(matchId, roundIdx, winnerSide) {
+  const m = ligaMatches.find(x => x.id === matchId);
+  if (!m || m.winner) return; // Si ya hay ganador, no hacer nada
+
+  // Registrar el ganador de la ronda
+  m.rounds[roundIdx] = winnerSide;
+
+  // Calcular marcador actual
+  const wA = m.rounds.filter(r => r === 'a').length;
+  const wB = m.rounds.filter(r => r === 'b').length;
+
+  // Verificar si alguien ha ganado el combate (Mejor de 3)
+  if (wA >= 2) {
+    m.winner = m.a;
+  } else if (wB >= 2) {
+    m.winner = m.b;
+  }
+
+  // Refrescar la clasificación interna y la tabla visual
+  renderLigaStandings();
+  
+  // Actualizar la vista del combate actual para que se bloqueen los botones
+  // y aparezca el botón de "Siguiente"
+  showLigaMatchOne(ligaCurrentIdx);
+  
+  // Actualizar la barra de progreso general de la liga
+  updateLigaProgress();
+}
+
+function toggleLigaDestruction(matchId) {
+  const m = ligaMatches.find(x => x.id === matchId);
+  if (!m || !m.winner) return; // Solo se puede marcar si hay un ganador
+
+  // Cambiamos el estado (si era true pasa a false, y viceversa)
+  m.destruction = !m.destruction;
+
+  // Actualizamos la clasificación (para que sume/reste el 0.5 en la tabla)
+  renderLigaStandings();
+  
+  // Refrescamos la tarjeta del combate para que el botón cambie de color
+  showLigaMatchOne(ligaCurrentIdx);
+}
+
+function updateLigaProgress() {
+  const total = ligaMatches.length;
+  const completed = ligaMatches.filter(m => m.winner !== null).length;
+  const pct = (completed / total) * 100;
+  
+  if(document.getElementById('liga-prog')) {
+    document.getElementById('liga-prog').style.width = pct + '%';
+  }
+  if(document.getElementById('liga-prog-txt')) {
+    document.getElementById('liga-prog-txt').innerText = `${completed} / ${total}`;
+  }
+}
+
+function showLigaPodium() {
+  // Aprovechamos la función anterior que ya tiene las matemáticas y el desempate perfectos
+  const stats = renderLigaStandings(); 
+  
+  const sorted = Object.values(stats).sort((statsA, statsB) => {
+    if (statsB.pts !== statsA.pts) return statsB.pts - statsA.pts;
+    if (statsB.pg !== statsA.pg) return statsB.pg - statsA.pg;
+    if (statsA.pp !== statsB.pp) return statsA.pp - statsB.pp;
+    const match = ligaMatches.find(m => 
+      (m.a.id === statsA.blade.id && m.b.id === statsB.blade.id) || 
+      (m.a.id === statsB.blade.id && m.b.id === statsA.blade.id)
+    );
+    if (match && match.winner) return match.winner.id === statsA.blade.id ? -1 : 1;
+    return 0;
+  }).map(s => s.blade); // Extraemos solo los blades ya ordenados
+
+  const champ = sorted[0];
+  const champStats = stats[champ.id];
+  
+  document.getElementById('liga-champion-name').textContent = champ.name;
+  document.getElementById('liga-champion-pts').textContent = `${champStats.pts} puntos · ${champStats.wins} victorias`;
+  document.getElementById('liga-champion-img').innerHTML = bladeImgHTML(champ, 88, 13);
+
+  const posClasses = ['top1','top2','top3'];
+  const medals = ['🥇','🥈','🥉'];
+  
+  document.getElementById('liga-final-tbody').innerHTML = sorted.map((b, i) => {
+    const s = stats[b.id];
+    const posClass = i < 3 ? posClasses[i] : '';
+    return `<tr>
+      <td><div class="liga-pos ${posClass}">${medals[i]||i+1}</div></td>
+      <td>
+        <div class="liga-blade-cell">
+          ${bladeImgHTML(b,30,6)}
+          <div style="font-weight:800;font-size:13px">${b.name}</div>
+        </div>
+      </td>
+      <td class="liga-stat">${s.played}</td>
+      <td class="liga-stat ${s.wins>0?'highlight':''}">${s.wins}</td>
+      <td class="liga-stat" style="color:#f87171">${s.destructions}</td>
+      <td class="liga-stat" style="color:var(--green)">${s.pg}</td>
+      <td class="liga-stat" style="color:var(--red)">${s.pp}</td>
+      <td class="liga-pts">${s.pts % 1 === 0 ? s.pts : s.pts.toFixed(1)}</td>
+    </tr>`;
+  }).join('');
+  
+  showScreen('s-liga-podium');
+}
+
+function narrarCombate(player1, player2) {
+  if (!('speechSynthesis' in window)) return;
+
+  // Cancelar cualquier locución previa para que no se amontone el sonido
+  window.speechSynthesis.cancel();
+
+  // Limpiamos los nombres por si vienen con caracteres extraños
+  const p1 = player1.trim();
+  const p2 = player2.trim();
+  
+  const texto = `¡${p1}!... versus... ¡${p2}!`;
+  const speech = new SpeechSynthesisUtterance(texto);
+  
+  // Forzar idioma español
+  const voces = window.speechSynthesis.getVoices();
+  const vozEspanola = voces.find(v => v.lang.startsWith('es')) || voces[0];
+  
+  if (vozEspanola) {
+    speech.voice = vozEspanola;
+  }
+  
+  speech.lang = 'es-ES';
+  speech.rate = 0.9; // Velocidad un poco más lenta para que se entienda bien
+  speech.pitch = 0.8;
+
+  window.speechSynthesis.speak(speech);
+}
+
+// ============================================================
+// DUELO ÉPICO — Variables de estado
+// ============================================================
+let dueloMode = null;
+let selectedDueloMode = null;
+let dueloPlayers = [
+  { name:'', blades:[], roles:{}, comodinUsed:false },
+  { name:'', blades:[], roles:{}, comodinUsed:false }
+];
+let dueloSetupPlayer = 0;
+let dueloTempSelected = new Set();
+let dueloTempOrdered  = [];
+let dueloBattles = [];
+let dueloBattleIdx = 0;
+let dueloScores = [0,0];
+
+let guerraPhase = 'explorador';
+let guerraRoundIdx = 0;
+let guerraPickPlayer = 0;
+let guerraTempPick = [null,null];
+let guerraExpUsed = [[],[]];
+let guerraCampUsed = [[],[]];
+
+let supervState = { queues:[[],[]], arena:[null,null], consecutive:[0,0], legendaries:[[],[]], destructions:[0,0] };
+
+// ============================================================
+// HOME — selección de modo
+// ============================================================
+function selectDueloMode(mode) {
+  selectedDueloMode = mode;
+  document.querySelectorAll('.duelo-mode-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('dm-'+mode).classList.add('selected');
+  const hints = {
+    draft:         '⚔️ Modo Draft — cada jugador elegirá y ordenará sus 6 Beyblades en secreto',
+    guerra:        '🏴 Guerra de Clanes — seleccionaréis y asignaréis roles (Campeón / Explorador) en secreto',
+    supervivencia: '💀 Supervivencia — ordenaréis vuestra cola de combate y el último en pie gana'
+  };
+  document.getElementById('duelo-mode-hint').textContent = hints[mode];
+  document.getElementById('btn-start-duelo').disabled = false;
+}
+
+function launchDuelo() {
+  if (!selectedDueloMode) return;
+  dueloMode = selectedDueloMode;
+  dueloPlayers = [
+    {name:'',blades:[],roles:{},comodinUsed:false},
+    {name:'',blades:[],roles:{},comodinUsed:false}
+  ];
+  dueloBattles=[]; dueloScores=[0,0];
+  guerraExpUsed=[[],[]]; guerraCampUsed=[[],[]];
+  showDueloSetup(0);
+}
+
+// ============================================================
+// SETUP — selección y ordenación
+// ============================================================
+function showDueloSetup(playerIdx) {
+  dueloSetupPlayer = playerIdx;
+  dueloTempSelected = new Set();
+  dueloTempOrdered  = [];
+  const colorCls = playerIdx===0?'p1':'p2';
+  const icon     = playerIdx===0?'🔵':'🔴';
+  const modeLabel = {draft:'⚔️ DRAFT · Selección',guerra:'🏴 GUERRA · Selección',supervivencia:'💀 SUPERVIVENCIA · Selección'}[dueloMode];
+  document.getElementById('duelo-player-hdr-wrap').innerHTML =
+    `<div class="duelo-player-hdr ${colorCls}" style="margin-bottom:0">
+       <div class="duelo-avatar">${icon}</div>
+       <div><div style="font-family:'Fredoka One',cursive;font-size:17px">Jugador ${playerIdx+1}</div>
+       <div style="font-size:11px;color:var(--muted);font-weight:700">${modeLabel}</div></div>
+     </div>`;
+  document.getElementById('duelo-setup-title').textContent = playerIdx===0?'Configura al Jugador 1':'Configura al Jugador 2';
+  const subtitles = {draft:'Elige exactamente 6 Beyblades para tu equipo',guerra:'Elige exactamente 6 Beyblades (luego asignarás sus roles)',supervivencia:'Elige exactamente 6 Beyblades para tu cola de combate'};
+  document.getElementById('duelo-setup-subtitle').textContent = subtitles[dueloMode];
+  document.getElementById('duelo-player-name-input').value = dueloPlayers[playerIdx].name||'';
+  document.getElementById('duelo-sel-count').textContent = '0';
+  document.getElementById('duelo-sel-hint').textContent = 'Elige exactamente 6 Beyblades';
+  document.getElementById('duelo-sel-hint').style.color='';
+  document.getElementById('btn-duelo-to-order').disabled = true;
+  document.getElementById('duelo-select-section').style.display='block';
+  document.getElementById('duelo-order-section').style.display='none';
+  renderDueloSetupGrid();
+  showScreen('s-duelo-setup');
+}
+
+function renderDueloSetupGrid() {
+  const g = document.getElementById('duelo-setup-grid');
+  if (!registry.length) {
+    g.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">⚠️</div><p>No hay Beyblades registrados.</p></div>`;
+    return;
+  }
+  g.innerHTML = registry.map(b=>`
+    <div class="blade-card ${dueloTempSelected.has(b.id)?'selected':''}" id="dsel-${b.id}" onclick="toggleDueloSelect('${b.id}')">
+      <div class="blade-img-wrap">
+        ${b.img?`<img class="blade-img" src="${b.img}" alt="${b.name}">`:`<div class="blade-img-ph">🌀</div>`}
+        <div class="sel-check">✓</div>
+      </div>
+      <div class="blade-info"><div class="blade-name">${b.name}</div></div>
+    </div>`).join('');
+}
+
+function toggleDueloSelect(id) {
+  if (dueloTempSelected.has(id)) {
+    dueloTempSelected.delete(id);
+    document.getElementById('dsel-'+id).classList.remove('selected');
+  } else {
+    if (dueloTempSelected.size>=6) { flashHint('duelo-sel-hint','Máximo 6 Beyblades'); return; }
+    dueloTempSelected.add(id);
+    document.getElementById('dsel-'+id).classList.add('selected');
+  }
+  const n = dueloTempSelected.size;
+  document.getElementById('duelo-sel-count').textContent = n;
+  const hint = document.getElementById('duelo-sel-hint');
+  if (n<6) { hint.textContent=`${n} seleccionados — faltan ${6-n}`; hint.style.color=''; }
+  else { hint.textContent='✅ ¡6 seleccionados — listo!'; hint.style.color='var(--green)'; }
+  document.getElementById('btn-duelo-to-order').disabled = n!==6;
+}
+
+function flashHint(id, msg) {
+  const el = document.getElementById(id); if (!el) return;
+  const orig = el.textContent;
+  el.textContent = '⚠️ '+msg; el.style.color='var(--red)';
+  setTimeout(()=>{ el.textContent=orig; el.style.color=''; }, 1500);
+}
+
+function showDueloSelectAgain() {
+  document.getElementById('duelo-select-section').style.display='block';
+  document.getElementById('duelo-order-section').style.display='none';
+}
+
+function showDueloOrder() {
+  const name = document.getElementById('duelo-player-name-input').value.trim();
+  if (!name) { alert('Escribe un nombre de guerra'); return; }
+  dueloPlayers[dueloSetupPlayer].name = name;
+  dueloTempOrdered = [...dueloTempSelected].map(id=>registry.find(b=>b.id===id));
+  const subtitles = {
+    draft:'🔒 Ordena tus Beyblades en secreto. El rival no sabrá el orden.',
+    guerra:'🔒 Ordena tus Beyblades (después asignarás sus roles en secreto).',
+    supervivencia:'🔒 Ordena tu cola: el 1º entra primero a la arena.'
+  };
+  document.getElementById('duelo-setup-subtitle').textContent = subtitles[dueloMode];
+  document.getElementById('duelo-select-section').style.display='none';
+  document.getElementById('duelo-order-section').style.display='block';
+  renderDueloOrderList();
+}
+
+function renderDueloOrderList() {
+  document.getElementById('duelo-order-list').innerHTML = dueloTempOrdered.map((b,i)=>`
+    <div class="order-item">
+      <div class="order-pos">${i+1}</div>
+      ${bladeImgHTML(b,36,5)}
+      <div class="order-name">${b.name}</div>
+      <div class="order-btns">
+        <button class="order-btn" ${i===0?'disabled':''} onclick="moveOrderItem(${i},-1)">▲</button>
+        <button class="order-btn" ${i===dueloTempOrdered.length-1?'disabled':''} onclick="moveOrderItem(${i},1)">▼</button>
+      </div>
+    </div>`).join('');
+}
+
+function moveOrderItem(idx, dir) {
+  const ni=idx+dir; if (ni<0||ni>=dueloTempOrdered.length) return;
+  [dueloTempOrdered[idx],dueloTempOrdered[ni]]=[dueloTempOrdered[ni],dueloTempOrdered[idx]];
+  renderDueloOrderList();
+}
+
+function confirmDueloOrder() {
+  dueloPlayers[dueloSetupPlayer].blades=[...dueloTempOrdered];
+  if (dueloSetupPlayer===0) {
+    showFlipScreen(`✅ ¡${dueloPlayers[0].name} listo!`,'Pasa el dispositivo al Jugador 2 sin mostrar la pantalla 👉','🔴',()=>showDueloSetup(1));
+  } else {
+    if (dueloMode==='draft')         startDraft();
+    else if (dueloMode==='guerra')   showGuerraRoles(0);
+    else                             startSupervivencia();
+  }
+}
+
+function cancelDuelo() { showScreen('s-home'); switchTab('duelo'); }
+
+// ============================================================
+// FLIP SCREEN
+// ============================================================
+let flipCallback = null;
+function showFlipScreen(title, sub, icon, cb) {
+  flipCallback = cb;
+  document.getElementById('flip-icon').textContent  = icon;
+  document.getElementById('flip-title').textContent = title;
+  document.getElementById('flip-sub').textContent   = sub;
+  showScreen('s-duelo-flip');
+}
+function onFlipReady() { if (flipCallback) { const f=flipCallback; flipCallback=null; f(); } }
+
+// ============================================================
+// GUERRA — Asignación de roles
+// ============================================================
+function showGuerraRoles(playerIdx) {
+  dueloSetupPlayer = playerIdx;
+  const p = dueloPlayers[playerIdx];
+  p.roles={};
+  const icon = playerIdx===0?'🔵':'🔴';
+  document.getElementById('guerra-roles-hdr-wrap').innerHTML =
+    `<div class="duelo-player-hdr ${playerIdx===0?'p1':'p2'}" style="margin-bottom:14px">
+       <div class="duelo-avatar">${icon}</div>
+       <div><div style="font-family:'Fredoka One',cursive;font-size:17px">${p.name}</div>
+       <div style="font-size:11px;color:var(--muted);font-weight:700">🏴 Asignación secreta de roles</div></div>
+     </div>`;
+  document.getElementById('guerra-roles-count').textContent='Campeones: 0/3 · Exploradores: 0/3';
+  document.getElementById('btn-confirm-roles').disabled=true;
+  document.getElementById('guerra-roles-list').innerHTML = p.blades.map(b=>`
+    <div class="role-item" id="ri-${b.id}">
+      ${bladeImgHTML(b,34,5)}
+      <div style="flex:1;font-family:'Fredoka One',cursive;font-size:13px">${b.name}</div>
+      <div class="role-toggle">
+        <button class="role-btn explorador" id="rbx-${b.id}" onclick="setRole('${b.id}','explorador')">⚡ Explorador</button>
+        <button class="role-btn campeon"    id="rbc-${b.id}" onclick="setRole('${b.id}','campeon')">👑 Campeón</button>
+      </div>
+    </div>`).join('');
+  showScreen('s-guerra-roles');
+}
+
+function setRole(bladeId, role) {
+  const p = dueloPlayers[dueloSetupPlayer];
+  const countOf = r => Object.values(p.roles).filter(v=>v===r).length;
+  if (countOf(role)>=3 && p.roles[bladeId]!==role) { flashHint('guerra-roles-count','Solo puedes tener 3 '+role+'s'); return; }
+  p.roles[bladeId]=role;
+  document.getElementById('rbx-'+bladeId).classList.toggle('active', role==='explorador');
+  document.getElementById('rbc-'+bladeId).classList.toggle('active', role==='campeon');
+  const camps=countOf('campeon'), exps=countOf('explorador');
+  document.getElementById('guerra-roles-count').textContent=`Campeones: ${camps}/3 · Exploradores: ${exps}/3`;
+  document.getElementById('btn-confirm-roles').disabled = !(camps===3&&exps===3);
+}
+
+function confirmGuerraRoles() {
+  if (dueloSetupPlayer===0) {
+    showFlipScreen(`✅ ¡${dueloPlayers[0].name} ha asignado sus roles!`,'Pasa el dispositivo al Jugador 2 👉','🔴',()=>showGuerraRoles(1));
+  } else {
+    startGuerra();
+  }
+}
+
+// ============================================================
+// MODO DRAFT
+// ============================================================
+function startDraft() {
+  dueloScores=[0,0]; dueloBattles=[];
+  for (let i=0;i<6;i++) {
+    dueloBattles.push({ id:'d_'+i, pos:i+1, label:`Batalla ${i+1} de 6`,
+      a:dueloPlayers[0].blades[i], b:dueloPlayers[1].blades[i],
+      rounds:[null,null,null], winner:null, destruction:false, phase:'draft', pts:1, maxRounds:3 });
+  }
+  dueloBattleIdx=0;
+  showFlipScreen('⚔️ ¡Comienza el Duelo!','Los 6 emparejamientos ya están decididos. Jugador 1, ¡prepara la arena!','⚔️',()=>showDueloBattle(0));
+}
+
+// ============================================================
+// MODO GUERRA DE CLANES
+// ============================================================
+function startGuerra() {
+  guerraPhase='explorador'; guerraRoundIdx=0;
+  guerraExpUsed=[[],[]]; guerraCampUsed=[[],[]];
+  guerraTempPick=[null,null]; dueloBattles=[]; dueloScores=[0,0];
+  showFlipScreen('🏴 ¡Comienza la Guerra!','Fase de Exploradores — Jugador 1, elige tu primer Explorador.','⚡',()=>showGuerraPick(0));
+}
+
+function showGuerraPick(playerIdx) {
+  guerraPickPlayer=playerIdx;
+  const p=dueloPlayers[playerIdx];
+  const usedList = guerraPhase==='explorador' ? guerraExpUsed[playerIdx] : guerraCampUsed[playerIdx];
+  const roleFilter = guerraPhase==='explorador' ? 'explorador' : 'campeon';
+  const icon=playerIdx===0?'🔵':'🔴';
+  const phaseLabel=guerraPhase==='explorador'?'⚡ Fase Exploradores':guerraPhase==='campeon'?'👑 Fase Campeones':'🔥 Desempate Final';
+  const phaseClass=guerraPhase==='explorador'?'exp':guerraPhase==='campeon'?'camp':'desemp';
+  document.getElementById('guerra-pick-hdr-wrap').innerHTML =
+    `<div class="duelo-player-hdr ${playerIdx===0?'p1':'p2'}" style="margin-bottom:14px">
+       <div class="duelo-avatar">${icon}</div>
+       <div><div style="font-family:'Fredoka One',cursive;font-size:17px">${p.name}</div>
+       <div style="font-size:11px;color:var(--muted);font-weight:700">Elige tu Beyblade en secreto</div></div>
+     </div>`;
+  document.getElementById('guerra-pick-phase-label').className='guerra-phase-label '+phaseClass;
+  document.getElementById('guerra-pick-phase-label').textContent=phaseLabel;
+  document.getElementById('guerra-pick-round').textContent = guerraPhase==='desempate'?'¡Cualquier Beyblade · Mejor de 5!':`Batalla ${guerraRoundIdx+1} de 3`;
+  const bladesList = guerraPhase==='desempate' ? p.blades : p.blades.filter(b=>p.roles[b.id]===roleFilter&&!usedList.includes(b.id));
+  const grid=document.getElementById('guerra-pick-grid');
+  grid.innerHTML = bladesList.map(b=>`
+    <div class="blade-card" id="gp-${b.id}" onclick="selectGuerraBlade('${b.id}')">
+      <div class="blade-img-wrap">
+        ${b.img?`<img class="blade-img" src="${b.img}" alt="${b.name}">`:`<div class="blade-img-ph">🌀</div>`}
+        <div class="sel-check">✓</div>
+      </div>
+      <div class="blade-info"><div class="blade-name">${b.name}</div></div>
+    </div>`).join('');
+  guerraTempPick[playerIdx]=null;
+  document.getElementById('btn-confirm-guerra-pick').disabled=true;
+  showScreen('s-guerra-pick');
+}
+
+function selectGuerraBlade(bladeId) {
+  document.querySelectorAll('#guerra-pick-grid .blade-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('gp-'+bladeId).classList.add('selected');
+  guerraTempPick[guerraPickPlayer]=registry.find(b=>b.id===bladeId);
+  document.getElementById('btn-confirm-guerra-pick').disabled=false;
+}
+
+function confirmGuerraPick() {
+  if (guerraPickPlayer===0) {
+    showFlipScreen(`✅ ¡${dueloPlayers[0].name} ha elegido!`,'Pasa el dispositivo al Jugador 2 sin mostrar la pantalla 👉','🔴',()=>showGuerraPick(1));
+  } else {
+    const pts=guerraPhase==='explorador'?1:guerraPhase==='campeon'?2:3;
+    const maxR=guerraPhase==='desempate'?5:3;
+    const phaseLabel=guerraPhase==='explorador'?`⚡ Exploradores · Batalla ${guerraRoundIdx+1}`:
+                     guerraPhase==='campeon'?`👑 Campeones · Batalla ${guerraRoundIdx+1}`:'🔥 Desempate Final';
+    const battle={id:'g_'+guerraPhase+'_'+guerraRoundIdx, pos:guerraRoundIdx+1, label:phaseLabel,
+      a:guerraTempPick[0], b:guerraTempPick[1], rounds:Array(maxR).fill(null),
+      winner:null, destruction:false, phase:guerraPhase, pts, maxRounds:maxR};
+    dueloBattles.push(battle);
+    if (guerraPhase==='explorador') { guerraExpUsed[0].push(guerraTempPick[0].id); guerraExpUsed[1].push(guerraTempPick[1].id); }
+    if (guerraPhase==='campeon')    { guerraCampUsed[0].push(guerraTempPick[0].id); guerraCampUsed[1].push(guerraTempPick[1].id); }
+    guerraTempPick=[null,null];
+    showDueloBattle(dueloBattles.length-1);
+  }
+}
+
+function afterGuerraBattle() {
+  guerraRoundIdx++;
+  if (guerraRoundIdx>=3) {
+    if (guerraPhase==='explorador') {
+      guerraPhase='campeon'; guerraRoundIdx=0;
+      showFlipScreen('✅ ¡Fase Exploradores terminada!','Ahora vienen los Campeones. Jugador 1, elige primero.','👑',()=>showGuerraPick(0));
+    } else {
+      calcDueloScores();
+      if (dueloScores[0]===dueloScores[1]) {
+        guerraPhase='desempate'; guerraTempPick=[null,null];
+        showFlipScreen('🔥 ¡EMPATE TOTAL!','Desempate Final · Mejor de 5. Jugador 1 elige.','🔥',()=>showGuerraPick(0));
+      } else { showDueloPodium(); }
+    }
+  } else {
+    const icon=guerraPhase==='explorador'?'⚡':'👑';
+    showFlipScreen('Batalla completada','Pasa el dispositivo al Jugador 1 para la siguiente batalla.',icon,()=>showGuerraPick(0));
+  }
+}
+
+// ============================================================
+// MODO SUPERVIVENCIA
+// ============================================================
+function startSupervivencia() {
+  supervState={ queues:[[...dueloPlayers[0].blades],[...dueloPlayers[1].blades]],
+    arena:[null,null], consecutive:[0,0], legendaries:[[],[]], destructions:[0,0] };
+  dueloBattles=[]; dueloScores=[0,0];
+  showFlipScreen('💀 ¡Comienza la Supervivencia!','El último Beyblade en pie gana. ¡Preparad las arenas!','💀',()=>nextSupervBattle());
+}
+
+function nextSupervBattle() {
+  if (!supervState.arena[0]) supervState.arena[0]=supervState.queues[0].shift()||null;
+  if (!supervState.arena[1]) supervState.arena[1]=supervState.queues[1].shift()||null;
+  if (!supervState.arena[0]||!supervState.arena[1]) { calcSupervScores(); showDueloPodium(); return; }
+  const n=dueloBattles.length;
+  const consA=supervState.consecutive[0], consB=supervState.consecutive[1];
+  const battle={ id:'sv_'+n, pos:n+1, label:`⚔️ Arena · Batalla ${n+1}`,
+    a:supervState.arena[0], b:supervState.arena[1], rounds:[null,null,null],
+    winner:null, destruction:false, phase:'supervivencia', pts:0, maxRounds:3, consA, consB };
+  dueloBattles.push(battle);
+  showDueloBattle(dueloBattles.length-1);
+}
+
+function afterSupervBattle(battle) {
+  const isP1=battle.winner.id===supervState.arena[0].id;
+  const wi=isP1?0:1, li=isP1?1:0;
+  supervState.consecutive[wi]++; supervState.consecutive[li]=0;
+  if (battle.destruction) supervState.destructions[wi]++;
+  if (supervState.consecutive[wi]===3 && !supervState.legendaries[wi].includes(supervState.arena[wi].id)) {
+    supervState.legendaries[wi].push(supervState.arena[wi].id);
+    narrarCombate(supervState.arena[wi].name+', ¡Legendario!');
+  }
+  supervState.arena[li]=null;
+  calcSupervScores();
+  const enemyDead=supervState.queues[li].length===0&&!supervState.arena[li];
+  if (enemyDead) { showDueloPodium(); return; }
+  renderSupervQueues();
+  nextSupervBattle();
+}
+
+function calcSupervScores() {
+  dueloScores=[0,0];
+  for (let i=0;i<2;i++) {
+    dueloScores[i]+=(supervState.arena[i]?1:0)+supervState.queues[i].length;
+    dueloScores[i]+=supervState.legendaries[i].length*3;
+    dueloScores[i]+=supervState.destructions[i];
+  }
+  for (let i=0;i<2;i++) {
+    const e=1-i;
+    if (supervState.queues[e].length===0&&!supervState.arena[e]) dueloScores[i]+=2;
+  }
+  updateDueloScoreBar();
+}
+
+function renderSupervQueues() {
+  for (let p=0;p<2;p++) {
+    const el=document.getElementById('superv-queue-'+p); if (!el) continue;
+    const qtitle=document.getElementById('superv-qtitle-'+p);
+    if (qtitle) qtitle.textContent=dueloPlayers[p].name;
+    el.innerHTML=dueloPlayers[p].blades.map(b=>{
+      const isArena=supervState.arena[p]&&supervState.arena[p].id===b.id;
+      const isLeg=supervState.legendaries[p].includes(b.id);
+      const isElim=!isArena&&!supervState.queues[p].find(q=>q.id===b.id);
+      const cls=isArena?'active-blade':isElim?'elim-blade':'waiting-blade';
+      const icon=isArena?'⚔️':isElim?'💀':'⏳';
+      return `<div class="queue-blade ${cls} ${isLeg?'legend-blade':''}" title="${b.name}">
+        ${bladeImgHTML(b,30,4)}
+        <div style="font-size:9px;text-align:center;color:var(--muted)">${icon}${isLeg?'⭐':''}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ============================================================
+// BATALLA DUELO GENÉRICA
+// ============================================================
+function showDueloBattle(idx) {
+  dueloBattleIdx=idx;
+  updateDueloScoreBar();
+  const showQ=dueloMode==='supervivencia';
+  document.getElementById('superv-queues-wrap').style.display=showQ?'flex':'none';
+  if (showQ) renderSupervQueues();
+  renderDueloBattleCard(dueloBattles[idx]);
+  showScreen('s-duelo-battle');
+}
+
+function updateDueloScoreBar() {
+  if (dueloMode!=='supervivencia') calcDueloScores();
+  for (let i=0;i<2;i++) {
+    const e=document.getElementById('duelo-score-'+i); if(e) e.textContent=dueloScores[i];
+    const n=document.getElementById('duelo-pname-'+i); if(n) n.textContent=dueloPlayers[i].name||'J'+(i+1);
+  }
+}
+
+function calcDueloScores() {
+  dueloScores=[0,0];
+  dueloBattles.forEach(b=>{
+    if (!b.winner) return;
+    const isP1=!!dueloPlayers[0].blades.find(bl=>bl.id===b.winner.id);
+    const wi=isP1?0:1;
+    dueloScores[wi]+=(b.pts||1)+(b.destruction?1:0);
+  });
+}
+
+function renderDueloBattleCard(battle) {
+  const maxR=battle.maxRounds||3;
+  const winsNeeded=Math.ceil((maxR+1)/2);
+  const wA=battle.rounds.filter(r=>r==='a').length;
+  const wB=battle.rounds.filter(r=>r==='b').length;
+  const decided=battle.winner!==null;
+  const winA=decided&&battle.winner.id===battle.a.id;
+  const winB=decided&&battle.winner.id===battle.b.id;
+
+  const roundsHTML=Array.from({length:maxR},(_,r)=>{
+    const played=battle.rounds[r]!==null;
+    const skipped=decided&&!played;
+    if (skipped) return `<div class="round-group"><span class="round-label">R${r+1}</span><div class="round-btns"><span style="font-size:10px;color:var(--muted);padding:5px 7px">—</span></div></div>`;
+    const aCls=played?(battle.rounds[r]==='a'?'win':''):'';
+    const bCls=played?(battle.rounds[r]==='b'?'win':''):'';
+    const dis=(decided||played)?'disabled':'';
+    const sA=battle.a.name.split(' ')[0], sB=battle.b.name.split(' ')[0];
+    return `<div class="round-group"><span class="round-label">R${r+1}</span><div class="round-btns">
+      <button class="round-btn ${aCls}" ${dis} onclick="setDueloRound(${dueloBattleIdx},${r},'a')">${sA}</button>
+      <button class="round-btn ${bCls}" ${dis} onclick="setDueloRound(${dueloBattleIdx},${r},'b')">${sB}</button>
+    </div></div>`;
+  }).join('');
+
+  let comodinHTML='';
+  if (dueloMode==='draft'&&!decided) {
+    const btns=dueloPlayers.map((p,pi)=>
+      `<button class="comodin-btn ${p.comodinUsed?'used':''}" ${p.comodinUsed?'disabled':''} onclick="usarComodin(${pi},${dueloBattleIdx})">🃏 ${p.name}: Comodín${p.comodinUsed?' (usado)':''}</button>`
+    ).join('');
+    comodinHTML=`<div class="comodin-row">${btns}</div>`;
+  }
+
+  let consHTML='';
+  if (dueloMode==='supervivencia') {
+    const cA=battle.consA||0, cB=battle.consB||0;
+    if (cA>0||cB>0) {
+      consHTML=`<div style="display:flex;gap:10px;justify-content:center;font-size:11px;font-weight:800;margin-bottom:6px">
+        ${cA>0?`<span style="color:${cA>=2?'var(--gold)':'var(--muted)'}">🔵 ${cA} seguidas${cA===2?' ← 1 más = ⭐!':''}</span>`:''}
+        ${cB>0?`<span style="color:${cB>=2?'var(--gold)':'var(--muted)'}">🔴 ${cB} seguidas${cB===2?' ← 1 más = ⭐!':''}</span>`:''}
+      </div>`;
+    }
+  }
+
+  const ptsInfo = battle.phase==='explorador'?'<span class="pts-badge normal">1 pt</span>':
+                  battle.phase==='campeon'?'<span class="pts-badge normal">2 pts</span>':
+                  battle.phase==='desempate'?'<span class="pts-badge destroy">3 pts</span>':'';
+  const resultLabel=decided?`🏆 ¡${battle.winner.name} gana!`:(wA>0||wB>0?`Parcial: ${wA}–${wB}`:'En juego...');
+  const destroHTML=decided?`<div class="destroy-row"><button class="destroy-btn ${battle.destruction?'chosen':''}" onclick="toggleDueloDestruction(${dueloBattleIdx})${!battle.destruction?';finishExplosivo()':''}">💥 ${battle.destruction?'Finish Explosivo ✓ (+1 pt)':'Marcar Finish Explosivo (+1 pt)'}</button></div>`:'';
+
+  const isLast=(dueloMode==='draft'&&dueloBattleIdx>=5)||(dueloMode==='guerra'&&guerraPhase==='desempate');
+  const nextLabel=isLast?'🏆 Ver resultados →':'⚡ Siguiente →';
+
+  document.getElementById('duelo-battle-inner').innerHTML=`
+    <div class="match-card ${decided?'decided':''}">
+      <div class="match-num" style="display:flex;align-items:center;justify-content:space-between">${battle.label}${ptsInfo}</div>
+      <div style="text-align:center;margin-bottom:8px">
+        <button class="round-btn" onclick="narrarCombate('${battle.a.name}','${battle.b.name}')">▶ Iniciar combate</button>
+      </div>
+      ${consHTML}
+      <div class="fighters">
+        <div class="fighter ${winA?'winner':''}">
+          ${bladeImgHTML(battle.a,62,9)}
+          <div class="fighter-name">${battle.a.name}</div>
+          <div style="font-size:10px;color:${winA?'var(--green)':'var(--muted)'};font-weight:800">${dueloPlayers[0].name}</div>
+          <div class="fighter-score">${wA}</div>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="fighter ${winB?'winner':''}">
+          ${bladeImgHTML(battle.b,62,9)}
+          <div class="fighter-name">${battle.b.name}</div>
+          <div style="font-size:10px;color:${winB?'var(--green)':'var(--muted)'};font-weight:800">${dueloPlayers[1].name}</div>
+          <div class="fighter-score">${wB}</div>
+        </div>
+      </div>
+      <div class="rounds-row">${roundsHTML}</div>
+      <div class="match-result-label">${resultLabel}</div>
+      ${comodinHTML}
+      ${destroHTML}
+    </div>
+    <button class="btn-next-match" id="btn-duelo-next" ${decided?'':'disabled'} onclick="onDueloNext()">
+      ${nextLabel}
+    </button>`;
+}
+
+function setDueloRound(bIdx, rIdx, side) {
+  const b=dueloBattles[bIdx]; if (!b||b.winner) return;
+  b.rounds[rIdx]=side;
+  const maxR=b.maxRounds||3, wN=Math.ceil((maxR+1)/2);
+  const wA=b.rounds.filter(r=>r==='a').length, wB=b.rounds.filter(r=>r==='b').length;
+  if (wA>=wN) b.winner=b.a; else if (wB>=wN) b.winner=b.b;
+  updateDueloScoreBar(); renderDueloBattleCard(b);
+  if (b.winner) { const btn=document.getElementById('btn-duelo-next'); if(btn) btn.disabled=false; }
+}
+
+function toggleDueloDestruction(bIdx) {
+  const b=dueloBattles[bIdx]; if (!b||!b.winner) return;
+  b.destruction=!b.destruction;
+  updateDueloScoreBar(); renderDueloBattleCard(b);
+}
+
+function usarComodin(playerIdx, bIdx) {
+  const p=dueloPlayers[playerIdx]; if (p.comodinUsed) return;
+  const usedIds=dueloBattles.slice(0,bIdx).map(bt=>playerIdx===0?bt.a.id:bt.b.id);
+  const curId=playerIdx===0?dueloBattles[bIdx].a.id:dueloBattles[bIdx].b.id;
+  const available=p.blades.filter(b=>!usedIds.includes(b.id)&&b.id!==curId);
+  if (!available.length) { alert('No hay más Beyblades disponibles para el comodín'); return; }
+  const names=available.map((b,i)=>`${i+1}. ${b.name}`).join('\n');
+  const choice=prompt(`🃏 ${p.name}, elige el sustituto:\n\n${names}\n\n(escribe el número)`);
+  const idx=parseInt(choice)-1;
+  if (isNaN(idx)||idx<0||idx>=available.length) return;
+  const replacement=available[idx];
+  const curBlade=playerIdx===0?dueloBattles[bIdx].a:dueloBattles[bIdx].b;
+  const ai=p.blades.findIndex(b=>b.id===curBlade.id);
+  const ri=p.blades.findIndex(b=>b.id===replacement.id);
+  [p.blades[ai],p.blades[ri]]=[p.blades[ri],p.blades[ai]];
+  if (playerIdx===0) dueloBattles[bIdx].a=replacement;
+  else               dueloBattles[bIdx].b=replacement;
+  p.comodinUsed=true;
+  renderDueloBattleCard(dueloBattles[bIdx]);
+}
+
+function onDueloNext() {
+  const battle=dueloBattles[dueloBattleIdx]; if (!battle.winner) return;
+  if (dueloMode==='draft') {
+    if (dueloBattleIdx>=5) showDueloPodium();
+    else playBattleAnimation(()=>showDueloBattle(dueloBattleIdx+1));
+  } else if (dueloMode==='guerra') {
+    if (guerraPhase==='desempate') showDueloPodium();
+    else playBattleAnimation(()=>afterGuerraBattle());
+  } else if (dueloMode==='supervivencia') {
+    afterSupervBattle(battle);
+  }
+}
+
+// ============================================================
+// PODIO DUELO
+// ============================================================
+function showDueloPodium() {
+  if (dueloMode==='supervivencia') calcSupervScores(); else calcDueloScores();
+  const s0=dueloScores[0], s1=dueloScores[1];
+  const winner=s0>s1?0:s1>s0?1:-1;
+  const icons=['🔵','🔴'];
+  document.getElementById('duelo-podium-winner-icon').textContent=winner>=0?icons[winner]:'🤝';
+  document.getElementById('duelo-podium-winner-name').textContent=winner>=0?`¡${dueloPlayers[winner].name} GANA!`:'¡EMPATE ÉPICO!';
+
+  let breakdown='';
+  for (let i=0;i<2;i++) {
+    const isW=i===winner;
+    const colBorder=i===0?'rgba(59,130,246,0.3)':'rgba(239,68,68,0.3)';
+    const colBg=i===0?'rgba(59,130,246,0.07)':'rgba(239,68,68,0.07)';
+    let details='';
+    if (dueloMode==='draft'||dueloMode==='guerra') {
+      const myW=dueloBattles.filter(b=>b.winner&&dueloPlayers[i].blades.find(bl=>bl.id===b.winner.id));
+      const wins=myW.length, destrs=myW.filter(b=>b.destruction).length;
+      details=`<div style="font-size:12px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;margin-top:5px"><span>🏆 ${wins} victoria${wins!==1?'s':''}</span><span>💥 ${destrs} destrucción${destrs!==1?'es':''}</span></div>`;
+    } else {
+      const alive=(supervState.arena[i]?1:0)+supervState.queues[i].length;
+      const legs=supervState.legendaries[i].length, destrs=supervState.destructions[i];
+      details=`<div style="font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;margin-top:5px"><span>⚔️ ${alive} vivos</span><span>⭐ ${legs} Legendario${legs!==1?'s':''}</span><span>💥 ${destrs} destrucción${destrs!==1?'es':''}</span></div>`;
+    }
+    breakdown+=`<div style="background:${colBg};border:1px solid ${colBorder};border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:28px">${icons[i]}</div>
+      <div style="flex:1"><div style="font-family:'Fredoka One',cursive;font-size:17px;color:${isW?'var(--gold)':'var(--text)'}">${dueloPlayers[i].name}${isW?' 🏆':''}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:30px;color:var(--text)">${dueloScores[i]} pts</div>
+      ${details}</div>
+    </div>`;
+  }
+  document.getElementById('duelo-podium-breakdown').innerHTML=breakdown;
+
+  const history=dueloBattles.map((b,idx)=>{
+    if (!b.winner) return '';
+    const isP1=!!dueloPlayers[0].blades.find(bl=>bl.id===b.winner.id);
+    const wCls=isP1?'color:#60a5fa':'color:#f87171';
+    const wA=b.rounds.filter(r=>r==='a').length, wB=b.rounds.filter(r=>r==='b').length;
+    return `<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px">
+      <span style="color:var(--muted);font-weight:800;min-width:18px">${idx+1}</span>
+      <span style="flex:1;font-weight:700">${b.a.name} <span style="color:var(--muted)">vs</span> ${b.b.name}</span>
+      <span style="font-weight:800;${wCls}">${b.winner.name} (${wA}-${wB})${b.destruction?' 💥':''}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('duelo-podium-history').innerHTML=history||'<p style="color:var(--muted);font-size:12px">Sin batallas completadas.</p>';
+
+  showScreen('s-duelo-podium');
+}
+
+function revanchaDuelo() {
+  const mode=dueloMode, names=[dueloPlayers[0].name, dueloPlayers[1].name];
+  dueloMode=mode; selectedDueloMode=mode;
+  dueloPlayers=[{name:names[0],blades:[],roles:{},comodinUsed:false},{name:names[1],blades:[],roles:{},comodinUsed:false}];
+  dueloBattles=[]; dueloScores=[0,0]; guerraExpUsed=[[],[]]; guerraCampUsed=[[],[]];
+  showDueloSetup(0);
+}
+
+function backToDueloHome() {
+  dueloMode=null; selectedDueloMode=null; dueloBattles=[]; dueloScores=[0,0];
+  showScreen('s-home'); switchTab('duelo');
+}
+
 renderRegistry();
 </script>
 
@@ -724,16 +2483,34 @@ import { renderFooter } from '../components/components.js';
 const s = CONFIG.student;
 document.getElementById('app-header-root').innerHTML = `
   <div class="header">
-    <div>
-      <div class="header-title">🌀 Torneo de Beyblades</div>
-      <div class="header-sub">${s.name} · ${s.class} · ${s.school} · ${s.location}</div>
+    <div class="header-content">
+      <img src="../assets/bbm.png" alt="Logo Beyblade" class="header-logo">
+      <div>
+        <div class="header-title">🌀 Arena Beyblade</div>
+        <div class="header-sub">${s.name} · ${s.class} · ${s.school}</div>
+      </div>
     </div>
     <div class="header-right">
       <a href="../index.html" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:6px 14px;border-radius:9px;font-size:12px;font-weight:700;text-decoration:none;font-family:'Nunito',sans-serif;">← Volver</a>
     </div>
   </div>`;
 document.getElementById('app-footer-root').innerHTML = renderFooter();
+// Esto fuerza al navegador a cargar las voces en memoria
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = function() {
+    speechSynthesis.getVoices();
+  };
+}
+window.speechSynthesis.getVoices();
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 </script>
+
+
+<!-- ══ BATTLE ANIMATION OVERLAY ══ -->
+<div class="battle-overlay" id="battle-overlay">
+  <video id="battle-video" autoplay playsinline></video>
+</div>
 
 </body>
 </html>

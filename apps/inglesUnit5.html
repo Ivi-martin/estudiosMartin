@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #161c2a; --surface: #1e2638; --surface2: #28324a;
+    --text: #e6edf3; --muted: #7d8590; --border: rgba(255,255,255,0.10);
+    --accent: #fbbf24;
+  }
+  html, body { background-color: #161c2a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦸 Superhero English Academy – Unit 5</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2744;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --sky: #dbeafe;
+  --green: #16a34a;
+  --green-light: #22c55e;
+  --green-bg: #dcfce7;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --yellow: #f59e0b;
+  --yellow-bg: #fef3c7;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --orange: #ea580c;
+  --orange-bg: #ffedd5;
+  --teal: #0d9488;
+  --teal-bg: #ccfbf1;
+  --white: #ffffff;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-400: #94a3b8;
+  --gray-600: #475569;
+  --gray-800: #1e293b;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0f172a;
+  min-height: 100vh;
+  color: var(--gray-800);
+  overflow-x: hidden;
+}
+
+/* STAR BACKGROUND */
+.stars-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #2d1b69 50%, #0f172a 100%);
+  overflow: hidden;
+}
+.stars-bg::before {
+  content: '⭐ 🦸 ⭐ 🦹 ⭐ 🦸 ⭐ 🦹 ⭐ 🦸 ⭐ 🦹 ⭐ 🦸 ⭐ 🦹 ⭐ 🦸 ⭐';
+  position: absolute; inset: 0;
+  font-size: 14px; color: rgba(255,255,255,0.05);
+  line-height: 2.5; word-break: break-all;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from{opacity:.5} to{opacity:1} }
+
+.app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #2d1b69 0%, #7c3aed 100%);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 3px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.header-logo { font-family: 'Fredoka One', cursive; font-size: 20px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.header-logo span { color: #fbbf24; }
+.header-sub { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 600; letter-spacing: 0.5px; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.exam-countdown {
+  background: rgba(255,255,255,0.15); border-radius: 12px; padding: 8px 14px;
+  text-align: center; border: 1px solid rgba(255,255,255,0.2);
+}
+.exam-countdown .days { font-family: 'Fredoka One', cursive; font-size: 28px; color: #fbbf24; line-height: 1; }
+.exam-countdown .label { font-size: 10px; color: rgba(255,255,255,0.8); font-weight: 700; letter-spacing: 1px; }
+
+/* PROGRESS BAR */
+.progress-strip {
+  background: rgba(0,0,0,0.3);
+  padding: 10px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.progress-label { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
+.progress-track { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #86efac); border-radius: 4px; transition: width .5s ease; }
+.progress-pct { font-size: 12px; color: #86efac; font-weight: 800; }
+
+/* LAYOUT */
+.main { flex: 1; display: flex; gap: 0; }
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px; flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sidebar-section { font-size: 10px; color: rgba(255,255,255,0.3); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 8px 8px 4px; }
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 12px;
+  cursor: pointer; transition: all .2s;
+  border: none; background: transparent; width: 100%; text-align: left;
+  color: rgba(255,255,255,0.6); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-btn.active { background: rgba(124,58,237,0.3); color: white; border: 1px solid rgba(124,58,237,0.5); }
+.nav-btn.completed { color: #86efac; }
+.nav-btn .nav-icon { font-size: 18px; width: 24px; text-align: center; }
+.nav-btn .nav-badge { margin-left: auto; font-size: 10px; background: var(--green); color: white; padding: 2px 6px; border-radius: 20px; font-weight: 800; }
+.nav-btn .nav-lock { margin-left: auto; font-size: 14px; opacity: .4; }
+.nav-btn .nav-stars { margin-left: auto; font-size: 12px; }
+
+/* CONTENT */
+.content { flex: 1; padding: 28px; overflow-y: auto; max-height: calc(100vh - 100px); }
+
+/* SCREEN */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* HOME SCREEN */
+.home-hero {
+  background: linear-gradient(135deg, rgba(124,58,237,.3) 0%, rgba(37,99,235,.2) 100%);
+  border: 1px solid rgba(124,58,237,.3);
+  border-radius: var(--radius);
+  padding: 28px; margin-bottom: 24px; color: white;
+}
+.home-hero h1 { font-family: 'Fredoka One', cursive; font-size: 32px; margin-bottom: 8px; }
+.home-hero p { color: rgba(255,255,255,.8); line-height: 1.6; margin-bottom: 16px; }
+.home-hero .exam-badge {
+  display: inline-block; background: rgba(251,191,36,.2); border: 1px solid rgba(251,191,36,.4);
+  border-radius: 10px; padding: 8px 16px; font-size: 13px; font-weight: 700; color: #fbbf24;
+}
+
+/* CARDS */
+.class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.class-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius); padding: 16px; cursor: pointer;
+  transition: all .2s; color: white;
+}
+.class-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.class-icon { font-size: 36px; margin-bottom: 8px; }
+.class-title { font-family: 'Fredoka One', cursive; font-size: 16px; margin-bottom: 4px; }
+.class-desc { font-size: 12px; color: rgba(255,255,255,.6); }
+.class-stars { font-size: 14px; margin-top: 8px; }
+
+/* CARD (white panels) */
+.card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow);
+}
+.card-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--navy); margin-bottom: 8px; }
+.card-sub { font-size: 13px; color: var(--gray-600); margin-bottom: 16px; }
+
+/* TABS */
+.phase-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.phase-tab {
+  padding: 8px 16px; border-radius: 20px; border: 2px solid var(--gray-200);
+  font-size: 12px; font-weight: 800; cursor: pointer; background: var(--white);
+  color: var(--gray-600); transition: all .2s;
+}
+.phase-tab.active { background: var(--purple); border-color: var(--purple); color: white; }
+.phase-tab.done { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+
+/* VOCAB GRID */
+.vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.vocab-card {
+  background: var(--gray-50); border: 2px solid var(--gray-200);
+  border-radius: var(--radius-sm); padding: 16px; text-align: center;
+  cursor: pointer; transition: all .2s;
+}
+.vocab-card:hover { border-color: var(--purple); background: var(--purple-bg); transform: scale(1.03); }
+.vocab-emoji { font-size: 36px; margin-bottom: 8px; }
+.vocab-en { font-weight: 900; font-size: 15px; color: var(--navy); }
+.vocab-es { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+
+/* EXERCISE BOXES */
+.exercise-box {
+  background: var(--gray-50); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm); padding: 16px; margin-bottom: 12px;
+}
+.q-num { font-size: 11px; font-weight: 800; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.q-text { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+
+.options { display: flex; flex-wrap: wrap; gap: 8px; }
+.option-btn {
+  padding: 10px 18px; border-radius: 10px; border: 2px solid var(--gray-200);
+  background: var(--white); font-family: 'Nunito', sans-serif; font-weight: 700;
+  font-size: 14px; cursor: pointer; transition: all .2s; color: var(--navy);
+}
+.option-btn:hover { border-color: var(--purple); background: var(--purple-bg); }
+.option-btn.correct { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+.option-btn.wrong { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+.option-btn:disabled { cursor: not-allowed; }
+
+/* FEEDBACK */
+.feedback { font-size: 14px; font-weight: 700; margin-top: 10px; padding: 8px 12px; border-radius: 8px; display: none; }
+.feedback.show { display: block; }
+.feedback.correct { background: var(--green-bg); color: var(--green); }
+.feedback.wrong { background: var(--red-bg); color: var(--red); }
+
+/* TEXT INPUT */
+.text-input {
+  width: 100%; padding: 10px 14px; border-radius: 10px; border: 2px solid var(--gray-200);
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700; color: var(--navy);
+  outline: none; transition: border-color .2s;
+}
+.text-input:focus { border-color: var(--purple); }
+.text-input.correct { border-color: var(--green); background: var(--green-bg); }
+.text-input.wrong { border-color: var(--red); background: var(--red-bg); }
+
+/* BUTTONS */
+.btn {
+  padding: 10px 20px; border-radius: 10px; border: none;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px;
+  cursor: pointer; transition: all .2s;
+}
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover { background: var(--blue-light); transform: translateY(-1px); }
+.btn-success { background: var(--green); color: white; }
+.btn-success:hover { background: var(--green-light); }
+.btn-purple { background: var(--purple); color: white; }
+.btn-purple:hover { background: #6d28d9; transform: translateY(-1px); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+/* SPEAK BTN */
+.speak-btn {
+  padding: 6px 12px; border-radius: 8px; border: 2px solid var(--gray-200);
+  background: var(--white); font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .2s; color: var(--navy);
+}
+.speak-btn:hover { background: var(--yellow-bg); border-color: var(--yellow); }
+
+/* GRAMMAR RULE CARD */
+.rule-card {
+  background: linear-gradient(135deg, var(--purple-bg), #f0e7ff);
+  border: 2px solid rgba(124,58,237,.3);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+}
+.rule-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--purple); margin-bottom: 12px; }
+.rule-formula {
+  background: var(--white); border-radius: 10px; padding: 12px 16px;
+  font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--navy);
+  margin-bottom: 12px; border: 2px solid rgba(124,58,237,.2);
+}
+.rule-example { font-size: 14px; color: var(--gray-600); font-style: italic; }
+
+/* WORD ORDER */
+.sentence-slots {
+  min-height: 48px; border: 2px dashed var(--gray-200); border-radius: 10px;
+  padding: 8px; display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;
+  background: var(--white);
+}
+.sentence-slot {
+  background: var(--purple); color: white; padding: 6px 12px;
+  border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px;
+}
+.word-bank { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.word-chip {
+  background: var(--gray-100); border: 2px solid var(--gray-200);
+  color: var(--navy); padding: 6px 12px; border-radius: 8px;
+  font-weight: 700; cursor: pointer; font-size: 14px; transition: all .2s;
+}
+.word-chip:hover { background: var(--purple-bg); border-color: var(--purple); }
+.word-chip.used { opacity: .3; cursor: not-allowed; }
+
+/* MATCH */
+.match-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.match-item {
+  padding: 12px; border-radius: 10px; border: 2px solid var(--gray-200);
+  background: var(--white); font-weight: 700; cursor: pointer;
+  text-align: center; transition: all .2s; font-size: 14px;
+}
+.match-item:hover { border-color: var(--purple); background: var(--purple-bg); }
+.match-item.selected { border-color: var(--purple); background: var(--purple-bg); color: var(--purple); }
+.match-item.matched { border-color: var(--green); background: var(--green-bg); color: var(--green); cursor: default; }
+.match-item.wrong-match { border-color: var(--red); background: var(--red-bg); }
+
+/* MINI TEST */
+.mini-test-q { background: var(--gray-50); border:1px solid var(--gray-200); border-radius:12px; padding:18px; margin-bottom:12px; }
+.mini-test-num { font-size:11px; font-weight:800; color:var(--gray-400); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+.mini-test-q .q-text { margin-bottom:10px; }
+
+/* SCORE */
+.score-card { text-align:center; padding:32px; }
+.score-big { font-family:'Fredoka One',cursive; font-size:64px; line-height:1; margin-bottom:8px; }
+.score-stars { font-size:36px; margin-bottom:16px; }
+.score-msg { font-size:16px; color:var(--gray-600); margin-bottom:24px; }
+
+/* PROGRESS SCREEN */
+.progress-stat { background:var(--white); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:10px; display:flex; align-items:center; gap:12px; }
+.ps-icon { font-size:28px; }
+.ps-label { font-weight:700; color:var(--navy); font-size:14px; }
+.ps-score { margin-left:auto; font-family:'Fredoka One',cursive; font-size:20px; color:var(--purple); }
+
+/* HARD WORDS */
+.hard-words-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.hard-word { background:var(--red-bg); border:1px solid rgba(220,38,38,.3); border-radius:8px; padding:6px 12px; font-weight:700; font-size:13px; color:var(--red); }
+.hw-count { margin-left:6px; background:var(--red); color:white; border-radius:10px; padding:1px 6px; font-size:11px; }
+
+/* EXAM */
+.exam-section-header {
+  display:flex; align-items:center; gap:14px; margin-bottom:20px;
+  background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(37,99,235,.1));
+  border-radius:var(--radius-sm); padding:14px 18px; border:1px solid rgba(124,58,237,.2);
+}
+.exam-section-header .sec-num { font-family:'Fredoka One',cursive; font-size:28px; color:#fbbf24; }
+.exam-section-header .sec-title { font-family:'Fredoka One',cursive; font-size:18px; }
+.exam-section-header .sec-sub { font-size:12px; opacity:.7; }
+.exam-progress-bar { background:rgba(255,255,255,.1); height:6px; border-radius:3px; margin-bottom:24px; overflow:hidden; }
+.exam-progress-inner { height:100%; background:linear-gradient(90deg,#7c3aed,#a78bfa); border-radius:3px; transition:width .4s; }
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="header-logo">🦸 <span>Unit 5</span> – Description</div>
+    <div class="header-sub">Superhero English Academy · 2º Primaria</div>
+  </div>
+  <div class="header-right">
+    <div class="exam-countdown">
+      <div class="days" id="countdown-days">?</div>
+      <div class="label">DAYS TO EXAM</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS STRIP -->
+<div class="progress-strip">
+  <div class="progress-label">OVERALL PROGRESS</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">Classes</div>
+    <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+      <span class="nav-icon">🏠</span> Home
+    </button>
+    <button class="nav-btn" onclick="showLesson('adjectives')" id="nav-adjectives">
+      <span class="nav-icon">💪</span> Adjectives
+      <span class="nav-stars" id="stars-adjectives"></span>
+    </button>
+    <button class="nav-btn" onclick="showLesson('accessories')" id="nav-accessories">
+      <span class="nav-icon">🦸</span> Accessories
+      <span class="nav-stars" id="stars-accessories"></span>
+    </button>
+    <button class="nav-btn" onclick="showLesson('havegot')" id="nav-havegot">
+      <span class="nav-icon">✏️</span> Have Got
+      <span class="nav-stars" id="stars-havegot"></span>
+    </button>
+    <button class="nav-btn" onclick="showLesson('questions')" id="nav-questions">
+      <span class="nav-icon">❓</span> Questions
+      <span class="nav-stars" id="stars-questions"></span>
+    </button>
+    <button class="nav-btn" onclick="showLesson('listening')" id="nav-listening">
+      <span class="nav-icon">🎧</span> Listening
+      <span class="nav-stars" id="stars-listening"></span>
+    </button>
+    <div class="sidebar-section" style="margin-top:8px">Exam</div>
+    <button class="nav-btn" onclick="showScreen('exam')" id="nav-exam">
+      <span class="nav-icon">📝</span> Exam Simulator
+    </button>
+    <div class="sidebar-section" style="margin-top:8px">My Progress</div>
+    <button class="nav-btn" onclick="showScreen('progress')" id="nav-progress">
+      <span class="nav-icon">📊</span> Progress
+    </button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ===== HOME SCREEN ===== -->
+    <div class="screen active" id="screen-home">
+      <div class="home-hero">
+        <h1>🦸 Unit 5 – Description</h1>
+        <p>Learn superhero adjectives, accessories, and how to use <strong>"have got"</strong> and <strong>Is he/she...?</strong> questions. Complete all classes and ace your exam!</p>
+        <div class="exam-badge">📅 Examen el <span id="home-exam-date">lunes</span> – ¡Vamos Alba que tú puedes!</div>
+      </div>
+
+      <div class="class-grid">
+        <div class="class-card" onclick="showLesson('adjectives')" style="background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(37,99,235,.2)); border-color:rgba(124,58,237,.4);">
+          <div class="class-icon">💪</div>
+          <div class="class-title">Adjectives</div>
+          <div class="class-desc">fast, clever, scary, strong...</div>
+          <div class="class-stars" id="home-stars-adjectives"></div>
+        </div>
+        <div class="class-card" onclick="showLesson('accessories')" style="background:linear-gradient(135deg,rgba(234,88,12,.2),rgba(251,191,36,.1)); border-color:rgba(234,88,12,.4);">
+          <div class="class-icon">🦸</div>
+          <div class="class-title">Accessories</div>
+          <div class="class-desc">cape, mask, belt, boots</div>
+          <div class="class-stars" id="home-stars-accessories"></div>
+        </div>
+        <div class="class-card" onclick="showLesson('havegot')" style="background:linear-gradient(135deg,rgba(13,148,136,.2),rgba(22,163,74,.1)); border-color:rgba(13,148,136,.4);">
+          <div class="class-icon">✏️</div>
+          <div class="class-title">Have Got</div>
+          <div class="class-desc">I've got a blue mask...</div>
+          <div class="class-stars" id="home-stars-havegot"></div>
+        </div>
+        <div class="class-card" onclick="showLesson('questions')" style="background:linear-gradient(135deg,rgba(220,38,38,.2),rgba(234,88,12,.1)); border-color:rgba(220,38,38,.4);">
+          <div class="class-icon">❓</div>
+          <div class="class-title">Questions</div>
+          <div class="class-desc">Is he clever? Yes, he is.</div>
+          <div class="class-stars" id="home-stars-questions"></div>
+        </div>
+        <div class="class-card" onclick="showLesson('listening')" style="background:linear-gradient(135deg,rgba(37,99,235,.2),rgba(13,148,136,.1)); border-color:rgba(37,99,235,.4);">
+          <div class="class-icon">🎧</div>
+          <div class="class-title">Listening</div>
+          <div class="class-desc">Listen and answer</div>
+          <div class="class-stars" id="home-stars-listening"></div>
+        </div>
+        <div class="class-card" onclick="showScreen('exam')" style="background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(37,99,235,.2)); border-color:rgba(124,58,237,.4);">
+          <div class="class-icon">📝</div>
+          <div class="class-title">Exam</div>
+          <div class="class-desc">All topics. Real exam style!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔴 Tricky Words</div>
+        <div class="card-sub">Words you found difficult – keep practising!</div>
+        <div class="hard-words-grid" id="hard-words-display">
+          <span style="color:var(--gray-400);font-size:13px;">No tricky words yet — great job! 🎉</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ADJECTIVES SCREEN ===== -->
+    <div class="screen" id="screen-adjectives">
+      <div class="card">
+        <div class="card-title">💪 Superhero Adjectives</div>
+        <div class="card-sub">Learn how to describe superheroes in English. Vamos Alba que seguro que lo haces genial.</div>
+        <div class="phase-tabs">
+          <div class="phase-tab active" id="atab-1" onclick="showAdjPhase(1)">1. Learn</div>
+          <div class="phase-tab" id="atab-2" onclick="showAdjPhase(2)">2. Match</div>
+          <div class="phase-tab" id="atab-3" onclick="showAdjPhase(3)">3. Write</div>
+          <div class="phase-tab" id="atab-4" onclick="showAdjPhase(4)">4. Test ⭐</div>
+        </div>
+        <div id="aphase-1">
+          <div class="vocab-grid" id="adj-learn-grid"></div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="showAdjPhase(2)">Practice →</button></div>
+        </div>
+        <div id="aphase-2" style="display:none">
+          <div class="q-num" style="margin-bottom:12px">Click an English word, then its Spanish translation</div>
+          <div class="match-cols" id="adj-match-container"></div>
+          <div class="feedback" id="adj-match-feedback"></div>
+        </div>
+        <div id="aphase-3" style="display:none">
+          <div id="adj-write-exercises"></div>
+        </div>
+        <div id="aphase-4" style="display:none">
+          <div id="adj-test-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ACCESSORIES SCREEN ===== -->
+    <div class="screen" id="screen-accessories">
+      <div class="card">
+        <div class="card-title">🦸 Superhero Accessories</div>
+        <div class="card-sub">cape, mask, belt, boots – learn your superhero gear!. A Martín lo que más le gusta es la cape, ¿y a ti Alba?</div>
+        <div class="phase-tabs">
+          <div class="phase-tab active" id="acctab-1" onclick="showAccPhase(1)">1. Learn</div>
+          <div class="phase-tab" id="acctab-2" onclick="showAccPhase(2)">2. Match</div>
+          <div class="phase-tab" id="acctab-3" onclick="showAccPhase(3)">3. Write</div>
+          <div class="phase-tab" id="acctab-4" onclick="showAccPhase(4)">4. Test ⭐</div>
+        </div>
+        <div id="accphase-1">
+          <div class="vocab-grid" id="acc-learn-grid"></div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="showAccPhase(2)">Practice →</button></div>
+        </div>
+        <div id="accphase-2" style="display:none">
+          <div class="q-num" style="margin-bottom:12px">Match English to Spanish</div>
+          <div class="match-cols" id="acc-match-container"></div>
+          <div class="feedback" id="acc-match-feedback"></div>
+        </div>
+        <div id="accphase-3" style="display:none">
+          <div id="acc-write-exercises"></div>
+        </div>
+        <div id="accphase-4" style="display:none">
+          <div id="acc-test-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HAVE GOT SCREEN ===== -->
+    <div class="screen" id="screen-havegot">
+      <div class="card">
+        <div class="card-title">✏️ Have Got</div>
+        <div class="card-sub">How to describe what a superhero has. ¿Quién tendrá más cosas Alba o Martín?</div>
+        <div class="phase-tabs">
+          <div class="phase-tab active" id="hgtab-1" onclick="showHGPhase(1)">1. Learn</div>
+          <div class="phase-tab" id="hgtab-2" onclick="showHGPhase(2)">2. Word Order</div>
+          <div class="phase-tab" id="hgtab-3" onclick="showHGPhase(3)">3. Write</div>
+          <div class="phase-tab" id="hgtab-4" onclick="showHGPhase(4)">4. Test ⭐</div>
+        </div>
+        <div id="hgphase-1">
+          <div class="rule-card">
+            <div class="rule-title">📖 The Rule</div>
+            <div class="rule-formula">I / You / We / They → have got</div>
+            <div class="rule-formula">He / She / It → has got</div>
+            <div style="margin-top:12px" id="hg-examples"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="showHGPhase(2)">Practice →</button></div>
+        </div>
+        <div id="hgphase-2" style="display:none">
+          <div id="hg-wordorder-exercises"></div>
+        </div>
+        <div id="hgphase-3" style="display:none">
+          <div id="hg-write-exercises"></div>
+        </div>
+        <div id="hgphase-4" style="display:none">
+          <div id="hg-test-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== QUESTIONS SCREEN ===== -->
+    <div class="screen" id="screen-questions">
+      <div class="card">
+        <div class="card-title">❓ Is he / Is she…?</div>
+        <div class="card-sub">Ask and answer questions about superheroes. Así sabremos qué preguntarle a la superheroina Alba.</div>
+        <div class="phase-tabs">
+          <div class="phase-tab active" id="qtab-1" onclick="showQPhase(1)">1. Learn</div>
+          <div class="phase-tab" id="qtab-2" onclick="showQPhase(2)">2. Answer</div>
+          <div class="phase-tab" id="qtab-3" onclick="showQPhase(3)">3. Test ⭐</div>
+        </div>
+        <div id="qphase-1">
+          <div class="rule-card">
+            <div class="rule-title">📖 Questions & Short Answers</div>
+            <div class="rule-formula">Is he/she + adjective?</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+              <div style="background:var(--green-bg);border-radius:10px;padding:12px;border:1px solid var(--green)">
+                <div style="font-weight:800;color:var(--green);margin-bottom:6px">✅ YES</div>
+                <div style="font-size:14px">Is he clever? → <strong>Yes, he is.</strong></div>
+                <div style="font-size:14px">Is she fast? → <strong>Yes, she is.</strong></div>
+              </div>
+              <div style="background:var(--red-bg);border-radius:10px;padding:12px;border:1px solid var(--red)">
+                <div style="font-weight:800;color:var(--red);margin-bottom:6px">❌ NO</div>
+                <div style="font-size:14px">Is he scary? → <strong>No, he isn't.</strong></div>
+                <div style="font-size:14px">Is she tall? → <strong>No, she isn't.</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="showQPhase(2)">Practice →</button></div>
+        </div>
+        <div id="qphase-2" style="display:none">
+          <div id="q-answer-exercises"></div>
+        </div>
+        <div id="qphase-3" style="display:none">
+          <div id="q-test-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LISTENING SCREEN ===== -->
+    <div class="screen" id="screen-listening">
+      <div class="card">
+        <div class="card-title">🎧 Listening Practice</div>
+        <div class="card-sub">Listen and practise your pronunciation. SuperMartín habla y SuperAlba escucha y despues al revés.</div>
+        <div class="phase-tabs">
+          <div class="phase-tab active" id="ltab-1" onclick="showListenPhase(1)">1. Repeat</div>
+          <div class="phase-tab" id="ltab-2" onclick="showListenPhase(2)">2. Listen & Answer</div>
+          <div class="phase-tab" id="ltab-3" onclick="showListenPhase(3)">3. Dictation</div>
+          <div class="phase-tab" id="ltab-4" onclick="showListenPhase(4)">4. Test ⭐</div>
+        </div>
+        <div id="lphase-1"><div id="listen-repeat-list"></div></div>
+        <div id="lphase-2" style="display:none"><div id="listen-answer-list"></div></div>
+        <div id="lphase-3" style="display:none"><div id="dictation-list"></div></div>
+        <div id="lphase-4" style="display:none"><div id="listen-test-container"></div></div>
+      </div>
+    </div>
+
+    <!-- ===== EXAM SCREEN ===== -->
+    <div class="screen" id="screen-exam">
+      <div class="card" style="background:linear-gradient(135deg,#1a2744,#2d1b69);color:white;margin-bottom:16px">
+        <div class="card-title" style="color:white">📝 Unit 5 Exam Simulator</div>
+        <div class="card-title" style="color:white">A por todas Alba</div>
+        <p style="color:rgba(255,255,255,.8)">All topics · Real exam style · Get your grade!</p>
+      </div>
+      <div id="exam-container"></div>
+    </div>
+
+    <!-- ===== PROGRESS SCREEN ===== -->
+    <div class="screen" id="screen-progress">
+      <div class="card">
+        <div class="card-title">📊 My Progress</div>
+        <div class="card-sub">Track your progress towards the exam</div>
+        <div id="progress-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔴 Words to Review</div>
+        <div class="hard-words-grid" id="hard-words-progress">
+          <span style="color:var(--gray-400);font-size:13px;">No tricky words yet!</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+</div><!-- end app -->
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const ADJECTIVES = [
+  { id:'fast',      emoji:'⚡', en:'fast',      es:'rápido/a' },
+  { id:'clever',    emoji:'🧠', en:'clever',    es:'inteligente' },
+  { id:'scary',     emoji:'😱', en:'scary',     es:'terrorífico/a' },
+  { id:'thin',      emoji:'🏃', en:'thin',      es:'delgado/a' },
+  { id:'short',     emoji:'📏', en:'short',     es:'bajo/a' },
+  { id:'strong',    emoji:'💪', en:'strong',    es:'fuerte' },
+  { id:'invisible', emoji:'👻', en:'invisible', es:'invisible' },
+  { id:'tall',      emoji:'🗼', en:'tall',      es:'alto/a' },
+];
+
+const ACCESSORIES = [
+  { id:'cape',  emoji:'🦸', en:'cape',  es:'capa' },
+  { id:'mask',  emoji:'🎭', en:'mask',  es:'máscara' },
+  { id:'belt',  emoji:'🌟', en:'belt',  es:'cinturón' },
+  { id:'boots', emoji:'👢', en:'boots', es:'botas' },
+];
+
+const COLORS = ['blue','red','yellow','green','black','purple','orange','white'];
+
+const HG_EXAMPLES = [
+  "I've got a blue mask.",
+  "I've got a yellow cape.",
+  "I've got a brown belt.",
+  "I've got black boots.",
+  "She's got a red cape.",
+  "He's got a green mask.",
+];
+
+const LISTEN_SENTENCES = [
+  "I've got a blue mask.",
+  "She's got a yellow cape.",
+  "He's got a brown belt.",
+  "Is he clever? Yes, he is.",
+  "Is she fast? No, she isn't.",
+  "I've got black boots.",
+  "He's got a red cape and a green mask.",
+];
+
+// Progress state
+const progress = {
+  adjectives:  { score: null, stars: 0, done: false },
+  accessories: { score: null, stars: 0, done: false },
+  havegot:     { score: null, stars: 0, done: false },
+  questions:   { score: null, stars: 0, done: false },
+  listening:   { score: null, stars: 0, done: false },
+  exam:        { score: null, done: false },
+};
+const hardWords = {};
+
+// ============================================================
+// TTS
+// ============================================================
+function speak(text, rate=0.85) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB'; u.rate = rate;
+  window.speechSynthesis.speak(u);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+  if (id === 'home') updateHome();
+  if (id === 'progress') buildProgressScreen();
+  if (id === 'exam') buildExam();
+}
+
+function showLesson(id) {
+  showScreen(id);
+  if (id === 'adjectives')  initAdjectives();
+  if (id === 'accessories') initAccessories();
+  if (id === 'havegot')     initHaveGot();
+  if (id === 'questions')   initQuestions();
+  if (id === 'listening')   initListening();
+}
+
+// ============================================================
+// COUNTDOWN
+// ============================================================
+function updateCountdown() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const exams = (typeof CONFIG !== 'undefined' && CONFIG.exams)
+    ? [...CONFIG.exams].sort((a,b) => new Date(a.date)-new Date(b.date))
+    : [];
+  const next = exams.find(e => new Date(e.date+'T12:00:00') >= today);
+  const el = document.getElementById('countdown-days');
+  if (!el || !next) return;
+  const diff = Math.floor((new Date(next.date+'T12:00:00') - today) / 86400000);
+  el.textContent = Math.max(0, diff);
+}
+
+// ============================================================
+// PROGRESS / HOME
+// ============================================================
+function getStars(pct) {
+  if (pct >= 90) return '⭐⭐⭐';
+  if (pct >= 70) return '⭐⭐';
+  if (pct >= 50) return '⭐';
+  return '';
+}
+function updateOverallProgress() {
+  const keys = ['adjectives','accessories','havegot','questions','listening'];
+  const done = keys.filter(k => progress[k].done).length;
+  const pct = Math.round(done / keys.length * 100);
+  document.getElementById('overall-progress').style.width = pct + '%';
+  document.getElementById('overall-pct').textContent = pct + '%';
+}
+function updateHome() {
+  ['adjectives','accessories','havegot','questions','listening'].forEach(k => {
+    const s  = document.getElementById('home-stars-' + k);
+    const n  = document.getElementById('stars-' + k);
+    if (s) s.textContent = progress[k].stars ? getStars(progress[k].score) : '';
+    if (n) n.textContent = progress[k].stars ? getStars(progress[k].score) : '';
+  });
+  updateHardWords();
+  updateOverallProgress();
+}
+function updateHardWords() {
+  const el = document.getElementById('hard-words-display');
+  const entries = Object.entries(hardWords).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  if (entries.length === 0) {
+    el.innerHTML = '<span style="color:var(--gray-400);font-size:13px;">No tricky words yet — great job! 🎉</span>';
+  } else {
+    el.innerHTML = entries.map(([w,c])=>`<div class="hard-word">${w}<span class="hw-count">${c}x</span></div>`).join('');
+  }
+}
+function trackHard(word) {
+  hardWords[word] = (hardWords[word] || 0) + 1;
+}
+
+// ============================================================
+// SHARED: MINI TEST
+// ============================================================
+function buildMiniTest(questions, containerId, onComplete) {
+  let idx = 0, correct = 0;
+  const cid = containerId;
+
+  function renderQ() {
+    const c = document.getElementById(cid);
+    if (idx >= questions.length) {
+      const pct = Math.round(correct / questions.length * 100);
+      const stars = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= 50 ? 1 : 0;
+      c.innerHTML = buildScoreHTML(correct, questions.length, pct, () => { if(onComplete) onComplete(pct, stars); });
+      if (onComplete) onComplete(pct, stars);
+      return;
+    }
+    const q = questions[idx];
+    let html = `<div class="mini-test-q">
+      <div class="mini-test-num">Question ${idx+1} of ${questions.length}</div>`;
+    if (q.audio) html += `<button class="speak-btn" style="margin-bottom:10px" onclick="speak('${q.audio.replace(/'/g,"\\'")}')">🔊 Listen</button>`;
+    if (q.emoji) html += `<div style="font-size:40px;margin-bottom:8px">${q.emoji}</div>`;
+    html += `<div class="q-text">${q.question}</div>`;
+    if (q.type === 'mc') {
+      html += `<div class="options" id="${cid}-opts">` +
+        q.options.map(o => `<button class="option-btn" onclick="testAnswer(this,'${cid}',${idx},${questions.length})" data-val="${o}">${o}</button>`).join('') +
+        `</div>`;
+    } else {
+      html += `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="text-input" style="max-width:280px" placeholder="Type your answer..." id="${cid}-inp-${idx}" onkeydown="if(event.key==='Enter')testWriteAnswer('${q.correct.replace(/'/g,"\\'")}','${cid}',${idx},${questions.length})">
+        <button class="btn btn-primary" onclick="testWriteAnswer('${q.correct.replace(/'/g,"\\'")}','${cid}',${idx},${questions.length})">Check ✓</button>
+      </div>`;
+    }
+    html += `<div class="feedback" id="${cid}-fb-${idx}"></div></div>`;
+    c.innerHTML = html;
+  }
+
+  window.testAnswer = function(btn, cid2, qidx, total) {
+    if (qidx !== idx || cid2 !== cid) return;
+    const val = btn.dataset.val;
+    const q = questions[qidx];
+    const ok = val === q.correct;
+    if (ok) correct++;
+    btn.classList.add(ok ? 'correct' : 'wrong');
+    document.querySelectorAll(`#${cid}-opts .option-btn`).forEach(b => b.disabled = true);
+    const fb = document.getElementById(`${cid}-fb-${qidx}`);
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+    fb.textContent = ok ? '✅ Correct!' : `❌ Correct answer: "${q.correct}"`;
+    if (!ok) trackHard(q.correct);
+    if (q.audio) speak(q.correct);
+    setTimeout(() => { idx++; renderQ(); }, 1500);
+  };
+
+  window.testWriteAnswer = function(correctVal, cid2, qidx, total) {
+    if (qidx !== idx || cid2 !== cid) return;
+    const inp = document.getElementById(`${cid}-inp-${qidx}`);
+    const val = inp.value.trim().toLowerCase();
+    const ok = val === correctVal.toLowerCase();
+    if (ok) correct++;
+    inp.classList.add(ok ? 'correct' : 'wrong');
+    inp.disabled = true;
+    const fb = document.getElementById(`${cid}-fb-${qidx}`);
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+    fb.textContent = ok ? '✅ Correct!' : `❌ Correct answer: "${correctVal}"`;
+    if (!ok) trackHard(correctVal);
+    speak(correctVal);
+    setTimeout(() => { idx++; renderQ(); }, 1800);
+  };
+
+  renderQ();
+}
+
+function buildScoreHTML(correct, total, pct, onComplete) {
+  const emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🌟' : pct >= 50 ? '👍' : '💪';
+  const msg = pct >= 90 ? '¡Perfecto! You are a superhero!' : pct >= 70 ? '¡Very good! Keep practising!' : pct >= 50 ? '¡Good effort! Review and try again!' : '¡Keep going! You can do it!';
+  return `<div class="card score-card">
+    <div class="score-big">${emoji}</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:36px;color:var(--purple);margin-bottom:8px">${pct}%</div>
+    <div class="score-stars">${getStars(pct)}</div>
+    <div class="score-msg">${correct} / ${total} correct – ${msg}</div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-primary" onclick="showScreen('home')">🏠 Home</button>
+      <button class="btn btn-purple" onclick="showScreen('exam')">📝 Try Exam</button>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// SHARED: MATCH EXERCISE
+// ============================================================
+function buildMatchExercise(items, containerId, feedbackId, onComplete) {
+  const left = [...items].sort(() => Math.random() - .5);
+  const right = [...items].sort(() => Math.random() - .5);
+  let matched = 0;
+  let sel = null;
+
+  function render() {
+    const c = document.getElementById(containerId);
+    c.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>${left.map(i => `<div class="match-item" id="ml-${i.id}" onclick="matchClick('left','${i.id}','${containerId}','${feedbackId}')">${i.emoji} ${i.en}</div>`).join('')}</div>
+        <div>${right.map(i => `<div class="match-item" id="mr-${i.id}" onclick="matchClick('right','${i.id}','${containerId}','${feedbackId}')">${i.es}</div>`).join('')}</div>
+      </div>`;
+  }
+
+  window._matchState = window._matchState || {};
+  window._matchState[containerId] = { sel: null, matched: 0, total: items.length, onComplete };
+
+  render();
+
+  window.matchClick = function(side, id, cid, fid) {
+    const state = window._matchState[cid];
+    const el = document.getElementById((side === 'left' ? 'ml-' : 'mr-') + id);
+    if (el.classList.contains('matched')) return;
+
+    if (!state.sel) {
+      if (state.selEl) state.selEl.classList.remove('selected');
+      state.sel = { side, id };
+      state.selEl = el;
+      el.classList.add('selected');
+    } else {
+      if (state.sel.side === side) {
+        state.selEl.classList.remove('selected');
+        state.sel = { side, id };
+        state.selEl = el;
+        el.classList.add('selected');
+        return;
+      }
+      const leftId  = state.sel.side === 'left'  ? state.sel.id : id;
+      const rightId = state.sel.side === 'right' ? state.sel.id : id;
+      const lEl = document.getElementById('ml-' + leftId);
+      const rEl = document.getElementById('mr-' + rightId);
+      if (leftId === rightId) {
+        lEl.classList.add('matched'); rEl.classList.add('matched');
+        lEl.classList.remove('selected');
+        state.matched++;
+        speak(items.find(i=>i.id===leftId)?.en || '');
+        if (state.matched === state.total) {
+          const fb = document.getElementById(fid);
+          fb.className = 'feedback correct show';
+          fb.textContent = '🎉 ¡Todo correcto!';
+          if (state.onComplete) setTimeout(state.onComplete, 800);
+        }
+      } else {
+        lEl.classList.add('wrong-match'); rEl.classList.add('wrong-match');
+        lEl.classList.remove('selected');
+        setTimeout(() => { lEl.classList.remove('wrong-match'); rEl.classList.remove('wrong-match'); }, 600);
+      }
+      state.sel = null;
+      state.selEl = null;
+    }
+  };
+}
+
+// ============================================================
+// CLASS 1 – ADJECTIVES
+// ============================================================
+function initAdjectives() { showAdjPhase(1); }
+function showAdjPhase(n) {
+  for(let i=1;i<=4;i++) document.getElementById('aphase-'+i).style.display=(i===n)?'block':'none';
+  document.querySelectorAll('[id^=atab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('atab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('atab-'+i).classList.add('done');
+  if(n===1) buildAdjLearn();
+  if(n===2) buildAdjMatch();
+  if(n===3) buildAdjWrite();
+  if(n===4) buildAdjTest();
+}
+
+function buildAdjLearn() {
+  const g = document.getElementById('adj-learn-grid');
+  g.innerHTML = ADJECTIVES.map(a => `
+    <div class="vocab-card" onclick="speak('${a.en}')">
+      <div class="vocab-emoji">${a.emoji}</div>
+      <div class="vocab-en">${a.en}</div>
+      <div class="vocab-es">(${a.es})</div>
+      <div style="margin-top:8px"><button class="speak-btn" onclick="event.stopPropagation();speak('${a.en}')">🔊 Hear</button></div>
+    </div>`).join('');
+}
+
+function buildAdjMatch() {
+  buildMatchExercise(ADJECTIVES, 'adj-match-container', 'adj-match-feedback', () => showAdjPhase(3));
+  document.getElementById('adj-match-feedback').innerHTML = '';
+}
+
+function buildAdjWrite() {
+  const shuffled = [...ADJECTIVES].sort(() => Math.random() - .5);
+  const c = document.getElementById('adj-write-exercises');
+  c.innerHTML = shuffled.map((a, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Exercise ${i+1}</div>
+      <div class="q-text">${a.emoji} How do you say "<strong>${a.es}</strong>" in English?</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="text-input" style="max-width:220px" placeholder="Type in English..." id="adjw-${i}"
+          onkeydown="if(event.key==='Enter')checkAdjWrite(${i},'${a.en}')">
+        <button class="btn btn-primary" onclick="checkAdjWrite(${i},'${a.en}')">Check ✓</button>
+        <button class="speak-btn" onclick="speak('${a.en}')">🔊</button>
+      </div>
+      <div class="feedback" id="adjwfb-${i}"></div>
+    </div>`).join('') +
+    `<div class="btn-row"><button class="btn btn-success" onclick="showAdjPhase(4)">Mini Test →</button></div>`;
+}
+function checkAdjWrite(i, correct) {
+  const inp = document.getElementById('adjw-'+i);
+  const fb  = document.getElementById('adjwfb-'+i);
+  const ok  = inp.value.trim().toLowerCase() === correct.toLowerCase();
+  inp.classList.add(ok?'correct':'wrong'); if(ok) inp.disabled=true;
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? `✅ "${correct}" – correct!` : `❌ The answer is "${correct}"`;
+  if(!ok){trackHard(correct);setTimeout(()=>{inp.classList.remove('wrong');inp.value='';fb.className='feedback';},2000);}
+  speak(correct);
+}
+
+function buildAdjTest() {
+  const qs = ADJECTIVES.map(a => {
+    const wrong = ADJECTIVES.filter(x=>x.id!==a.id).sort(()=>Math.random()-.5).slice(0,2);
+    return {
+      type:'mc', emoji:a.emoji,
+      question:`${a.emoji} How do you say "${a.es}" in English?`,
+      options:[a.en,...wrong.map(w=>w.en)].sort(()=>Math.random()-.5),
+      correct:a.en
+    };
+  });
+  buildMiniTest([...qs].sort(()=>Math.random()-.5).slice(0,6), 'adj-test-container', (pct) => {
+    progress.adjectives.score=pct; progress.adjectives.done=true; progress.adjectives.stars=pct>=50?1:0; updateHome();
+  });
+}
+
+// ============================================================
+// CLASS 2 – ACCESSORIES
+// ============================================================
+function initAccessories() { showAccPhase(1); }
+function showAccPhase(n) {
+  for(let i=1;i<=4;i++) document.getElementById('accphase-'+i).style.display=(i===n)?'block':'none';
+  document.querySelectorAll('[id^=acctab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('acctab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('acctab-'+i).classList.add('done');
+  if(n===1) buildAccLearn();
+  if(n===2) buildAccMatch();
+  if(n===3) buildAccWrite();
+  if(n===4) buildAccTest();
+}
+
+function buildAccLearn() {
+  const g = document.getElementById('acc-learn-grid');
+  g.innerHTML = ACCESSORIES.map(a => `
+    <div class="vocab-card" onclick="speak('${a.en}')">
+      <div class="vocab-emoji">${a.emoji}</div>
+      <div class="vocab-en">${a.en}</div>
+      <div class="vocab-es">(${a.es})</div>
+      <div style="margin-top:8px"><button class="speak-btn" onclick="event.stopPropagation();speak('${a.en}')">🔊 Hear</button></div>
+    </div>`).join('');
+}
+
+function buildAccMatch() {
+  buildMatchExercise(ACCESSORIES, 'acc-match-container', 'acc-match-feedback', () => showAccPhase(3));
+  document.getElementById('acc-match-feedback').innerHTML = '';
+}
+
+function buildAccWrite() {
+  const c = document.getElementById('acc-write-exercises');
+  c.innerHTML = ACCESSORIES.map((a, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Exercise ${i+1}</div>
+      <div class="q-text">${a.emoji} How do you say "<strong>${a.es}</strong>" in English?</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="text-input" style="max-width:220px" placeholder="Type in English..." id="accw-${i}"
+          onkeydown="if(event.key==='Enter')checkAccWrite(${i},'${a.en}')">
+        <button class="btn btn-primary" onclick="checkAccWrite(${i},'${a.en}')">Check ✓</button>
+        <button class="speak-btn" onclick="speak('${a.en}')">🔊</button>
+      </div>
+      <div class="feedback" id="accwfb-${i}"></div>
+    </div>`).join('') +
+    `<div class="btn-row"><button class="btn btn-success" onclick="showAccPhase(4)">Mini Test →</button></div>`;
+}
+function checkAccWrite(i, correct) {
+  const inp = document.getElementById('accw-'+i);
+  const fb  = document.getElementById('accwfb-'+i);
+  const ok  = inp.value.trim().toLowerCase() === correct.toLowerCase();
+  inp.classList.add(ok?'correct':'wrong'); if(ok) inp.disabled=true;
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? `✅ "${correct}" – correct!` : `❌ The answer is "${correct}"`;
+  if(!ok){trackHard(correct);setTimeout(()=>{inp.classList.remove('wrong');inp.value='';fb.className='feedback';},2000);}
+  speak(correct);
+}
+
+function buildAccTest() {
+  const qs = [
+    ...ACCESSORIES.map(a => ({
+      type:'mc', emoji:a.emoji,
+      question:`${a.emoji} What is this called in English?`,
+      options:[a.en,...ACCESSORIES.filter(x=>x.id!==a.id).map(x=>x.en)].sort(()=>Math.random()-.5),
+      correct:a.en
+    })),
+    ...ACCESSORIES.map(a => ({
+      type:'write',
+      question:`How do you say "${a.es}" in English?`,
+      correct:a.en
+    })),
+  ];
+  buildMiniTest([...qs].sort(()=>Math.random()-.5).slice(0,6), 'acc-test-container', (pct) => {
+    progress.accessories.score=pct; progress.accessories.done=true; progress.accessories.stars=pct>=50?1:0; updateHome();
+  });
+}
+
+// ============================================================
+// CLASS 3 – HAVE GOT
+// ============================================================
+let hgWOExercises=[], hgWOIdx=0;
+
+function initHaveGot() { showHGPhase(1); }
+function showHGPhase(n) {
+  for(let i=1;i<=4;i++) document.getElementById('hgphase-'+i).style.display=(i===n)?'block':'none';
+  document.querySelectorAll('[id^=hgtab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('hgtab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('hgtab-'+i).classList.add('done');
+  if(n===1) buildHGLearn();
+  if(n===2) buildHGWordOrder();
+  if(n===3) buildHGWrite();
+  if(n===4) buildHGTest();
+}
+
+function buildHGLearn() {
+  const c = document.getElementById('hg-examples');
+  c.innerHTML = HG_EXAMPLES.map(s => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--purple-bg);border-radius:10px;border:1px solid rgba(124,58,237,.3);margin-bottom:8px">
+      <span style="font-weight:700;font-size:15px;color:var(--purple);flex:1">${s}</span>
+      <button class="speak-btn" onclick="speak('${s.replace(/'/g,"\\'")}')" >🔊</button>
+    </div>`).join('');
+}
+
+function buildHGWordOrder() {
+  hgWOExercises = [
+    { words:["I've","got","a","blue","mask","."], correct:"I've got a blue mask ." },
+    { words:["She's","got","a","yellow","cape","."], correct:"She's got a yellow cape ." },
+    { words:["He's","got","a","brown","belt","."], correct:"He's got a brown belt ." },
+    { words:["I've","got","black","boots","."], correct:"I've got black boots ." },
+    { words:["got","a","red","cape","He's","."], correct:"He's got a red cape ." },
+    { words:["a","green","mask","She's","got","."], correct:"She's got a green mask ." },
+  ].map(e => ({...e, words:[...e.words].sort(()=>Math.random()-.5), placed:[], usedIdx:new Set()}));
+  hgWOIdx = 0;
+  renderHGWordOrder();
+}
+
+function renderHGWordOrder() {
+  const c = document.getElementById('hg-wordorder-exercises');
+  if (hgWOIdx >= hgWOExercises.length) {
+    c.innerHTML = `<div class="card" style="text-align:center;padding:30px">
+      <div style="font-size:48px">🎉</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--green);margin-bottom:16px">¡Todas las frases completadas!</div>
+      <button class="btn btn-primary" onclick="showHGPhase(3)">Siguiente fase →</button>
+    </div>`;
+    return;
+  }
+  const ex = hgWOExercises[hgWOIdx];
+  c.innerHTML = `
+    <div class="card">
+      <div class="q-num">Exercise ${hgWOIdx+1} of ${hgWOExercises.length} – Put the words in order:</div>
+      <div class="sentence-slots" id="hgwo-placed">
+        ${ex.placed.map((w,i)=>`<div class="sentence-slot" onclick="removeHGWord(${i})">${w}</div>`).join('')}
+      </div>
+      <div class="word-bank" id="hgwo-bank">
+        ${ex.words.map((w,i)=>`<div class="word-chip ${ex.usedIdx.has(i)?'used':''}" onclick="placeHGWord(${i},'${w.replace(/'/g,"\\'")}')">${w}</div>`).join('')}
+      </div>
+      <div class="feedback" id="hgwo-fb"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkHGWordOrder()">Check ✓</button>
+        <button class="btn" style="background:var(--gray-200)" onclick="resetHGWO()">Reset 🔄</button>
+      </div>
+    </div>`;
+}
+
+window.placeHGWord = function(idx, word) {
+  const ex = hgWOExercises[hgWOIdx];
+  if (ex.usedIdx.has(idx)) return;
+  ex.usedIdx.add(idx); ex.placed.push(word);
+  renderHGWordOrder();
+};
+window.removeHGWord = function(pi) {
+  const ex = hgWOExercises[hgWOIdx];
+  ex.placed.splice(pi, 1);
+  ex.usedIdx = new Set();
+  const tmp = [...ex.words];
+  ex.placed.forEach(w => { const i = tmp.indexOf(w); if(i>=0){ex.usedIdx.add(ex.words.indexOf(w));tmp[i]=null;} });
+  renderHGWordOrder();
+};
+window.resetHGWO = function() {
+  const ex = hgWOExercises[hgWOIdx]; ex.placed=[]; ex.usedIdx=new Set(); renderHGWordOrder();
+};
+window.checkHGWordOrder = function() {
+  const ex = hgWOExercises[hgWOIdx];
+  const ans = ex.placed.join(' ');
+  const fb = document.getElementById('hgwo-fb');
+  if (ans === ex.correct) {
+    fb.className='feedback correct show'; fb.textContent='✅ Perfect sentence!';
+    speak(ans.replace(' .','.')); 
+    setTimeout(()=>{ hgWOIdx++; renderHGWordOrder(); },1500);
+  } else {
+    fb.className='feedback wrong show'; fb.textContent=`❌ Not quite! Correct: "${ex.correct.replace(' .','.')}"`;
+    trackHard(ex.correct.replace(' .',''));
+    setTimeout(()=>{ fb.className='feedback'; },2500);
+  }
+};
+
+function buildHGWrite() {
+  const exercises = [
+    { q: 'Translate: "Tengo una máscara azul."', correct: "I've got a blue mask." },
+    { q: 'Translate: "Ella tiene una capa amarilla."', correct: "She's got a yellow cape." },
+    { q: 'Translate: "Él tiene un cinturón marrón."', correct: "He's got a brown belt." },
+    { q: 'Complete: "___ got black boots." (I)', correct: "I've" },
+    { q: 'Complete: "She\'s got a ___ cape." (red)', correct: "red" },
+    { q: 'Complete: "He\'s got a green ___." (mask)', correct: "mask" },
+  ];
+  const c = document.getElementById('hg-write-exercises');
+  c.innerHTML = exercises.map((ex, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Exercise ${i+1}</div>
+      <div class="q-text">${ex.q}</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="text-input" style="max-width:300px" placeholder="Type your answer..." id="hgwr-${i}"
+          onkeydown="if(event.key==='Enter')checkHGWrite(${i},'${ex.correct.replace(/'/g,"\\'").replace(/\./g,'\\.')}')">
+        <button class="btn btn-primary" onclick="checkHGWrite(${i},'${ex.correct.replace(/'/g,"\\'").replace(/\./g,'\\.')}')">Check ✓</button>
+      </div>
+      <div class="feedback" id="hgwrfb-${i}"></div>
+    </div>`).join('') +
+    `<div class="btn-row"><button class="btn btn-success" onclick="showHGPhase(4)">Mini Test →</button></div>`;
+}
+function checkHGWrite(i, correct) {
+  const inp = document.getElementById('hgwr-'+i);
+  const fb  = document.getElementById('hgwrfb-'+i);
+  const ok  = inp.value.trim().toLowerCase() === correct.toLowerCase();
+  inp.classList.add(ok?'correct':'wrong'); if(ok) inp.disabled=true;
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? `✅ Correct!` : `❌ The answer is "${correct}"`;
+  if(!ok){trackHard(correct);setTimeout(()=>{inp.classList.remove('wrong');inp.value='';fb.className='feedback';},2000);}
+  speak(correct);
+}
+
+function buildHGTest() {
+  const qs = [
+    {type:'mc', question:'"Tengo una máscara azul." – choose the correct translation:',
+     options:["I've got a blue mask.","I've got a blue cape.","She's got a blue mask."], correct:"I've got a blue mask."},
+    {type:'mc', question:'Which is correct?',
+     options:["She's got","She got","She have got"], correct:"She's got"},
+    {type:'mc', question:'Complete: "___ got a yellow cape." (She)',
+     options:["She's","She've","She has"], correct:"She's"},
+    {type:'mc', question:'Complete: "___ got black boots." (I)',
+     options:["I've","I's","I has"], correct:"I've"},
+    {type:'write', question:'Write in English: "Él tiene un cinturón marrón."', correct:"He's got a brown belt."},
+    {type:'mc', question:'"He\'s got a ___ mask." – which colour?',
+     options:['green','run','clever'], correct:'green'},
+    {type:'write', question:'Complete: "I\'ve got a ___ cape." (red)', correct:'red'},
+  ];
+  buildMiniTest(qs, 'hg-test-container', (pct) => {
+    progress.havegot.score=pct; progress.havegot.done=true; progress.havegot.stars=pct>=50?1:0; updateHome();
+  });
+}
+
+// ============================================================
+// CLASS 4 – QUESTIONS
+// ============================================================
+function initQuestions() { showQPhase(1); }
+function showQPhase(n) {
+  for(let i=1;i<=3;i++) document.getElementById('qphase-'+i).style.display=(i===n)?'block':'none';
+  document.querySelectorAll('[id^=qtab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('qtab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('qtab-'+i).classList.add('done');
+  if(n===2) buildQAnswers();
+  if(n===3) buildQTest();
+}
+
+function buildQAnswers() {
+  const items = [
+    { q:'Is he fast?',      context:'⚡ fast superhero',       correct:'Yes, he is.',    isYes:true },
+    { q:'Is she scary?',    context:'😱 friendly superhero',   correct:"No, she isn't.", isYes:false },
+    { q:'Is he clever?',    context:'🧠 clever superhero',     correct:'Yes, he is.',    isYes:true },
+    { q:'Is she invisible?',context:'👻 invisible superhero',  correct:'Yes, she is.',   isYes:true },
+    { q:'Is he tall?',      context:'📏 short superhero',      correct:"No, he isn't.",  isYes:false },
+    { q:'Is she strong?',   context:'💪 strong superhero',     correct:'Yes, she is.',   isYes:true },
+    { q:'Is he thin?',      context:'🦸 fat superhero',        correct:"No, he isn't.",  isYes:false },
+    { q:'Is she short?',    context:'🗼 tall superhero',       correct:"No, she isn't.", isYes:false },
+  ];
+  const c = document.getElementById('q-answer-exercises');
+  c.innerHTML = items.map((item, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Question ${i+1}</div>
+      <div class="q-text">${item.context} – <em>${item.q}</em></div>
+      <div class="options" id="qa-opts-${i}">
+        <button class="option-btn" data-correct="${item.correct}" onclick="checkQAnswer(this,${i})">Yes, he is.</button>
+        <button class="option-btn" data-correct="${item.correct}" onclick="checkQAnswer(this,${i})">No, he isn't.</button>
+        <button class="option-btn" data-correct="${item.correct}" onclick="checkQAnswer(this,${i})">Yes, she is.</button>
+        <button class="option-btn" data-correct="${item.correct}" onclick="checkQAnswer(this,${i})">No, she isn't.</button>
+      </div>
+      <div class="feedback" id="qa-fb-${i}"></div>
+    </div>`).join('') +
+    `<div class="btn-row"><button class="btn btn-success" onclick="showQPhase(3)">Mini Test →</button></div>`;
+}
+
+function checkQAnswer(btn, i) {
+  const correct = btn.dataset.correct;
+  const chosen  = btn.textContent.trim();
+  document.querySelectorAll('#qa-opts-'+i+' .option-btn').forEach(b=>b.disabled=true);
+  const ok = chosen === correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb = document.getElementById('qa-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? '✅ Correct!' : `❌ The answer is "${correct}"`;
+  if(!ok) trackHard(correct);
+  speak(correct);
+}
+
+function buildQTest() {
+  const qs = [
+    {type:'mc', question:'Is he clever? (yes)',
+     options:['Yes, he is.','No, he isn\'t.','Yes, she is.'], correct:'Yes, he is.'},
+    {type:'mc', question:'Is she fast? (no)',
+     options:['Yes, she is.','No, she isn\'t.','No, he isn\'t.'], correct:'No, she isn\'t.'},
+    {type:'mc', question:'Is he scary? (yes)',
+     options:['Yes, he is.','No, he isn\'t.','Yes, she is.'], correct:'Yes, he is.'},
+    {type:'mc', question:'Is she invisible? (no)',
+     options:['Yes, she is.','No, she isn\'t.','No, he isn\'t.'], correct:'No, she isn\'t.'},
+    {type:'mc', question:'Which is the correct question?',
+     options:['Is he fast?','He is fast?','Fast is he?'], correct:'Is he fast?'},
+    {type:'write', question:'Answer YES for: "Is she strong?"', correct:'Yes, she is.'},
+    {type:'write', question:'Answer NO for: "Is he tall?"', correct:"No, he isn't."},
+  ];
+  buildMiniTest(qs, 'q-test-container', (pct) => {
+    progress.questions.score=pct; progress.questions.done=true; progress.questions.stars=pct>=50?1:0; updateHome();
+  });
+}
+
+// ============================================================
+// CLASS 5 – LISTENING
+// ============================================================
+function initListening() { showListenPhase(1); }
+function showListenPhase(n) {
+  for(let i=1;i<=4;i++) document.getElementById('lphase-'+i).style.display=(i===n)?'block':'none';
+  document.querySelectorAll('[id^=ltab-]').forEach(t=>t.classList.remove('active','done'));
+  document.getElementById('ltab-'+n).classList.add('active');
+  for(let i=1;i<n;i++) document.getElementById('ltab-'+i).classList.add('done');
+  if(n===1) buildListenRepeat();
+  if(n===2) buildListenAnswer();
+  if(n===3) buildDictation();
+  if(n===4) buildListenTest();
+}
+
+function buildListenRepeat() {
+  const c = document.getElementById('listen-repeat-list');
+  c.innerHTML = LISTEN_SENTENCES.map((s, i) => `
+    <div class="exercise-box" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div class="q-num">Sentence ${i+1}</div>
+        <div class="q-text">${s}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="speak-btn" onclick="speak('${s.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">🔊 Play</button>
+        <button class="speak-btn" style="background:var(--green-bg)" onclick="speak('${s.replace(/'/g,"\\'").replace(/"/g,'\\"')}',0.5)">🐢 Slow</button>
+      </div>
+    </div>`).join('') +
+    `<div class="btn-row"><button class="btn btn-primary" onclick="showListenPhase(2)">Next →</button></div>`;
+}
+
+function buildListenAnswer() {
+  const items = [
+    { s:"I've got a blue mask.",   q:'What colour is the mask?',   correct:'blue',        opts:['blue','red','green'] },
+    { s:"She's got a yellow cape.", q:'What has she got?',          correct:'a yellow cape', opts:['a yellow cape','a blue mask','black boots'] },
+    { s:"Is he clever? Yes, he is.", q:'Is he clever?',             correct:'Yes, he is.',  opts:['Yes, he is.','No, he isn\'t.','Yes, she is.'] },
+    { s:"He's got black boots.",    q:'What colour are the boots?', correct:'black',        opts:['black','blue','brown'] },
+  ];
+  const c = document.getElementById('listen-answer-list');
+  c.innerHTML = items.map((item, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Exercise ${i+1} – Listen, then answer</div>
+      <button class="speak-btn" style="margin-bottom:12px" onclick="speak('${item.s.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">🔊 Play sentence</button>
+      <div class="q-text">${item.q}</div>
+      <div class="options" id="la-opts-${i}">
+        ${item.opts.map(o=>`<button class="option-btn" data-correct="${item.correct}" onclick="checkLA(this,${i})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="la-fb-${i}"></div>
+    </div>`).join('') +
+    `<div class="btn-row"><button class="btn btn-success" onclick="showListenPhase(3)">Next →</button></div>`;
+}
+
+function checkLA(btn, i) {
+  const correct = btn.dataset.correct;
+  document.querySelectorAll('#la-opts-'+i+' .option-btn').forEach(b=>b.disabled=true);
+  const ok = btn.textContent.trim() === correct;
+  btn.classList.add(ok?'correct':'wrong');
+  const fb = document.getElementById('la-fb-'+i);
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? '✅ Correct!' : `❌ The answer is "${correct}"`;
+  if(!ok) trackHard(correct);
+  speak(correct);
+}
+
+function buildDictation() {
+  const sents = ["I've got a blue mask.","She's got a yellow cape.","Is he fast?","No, he isn't."];
+  const c = document.getElementById('dictation-list');
+  c.innerHTML = sents.map((s, i) => `
+    <div class="exercise-box">
+      <div class="q-num">Dictation ${i+1}</div>
+      <button class="speak-btn" style="margin-bottom:12px" onclick="speak('${s.replace(/'/g,"\\'").replace(/"/g,'\\"')}',0.8)">🔊 Listen</button>
+      <input class="text-input" placeholder="Write what you hear..." id="dict-${i}"
+        onkeydown="if(event.key==='Enter')checkDict(${i},'${s.replace(/'/g,"\\'").replace(/\?/,'\\?').replace(/\./g,'\\.')}')">
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkDict(${i},'${s.replace(/'/g,"\\'").replace(/\?/,'\\?').replace(/\./g,'\\.')}')">Check ✓</button>
+      </div>
+      <div class="feedback" id="dictfb-${i}"></div>
+    </div>`).join('') +
+    `<div class="btn-row"><button class="btn btn-success" onclick="showListenPhase(4)">Mini Test →</button></div>`;
+}
+
+function checkDict(i, correct) {
+  const inp = document.getElementById('dict-'+i);
+  const fb  = document.getElementById('dictfb-'+i);
+  const val = inp.value.trim().replace(/[?\.]/g,'').toLowerCase();
+  const cor = correct.replace(/[?\.]/g,'').toLowerCase();
+  const ok  = val === cor;
+  inp.classList.add(ok?'correct':'wrong'); if(ok) inp.disabled=true;
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? '✅ Perfect dictation!' : `❌ The correct sentence is: "${correct}"`;
+  if(!ok){trackHard(correct);setTimeout(()=>{inp.classList.remove('wrong');inp.value='';fb.className='feedback';},2500);}
+  speak(correct);
+}
+
+function buildListenTest() {
+  const qs = [
+    {type:'mc', audio:"I've got a blue mask.", question:'🔊 Listen: what colour is the mask?', options:['blue','red','yellow'], correct:'blue'},
+    {type:'mc', audio:"She's got a yellow cape.", question:"🔊 Listen and choose what you heard:", options:["She's got a yellow cape.","She's got a blue cape.","He's got a yellow cape."], correct:"She's got a yellow cape."},
+    {type:'mc', audio:'Is he clever? Yes, he is.', question:'🔊 Is he clever?', options:['Yes, he is.','No, he isn\'t.','Yes, she is.'], correct:'Yes, he is.'},
+    {type:'mc', audio:"No, she isn't.", question:"🔊 What answer do you hear?", options:["Yes, she is.","No, she isn't.","No, he isn't."], correct:"No, she isn't."},
+    {type:'mc', audio:"He's got black boots.", question:'🔊 What has he got?', options:['black boots','a blue mask','a red cape'], correct:'black boots'},
+  ];
+  buildMiniTest(qs, 'listen-test-container', (pct) => {
+    progress.listening.score=pct; progress.listening.done=true; progress.listening.stars=pct>=50?1:0; updateHome();
+  });
+}
+
+// ============================================================
+// EXAM SIMULATOR
+// ============================================================
+function buildExam() {
+  const c = document.getElementById('exam-container');
+  c.innerHTML = `
+    <div class="card" style="text-align:center;padding:36px">
+      <div style="font-size:56px;margin-bottom:12px">📝</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:8px">Unit 5 Exam Simulator</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:8px">A por todas Alba</div>
+      <p style="color:var(--gray-600);max-width:440px;margin:0 auto 20px;line-height:1.6">
+        20 preguntas elegidas al azar. ¡Cada examen es diferente!<br>
+        Adjectives, Accessories, Have Got, Questions y Listening.
+      </p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+        <div style="background:var(--purple-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">💪 5 Adjectives</div>
+        <div style="background:var(--orange-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">🦸 3 Accessories</div>
+        <div style="background:var(--teal-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">✏️ 6 Have Got</div>
+        <div style="background:var(--red-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">❓ 4 Questions</div>
+        <div style="background:var(--sky);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">🎧 2 Listening</div>
+      </div>
+      <button class="btn btn-purple" style="font-size:18px;padding:16px 36px" onclick="startExam()">🚀 Start Exam</button>
+    </div>`;
+}
+
+let examQuestions=[], examIdx=0, examResults=[];
+
+function buildExamPool() {
+  const pool = [];
+
+  // ADJECTIVES
+  ADJECTIVES.forEach(a => {
+    const wrong = ADJECTIVES.filter(x=>x.id!==a.id).sort(()=>Math.random()-.5).slice(0,2);
+    pool.push({type:'mc', section:'Adjectives', emoji:a.emoji,
+      question:`${a.emoji} What does "${a.en}" mean in Spanish?`,
+      options:[a.es,...wrong.map(w=>w.es)].sort(()=>Math.random()-.5), correct:a.es});
+    pool.push({type:'mc', section:'Adjectives', emoji:a.emoji,
+      question:`${a.emoji} How do you say "${a.es}" in English?`,
+      options:[a.en,...wrong.map(w=>w.en)].sort(()=>Math.random()-.5), correct:a.en});
+    pool.push({type:'write', section:'Adjectives',
+      question:`Write "${a.es}" in English:`, correct:a.en});
+  });
+
+  // ACCESSORIES
+  ACCESSORIES.forEach(a => {
+    const wrong = ACCESSORIES.filter(x=>x.id!==a.id);
+    pool.push({type:'mc', section:'Accessories', emoji:a.emoji,
+      question:`${a.emoji} What is this called in English?`,
+      options:[a.en,...wrong.map(w=>w.en)].sort(()=>Math.random()-.5), correct:a.en});
+    pool.push({type:'mc', section:'Accessories', emoji:a.emoji,
+      question:`${a.emoji} How do you say "${a.es}" in English?`,
+      options:[a.en,...wrong.map(w=>w.en)].sort(()=>Math.random()-.5), correct:a.en});
+    pool.push({type:'write', section:'Accessories',
+      question:`Write "${a.es}" in English:`, correct:a.en});
+  });
+
+  // HAVE GOT
+  const hgPool = [
+    {type:'mc', question:'"Tengo una máscara azul." in English:',
+     options:["I've got a blue mask.","I've got a blue cape.","She's got a blue mask."], correct:"I've got a blue mask."},
+    {type:'mc', question:'Complete: "___ got a yellow cape." (She)',
+     options:["She's","She've","She has"], correct:"She's"},
+    {type:'mc', question:'Complete: "___ got black boots." (I)',
+     options:["I've","I's","I has"], correct:"I've"},
+    {type:'mc', question:'Which is correct?',
+     options:["She's got a red cape.","She got a red cape.","She have got a red cape."], correct:"She's got a red cape."},
+    {type:'mc', question:'"Él tiene un cinturón marrón." in English:',
+     options:["He's got a brown belt.","He's got a brown mask.","She's got a brown belt."], correct:"He's got a brown belt."},
+    {type:'write', question:'Write: "Ella tiene una capa amarilla." in English:', correct:"She's got a yellow cape."},
+    {type:'write', question:'Complete: "I\'ve got a ___ mask." (blue)', correct:'blue'},
+    {type:'write', question:'Complete: "He\'s got ___ boots." (black)', correct:'black'},
+    {type:'mc', question:'"I\'ve got" means in Spanish:',
+     options:['tengo','tienes','tiene'], correct:'tengo'},
+    {type:'mc', question:'"She\'s got" means in Spanish:',
+     options:['ella tiene','yo tengo','él tiene'], correct:'ella tiene'},
+  ];
+  hgPool.forEach(q => pool.push({...q, section:'Have Got'}));
+
+  // QUESTIONS
+  const qPool = [
+    {type:'mc', question:'Is he clever? (yes)',
+     options:['Yes, he is.','No, he isn\'t.','Yes, she is.'], correct:'Yes, he is.'},
+    {type:'mc', question:'Is she fast? (no)',
+     options:['Yes, she is.','No, she isn\'t.','No, he isn\'t.'], correct:'No, she isn\'t.'},
+    {type:'mc', question:'Is he scary? (yes)',
+     options:['Yes, he is.','No, he isn\'t.','Yes, she is.'], correct:'Yes, he is.'},
+    {type:'mc', question:'Is she strong? (yes)',
+     options:['Yes, she is.','No, she isn\'t.','Yes, he is.'], correct:'Yes, she is.'},
+    {type:'mc', question:'Is he tall? (no)',
+     options:['Yes, he is.','No, he isn\'t.','Yes, she is.'], correct:'No, he isn\'t.'},
+    {type:'mc', question:'Is she invisible? (no)',
+     options:['Yes, she is.','No, she isn\'t.','No, he isn\'t.'], correct:'No, she isn\'t.'},
+    {type:'mc', question:'Which is the correct question?',
+     options:['Is he fast?','He is fast?','Fast is he?'], correct:'Is he fast?'},
+    {type:'write', question:'Answer YES for: "Is she strong?"', correct:'Yes, she is.'},
+    {type:'write', question:'Answer NO for: "Is he tall?"', correct:"No, he isn't."},
+    {type:'mc', question:'"No, he isn\'t." means in Spanish:',
+     options:['No, no lo es.','Sí, lo es.','No, ella no lo es.'], correct:'No, no lo es.'},
+  ];
+  qPool.forEach(q => pool.push({...q, section:'Questions'}));
+
+  // LISTENING
+  const listenPool = [
+    {type:'mc', audio:"I've got a blue mask.", question:'🔊 Listen: what colour is the mask?', options:['blue','red','yellow'], correct:'blue', section:'Listening'},
+    {type:'mc', audio:"She's got a yellow cape.", question:"🔊 Listen and choose what you heard:", options:["She's got a yellow cape.","She's got a blue cape.","He's got a yellow cape."], correct:"She's got a yellow cape.", section:'Listening'},
+    {type:'mc', audio:'Is he clever? Yes, he is.', question:'🔊 Is he clever?', options:['Yes, he is.','No, he isn\'t.','Yes, she is.'], correct:'Yes, he is.', section:'Listening'},
+    {type:'mc', audio:"No, she isn't.", question:"🔊 What answer do you hear?", options:["Yes, she is.","No, she isn't.","No, he isn't."], correct:"No, she isn't.", section:'Listening'},
+    {type:'mc', audio:"He's got black boots.", question:'🔊 What has he got?', options:['black boots','a blue mask','a red cape'], correct:'black boots', section:'Listening'},
+  ];
+  listenPool.forEach(q => pool.push(q));
+
+  return pool;
+}
+
+function pickExamQuestions(pool) {
+  const sections = { Adjectives:5, Accessories:3, 'Have Got':6, Questions:4, Listening:2 };
+  const result = [];
+  Object.entries(sections).forEach(([sec, count]) => {
+    const secPool = pool.filter(q => q.section === sec);
+    result.push(...[...secPool].sort(()=>Math.random()-.5).slice(0, count));
+  });
+  return result.sort(()=>Math.random()-.5);
+}
+
+function startExam() {
+  examResults = [];
+  const pool = buildExamPool();
+  examQuestions = pickExamQuestions(pool);
+  examIdx = 0;
+  renderExamQuestion();
+}
+
+function renderExamQuestion() {
+  const c = document.getElementById('exam-container');
+  if (examIdx >= examQuestions.length) {
+    showExamResults();
+    return;
+  }
+  const q = examQuestions[examIdx];
+  const pct = Math.round(examIdx / examQuestions.length * 100);
+  let html = `
+    <div class="exam-progress-bar"><div class="exam-progress-inner" style="width:${pct}%"></div></div>
+    <div class="exam-section-header">
+      <div class="sec-num">${examIdx+1}</div>
+      <div><div class="sec-title">${q.section}</div><div class="sec-sub">Question ${examIdx+1} of ${examQuestions.length}</div></div>
+    </div>
+    <div class="card">`;
+  if (q.audio) html += `<button class="speak-btn" style="margin-bottom:12px" onclick="speak('${q.audio.replace(/'/g,"\\'")}')">🔊 Listen</button>`;
+  if (q.emoji) html += `<div style="font-size:40px;margin-bottom:8px">${q.emoji}</div>`;
+  html += `<div class="q-text">${q.question}</div>`;
+  if (q.type === 'mc') {
+    html += `<div class="options">` +
+      q.options.map(o => `<button class="option-btn" onclick="answerExam(this,'${o.replace(/'/g,"\\'")}','${q.correct.replace(/'/g,"\\'")}')"> ${o}</button>`).join('') +
+      `</div>`;
+  } else {
+    html += `<div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input class="text-input" style="max-width:300px" placeholder="Type your answer..." id="exam-inp"
+        onkeydown="if(event.key==='Enter')answerExamWrite('${q.correct.replace(/'/g,"\\'").replace(/\./g,'\\.')}')">
+      <button class="btn btn-primary" onclick="answerExamWrite('${q.correct.replace(/'/g,"\\'").replace(/\./g,'\\.')}')">Submit ✓</button>
+    </div>`;
+  }
+  html += `<div class="feedback" id="exam-fb"></div></div>`;
+  c.innerHTML = html;
+}
+
+window.answerExam = function(btn, chosen, correct) {
+  const ok = chosen === correct;
+  examResults.push(ok);
+  btn.classList.add(ok?'correct':'wrong');
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const fb = document.getElementById('exam-fb');
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? '✅ Correct!' : `❌ Correct answer: "${correct}"`;
+  if(!ok) trackHard(correct);
+  setTimeout(()=>{ examIdx++; renderExamQuestion(); }, 1500);
+};
+
+window.answerExamWrite = function(correct) {
+  const inp = document.getElementById('exam-inp');
+  const val = inp.value.trim().toLowerCase();
+  const ok  = val === correct.toLowerCase();
+  examResults.push(ok);
+  inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+  const fb = document.getElementById('exam-fb');
+  fb.className='feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok ? '✅ Correct!' : `❌ Correct answer: "${correct}"`;
+  if(!ok) trackHard(correct);
+  speak(correct);
+  setTimeout(()=>{ examIdx++; renderExamQuestion(); }, 1800);
+};
+
+function showExamResults() {
+  const correct = examResults.filter(Boolean).length;
+  const total   = examResults.length;
+  const pct     = Math.round(correct / total * 100);
+  progress.exam.score = pct; progress.exam.done = true; updateHome();
+  const grade = pct>=90?'🏆 Sobresaliente':pct>=70?'🌟 Notable':pct>=50?'👍 Aprobado':'💪 Sigue practicando';
+  document.getElementById('exam-container').innerHTML = `
+    <div class="card score-card">
+      <div style="font-size:64px;margin-bottom:12px">${pct>=90?'🏆':pct>=70?'🌟':pct>=50?'👍':'💪'}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:40px;color:var(--purple);margin-bottom:8px">${pct}%</div>
+      <div style="font-size:28px;margin-bottom:12px">${getStars(pct)}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--navy);margin-bottom:8px">${grade}</div>
+      <div style="color:var(--gray-600);margin-bottom:24px">${correct} / ${total} correct answers</div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn btn-primary" onclick="showScreen('home')">🏠 Home</button>
+        <button class="btn btn-purple" onclick="startExam()">🔄 Try Again</button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// PROGRESS SCREEN
+// ============================================================
+function buildProgressScreen() {
+  const lessons = [
+    { key:'adjectives',  label:'💪 Adjectives' },
+    { key:'accessories', label:'🦸 Accessories' },
+    { key:'havegot',     label:'✏️ Have Got' },
+    { key:'questions',   label:'❓ Questions' },
+    { key:'listening',   label:'🎧 Listening' },
+  ];
+  const c = document.getElementById('progress-list');
+  c.innerHTML = lessons.map(l => {
+    const p = progress[l.key];
+    return `<div class="progress-stat">
+      <div class="ps-label">${l.label}</div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+        <span style="font-size:14px">${p.done ? getStars(p.score) : '–'}</span>
+        <span class="ps-score">${p.done ? p.score+'%' : '–'}</span>
+        <span style="font-size:18px">${p.done ? '✅' : '⬜'}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const hw = document.getElementById('hard-words-progress');
+  const entries = Object.entries(hardWords).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  hw.innerHTML = entries.length === 0
+    ? '<span style="color:var(--gray-400);font-size:13px;">No tricky words yet!</span>'
+    : entries.map(([w,c])=>`<div class="hard-word">${w}<span class="hw-count">${c}x</span></div>`).join('');
+
+  updateOverallProgress();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+updateCountdown();
+updateHome();
+
+// Load CONFIG if available
+try {
+  import('../components/config.js').then(m => {
+    window.CONFIG = m.CONFIG || m.default;
+    updateCountdown();
+  }).catch(()=>{});
+} catch(e) {}
+</script>
+</body>
+</html>

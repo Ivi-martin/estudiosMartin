@@ -64,6 +64,7 @@ export const CONFIG = {
         //{ label: 'Unidad 2 – Ortografía',            url: null },
         //{ label: 'Unidad 3 – Gramática',             url: null },
         { label: 'Unidad 6 – ¿Dónde es lka fiesta?',      url: 'apps/len6.html' },
+        { label: 'Unidad 7 – ¿Te interesa la ciencia?',      url: 'apps/len7.html' },
       ],
     },
     {
@@ -74,7 +75,7 @@ export const CONFIG = {
         //{ label: 'Unit 2 – My Family',                 url: null },
         //{ label: 'Unit 3 – My School',                 url: null },
         { label: "Unit 4 – Animals & Can/Can't",       url: 'apps/inglesUnit4.html' },
-        //{ label: 'Unit 5 – Food & Drinks',             url: null },
+        { label: "Unit 5 – Superheroes",       url: 'apps/inglesUnit5.html' },
         //{ label: 'Unit 6 – My Day',                    url: null },
         //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
