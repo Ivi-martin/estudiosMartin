@@ -2,2009 +2,916 @@
 <html lang="es">
 <head>
 <style>
-  :root { color-scheme: dark; }
-  html, body { background-color: #0d0d1a !important; }
+  :root { color-scheme: dark; --bg:#0f172a; }
+  html,body { background-color: #0f172a !important; }
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌀 Torneo de Beyblades – Martín Academy</title>
+<title>🌍 Conocimiento del Medio – Tema 5: Descubrimos el universo</title>
 <link rel="stylesheet" href="../components/shared.css">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
 <style>
 :root {
-  --navy:   #0d0d1a;
-  --surface:#1e1e3a;
-  --card:   #1a1a32;
-  --card2:  #22223e;
-  --gold:   #fbbf24;
-  --gold2:  #f59e0b;
-  --silver: #94a3b8;
-  --bronze: #cd7c3a;
-  --red:    #ef4444;
-  --green:  #22c55e;
-  --purple: #a855f7;
-  --text:   #e2e8f0;
-  --muted:  #64748b;
-  --border: rgba(255,255,255,0.08);
-  --shadow: 0 4px 24px rgba(0,0,0,0.6);
-  --radius: 16px;
+  --cyan:#0891b2; --cyan-l:#06b6d4; --cyan-bg:#cffafe;
+  --indigo:#4338ca; --indigo-l:#6366f1; --indigo-bg:#e0e7ff;
+  --amber:#d97706; --amber-l:#f59e0b; --amber-bg:#fef3c7;
+  --rose:#e11d48; --rose-l:#f43f5e; --rose-bg:#ffe4e6;
+  --green:#16a34a; --green-l:#22c55e; --green-bg:#dcfce7;
+  --teal:#0d9488; --teal-l:#14b8a6; --teal-bg:#ccfbf1;
+  --violet:#7c3aed; --violet-l:#8b5cf6; --violet-bg:#ede9fe;
+  --sky-c:#0284c7; --sky-bg:#e0f2fe;
+  --navy:#1a2744;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-600:#475569;--gray-800:#1e293b;
+  --shadow:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+  --radius:16px;--radius-sm:10px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Nunito', sans-serif; background: var(--navy); min-height: 100vh; color: var(--text); overflow-x: hidden; }
-
-/* BG */
-.arena-bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse at 50% 0%, #1a0a3a 0%, #0d0d1a 70%); }
-.arena-bg::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 30%, rgba(168,85,247,0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(59,130,246,0.07) 0%, transparent 50%); }
-.rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; opacity: 0.03; }
-.ring { position: absolute; inset: 0; border: 2px solid white; border-radius: 50%; animation: spin linear infinite; }
-.ring:nth-child(1) { animation-duration: 8s; }
-.ring:nth-child(2) { inset: 40px; animation-duration: 12s; animation-direction: reverse; }
-.ring:nth-child(3) { inset: 80px; animation-duration: 6s; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* LAYOUT */
-.app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
-.content { flex: 1; padding: 24px 20px; max-width: 900px; margin: 0 auto; width: 100%; }
-
-/* HEADER */
-.header { background: linear-gradient(135deg, #1a0a3a 0%, #2d1b69 50%, #1a0a3a 100%); padding: 13px 20px; display: flex; align-items: center; gap: 14px; border-bottom: 2px solid rgba(168,85,247,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-.header-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--gold); }
-.header-sub { font-size: 11px; color: rgba(255,255,255,0.45); font-weight: 700; }
-.header-right { margin-left: auto; }
-
-/* Logo del Header */
-.header-logo {
-  height: 45px;
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* SCREEN */
-.screen { display: none; }
-.screen.active { display: block; animation: fadeIn .3s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-/* CARDS */
-.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 14px; box-shadow: var(--shadow); }
-.card-title { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--gold); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-
-/* BTNS */
-.btn { padding: 9px 20px; border-radius: 11px; font-size: 14px; font-weight: 800; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; display: inline-flex; align-items: center; gap: 7px; transition: all .2s; }
-.btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #1a0a3a; }
-.btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.btn-ghost { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
-.btn-ghost:hover { background: rgba(255,255,255,0.11); }
-.btn-red { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.35); }
-.btn-red:hover { background: rgba(239,68,68,0.3); }
-.btn-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
-.btn-blue:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
-.btn-row { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 14px; }
-.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; filter: none !important; }
-
-/* PHASE BADGE */
-.phase-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(168,85,247,0.13); border: 1px solid rgba(168,85,247,0.28); color: #c084fc; padding: 4px 13px; border-radius: 99px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
-
-/* HERO */
-.hero { background: linear-gradient(135deg, #1a0a3a 0%, #2d1b69 60%, #1a0a3a 100%); border-radius: 20px; padding: 26px; margin-bottom: 18px; position: relative; overflow: hidden; border: 1px solid rgba(168,85,247,0.22); }
-.hero::after { content: '🌀'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 68px; opacity: 0.07; }
-.hero h1 { font-family: 'Fredoka One', cursive; font-size: 28px; color: white; margin-bottom: 5px; }
-.hero h1 span { color: var(--gold); }
-.hero p { color: rgba(255,255,255,0.5); font-size: 13px; line-height: 1.6; }
-
-/* TABS */
-.tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-.tab { flex: 1; min-width: 120px; padding: 9px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); transition: all .2s; text-align: center; font-family: 'Nunito', sans-serif; }
-.tab.active { background: rgba(168,85,247,0.18); border-color: rgba(168,85,247,0.4); color: #d8b4fe; }
-.tab.active.tab-duelo { background: rgba(59,130,246,0.18); border-color: rgba(59,130,246,0.4); color: #93c5fd; }
-
-/* REGISTRO GRID */
-.blades-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 11px; margin-bottom: 16px; }
-
-.blade-card { background: var(--card2); border: 1px solid var(--border); border-radius: 13px; overflow: hidden; display: flex; flex-direction: column; transition: all .2s; }
-.blade-card:hover { border-color: rgba(168,85,247,0.35); transform: translateY(-2px); }
-.blade-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(251,191,36,0.22); }
-.blade-card.draft-selected { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.3); opacity: 0.5; pointer-events: none; }
-
-.blade-img-wrap { position: relative; width: 100%; aspect-ratio: 1; background: rgba(168,85,247,0.07); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.blade-img { width: 100%; height: 100%; object-fit: cover; }
-.blade-img-ph { font-size: 46px; opacity: 0.3; }
-.sel-check { display: none; position: absolute; top: 6px; right: 6px; background: var(--gold); color: #1a0a3a; border-radius: 50%; width: 22px; height: 22px; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; }
-.blade-card.selected .sel-check { display: flex; }
-
-.blade-info { padding: 7px 9px 9px; }
-.blade-name { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--text); text-align: center; line-height: 1.3; margin-bottom: 7px; }
-.blade-actions { display: flex; gap: 5px; justify-content: center; }
-.blade-action-btn { padding: 3px 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); font-family: 'Nunito', sans-serif; transition: all .15s; }
-.blade-action-btn:hover { background: rgba(255,255,255,0.09); color: var(--text); }
-.blade-action-btn.del:hover { background: rgba(239,68,68,0.18); color: #f87171; border-color: rgba(239,68,68,0.3); }
-
-/* FORM NUEVA BEYBLADE */
-.new-blade-form { background: var(--card2); border: 1px solid rgba(168,85,247,0.18); border-radius: 13px; padding: 16px; margin-bottom: 15px; }
-.form-row { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
-.form-col { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
-.form-input { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 14px; font-family: 'Nunito', sans-serif; transition: border-color .2s; min-width: 180px; }
-.form-input:focus { outline: none; border-color: rgba(168,85,247,0.5); }
-
-/* IMAGE UPLOAD */
-.img-upload-area { width: 78px; height: 78px; border-radius: 10px; border: 2px dashed rgba(168,85,247,0.33); background: rgba(168,85,247,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; overflow: hidden; position: relative; }
-.img-upload-area:hover { border-color: rgba(168,85,247,0.6); background: rgba(168,85,247,0.11); }
-.img-upload-label { font-size: 9px; color: var(--muted); font-weight: 700; text-align: center; line-height: 1.3; margin-top: 3px; pointer-events: none; }
-
-/* SELECTION BAR */
-.selection-bar { display: flex; align-items: center; justify-content: space-between; background: var(--card2); border: 1px solid var(--border); border-radius: 11px; padding: 11px 15px; margin-bottom: 13px; }
-.sel-count { font-family: 'Fredoka One', cursive; font-size: 15px; }
-.sel-count span { color: var(--gold); }
-.sel-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-/* PROGRESS BAR */
-.prog-wrap { margin-bottom: 16px; }
-.prog-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 800; margin-bottom: 5px; }
-.prog-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-.prog-fill { height: 100%; background: linear-gradient(90deg, #a855f7, #3b82f6); border-radius: 3px; transition: width .5s; }
-
-/* COMBATE */
-.match-card { background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 16px; margin-bottom: 10px; transition: border-color .2s; }
-.match-card.decided { border-color: rgba(34,197,94,0.28); }
-.match-num { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 9px; text-transform: uppercase; }
-.fighters { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
-.fighter { flex: 1; text-align: center; }
-.fighter-name { font-family: 'Fredoka One', cursive; font-size: 14px; color: var(--text); margin-bottom: 2px; }
-.fighter-score { font-family: 'Fredoka One', cursive; font-size: 32px; line-height: 1; color: var(--text); }
-.fighter.winner .fighter-name { color: var(--green); }
-.fighter.winner .fighter-score { color: var(--green); text-shadow: 0 0 16px rgba(34,197,94,0.4); }
-.vs-badge { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--muted); background: rgba(255,255,255,0.04); padding: 5px 9px; border-radius: 7px; flex-shrink: 0; }
-
-/* ROUND BUTTONS */
-.rounds-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
-.round-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.round-label { font-size: 10px; color: var(--muted); font-weight: 800; }
-.round-btns { display: flex; gap: 5px; }
-.round-btn { padding: 5px 11px; font-size: 12px; font-weight: 700; border: 1px solid var(--border); border-radius: 7px; background: rgba(255,255,255,0.04); color: var(--text); cursor: pointer; transition: all .15s; font-family: 'Nunito', sans-serif; }
-.round-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
-.round-btn.win { background: rgba(34,197,94,0.18); border-color: rgba(34,197,94,0.42); color: #4ade80; }
-.round-btn.lost { background: transparent; color: var(--muted); border-color: transparent; }
-.round-btn:disabled { cursor: not-allowed; opacity: 0.4; }
-.match-result-label { text-align: center; font-size: 12px; font-weight: 700; min-height: 17px; color: var(--green); }
-
-/* SECTION SEP */
-.section-sep { font-family: 'Fredoka One', cursive; font-size: 14px; color: var(--purple); padding: 8px 0 5px; border-bottom: 1px solid rgba(168,85,247,0.16); margin-bottom: 11px; }
-
-/* PODIO */
-.podium { display: flex; flex-direction: column; gap: 10px; }
-.podium-item { display: flex; align-items: center; gap: 13px; background: var(--card2); border-radius: var(--radius); padding: 13px 16px; border: 1px solid var(--border); transition: transform .2s; }
-.podium-item:hover { transform: translateX(3px); }
-.podium-item.gold   { border-color: rgba(251,191,36,0.38); background: rgba(251,191,36,0.05); }
-.podium-item.silver { border-color: rgba(148,163,184,0.33); }
-.podium-item.bronze { border-color: rgba(205,124,58,0.33); }
-.podium-medal { font-size: 30px; width: 40px; text-align: center; }
-.podium-name { font-family: 'Fredoka One', cursive; font-size: 19px; }
-.podium-pts { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.podium-item.gold   .podium-name { color: var(--gold); }
-.podium-item.silver .podium-name { color: var(--silver); }
-.podium-item.bronze .podium-name { color: var(--bronze); }
-
-/* EMPTY STATE */
-.empty-state { text-align: center; padding: 36px 20px; color: var(--muted); }
-.empty-state .es-icon { font-size: 48px; margin-bottom: 11px; opacity: 0.45; }
-.empty-state p { font-size: 13px; line-height: 1.6; }
-
-/* DESTRUCCIÓN */
-.destroy-row { display: flex; gap: 6px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
-.destroy-btn {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px dashed rgba(239, 68, 68, 0.4);
-  color: #f87171;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: all 0.2s;
-  width: 100%;
-  margin-top: 10px;
-}
-.destroy-btn:hover:not(:disabled) { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.4); color: #f87171; }
-.destroy-btn.chosen {
-  background: #ef4444; /* Rojo sólido */
-  border-color: #ef4444;
-  color: white;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-  border-style: solid;
-}
-.destroy-btn:hover {
-  transform: scale(1.02);
-}
-.destroy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.pts-badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 99px; font-size: 10px; font-weight: 800; margin-left: 3px; }
-.pts-badge.normal { background: rgba(34,197,94,0.15); color: #4ade80; }
-.pts-badge.destroy { background: rgba(239,68,68,0.18); color: #f87171; }
-
-/* LIGA */
-.liga-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.liga-table th { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--border); }
-.liga-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
-.liga-table tr:last-child td { border-bottom: none; }
-.liga-table tr:hover td { background: rgba(255,255,255,0.02); }
-.liga-pos { font-family: 'Fredoka One', cursive; font-size: 16px; color: var(--muted); width: 28px; }
-.liga-pos.top1 { color: var(--gold); }
-.liga-pos.top2 { color: var(--silver); }
-.liga-pos.top3 { color: var(--bronze); }
-.liga-blade-cell { display: flex; align-items: center; gap: 9px; }
-.liga-pts { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--gold); text-align: right; }
-.liga-stat { font-size: 12px; color: var(--muted); text-align: center; }
-.liga-stat.highlight { color: var(--text); font-weight: 800; }
-.liga-progress { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 3px; overflow: hidden; }
-.liga-progress-fill { height: 100%; background: linear-gradient(90deg,#a855f7,#3b82f6); border-radius: 2px; }
-.match-group-title { font-family: 'Fredoka One', cursive; font-size: 13px; color: var(--purple); padding: 6px 0 4px; border-bottom: 1px solid rgba(168,85,247,0.14); margin-bottom: 9px; margin-top: 16px; }
-.match-group-title:first-child { margin-top: 0; }
-
-/* MODAL */
-.modal-bg { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 20px; }
-.modal-bg.open { display: flex; }
-.modal-box { background: #1a1a32; border: 1px solid rgba(168,85,247,0.22); border-radius: 16px; padding: 22px; max-width: 360px; width: 100%; box-shadow: 0 24px 60px rgba(0,0,0,0.7); }
-.modal-title { font-family: 'Fredoka One', cursive; font-size: 17px; color: var(--gold); margin-bottom: 13px; }
-
-.rank-badge {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  border: 1px solid var(--gold);
-  border-radius: 6px;
-  padding: 1px 6px;
-  font-size: 10px;
-  font-weight: 800;
-  margin-bottom: 4px;
-  color: var(--gold);
-  display: inline-block;
-  text-transform: uppercase;
-}
-
-.fighter {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.liga-table th {
-  padding: 10px 5px;
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.liga-stat {
-  font-weight: 700;
-  font-family: monospace;
-}
-
-@media (max-width: 600px) {
-  .blades-grid { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
-  .content { padding: 12px; }
-  .form-row { flex-direction: column; }
-}
-
-/* ══ BATTLE ANIMATION OVERLAY ══ */
-.battle-overlay {
-  display: none; position: fixed; inset: 0; z-index: 500;
-  background: #000; align-items: center; justify-content: center;
-}
-.battle-overlay.active { display: flex; }
-.battle-overlay video { width: 90%; height: 90%; object-fit: cover; }
-
-/* ══ COMBATE UNO A UNO ══ */
-.match-nav-header {
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--card2); border: 1px solid var(--border);
-  border-radius: 11px; padding: 10px 15px; margin-bottom: 13px; gap: 10px;
-}
-.match-nav-counter { font-family: 'Fredoka One', cursive; font-size: 15px; color: var(--gold); white-space: nowrap; }
-.match-nav-dots { display: flex; gap: 5px; flex-wrap: wrap; flex: 1; justify-content: center; }
-.match-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid var(--border); transition: all .2s; }
-.match-dot.done { background: var(--green); border-color: var(--green); }
-.match-dot.current { background: var(--gold); border-color: var(--gold); transform: scale(1.3); }
-.btn-next-match {
-  background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #1a0a3a;
-  padding: 11px 22px; border-radius: 11px; font-size: 14px; font-weight: 900;
-  cursor: pointer; border: none; font-family: 'Nunito', sans-serif;
-  display: inline-flex; align-items: center; gap: 8px; transition: all .2s;
-  margin-top: 14px; width: 100%; justify-content: center;
-}
-.btn-next-match:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.btn-next-match:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; filter: none !important; }
-
-/* ESTILOS NUEVOS DUELOS PADRE E HIJO */
-.duelo-score-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 20px; text-align: center; flex: 1; }
-.duelo-score-name { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; margin-bottom: 5px; }
-.duelo-score-pts { font-family: 'Fredoka One', cursive; font-size: 32px; color: white; line-height: 1; }
-.duelo-score-pts.p1 { color: #60a5fa; }
-.duelo-score-pts.p2 { color: #f87171; }
-.draft-roster-box { width: 60px; height: 60px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; opacity: 0.6; flex-shrink: 0; cursor: pointer;}
-.draft-roster-filled { width: 60px; text-align: center; flex-shrink: 0; cursor: pointer; }
-.draft-role-badge { font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; text-transform: uppercase;}
-.role-campeon { background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.4); }
-.role-explorador { background: rgba(148,163,184,0.2); color: #94a3b8; border: 1px solid rgba(148,163,184,0.4); }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+.stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#020617 0%,#0c1445 40%,#0f172a 100%);overflow:hidden}
+.stars-bg::before{content:'✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦ ★ · ✦';
+  position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.07);
+  line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.5}to{opacity:1}}
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+.header{background:linear-gradient(135deg,#020617 0%,#1e3a8a 60%,#0891b2 100%);padding:16px 24px;
+  display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);
+  box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.header-logo span{color:#fbbf24}
+.header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.progress-strip{background:rgba(0,0,0,.4);padding:10px 24px;display:flex;align-items:center;gap:16px}
+.progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+.progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#0891b2,#67e8f9);border-radius:4px;transition:width .5s ease}
+.progress-pct{font-size:12px;color:#67e8f9;font-weight:800}
+.main{flex:1;display:flex;gap:0}
+.sidebar{width:240px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+  padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+.sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+  transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+  color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+.nav-btn.active{background:rgba(8,145,178,.3);color:white;border:1px solid rgba(8,145,178,.5)}
+.nav-btn.completed{color:#67e8f9}
+.nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+.content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.lesson-header{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+.lesson-icon{font-size:42px}
+.lesson-info h2{font-family:'Fredoka One',cursive;font-size:26px;color:white}
+.lesson-info p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+.phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+.phase-tab.active{background:var(--cyan);color:white;border-color:var(--cyan-l)}
+.phase-tab.done{background:rgba(8,145,178,.15);color:#67e8f9;border-color:rgba(8,145,178,.3)}
+.card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.theory-highlight{background:var(--amber-bg);border-left:4px solid var(--amber-l);
+  border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+.theory-highlight.cyan{background:var(--cyan-bg);border-color:var(--cyan)}
+.theory-highlight.indigo{background:var(--indigo-bg);border-color:var(--indigo)}
+.theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
+.theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky-c)}
+.theory-highlight.violet{background:var(--violet-bg);border-color:var(--violet)}
+.theory-highlight.teal{background:var(--teal-bg);border-color:var(--teal)}
+.exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+.exercise-box .q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--cyan);text-transform:uppercase;margin-bottom:8px}
+.exercise-box .q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+.options{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+.option-btn:hover:not(:disabled){border-color:var(--cyan);background:var(--cyan-bg)}
+.option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.option-btn.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+.option-btn:disabled{cursor:not-allowed;opacity:.8}
+.text-input{padding:12px 16px;border:2px solid var(--gray-200);border-radius:10px;
+  font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;transition:all .2s;
+  background:#fff !important;color:#1a2744 !important}
+.text-input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(8,145,178,.15)}
+.text-input.correct{border-color:var(--green);background:var(--green-bg) !important}
+.text-input.wrong{border-color:var(--rose);background:var(--rose-bg) !important}
+.feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+.feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+.feedback.correct{background:var(--green-bg);color:var(--green)}
+.feedback.wrong{background:var(--rose-bg);color:var(--rose)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+  transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--cyan);color:white}
+.btn-primary:hover{background:var(--cyan-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(8,145,178,.4)}
+.btn-success{background:var(--teal);color:white}
+.btn-success:hover{background:var(--teal-l);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+.score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--cyan)}
+.score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+.stars-display{font-size:36px;letter-spacing:4px}
+.score-grade{display:inline-block;padding:8px 20px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:20px;margin-top:12px}
+.score-grade.excellent{background:var(--green-bg);color:var(--green)}
+.score-grade.good{background:var(--amber-bg);color:var(--amber)}
+.score-grade.ok{background:var(--rose-bg);color:var(--rose)}
+.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.test-dots{display:flex;gap:6px}
+.test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+.test-dot.current{background:var(--cyan);transform:scale(1.3)}
+.test-dot.done-correct{background:var(--green)}
+.test-dot.done-wrong{background:var(--rose)}
+.tf-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.tf-btn{padding:12px 28px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;
+  border:2px solid var(--gray-200);background:white;cursor:pointer;transition:all .2s;color:var(--navy)}
+.tf-btn:hover:not(:disabled){transform:scale(1.05)}
+.tf-btn.verd:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+.tf-btn.fals:hover:not(:disabled){border-color:var(--rose);background:var(--rose-bg)}
+.tf-btn.correct{background:var(--green-bg) !important;border-color:var(--green) !important;color:var(--green) !important}
+.tf-btn.wrong{background:var(--rose-bg) !important;border-color:var(--rose) !important;color:var(--rose) !important}
+.tf-btn:disabled{cursor:not-allowed}
+/* Planet grid */
+.planet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin:12px 0}
+.planet-card{background:linear-gradient(135deg,#0c1445,#1e3a8a);border:2px solid rgba(103,232,249,.3);
+  border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s}
+.planet-card:hover{transform:scale(1.05);border-color:var(--cyan-l)}
+.planet-card .p-emoji{font-size:28px;margin-bottom:6px}
+.planet-card .p-name{font-family:'Fredoka One',cursive;font-size:13px;color:#67e8f9}
+.planet-card .p-fact{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;line-height:1.4}
+/* Progress */
+.progress-topic-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+.progress-topic-row .pt-icon{font-size:22px}
+.progress-topic-row .pt-name{font-weight:700;color:rgba(255,255,255,.8);flex:1;font-size:14px}
+.progress-topic-row .pt-score{font-family:'Fredoka One',cursive;font-size:22px;color:#67e8f9}
+.progress-topic-row .pt-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.progress-topic-row .pt-fill{height:100%;background:linear-gradient(90deg,#0891b2,#67e8f9);border-radius:99px;transition:width .8s}
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+.content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+@media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
 </style>
 </head>
 <body>
-
-<div class="arena-bg">
-  <div class="rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
-</div>
-
+<div class="stars-bg"></div>
 <div class="app">
 <div id="app-header-root"></div>
+
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO DEL TEMA</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+<div class="sidebar">
+  <div class="sidebar-section">Cono. Medio – Tema 5</div>
+  <button class="nav-btn active" onclick="showScreen('universo')" id="nav-universo">
+    <span class="nav-icon">🌌</span> El universo
+  </button>
+  <button class="nav-btn" onclick="showScreen('solar')" id="nav-solar">
+    <span class="nav-icon">☀️</span> Sistema solar
+  </button>
+  <button class="nav-btn" onclick="showScreen('tierra')" id="nav-tierra">
+    <span class="nav-icon">🌍</span> La Tierra
+  </button>
+  <button class="nav-btn" onclick="showScreen('movimientos')" id="nav-movimientos">
+    <span class="nav-icon">🔄</span> Movimientos de la Tierra
+  </button>
+  <button class="nav-btn" onclick="showScreen('luna')" id="nav-luna">
+    <span class="nav-icon">🌙</span> La Luna
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Resultados
+  </button>
+</div>
+
 <div class="content">
 
-  <div class="screen active" id="s-home">
-    <div class="hero">
-      <h1>🌀 Arena <span>Beyblade</span></h1>
-      <p>Registra tus Beyblades con foto, edítalos o elimínalos cuando quieras. Organiza torneos, ligas o juega un duelo táctico.</p>
+<!-- UNIVERSO -->
+<div class="screen active" id="screen-universo">
+  <div class="lesson-header">
+    <div class="lesson-icon">🌌</div>
+    <div class="lesson-info">
+      <h2>¿Qué hay en el universo?</h2>
+      <p>Estrellas, planetas, satélites y el sistema solar</p>
     </div>
+    <button class="btn btn-primary" onclick="history.back()" style="margin-left:auto;padding:8px 16px;font-size:13px">← Volver</button>
+  </div>
+  <div class="phase-tabs" id="tabs-universo"></div>
+  <div id="universo-content"></div>
+</div>
 
-    <div class="tabs">
-      <div class="tab active" id="tab-registro" onclick="switchTab('registro')">⚙️ Mis Beyblades</div>
-      <div class="tab" id="tab-torneo" onclick="switchTab('torneo')">🏆 Torneo Clásico</div>
-      <div class="tab tab-duelo" id="tab-duelos" onclick="switchTab('duelos')">⚔️ Duelos Padre/Hijo</div>
-    </div>
-
-    <div id="panel-registro">
-      <div class="new-blade-form">
-        <div style="font-family:'Fredoka One',cursive;font-size:15px;color:var(--gold);margin-bottom:11px" id="form-title">➕ Añadir Beyblade</div>
-        <div class="form-row">
-          <div class="form-col">
-            <div class="form-label">Foto</div>
-            <div class="img-upload-area" id="upload-area" onclick="document.getElementById('img-input').click()">
-              <span style="font-size:24px">📷</span>
-              <span class="img-upload-label">Subir foto</span>
-            </div>
-            <input type="file" accept="image/*" style="display:none" id="img-input" onchange="onImageSelected(event)">
-          </div>
-          <div class="form-col" style="flex:1">
-            <div class="form-label">Nombre</div>
-            <input class="form-input" id="blade-name-input" placeholder="Ej: Storm Pegasus..." maxlength="30">
-            <div class="btn-row" style="margin-top:9px">
-              <button class="btn btn-gold" onclick="saveBlade()">💾 Guardar</button>
-              <button class="btn btn-ghost" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none">Cancelar</button>
-            </div>
-          </div>
-        </div>
-        <input type="hidden" id="editing-id">
-      </div>
-
-      <div class="blades-grid" id="blades-grid"></div>
-    </div>
-
-    <div id="panel-torneo" style="display:none">
-      <div class="selection-bar" style="flex-wrap: wrap; gap: 15px;">
-        <div>
-          <div class="sel-count">Seleccionados: <span id="sel-count">0</span></div>
-          <div class="sel-hint" id="sel-hint">Selecciona un número par de Beyblades (mín. 2)</div>
-        </div>
-        
-        <div style="display:flex; flex-direction:column; gap:5px;">
-          <div class="form-label">Modo de Torneo</div>
-          <select id="tournament-mode" class="form-input" style="min-width: 160px; background: var(--card);" onchange="onModeChange()">
-            <option value="corto">🏆 Torneo (Mejor de 3)</option>
-            <option value="largo">🏆 Torneo (Mejor de 5)</option>
-            <option value="liga">⚽ Liga (Todos vs todos)</option>
-          </select>
-        </div>
-
-        <button class="btn btn-gold" id="start-tournament-btn" disabled onclick="startTournament()">🌀 ¡Empezar!</button>
-      </div>
-      <div id="liga-info" style="display:none; background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.2); border-radius:11px; padding:11px 15px; margin-bottom:13px; font-size:13px; color:#c084fc;">
-        ⚽ <strong>Modo Liga:</strong> todos los Beyblades seleccionados se enfrentan entre sí una vez. Cada victoria vale <strong>3 puntos</strong>. Las destrucciones suman <strong>+1 pt extra</strong> al ganador. Se muestra la clasificación en tiempo real.
-      </div>
-      <div class="blades-grid" id="blades-selection-grid"></div>
-    </div>
-
-    <div id="panel-duelos" style="display:none">
-      
-      <div id="duelo-config-screen" class="card" style="border-color: var(--blue);">
-         <div class="card-title" style="color: var(--blue);">📝 Inscripción de Jugadores</div>
-         <p style="font-size:13px; color:var(--muted); margin-bottom:15px">Escribid vuestros nombres de guerra y elegid el campo de batalla. Necesitáis al menos <strong>12 Beyblades registrados</strong> en total (6 para cada uno).</p>
-         
-         <div class="form-row" style="margin-bottom: 15px;">
-           <div class="form-col" style="flex:1">
-             <div class="form-label" style="color:#60a5fa">Jugador 1</div>
-             <input class="form-input" id="p1-name" placeholder="Ej: Papá">
-           </div>
-           <div class="form-col" style="flex:1">
-             <div class="form-label" style="color:#f87171">Jugador 2</div>
-             <input class="form-input" id="p2-name" placeholder="Ej: Hijo">
-           </div>
-         </div>
-         <div class="form-col" style="margin-bottom: 15px;">
-           <div class="form-label">Modo de Duelo</div>
-           <select id="duelo-mode-select" class="form-input" style="width:100%;">
-             <option value="draft">⚔️ Modo Draft (Táctico y Ordenado)</option>
-             <option value="guerra">🏴 Guerra de Clanes (Campeones vs Exploradores)</option>
-             <option value="supervivencia">💀 Supervivencia (El rey de la pista)</option>
-           </select>
-         </div>
-         <button class="btn btn-blue" style="width:100%; justify-content:center" onclick="iniciarReclutamiento()">🛡️ Iniciar Reclutamiento</button>
-      </div>
-
-      <div id="duelo-draft-screen" class="card" style="display:none; border-color: var(--blue);">
-        <div class="card-title" id="draft-title" style="color: #60a5fa;">Turno de: Jugador 1</div>
-        <p style="font-size:13px; color:var(--text); margin-bottom:15px; background: rgba(59,130,246,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.3);" id="draft-instructions"></p>
-
-        <div class="selection-bar" style="background: rgba(0,0,0,0.2);">
-          <div class="sel-count">Reclutados: <span id="draft-count" style="color:white">0</span> / 6</div>
-          <button class="btn btn-gold" id="btn-confirm-draft" disabled onclick="confirmarReclutamiento()">✅ Confirmar Equipo</button>
-        </div>
-
-        <div class="section-sep" style="color:var(--text); font-size:12px;">Tu Equipo Actual (Pulsa uno para quitarlo)</div>
-        <div style="display:flex; gap:10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px;" id="draft-roster-preview">
-          </div>
-
-        <div class="section-sep" style="color:var(--blue)">Arsenal Disponible</div>
-        <div class="blades-grid" id="draft-grid"></div>
-      </div>
-    </div>
-
-  </div> <div class="screen" id="s-round1">
-    <div class="phase-badge">🌀 FASE 1 · Clasificación</div>
-    <div class="prog-wrap">
-      <div class="prog-info"><span>Combates completados</span><span id="prog1-txt">0 / 6</span></div>
-      <div class="prog-track"><div class="prog-fill" id="prog1" style="width:0%"></div></div>
-    </div>
-    <div class="card">
-      <div class="card-title" id="r1-title">🥊 6 Combates</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:13px">Gana quien llegue al límite de victorias · Si se alcanza el límite no se juegan más rondas.</p>
-      <div id="matches-r1"></div>
-    </div>
-    <div id="btn-r1-wrap" style="display:none">
-      <div style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.22);border-radius:11px;padding:12px 16px;margin-bottom:12px;font-weight:700;color:#4ade80;font-size:13px">✅ ¡Fase 1 completada! 6 Beyblades pasan a semifinales.</div>
-      <button class="btn btn-gold" onclick="advanceToSemis()">⚔️ Semifinales →</button>
+<!-- SISTEMA SOLAR -->
+<div class="screen" id="screen-solar">
+  <div class="lesson-header">
+    <div class="lesson-icon">☀️</div>
+    <div class="lesson-info">
+      <h2>El sistema solar</h2>
+      <p>Los 8 planetas y sus características</p>
     </div>
   </div>
+  <div class="phase-tabs" id="tabs-solar"></div>
+  <div id="solar-content"></div>
+</div>
 
-  <div class="screen" id="s-round2">
-    <div class="phase-badge">⚔️ FASE 2 · Semifinales</div>
-    <div class="prog-wrap">
-      <div class="prog-info"><span>Combates completados</span><span id="prog2-txt">0 / 3</span></div>
-      <div class="prog-track"><div class="prog-fill" id="prog2" style="width:0%"></div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🏆 3 Combates · Mejor de 3 Rondas</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:13px">Los 3 ganadores pasan a la Gran Final.</p>
-      <div id="matches-r2"></div>
-    </div>
-    <div id="btn-r2-wrap" style="display:none">
-      <div style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.22);border-radius:11px;padding:12px 16px;margin-bottom:12px;font-weight:700;color:#4ade80;font-size:13px">✅ ¡Semifinales completadas! Los 3 finalistas están listos.</div>
-      <button class="btn btn-gold" onclick="advanceToFinal()">🏆 Gran Final →</button>
+<!-- LA TIERRA -->
+<div class="screen" id="screen-tierra">
+  <div class="lesson-header">
+    <div class="lesson-icon">🌍</div>
+    <div class="lesson-info">
+      <h2>¿Cómo es la Tierra?</h2>
+      <p>Continentes, océanos, atmósfera y mapas</p>
     </div>
   </div>
+  <div class="phase-tabs" id="tabs-tierra"></div>
+  <div id="tierra-content"></div>
+</div>
 
-  <div class="screen" id="s-final">
-    <div class="phase-badge">🏆 GRAN FINAL · Round Robin</div>
-    <div class="prog-wrap">
-      <div class="prog-info"><span>Combates completados</span><span id="prog3-txt">0 / 6</span></div>
-      <div class="prog-track"><div class="prog-fill" id="prog3" style="width:0%"></div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🌀 Todos contra todos · Mejor de 3</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Cada victoria suma 1 punto. Gana quien más puntos acumule.</p>
-      <div style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap" id="final-scores-live"></div>
-      <div id="matches-final"></div>
-    </div>
-    <div id="btn-final-wrap" style="display:none">
-      <button class="btn btn-gold" onclick="showPodium()">🏆 Ver el Podio →</button>
+<!-- MOVIMIENTOS -->
+<div class="screen" id="screen-movimientos">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔄</div>
+    <div class="lesson-info">
+      <h2>Los movimientos de la Tierra</h2>
+      <p>Rotación, traslación y las estaciones</p>
     </div>
   </div>
+  <div class="phase-tabs" id="tabs-movimientos"></div>
+  <div id="movimientos-content"></div>
+</div>
 
-  <div class="screen" id="s-podium">
-    <div class="card" style="text-align:center;padding:26px 20px;border-color:rgba(251,191,36,0.28);background:rgba(251,191,36,0.04)">
-      <div style="font-size:52px;margin-bottom:8px">🏆</div>
-      <div style="font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);margin-bottom:10px">¡Campeón del torneo!</div>
-      <div id="champion-img-wrap" style="margin:0 auto 10px;width:88px;height:88px"></div>
-      <div id="champion-name" style="font-family:'Fredoka One',cursive;font-size:34px;color:white;margin-bottom:5px"></div>
-      <div id="champion-pts" style="font-size:13px;color:var(--muted)"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🥇 Podio final</div>
-      <div class="podium" id="podium"></div>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="backToHome()">🔄 Nuevo torneo</button>
+<!-- LA LUNA -->
+<div class="screen" id="screen-luna">
+  <div class="lesson-header">
+    <div class="lesson-icon">🌙</div>
+    <div class="lesson-info">
+      <h2>¿Qué vemos en el cielo de noche?</h2>
+      <p>La Luna, las estrellas y las fases lunares</p>
     </div>
   </div>
+  <div class="phase-tabs" id="tabs-luna"></div>
+  <div id="luna-content"></div>
+</div>
 
-  <div class="screen" id="s-liga">
-    <div class="phase-badge">⚽ LIGA · Todos contra todos</div>
-    <div class="prog-wrap">
-      <div class="prog-info"><span>Combates completados</span><span id="liga-prog-txt">0 / 66</span></div>
-      <div class="prog-track"><div class="prog-fill" id="liga-prog" style="width:0%"></div></div>
-    </div>
+<!-- PROGRESO -->
+<div class="screen" id="screen-progreso">
+  <div id="progreso-content"></div>
+</div>
 
-    <div class="card" id="liga-tabla-card">
-      <div class="card-title">📊 Clasificación</div>
-      <table class="liga-table">
-        <thead>
-          <tr>
-            <th style="width:28px">Pos</th>
-            <th style="width:40px">Escudo</th>
-            <th>Beyblade</th>
-            <th style="text-align:center">PJ</th>
-            <th style="text-align:center">V</th>
-            <th style="text-align:center">💥</th>
-            <th style="text-align:center; color:var(--green)">PG</th>
-            <th style="text-align:center; color:var(--red)">PP</th>
-            <th style="text-align:right">PTS</th>
-          </tr>
-        </thead>
-        <tbody id="liga-tbody"></tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title">🥊 Combates</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:13px">Victoria = <span style="color:#4ade80;font-weight:800">3 pts</span> · Destrucción = <span style="color:#f87171;font-weight:800">4 pts</span> al ganador</p>
-      <div id="liga-matches"></div>
-    </div>
-
-    <div id="btn-liga-wrap" style="display:none">
-      <div style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.22);border-radius:11px;padding:12px 16px;margin-bottom:12px;font-weight:700;color:#4ade80;font-size:13px">🏆 ¡Liga completada! Consulta la clasificación final.</div>
-      <button class="btn btn-gold" onclick="showLigaPodium()">🥇 Ver el Podio →</button>
-    </div>
-  </div>
-
-  <div class="screen" id="s-liga-podium">
-    <div class="card" style="text-align:center;padding:26px 20px;border-color:rgba(251,191,36,0.28);background:rgba(251,191,36,0.04)">
-      <div style="font-size:52px;margin-bottom:8px">⚽</div>
-      <div style="font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);margin-bottom:10px">¡Campeón de la Liga!</div>
-      <div id="liga-champion-img" style="margin:0 auto 10px;width:88px;height:88px"></div>
-      <div id="liga-champion-name" style="font-family:'Fredoka One',cursive;font-size:34px;color:white;margin-bottom:5px"></div>
-      <div id="liga-champion-pts" style="font-size:13px;color:var(--muted)"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🥇 Clasificación final</div>
-      <table class="liga-table">
-        <thead>
-          <tr>
-            <th style="width:28px">Pos</th>
-            <th style="width:40px">Escudo</th>
-            <th>Beyblade</th>
-            <th style="text-align:center">PJ</th>
-            <th style="text-align:center">V</th>
-            <th style="text-align:center">💥</th>
-            <th style="text-align:center; color:var(--green)">PG</th>
-            <th style="text-align:center; color:var(--red)">PP</th>
-            <th style="text-align:right">PTS</th>
-          </tr>
-        </thead>
-        <tbody id="liga-final-tbody"></tbody>
-      </table>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="backToHome()">🔄 Nueva competición</button>
-    </div>
-  </div>
-
-  <div class="screen" id="s-duelo-batalla">
-    <div class="phase-badge" style="background:rgba(59,130,246,0.15); border-color:rgba(59,130,246,0.4); color:#93c5fd" id="duelo-mode-badge">⚔️ MODO DUELO</div>
-    
-    <div style="display:flex; gap:15px; margin-bottom: 20px;">
-      <div class="duelo-score-box" style="border-bottom: 3px solid #60a5fa;">
-        <div class="duelo-score-name" id="duelo-p1-name-display">JUGADOR 1</div>
-        <div class="duelo-score-pts p1" id="duelo-p1-score-display">0</div>
-      </div>
-      <div style="display:flex; align-items:center; font-family:'Fredoka One'; font-size:24px; color:var(--muted)">VS</div>
-      <div class="duelo-score-box" style="border-bottom: 3px solid #f87171;">
-        <div class="duelo-score-name" id="duelo-p2-name-display">JUGADOR 2</div>
-        <div class="duelo-score-pts p2" id="duelo-p2-score-display">0</div>
-      </div>
-    </div>
-
-    <div class="card">
-       <div id="duelo-match-container"></div>
-    </div>
-  </div>
-
-  <div class="screen" id="s-duelo-resultados">
-    <div class="card" style="text-align:center;padding:30px 20px;border-color:rgba(59,130,246,0.4);background:rgba(59,130,246,0.05)">
-      <div style="font-size:60px;margin-bottom:10px">🏆</div>
-      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:white;margin-bottom:5px" id="duelo-winner-name">¡Ganador!</div>
-      <div style="font-size:14px;color:var(--muted);margin-bottom:20px" id="duelo-winner-desc">Ha dominado el duelo</div>
-      
-      <div style="display:flex; justify-content:center; gap:20px; margin-top:20px; text-align:left;">
-        <div class="pt-card" style="background:var(--card); padding:15px; border-radius:12px; min-width:120px;">
-           <div style="font-size:11px; color:#60a5fa; font-weight:800" id="res-p1-name">P1</div>
-           <div style="font-family:'Fredoka One'; font-size:24px; color:white" id="res-p1-pts">0 pts</div>
-        </div>
-        <div class="pt-card" style="background:var(--card); padding:15px; border-radius:12px; min-width:120px;">
-           <div style="font-size:11px; color:#f87171; font-weight:800" id="res-p2-name">P2</div>
-           <div style="font-family:'Fredoka One'; font-size:24px; color:white" id="res-p2-pts">0 pts</div>
-        </div>
-      </div>
-    </div>
-    <div class="btn-row" style="justify-content:center">
-      <button class="btn btn-blue" onclick="backToHome()">🔄 Nuevo Duelo</button>
-    </div>
-  </div>
-
+</div>
+</div>
 </div>
 <div id="app-footer-root"></div>
-</div>
-
-<div class="modal-bg" id="modal-delete">
-  <div class="modal-box">
-    <div class="modal-title">🗑️ Eliminar Beyblade</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">¿Seguro que quieres eliminar <strong id="modal-del-name" style="color:var(--text)"></strong>? Esta acción no se puede deshacer.</p>
-    <div class="btn-row">
-      <button class="btn btn-red" onclick="confirmDelete()">Sí, eliminar</button>
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-    </div>
-  </div>
-</div>
 
 <script>
-const BATTLE_VIDEO_SRC = "../assets/bbmartin.mp4";</script>
-<script>
-// ============================================================
-// STORAGE Y UTILIDADES ORIGINALES
-// ============================================================
-const STORAGE_KEY = 'beyblade_registry_v1';
-function loadRegistry() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
-function saveRegistry(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+const progress = {
+  universo:    {done:false, score:0},
+  solar:       {done:false, score:0},
+  tierra:      {done:false, score:0},
+  movimientos: {done:false, score:0},
+  luna:        {done:false, score:0},
+};
 
-let registry = loadRegistry();
-let tournamentMode = 'corto';
-let tieBreakActive = false;
-
-// Precargar las voces del sistema
-if ('speechSynthesis' in window) {
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+function updateHome() {
+  const scores = Object.values(progress).map(p => p.done ? p.score : 0);
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0) / scores.length);
+  document.getElementById('overall-progress').style.width = avg + '%';
+  document.getElementById('overall-pct').textContent = avg + '%';
+  Object.entries(progress).forEach(([k,p]) => {
+    const nb = document.getElementById('nav-'+k);
+    if(nb && p.done) nb.classList.add('completed');
+  });
 }
 
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
-  return a;
-}
-function pairUp(arr) { const p=[]; for(let i=0;i<arr.length;i+=2) p.push([arr[i],arr[i+1]]); return p; }
+let _inited = {};
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function getBlade(id) { return registry.find(b=>b.id===id); }
-
-function bladeImgHTML(blade, size, radius) {
-  if (blade && blade.img)
-    return `<img src="${blade.img}" style="width:${size}px;height:${size}px;border-radius:${radius}px;object-fit:cover;display:block;margin:0 auto 5px;" alt="${blade.name}">`;
-  return `<div style="width:${size}px;height:${size}px;border-radius:${radius}px;background:rgba(168,85,247,0.1);display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.42)}px;margin:0 auto 5px;">🌀</div>`;
-}
-
-// ============================================================
-// MODIFICADO: TABS (Para incluir Duelos)
-// ============================================================
-function switchTab(tab) {
-  document.getElementById('tab-registro').classList.toggle('active', tab==='registro');
-  document.getElementById('tab-torneo').classList.toggle('active', tab==='torneo');
-  document.getElementById('tab-duelos').classList.toggle('active', tab==='duelos');
-  
-  document.getElementById('panel-registro').style.display = tab==='registro' ? 'block' : 'none';
-  document.getElementById('panel-torneo').style.display   = tab==='torneo'   ? 'block' : 'none';
-  document.getElementById('panel-duelos').style.display   = tab==='duelos'   ? 'block' : 'none';
-  
-  if (tab==='torneo') renderSelectionGrid();
-  if (tab==='duelos') document.getElementById('duelo-config-screen').style.display = 'block';
-}
-
-// ============================================================
-// IMAGEN UPLOAD (ORIGINAL)
-// ============================================================
-let pendingImg = '';
-
-function onImageSelected(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    pendingImg = ev.target.result;
-    document.getElementById('upload-area').innerHTML =
-      `<img src="${pendingImg}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:8px;">`;
-  };
-  reader.readAsDataURL(file);
-}
-
-// ============================================================
-// GUARDAR / EDITAR / BORRAR (ORIGINAL)
-// ============================================================
-function saveBlade() {
-  const name = document.getElementById('blade-name-input').value.trim();
-  if (!name) { alert('Escribe un nombre para el Beyblade'); return; }
-  const editingId = document.getElementById('editing-id').value;
-
-  if (editingId) {
-    const b = getBlade(editingId);
-    if (b) { b.name = name; if (pendingImg) b.img = pendingImg; }
-  } else {
-    registry.push({ id: uid(), name, img: pendingImg });
-  }
-  saveRegistry(registry);
-  resetForm();
-  renderRegistry();
-  renderSelectionGrid();
-}
-
-// ============================================================
-// VIDEO & ONE-AT-A-TIME SYSTEM (ORIGINAL)
-// ============================================================
-function playBattleAnimation(cb) {
-  const overlay = document.getElementById('battle-overlay');
-  const video = document.getElementById('battle-video');
-
-  if (!video.src) video.src = BATTLE_VIDEO_SRC;
-
-  video.currentTime = 0;
-  overlay.classList.add('active');
-  video.play().catch(()=>{});
-
-  let done = false;
-
-  function finish() {
-    if (done) return;
-    done = true;
-
-    // 🔊 VOZ FINAL
-    const speech = new SpeechSynthesisUtterance("Beyblade Martín");
-
-    speech.lang = "es-ES";
-    speech.rate = 0.85;
-    speech.pitch = 0.8;
-
-    const voces = speechSynthesis.getVoices();
-    const voz = voces.find(v =>
-      v.name.toLowerCase().includes("male") ||
-      v.name.toLowerCase().includes("es")
-    );
-
-    if (voz) speech.voice = voz;
-
-    speechSynthesis.speak(speech);
-
-    setTimeout(() => {
-      overlay.classList.remove('active');
-      video.pause();
-      if (cb) cb();
-    }, 1200); 
-  }
-
-  video.onended = finish;
-
-  setTimeout(finish, 9000);
-}
-
-let _curCid='', _curPhase='', _curIdx=0, _curTotal=0;
-
-function showMatchOne(cid, matches, phase, idx) {
-  _curCid = cid; _curPhase = phase; _curIdx = idx; _curTotal = matches.length;
-  const container = document.getElementById(cid);
-  const m = matches[idx];
-  const total = matches.length;
-  const isLast = idx >= total - 1;
-  const phaseLabel = phase==='r1'?'Fase 1':phase==='r2'?'Semifinales':'Gran Final';
-
-  const dots = matches.map((_,i) => {
-    const cls = i < idx ? 'done' : i === idx ? 'current' : '';
-    return '<div class="match-dot ' + cls + '"></div>';
-  }).join('');
-
-  const btnLabel = isLast ? '🏆 Ver resultados →' : '⚡ Siguiente combate →';
-  const btnDis = m.winner ? '' : 'disabled';
-
-  container.innerHTML =
-    '<div class="match-nav-header">' +
-      '<div class="match-nav-counter">⚔️ ' + (idx+1) + ' / ' + total + '</div>' +
-      '<div class="match-nav-dots">' + dots + '</div>' +
-      '<div style="font-size:11px;color:var(--muted);font-weight:800;white-space:nowrap">' + phaseLabel + '</div>' +
-    '</div>' +
-    '<div id="single-match-wrap">' + renderMatchCard(m, idx, phase) + '</div>' +
-    '<button class="btn-next-match" id="btn-next-match" ' + btnDis + ' onclick="onNextMatch()">' +
-      btnLabel +
-    '</button>';
-}
-
-function onNextMatch() {
-  const cid = _curCid, phase = _curPhase, idx = _curIdx, total = _curTotal;
-  const isLast = idx >= total - 1;
-  const matches = getMatches(phase);
-  if (isLast) {
-    if (phase === 'r1') advanceToSemis();
-    else if (phase === 'r2') advanceToFinal();
-    else showPodium();
-    return;
-  }
-  playBattleAnimation(() => {
-    showMatchOne(cid, matches, phase, idx + 1);
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
-}
-
-function editBlade(id) {
-  const b = getBlade(id); if (!b) return;
-  document.getElementById('editing-id').value = id;
-  document.getElementById('blade-name-input').value = b.name;
-  document.getElementById('form-title').textContent = '✏️ Editar Beyblade';
-  document.getElementById('cancel-edit-btn').style.display = 'inline-flex';
-  const area = document.getElementById('upload-area');
-  if (b.img) area.innerHTML = `<img src="${b.img}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:8px;">`;
-  else area.innerHTML = `<span style="font-size:24px">📷</span><span class="img-upload-label">Subir foto</span>`;
-  pendingImg = '';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function cancelEdit() { resetForm(); }
-
-function resetForm() {
-  document.getElementById('editing-id').value = '';
-  document.getElementById('blade-name-input').value = '';
-  document.getElementById('form-title').textContent = '➕ Añadir Beyblade';
-  document.getElementById('cancel-edit-btn').style.display = 'none';
-  document.getElementById('upload-area').innerHTML = `<span style="font-size:24px">📷</span><span class="img-upload-label">Subir foto</span>`;
-  document.getElementById('img-input').value = '';
-  pendingImg = '';
-}
-
-let deleteTargetId = null;
-function askDelete(id) {
-  deleteTargetId = id;
-  const b = getBlade(id);
-  document.getElementById('modal-del-name').textContent = b ? b.name : '';
-  document.getElementById('modal-delete').classList.add('open');
-}
-function closeModal() { document.getElementById('modal-delete').classList.remove('open'); deleteTargetId = null; }
-function confirmDelete() {
-  if (!deleteTargetId) return;
-  registry = registry.filter(b => b.id !== deleteTargetId);
-  saveRegistry(registry);
-  closeModal();
-  renderRegistry();
-}
-
-// ============================================================
-// RENDERS (ORIGINALES)
-// ============================================================
-function renderRegistry() {
-  const g = document.getElementById('blades-grid');
-  if (registry.length === 0) {
-    g.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">🌀</div><p>Aún no tienes Beyblades registrados.<br>¡Añade el primero usando el formulario!</p></div>`;
-    return;
-  }
-  g.innerHTML = registry.map(b => `
-    <div class="blade-card">
-      <div class="blade-img-wrap">
-        ${b.img ? `<img class="blade-img" src="${b.img}" alt="${b.name}">` : `<div class="blade-img-ph">🌀</div>`}
-      </div>
-      <div class="blade-info">
-        <div class="blade-name">${b.name}</div>
-        <div class="blade-actions">
-          <button class="blade-action-btn" onclick="editBlade('${b.id}')">✏️ Editar</button>
-          <button class="blade-action-btn del" onclick="askDelete('${b.id}')">🗑️</button>
-        </div>
-      </div>
-    </div>`).join('');
-}
-
-let selected = new Set();
-function renderSelectionGrid() {
-  selected.clear();
-  updateSelCounter();
-  const g = document.getElementById('blades-selection-grid');
-  if (registry.length < 2) {
-    g.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">⚠️</div><p>Necesitas al menos <strong style="color:var(--gold)">2 Beyblades</strong> registrados.<br>Ahora tienes <strong style="color:var(--text)">${registry.length}</strong>. ¡Añade más en "Mis Beyblades"!</p></div>`;
-    return;
-  }
-  g.innerHTML = registry.map(b => `
-    <div class="blade-card" id="sel-${b.id}" onclick="toggleSelect('${b.id}')">
-      <div class="blade-img-wrap">
-        ${b.img ? `<img class="blade-img" src="${b.img}" alt="${b.name}">` : `<div class="blade-img-ph">🌀</div>`}
-        <div class="sel-check">✓</div>
-      </div>
-      <div class="blade-info">
-        <div class="blade-name">${b.name}</div>
-      </div>
-    </div>`).join('');
-}
-
-function toggleSelect(id) {
-  if (selected.has(id)) {
-    selected.delete(id);
-    document.getElementById('sel-'+id).classList.remove('selected');
-  } else {
-    selected.add(id);
-    document.getElementById('sel-'+id).classList.add('selected');
-  }
-  updateSelCounter();
-}
-
-function updateSelCounter() {
-  const n = selected.size;
-  document.getElementById('sel-count').textContent = n;
-  const isValid = n >= 2 && n % 2 === 0;
-  document.getElementById('start-tournament-btn').disabled = !isValid;
-  const hint = document.getElementById('sel-hint');
-  if (n === 0) {
-    hint.textContent = 'Selecciona un número par de Beyblades (mín. 2)';
-    hint.style.color = '';
-  } else if (n % 2 !== 0) {
-    hint.textContent = `${n} seleccionado${n>1?'s':''} — necesitas un número par`;
-    hint.style.color = 'var(--red)';
-  } else {
-    hint.textContent = `✅ ${n} seleccionados — ¡listo para empezar!`;
-    hint.style.color = 'var(--green)';
-  }
-}
-
-// ============================================================
-// TORNEO - LÓGICA Y DESEMPATES (ORIGINAL)
-// ============================================================
-let r1Matches=[], r2Matches=[], fMatches=[], finalistas=[];
-let ligaMatches=[], ligaBlades=[];
-
-function createMatch(id, a, b) { return {id, a, b, rounds:[null,null,null,null,null], winner:null}; }
-function winsOf(m, side) { return m.rounds.filter(r=>r===side).length; }
-
-function startTournament() {
-  const n = selected.size;
-  if (n < 2 || n % 2 !== 0) return;
-  tournamentMode = document.getElementById('tournament-mode').value;
-  tieBreakActive = false;
-  
-  const blades = shuffle([...selected].map(id => getBlade(id)));
-
-  if (tournamentMode === 'liga') {
-    startLiga(blades);
-    return;
-  }
-
-  // Fase 1: todos los pares
-  r1Matches = pairUp(blades).map((p,i) => createMatch('r1_'+i, p[0], p[1]));
-  const numPairs = r1Matches.length;
-  
-  document.getElementById('r1-title').textContent = `🥊 ${numPairs} Combate${numPairs>1?'s':''} · Modo ${tournamentMode === 'largo' ? 'Largo (Mejor de 5)' : 'Corto (Mejor de 3)'}`;
-  document.getElementById('prog1-txt').textContent = `0 / ${numPairs}`;
-  document.getElementById('btn-r1-wrap').querySelector('div').textContent = `✅ ¡Fase 1 completada! ${numPairs} Beyblades pasan a la siguiente fase.`;
-  renderMatchList('matches-r1', r1Matches, 'r1');
-  showScreen('s-round1');
-}
-
-function renderMatchList(cid, matches, phase) {
-  updateProgress(matches, phase);
-  showMatchOne(cid, matches, phase, 0);
-}
-
-function renderMatchCard(m, idx, phase) {
-  const wA = winsOf(m,'a'), wB = winsOf(m,'b');
-  const decided = m.winner !== null;
-  
-  const targetWins = (phase === 'r1' && tournamentMode === 'largo') ? 3 : 2;
-  const maxRoundsPossible = (targetWins === 3) ? 5 : 3;
-
-  const roundsHTML = Array.from({length: maxRoundsPossible}, (_, r) => {
-    const played = m.rounds[r] !== null;
-    const skipped = decided && !played;
-    if (skipped) return `<div class="round-group"><span class="round-label">R${r+1}</span><div class="round-btns"><span style="font-size:10px;color:var(--muted);padding:5px 7px">—</span></div></div>`;
-    const aCls = played ? (m.rounds[r]==='a' ? 'win' : 'lost') : '';
-    const bCls = played ? (m.rounds[r]==='b' ? 'win' : 'lost') : '';
-    const dis = (decided || played) ? 'disabled' : '';
-    const sA = m.a.name.split(' ')[0], sB = m.b.name.split(' ')[0];
-    return `<div class="round-group"><span class="round-label">R${r+1}</span><div class="round-btns">
-      <button class="round-btn ${aCls}" ${dis} onclick="setRound('${m.id}','${phase}',${r},'a')">${sA}</button>
-      <button class="round-btn ${bCls}" ${dis} onclick="setRound('${m.id}','${phase}',${r},'b')">${sB}</button>
-    </div></div>`;
-  }).join('');
-
-  const winA = decided && m.winner.id === m.a.id;
-  const winB = decided && m.winner.id === m.b.id;
-  const resultLabel = decided ? `🏆 ¡${m.winner.name} gana!${m.destruction?' 💥':''}` : (wA>0||wB>0 ? `Parcial: ${wA}–${wB}` : 'En juego...');
-
-  const destroyHTML = (phase === 'final' && decided) ? `
-    <div class="destroy-row">
-      <button class="destroy-btn ${m.destruction?'chosen':''}" onclick="if(!${m.destruction}) finishExplosivo(); toggleDestruction('${m.id}')">
-        💥 ${m.destruction ? 'Con destrucción (1.5 pts) ✓' : 'Marcar destrucción (+0.5 pts)'}
-      </button>
-    </div>` : '';
-
-  return `<div class="match-card ${decided?'decided':''}" id="card_${m.id}">
-    <div class="match-num">${tieBreakActive ? 'DESEMPATE' : 'Combate ' + (idx+1)}</div>
-    <div style="text-align:center;margin-bottom:8px;">
-        <button class="round-btn"
-          onclick="iniciarCombate('${m.a.name}','${m.b.name}')">
-          ▶ Iniciar combate
-        </button>
-      </div>
-    <div class="fighters">
-      
-      <div class="fighter ${winA?'winner':''}">
-        ${bladeImgHTML(m.a, 58, 9)}
-        <div class="fighter-name">${m.a.name}</div>
-        <div class="fighter-score">${wA}</div>
-      </div>
-      <div class="vs-badge">VS</div>
-      <div class="fighter ${winB?'winner':''}">
-        ${bladeImgHTML(m.b, 58, 9)}
-        <div class="fighter-name">${m.b.name}</div>
-        <div class="fighter-score">${wB}</div>
-      </div>
-    </div>
-    <div class="rounds-row">${roundsHTML}</div>
-    <div class="match-result-label">${resultLabel}</div>
-    ${destroyHTML}
-  </div>`;
-}
-
-function iniciarCombate(nombreA, nombreB) {
-  const texto = `${nombreA} versus ${nombreB}`;
-  narrarCombate(texto);
-}
-
-function finishExplosivo() {
-  window.speechSynthesis.cancel();
-  
-  const audio = new Audio('https://www.soundjay.com/explosion/sounds/explosion-01.mp3');
-  audio.volume = 0.4;
-  audio.play().catch(() => {});
-
-  const speech = new SpeechSynthesisUtterance("¡Finish explosivo!");
-  const voces = window.speechSynthesis.getVoices();
-  const vozEspanola = voces.find(v => v.lang.startsWith('es'));
-  
-  if (vozEspanola) speech.voice = vozEspanola;
-  speech.lang = 'es-ES';
-  speech.rate = 1.2; 
-  
-  window.speechSynthesis.speak(speech);
-}
-
-function getMatches(phase) { 
-  if(phase==='r1') return r1Matches; 
-  if(phase==='r2') return r2Matches; 
-  return fMatches; 
-}
-
-function setRound(matchId, phase, roundIdx, winner) {
-  const matches = getMatches(phase);
-  const m = matches.find(x=>x.id===matchId);
-  if (!m || m.winner) return;
-  m.rounds[roundIdx] = winner;
-  const wA=winsOf(m,'a'), wB=winsOf(m,'b');
-  const targetWins = (phase === 'r1' && tournamentMode === 'largo') ? 3 : 2;
-  if (wA===targetWins || wB===targetWins) m.winner = wA===targetWins ? m.a : m.b;
-  const card = document.getElementById('card_'+matchId);
-  if (card) card.outerHTML = renderMatchCard(m, matches.indexOf(m), phase);
-  updateProgress(matches, phase);
-  if (phase==='final') updateFinalScoresLive();
-  if (m.winner) {
-    const btn = document.getElementById('btn-next-match');
-    if (btn) btn.disabled = false;
-  }
-}
-
-function updateProgress(matches, phase) {
-  const done=matches.filter(m=>m.winner).length, total=matches.length;
-  const pct=Math.round(done/total*100);
-  if (phase==='r1') {
-    document.getElementById('prog1').style.width=pct+'%';
-    document.getElementById('prog1-txt').textContent=done+' / '+total;
-    if (done===total) document.getElementById('btn-r1-wrap').style.display='block';
-  } else if (phase==='r2') {
-    document.getElementById('prog2').style.width=pct+'%';
-    document.getElementById('prog2-txt').textContent=done+' / '+total;
-    if (done===total) document.getElementById('btn-r2-wrap').style.display='block';
-  } else {
-    document.getElementById('prog3').style.width=pct+'%';
-    document.getElementById('prog3-txt').textContent=done+' / '+total;
-    if (done===total) document.getElementById('btn-final-wrap').style.display='block';
-  }
-}
-
-function advanceToSemis() {
-  const winners = shuffle(r1Matches.map(m=>m.winner));
-  
-  if (winners.length <= 3) {
-    finalistas = winners;
-    if (winners.length === 2) {
-      fMatches = [createMatch('f0', winners[0], winners[1])];
-    } else {
-      const [f1,f2,f3] = finalistas;
-      fMatches = [
-        createMatch('f0',f1,f2), createMatch('f1',f1,f3),
-        createMatch('f2',f2,f1), createMatch('f3',f2,f3),
-        createMatch('f4',f3,f1), createMatch('f5',f3,f2),
-      ];
-    }
-    updateFinalScoresLive();
-    updateProgress(fMatches,'final');
-    showMatchOne('matches-final', fMatches, 'final', 0);
-    showScreen('s-final');
-    return;
-  }
-
-  r2Matches = pairUp(winners).map((p,i)=>createMatch('r2_'+i,p[0],p[1]));
-  const numR2 = r2Matches.length;
-  document.getElementById('prog2-txt').textContent = `0 / ${numR2}`;
-  renderMatchList('matches-r2', r2Matches, 'r2');
-  showScreen('s-round2');
-}
-
-function advanceToFinal() {
-  finalistas = shuffle(r2Matches.map(m=>m.winner));
-  const n = finalistas.length;
-
-  if (n === 2) {
-    fMatches = [createMatch('f0', finalistas[0], finalistas[1])];
-  } else if (n === 3) {
-    const [f1,f2,f3]=finalistas;
-    fMatches = [
-      createMatch('f0',f1,f2), createMatch('f1',f1,f3),
-      createMatch('f2',f2,f1), createMatch('f3',f2,f3),
-      createMatch('f4',f3,f1), createMatch('f5',f3,f2),
-    ];
-  } else {
-    fMatches = pairUp(finalistas).map((p,i) => createMatch('f'+i, p[0], p[1]));
-  }
-
-  updateFinalScoresLive();
-  updateProgress(fMatches,'final');
-  showMatchOne('matches-final', fMatches, 'final', 0);
-  showScreen('s-final');
-}
-
-function updateFinalScoresLive() {
-  const pts={};
-  finalistas.forEach(f=>pts[f.id]=0);
-  fMatches.forEach(m=>{
-    if(m.winner) pts[m.winner.id]=(pts[m.winner.id]||0)+(m.destruction?1.5:1);
-  });
-  document.getElementById('final-scores-live').innerHTML = finalistas.map(f=>`
-    <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:9px 13px;text-align:center;min-width:110px">
-      ${bladeImgHTML(f,42,8)}
-      <div style="font-family:'Fredoka One',cursive;font-size:11px;color:var(--muted);margin-bottom:1px">${f.name}</div>
-      <div style="font-family:'Fredoka One',cursive;font-size:26px;color:var(--gold)">${pts[f.id]}</div>
-    </div>`).join('');
-}
-
-function showPodium() {
-  const pts={};
-  finalistas.forEach(f=>pts[f.id]=0);
-  fMatches.forEach(m=>{
-    if(m.winner) pts[m.winner.id]=(pts[m.winner.id]||0)+(m.destruction?1.5:1);
-  });
-  
-  if (finalistas.length <= 2) {
-    renderFinalPodium(pts);
-    return;
-  }
-
-  const maxPts = Math.max(...Object.values(pts));
-  const leaders = finalistas.filter(f => pts[f.id] === maxPts);
-
-  if (leaders.length > 1) {
-    handleTie(leaders);
-    return;
-  }
-  renderFinalPodium(pts);
-}
-
-function handleTie(leaders) {
-  tieBreakActive = true;
-  alert("¡HAY UN EMPATE! Se jugarán combates extra para desempatar.");
-  if (leaders.length === 2) {
-    fMatches = [createMatch('tie_2', leaders[0], leaders[1])];
-  } else {
-    const [f1, f2, f3] = shuffle(leaders);
-    fMatches = [
-      createMatch('tf0', f1, f2), createMatch('tf1', f1, f3),
-      createMatch('tf2', f2, f1), createMatch('tf3', f2, f3),
-      createMatch('tf4', f3, f1), createMatch('tf5', f3, f2),
-    ];
-  }
-  document.getElementById('btn-final-wrap').style.display = 'none';
-  const container = document.getElementById('matches-final');
-  container.innerHTML = `<div class="section-sep" style="color:var(--red)">🔥 DESEMPATE FINAL 🔥</div>`;
-  container.innerHTML += fMatches.map((m, i) => renderMatchCard(m, i, 'final')).join('');
-  updateFinalScoresLive();
-  updateProgress(fMatches, 'final');
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function renderFinalPodium(pts) {
-  const sorted = [...finalistas].sort((a,b) => pts[b.id] - pts[a.id]);
-  const medals=['🥇','🥈','🥉'], classes=['gold','silver','bronze'];
-  const labels=['1.º CAMPEÓN','2.º Subcampeón','3.º Tercer puesto'];
-  const champ=sorted[0];
-  document.getElementById('champion-name').textContent=champ.name;
-  document.getElementById('champion-pts').textContent=`${pts[champ.id]} puntos en la gran final`;
-  document.getElementById('champion-img-wrap').innerHTML=bladeImgHTML(champ,88,13);
-  document.getElementById('podium').innerHTML=sorted.map((b,i)=>`
-    <div class="podium-item ${classes[i]||''}">
-      <div class="podium-medal">${medals[i]||i+1}</div>
-      ${bladeImgHTML(b,50,8)}
-      <div>
-        <div class="podium-name">${b.name}</div>
-        <div class="podium-pts">${labels[i]||`${i+1}.º puesto`} · ${pts[b.id]} punto${pts[b.id]!==1?'s':''}</div>
-      </div>
-    </div>`).join('');
-  showScreen('s-podium');
-}
-
-function backToHome() {
-  r1Matches=[]; r2Matches=[]; fMatches=[]; finalistas=[];
-  ligaMatches=[]; ligaBlades=[];
-  showScreen('s-home');
-  switchTab('registro'); // Modificado para que vuelva al registro por defecto
-}
-
-function toggleDestruction(matchId) {
-  const m = fMatches.find(x=>x.id===matchId);
-  if (!m || !m.winner) return;
-  m.destruction = !m.destruction;
-  const card = document.getElementById('card_'+matchId);
-  if (card) card.outerHTML = renderMatchCard(m, fMatches.indexOf(m), 'final');
-  updateFinalScoresLive();
-}
-
-// ============================================================
-// MODO LIGA (ORIGINAL)
-// ============================================================
-function onModeChange() {
-  const mode = document.getElementById('tournament-mode').value;
-  document.getElementById('liga-info').style.display = mode === 'liga' ? 'block' : 'none';
-}
-
-let ligaCurrentIdx = 0;
-
-function startLiga(blades) {
-  ligaBlades = blades;
-  ligaMatches = [];
-
-  let n = blades.length;
-  let teams = [...blades];
-  let numDays = n - 1; 
-  let half = n / 2;
-  let tournamentDays = [];
-
-  for (let day = 0; day < numDays; day++) {
-    let dayMatches = [];
-    for (let i = 0; i < half; i++) {
-      let team1 = teams[i];
-      let team2 = teams[n - 1 - i];
-      if (Math.random() > 0.5) {
-        dayMatches.push({ a: team1, b: team2 });
-      } else {
-        dayMatches.push({ a: team2, b: team1 });
-      }
-    }
-    tournamentDays.push(dayMatches);
-    teams.splice(1, 0, teams.pop());
-  }
-
-  tournamentDays = shuffle(tournamentDays);
-  tournamentDays = tournamentDays.map(day => shuffle(day));
-
-  let globalIdx = 0;
-  tournamentDays.forEach((day, dIdx) => {
-    day.forEach(m => {
-       ligaMatches.push({
-         id: 'lg_' + globalIdx,
-         jornada: dIdx + 1,
-         a: m.a,
-         b: m.b,
-         rounds: [null, null, null],
-         winner: null,
-         destruction: false
-       });
-       globalIdx++;
-    });
-  });
-
-  ligaCurrentIdx = 0;
-  renderLigaStandings();
-  updateLigaProgress();
-  showLigaMatchOne(0);
-  showScreen('s-liga');
-}
-
-function renderLiga() {
-  renderLigaStandings();
-  updateLigaProgress();
-}
-
-function renderLigaStandings() {
-  const stats = {};
-  ligaBlades.forEach(b => {
-    stats[b.id] = { 
-      blade: b, wins: 0, played: 0, pts: 0, 
-      destructions: 0, pg: 0, pp: 0 
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const nb = document.getElementById('nav-'+id); if(nb) nb.classList.add('active');
+  if(!_inited[id]) {
+    _inited[id] = true;
+    const starters = {
+      universo:    ()=>showUniversoPhase(1),
+      solar:       ()=>showSolarPhase(1),
+      tierra:      ()=>showTierraPhase(1),
+      movimientos: ()=>showMovPhase(1),
+      luna:        ()=>showLunaPhase(1),
     };
-  });
-
-  ligaMatches.forEach(m => {
-    if (!m.winner) return;
-    stats[m.a.id].played++;
-    stats[m.b.id].played++;
-    
-    const roundsA = m.rounds.filter(r => r === 'a').length;
-    const roundsB = m.rounds.filter(r => r === 'b').length;
-    
-    stats[m.a.id].pg += roundsA;
-    stats[m.a.id].pp += roundsB;
-    stats[m.b.id].pg += roundsB;
-    stats[m.b.id].pp += roundsA;
-
-    if (m.winner.id === m.a.id) {
-      stats[m.a.id].wins++;
-      stats[m.a.id].pts += (m.destruction ? 4 : 3); 
-    } else {
-      stats[m.b.id].wins++;
-      stats[m.b.id].pts += (m.destruction ? 4 : 3);
-    }
-    if (m.destruction) {
-      stats[m.winner.id].destructions++;
-    }
-  });
-
-  const sorted = Object.values(stats).sort((statsA, statsB) => {
-    if (statsB.pts !== statsA.pts) return statsB.pts - statsA.pts;
-    if (statsB.pg !== statsA.pg) return statsB.pg - statsA.pg;
-    if (statsA.pp !== statsB.pp) return statsA.pp - statsB.pp;
-    const headToHeadMatch = ligaMatches.find(m => 
-      (m.a.id === statsA.blade.id && m.b.id === statsB.blade.id) || 
-      (m.a.id === statsB.blade.id && m.b.id === statsA.blade.id)
-    );
-    if (headToHeadMatch && headToHeadMatch.winner) {
-      return headToHeadMatch.winner.id === statsA.blade.id ? -1 : 1;
-    }
-    return 0; 
-  });
-
-  const tbody = document.getElementById('liga-tbody');
-  if (tbody) {
-    tbody.innerHTML = sorted.map((s, idx) => `
-      <tr>
-        <td style="text-align:center; font-weight:800; color:var(--gold)">${idx + 1}</td>
-        <td>${bladeImgHTML(s.blade, 32, 4)}</td>
-        <td style="text-align:left; font-weight:600;">${s.blade.name}</td>
-        <td style="text-align:center">${s.played}</td>
-        <td style="text-align:center">${s.wins}</td>
-        <td style="text-align:center">${s.destructions}</td>
-        <td style="text-align:center; color:var(--green)">${s.pg}</td>
-        <td style="text-align:center; color:var(--red)">${s.pp}</td>
-        <td style="text-align:right; font-weight:800; color:var(--gold)">
-          ${s.pts % 1 === 0 ? s.pts : s.pts.toFixed(1)}
-        </td>
-      </tr>
-    `).join('');
+    if(starters[id]) starters[id]();
   }
-  
-  return stats; 
+  if(id === 'progreso') buildProgreso();
+}
+window.showScreen = showScreen;
+
+function setTab(id, n) {
+  const labels = PHASES[id].tabs;
+  const wrap = document.getElementById('tabs-'+id); if(!wrap) return;
+  wrap.innerHTML = labels.map((l,i) => `<div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join('');
 }
 
-function buildLigaStats() {
-  const stats = {};
-  ligaBlades.forEach(b => { stats[b.id] = {pts:0, wins:0, played:0, destructions:0}; });
-  ligaMatches.forEach(m => {
-    if (!m.winner) return;
-    const ws = stats[m.winner.id];
-    const pts = m.destruction ? 3.5 : 3;
-    ws.pts += pts;
-    ws.wins++;
-    ws.played++;
-    if (m.destruction) ws.destructions++;
-    const loser = m.winner.id === m.a.id ? m.b : m.a;
-    stats[loser.id].played++;
-  });
-  return stats;
-}
-
-function showLigaMatchOne(idx) {
-  ligaCurrentIdx = idx;
-  const currentStats = renderLigaStandings(); 
-  
-  const total = ligaMatches.length;
-  const m = ligaMatches[idx];
-  const container = document.getElementById('liga-matches');
-  const isLast = idx >= total - 1;
-
-  const sorted = Object.values(currentStats).sort((a, b) => b.pts - a.pts);
-  const posA = sorted.findIndex(s => s.blade.id === m.a.id) + 1;
-  const posB = sorted.findIndex(s => s.blade.id === m.b.id) + 1;
-  const ptsA = currentStats[m.a.id].pts;
-  const ptsB = currentStats[m.b.id].pts;
-
-  const dots = ligaMatches.map((match, i) => {
-    const cls = i < idx ? 'done' : i === idx ? 'current' : '';
-    const margin = (i > 0 && ligaMatches[i].jornada !== ligaMatches[i-1].jornada) ? 'margin-left: 7px;' : '';
-    return `<div class="match-dot ${cls}" style="${margin}"></div>`;
-  }).join('');
-
-  container.innerHTML = `
-    <div class="match-nav-header">
-      <div class="match-nav-counter">⚽ JORNADA ${m.jornada}</div>
-      <div class="match-nav-dots">${dots}</div>
-    </div>
-    <div id="single-liga-wrap">
-      ${renderLigaMatchCard(m, idx, posA, ptsA, posB, ptsB)}
-    </div>
-    <button class="btn-next-match" id="btn-next-liga" ${m.winner?'':'disabled'} onclick="onNextLigaMatch()">
-      ${isLast ? '🏆 Ver clasificación final' : '⚡ Siguiente combate'}
-    </button>
-  `;
-}
-
-function onNextLigaMatch() {
-  const idx = ligaCurrentIdx;
-  const isLast = idx >= ligaMatches.length - 1;
-  if (isLast) { showLigaPodium(); return; }
-  playBattleAnimation(() => {
-    showLigaMatchOne(idx + 1);
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
-}
-
-function renderLigaMatchCard(m, idx, posA, ptsA, posB, ptsB) {
-  const wA = m.rounds.filter(r=>r==='a').length;
-  const wB = m.rounds.filter(r=>r==='b').length;
-  const decided = m.winner !== null;
-
-  const roundsHTML = [0,1,2].map(r => {
-    const played = m.rounds[r] !== null;
-    const sA = m.a.name.split(' ')[0], sB = m.b.name.split(' ')[0];
-    return `<div class="round-group">
-      <span class="round-label">R${r+1}</span>
-      <div class="round-btns">
-        <button class="round-btn ${played && m.rounds[r]==='a'?'win':''}" ${decided?'disabled':''} onclick="setLigaRound('${m.id}',${r},'a')">${sA}</button>
-        <button class="round-btn ${played && m.rounds[r]==='b'?'win':''}" ${decided?'disabled':''} onclick="setLigaRound('${m.id}',${r},'b')">${sB}</button>
-      </div>
-    </div>`;
-  }).join('');
-
-  return `
-  <div class="match-card ${decided?'decided':''}">
-    <div class="match-num">📅 Jornada ${m.jornada}</div>
-    <div style="text-align:center;margin-bottom:8px;">
-      <button class="round-btn" onclick="narrarCombate('${m.a.name}', '${m.b.name}')">▶ Iniciar</button>
-    </div>
-    <div class="fighters">
-      <div class="fighter">
-        <div class="rank-badge">#${posA} • ${ptsA} pts</div>
-        ${bladeImgHTML(m.a,64,8)}
-        <div class="fighter-name">${m.a.name}</div>
-        <div class="fighter-score">${wA}</div>
-      </div>
-      <div class="vs-badge">VS</div>
-      <div class="fighter">
-        <div class="rank-badge">#${posB} • ${ptsB} pts</div>
-        ${bladeImgHTML(m.b,64,8)}
-        <div class="fighter-name">${m.b.name}</div>
-        <div class="fighter-score">${wB}</div>
-      </div>
-    </div>
-    <div class="rounds-row">${roundsHTML}</div>
-    <div class="match-result-label">${decided ? '¡Combate Finalizado!' : 'En juego...'}</div>
-    ${decided ? `<button class="destroy-btn ${m.destruction?'chosen':''}" onclick="if(!${m.destruction}) finishExplosivo(); toggleLigaDestruction('${m.id}')">💥 Finish Explosivo (+1)</button>` : ''}
-  </div>`;
-}
-
-function setLigaRound(matchId, roundIdx, winnerSide) {
-  const m = ligaMatches.find(x => x.id === matchId);
-  if (!m || m.winner) return;
-
-  m.rounds[roundIdx] = winnerSide;
-
-  const wA = m.rounds.filter(r => r === 'a').length;
-  const wB = m.rounds.filter(r => r === 'b').length;
-
-  if (wA >= 2) {
-    m.winner = m.a;
-  } else if (wB >= 2) {
-    m.winner = m.b;
-  }
-
-  renderLigaStandings();
-  showLigaMatchOne(ligaCurrentIdx);
-  updateLigaProgress();
-}
-
-function toggleLigaDestruction(matchId) {
-  const m = ligaMatches.find(x => x.id === matchId);
-  if (!m || !m.winner) return;
-
-  m.destruction = !m.destruction;
-
-  renderLigaStandings();
-  showLigaMatchOne(ligaCurrentIdx);
-}
-
-function updateLigaProgress() {
-  const total = ligaMatches.length;
-  const completed = ligaMatches.filter(m => m.winner !== null).length;
-  const pct = (completed / total) * 100;
-  
-  if(document.getElementById('liga-prog')) {
-    document.getElementById('liga-prog').style.width = pct + '%';
-  }
-  if(document.getElementById('liga-prog-txt')) {
-    document.getElementById('liga-prog-txt').innerText = `${completed} / ${total}`;
-  }
-}
-
-function showLigaPodium() {
-  const stats = renderLigaStandings(); 
-  
-  const sorted = Object.values(stats).sort((statsA, statsB) => {
-    if (statsB.pts !== statsA.pts) return statsB.pts - statsA.pts;
-    if (statsB.pg !== statsA.pg) return statsB.pg - statsA.pg;
-    if (statsA.pp !== statsB.pp) return statsA.pp - statsB.pp;
-    const match = ligaMatches.find(m => 
-      (m.a.id === statsA.blade.id && m.b.id === statsB.blade.id) || 
-      (m.a.id === statsB.blade.id && m.b.id === statsA.blade.id)
-    );
-    if (match && match.winner) return match.winner.id === statsA.blade.id ? -1 : 1;
-    return 0;
-  }).map(s => s.blade); 
-
-  const champ = sorted[0];
-  const champStats = stats[champ.id];
-  
-  document.getElementById('liga-champion-name').textContent = champ.name;
-  document.getElementById('liga-champion-pts').textContent = `${champStats.pts} puntos · ${champStats.wins} victorias`;
-  document.getElementById('liga-champion-img').innerHTML = bladeImgHTML(champ, 88, 13);
-
-  const posClasses = ['top1','top2','top3'];
-  const medals = ['🥇','🥈','🥉'];
-  
-  document.getElementById('liga-final-tbody').innerHTML = sorted.map((b, i) => {
-    const s = stats[b.id];
-    const posClass = i < 3 ? posClasses[i] : '';
-    return `<tr>
-      <td><div class="liga-pos ${posClass}">${medals[i]||i+1}</div></td>
-      <td>
-        <div class="liga-blade-cell">
-          ${bladeImgHTML(b,30,6)}
-          <div style="font-weight:800;font-size:13px">${b.name}</div>
-        </div>
-      </td>
-      <td class="liga-stat">${s.played}</td>
-      <td class="liga-stat ${s.wins>0?'highlight':''}">${s.wins}</td>
-      <td class="liga-stat" style="color:#f87171">${s.destructions}</td>
-      <td class="liga-stat" style="color:var(--green)">${s.pg}</td>
-      <td class="liga-stat" style="color:var(--red)">${s.pp}</td>
-      <td class="liga-pts">${s.pts % 1 === 0 ? s.pts : s.pts.toFixed(1)}</td>
-    </tr>`;
-  }).join('');
-  
-  showScreen('s-liga-podium');
-}
-
-function narrarCombate(player1, player2) {
-  if (!('speechSynthesis' in window)) return;
-
-  window.speechSynthesis.cancel();
-
-  const p1 = player1.trim();
-  const p2 = player2.trim();
-  
-  const texto = `¡${p1}!... versus... ¡${p2}!`;
-  const speech = new SpeechSynthesisUtterance(texto);
-  
-  const voces = window.speechSynthesis.getVoices();
-  const vozEspanola = voces.find(v => v.lang.startsWith('es')) || voces[0];
-  
-  if (vozEspanola) {
-    speech.voice = vozEspanola;
-  }
-  
-  speech.lang = 'es-ES';
-  speech.rate = 0.9; 
-  speech.pitch = 0.8;
-
-  window.speechSynthesis.speak(speech);
-}
-
-// ============================================================
-// ⚔️ NUEVO MOTOR DE DUELOS (PADRE E HIJO)
-// ============================================================
-let duelP1 = { name: '', roster: [], score: 0, currentIdx: 0 };
-let duelP2 = { name: '', roster: [], score: 0, currentIdx: 0 };
-let draftTurn = 1; 
-let availableBlades = [];
-let duelState = { mode: '', matches: [], currentMatchIdx: 0 };
-
-function iniciarReclutamiento() {
-  if (registry.length < 12) {
-    alert("⚠️ Necesitáis al menos 12 Beyblades registrados para el Draft (6 para cada jugador).");
-    return;
-  }
-  
-  duelP1.name = document.getElementById('p1-name').value || 'Jugador 1';
-  duelP2.name = document.getElementById('p2-name').value || 'Jugador 2';
-  duelState.mode = document.getElementById('duelo-mode-select').value;
-  
-  duelP1.roster = []; duelP1.score = 0; duelP1.currentIdx = 0;
-  duelP2.roster = []; duelP2.score = 0; duelP2.currentIdx = 0;
-  
-  draftTurn = 1;
-  availableBlades = [...registry];
-  
-  document.getElementById('duelo-config-screen').style.display = 'none';
-  document.getElementById('duelo-draft-screen').style.display = 'block';
-  
-  renderDraftScreen();
-}
-
-function renderDraftScreen() {
-  const player = draftTurn === 1 ? duelP1 : duelP2;
-  const color = draftTurn === 1 ? '#60a5fa' : '#f87171';
-  
-  document.getElementById('draft-title').textContent = `🛡️ Turno de: ${player.name}`;
-  document.getElementById('draft-title').style.color = color;
-  
-  let instructions = '';
-  if (duelState.mode === 'guerra') {
-    instructions = `Selecciona <strong>3 CAMPEONES</strong> y luego <strong>3 EXPLORADORES</strong>.<br>El orden importa: Los primeros 3 lucharán contra los Campeones rivales.`;
-  } else if (duelState.mode === 'supervivencia') {
-    instructions = `Selecciona 6 Beyblades. El orden es tu <strong>cola de batalla</strong>. El primero saldrá a la pista y se quedará hasta que sea derrotado.`;
-  } else {
-    instructions = `Selecciona 6 Beyblades. El orden en que los elijas será el orden exacto en el que combatirán (1º vs 1º, 2º vs 2º...).`;
-  }
-  document.getElementById('draft-instructions').innerHTML = instructions;
-  
-  document.getElementById('draft-count').textContent = player.roster.length;
-  document.getElementById('btn-confirm-draft').disabled = player.roster.length < 6;
-
-  let previewHTML = '';
-  for(let i=0; i<6; i++) {
-    const b = player.roster[i];
-    let roleHTML = '';
-    
-    if (duelState.mode === 'guerra') {
-      roleHTML = i < 3 ? `<div class="draft-role-badge role-campeon">Campeón</div>` : `<div class="draft-role-badge role-explorador">Explorador</div>`;
-    } else {
-      roleHTML = `<div style="font-size:10px; color:var(--muted); margin-top:4px">Posición ${i+1}</div>`;
-    }
-
-    if (b) {
-      previewHTML += `<div class="draft-roster-filled" onclick="toggleDraftBlade('${b.id}')">
-        ${bladeImgHTML(b, 56, 12)}
-        <div style="font-size:11px; margin-top:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:700">${b.name}</div>
-        ${roleHTML}
+// ══════════════════════════════════════════
+// MINI TEST ENGINE
+// ══════════════════════════════════════════
+function buildMiniTest(qs, containerId, onDone) {
+  let curr=0, correct=0, results=[];
+  function render() {
+    const c = document.getElementById(containerId); if(!c) return;
+    if(curr >= qs.length) {
+      const pct = Math.round(correct/qs.length*100);
+      const stars = pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐';
+      const grade = pct>=80?'excellent':pct>=60?'good':'ok';
+      const msg = pct===100?'¡Perfecto! 🔥':pct>=80?'¡Muy bien! 💪':pct>=60?'¡Bien! 👍':'Repasa e inténtalo 📖';
+      c.innerHTML = `<div class="score-card">
+        <div class="stars-display">${stars}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${msg}<br><small>${correct} de ${qs.length} correctas</small></div>
+        <div class="score-grade ${grade}">${pct>=80?'¡Aprobado!':pct>=60?'Notable':'A repasar'}</div>
       </div>`;
-    } else {
-      previewHTML += `<div class="draft-roster-box">${i+1}</div>`;
-    }
-  }
-  document.getElementById('draft-roster-preview').innerHTML = previewHTML;
-
-  document.getElementById('draft-grid').innerHTML = availableBlades.map(b => `
-    <div class="blade-card" onclick="toggleDraftBlade('${b.id}')">
-      <div class="blade-img-wrap">${b.img ? `<img class="blade-img" src="${b.img}">` : `<div class="blade-img-ph">🌀</div>`}</div>
-      <div class="blade-info"><div class="blade-name">${b.name}</div></div>
-    </div>
-  `).join('');
-}
-
-function toggleDraftBlade(id) {
-  const player = draftTurn === 1 ? duelP1 : duelP2;
-  const existingIdx = player.roster.findIndex(b => b.id === id);
-  
-  if (existingIdx >= 0) {
-    player.roster.splice(existingIdx, 1);
-    availableBlades.push(getBlade(id));
-  } else {
-    if (player.roster.length >= 6) return;
-    player.roster.push(getBlade(id));
-    availableBlades = availableBlades.filter(x => x.id !== id);
-  }
-  renderDraftScreen();
-}
-
-function confirmarReclutamiento() {
-  if (draftTurn === 1) {
-    draftTurn = 2;
-    alert(`¡Selección de ${duelP1.name} ocultada con éxito! Pásale el dispositivo a ${duelP2.name}.`);
-    renderDraftScreen();
-  } else {
-    alert(`¡Los equipos están listos! Que comience el Duelo.`);
-    iniciarDuelo();
-  }
-}
-
-function iniciarDuelo() {
-  document.getElementById('duelo-p1-name-display').textContent = duelP1.name;
-  document.getElementById('duelo-p2-name-display').textContent = duelP2.name;
-  actualizarMarcadorDuelo();
-
-  duelState.matches = [];
-  duelState.currentMatchIdx = 0;
-
-  let modeName = '';
-  if (duelState.mode === 'draft') modeName = '⚔️ MODO DRAFT';
-  if (duelState.mode === 'guerra') modeName = '🏴 GUERRA DE CLANES';
-  if (duelState.mode === 'supervivencia') modeName = '💀 SUPERVIVENCIA';
-  document.getElementById('duelo-mode-badge').textContent = modeName;
-
-  if (duelState.mode === 'draft' || duelState.mode === 'guerra') {
-    for(let i=0; i<6; i++) {
-      let mType = 'normal';
-      if (duelState.mode === 'guerra') mType = i < 3 ? 'campeon' : 'explorador';
-      
-      duelState.matches.push({
-        id: 'dm_'+i,
-        a: duelP1.roster[i], b: duelP2.roster[i],
-        rounds: [null, null, null], winnerSide: null, destruction: false, type: mType,
-        isCompleted: false
-      });
-    }
-  } else {
-    duelP1.roster.forEach(b => b.winsInRow = 0);
-    duelP2.roster.forEach(b => b.winsInRow = 0);
-    crearCombateSupervivencia();
-  }
-
-  showScreen('s-duelo-batalla');
-  renderDueloMatchOne();
-}
-
-function crearCombateSupervivencia() {
-  const fA = duelP1.roster[duelP1.currentIdx];
-  const fB = duelP2.roster[duelP2.currentIdx];
-  if (!fA || !fB) { finalizarDuelo(); return; }
-  
-  duelState.matches.push({
-    id: 'dm_sup_' + duelState.matches.length,
-    a: fA, b: fB,
-    rounds: [null, null, null], winnerSide: null, destruction: false, type: 'supervivencia',
-    isCompleted: false
-  });
-}
-
-function actualizarMarcadorDuelo() {
-  document.getElementById('duelo-p1-score-display').textContent = (duelP1.score % 1 === 0) ? duelP1.score : duelP1.score.toFixed(1);
-  document.getElementById('duelo-p2-score-display').textContent = (duelP2.score % 1 === 0) ? duelP2.score : duelP2.score.toFixed(1);
-}
-
-function renderDueloMatchOne() {
-  const idx = duelState.currentMatchIdx;
-  const m = duelState.matches[idx];
-  const container = document.getElementById('duelo-match-container');
-  
-  if (!m) { finalizarDuelo(); return; }
-
-  const wA = m.rounds.filter(r=>r==='a').length;
-  const wB = m.rounds.filter(r=>r==='b').length;
-  const decided = m.winnerSide !== null;
-
-  let titleText = `Combate ${idx+1}`;
-  if (m.type === 'campeon') titleText = `👑 Duelo de Campeones`;
-  if (m.type === 'explorador') titleText = `🗡️ Duelo de Exploradores`;
-  if (m.type === 'supervivencia') titleText = `💀 Supervivencia (Batalla ${idx+1})`;
-
-  const roundsHTML = [0,1,2].map(r => {
-    const played = m.rounds[r] !== null;
-    const sA = m.a.name.split(' ')[0], sB = m.b.name.split(' ')[0];
-    return `<div class="round-group">
-      <span class="round-label">R${r+1}</span>
-      <div class="round-btns">
-        <button class="round-btn ${played && m.rounds[r]==='a'?'win':''}" ${decided?'disabled':''} onclick="setDueloRound(${r},'a')">${sA}</button>
-        <button class="round-btn ${played && m.rounds[r]==='b'?'win':''}" ${decided?'disabled':''} onclick="setDueloRound(${r},'b')">${sB}</button>
-      </div>
-    </div>`;
-  }).join('');
-
-  let destroyBtn = '';
-  if (decided) {
-    destroyBtn = `<div class="destroy-row"><button class="destroy-btn ${m.destruction?'chosen':''}" onclick="if(!${m.destruction}) finishExplosivo(); toggleDueloDestruction()">
-      💥 ${m.destruction ? 'Destrucción Marcada ✓' : 'Marcar Destrucción (Puntos Extra)'}
-    </button></div>`;
-  }
-
-  const isLastMatch = (duelState.mode !== 'supervivencia' && idx === 5) || (duelState.mode === 'supervivencia' && decided && (!duelP1.roster[duelP1.currentIdx+1] || !duelP2.roster[duelP2.currentIdx+1]));
-
-  container.innerHTML = `
-    <div class="match-card ${decided?'decided':''}">
-      <div class="match-num" style="color:var(--gold)">${titleText}</div>
-      <div style="text-align:center;margin-bottom:12px;">
-        <button class="round-btn" style="background:var(--blue); color:white; border:none" onclick="narrarCombate('${m.a.name}', '${m.b.name}')">▶ Anunciar Combate</button>
-      </div>
-      
-      <div class="fighters">
-        <div class="fighter">
-          ${m.type==='supervivencia' ? `<div style="font-size:10px; color:var(--green); margin-bottom:4px">Racha: ${m.a.winsInRow||0} 🔥</div>` : ''}
-          ${bladeImgHTML(m.a, 68, 12)}
-          <div class="fighter-name" style="color:#60a5fa">${m.a.name}</div>
-          <div class="fighter-score">${wA}</div>
-        </div>
-        <div class="vs-badge">VS</div>
-        <div class="fighter">
-          ${m.type==='supervivencia' ? `<div style="font-size:10px; color:var(--green); margin-bottom:4px">Racha: ${m.b.winsInRow||0} 🔥</div>` : ''}
-          ${bladeImgHTML(m.b, 68, 12)}
-          <div class="fighter-name" style="color:#f87171">${m.b.name}</div>
-          <div class="fighter-score">${wB}</div>
-        </div>
-      </div>
-      
-      <div class="rounds-row">${roundsHTML}</div>
-      ${destroyBtn}
-    </div>
-    
-    <button class="btn-next-match" style="background:var(--blue); color:white;" ${decided?'':'disabled'} onclick="nextDueloMatch()">
-      ${isLastMatch ? '🏆 Finalizar Duelo' : '⚡ Siguiente Combate'}
-    </button>
-  `;
-}
-
-function setDueloRound(roundIdx, side) {
-  const m = duelState.matches[duelState.currentMatchIdx];
-  if (m.winnerSide) return;
-
-  m.rounds[roundIdx] = side;
-  const wA = m.rounds.filter(r=>r==='a').length;
-  const wB = m.rounds.filter(r=>r==='b').length;
-
-  if (wA === 2) m.winnerSide = 'a';
-  if (wB === 2) m.winnerSide = 'b';
-
-  if (m.winnerSide && !m.isCompleted) {
-    m.isCompleted = true;
-    procesarVictoriaDuelo(m);
-  }
-  renderDueloMatchOne();
-}
-
-function toggleDueloDestruction() {
-  const m = duelState.matches[duelState.currentMatchIdx];
-  if (!m.winnerSide) return;
-  
-  m.destruction = !m.destruction;
-  recalcularPuntosTotales();
-  renderDueloMatchOne();
-}
-
-function procesarVictoriaDuelo(m) {
-  const isP1 = m.winnerSide === 'a';
-  const pWin = isP1 ? duelP1 : duelP2;
-  const pLose = isP1 ? duelP2 : duelP1;
-  const bladeWin = isP1 ? m.a : m.b;
-
-  if (duelState.mode === 'supervivencia') {
-    bladeWin.winsInRow = (bladeWin.winsInRow || 0) + 1;
-    if (bladeWin.winsInRow === 3) {
-      alert(`⭐ ¡${bladeWin.name} se vuelve LEGENDARIO! +3 Pts para ${pWin.name}`);
-    }
-    pLose.currentIdx++;
-  }
-  recalcularPuntosTotales();
-}
-
-function recalcularPuntosTotales() {
-  duelP1.score = 0; duelP2.score = 0;
-  
-  duelState.matches.forEach(m => {
-    if (!m.winnerSide) return;
-    const isP1 = m.winnerSide === 'a';
-    const pWin = isP1 ? duelP1 : duelP2;
-    const bladeWin = isP1 ? m.a : m.b;
-
-    if (duelState.mode === 'draft') {
-      pWin.score += 1;
-      if (m.destruction) pWin.score += 0.5;
-    } 
-    else if (duelState.mode === 'guerra') {
-      if (m.type === 'explorador') pWin.score += 1;
-      if (m.type === 'campeon') pWin.score += 2;
-      if (m.destruction) pWin.score += 1;
-    }
-    else if (duelState.mode === 'supervivencia') {
-      if (m.destruction) pWin.score += 1;
-    }
-  });
-
-  if (duelState.mode === 'supervivencia') {
-    duelP1.roster.forEach(b => { if(b.winsInRow >= 3) duelP1.score += 3; });
-    duelP2.roster.forEach(b => { if(b.winsInRow >= 3) duelP2.score += 3; });
-  }
-
-  actualizarMarcadorDuelo();
-}
-
-function nextDueloMatch() {
-  if (duelState.mode === 'supervivencia') {
-    if (duelP1.currentIdx >= 6 || duelP2.currentIdx >= 6) {
-      finalizarDuelo();
+      if(onDone) onDone(pct);
       return;
     }
-    playBattleAnimation(() => {
-      crearCombateSupervivencia();
-      duelState.currentMatchIdx++;
-      renderDueloMatchOne();
-      window.scrollTo({top:0,behavior:'smooth'});
-    });
-  } else {
-    if (duelState.currentMatchIdx >= 5) {
-      finalizarDuelo();
-    } else {
-      playBattleAnimation(() => {
-        duelState.currentMatchIdx++;
-        renderDueloMatchOne();
-        window.scrollTo({top:0,behavior:'smooth'});
-      });
+    const q = qs[curr];
+    const dotHTML = qs.map((_,i) => `<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join('');
+    const qid = 'mt'+curr;
+    if(q.type==='mc'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Pregunta ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="options" id="${qid}_opts">
+            ${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='tf'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Verdadero o Falso – ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div class="tf-row">
+            <button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button>
+            <button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
+    } else if(q.type==='write'){
+      c.innerHTML = `<div class="test-progress"><span style="font-size:13px;color:rgba(255,255,255,.6);font-weight:700">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div>
+        <div class="exercise-box">
+          <div class="q-num">Escribe – ${curr+1}</div>
+          <div class="q-text">${q.question}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1;min-width:200px">
+            <button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button>
+          </div>
+          <div class="feedback" id="${qid}_fb"></div>
+        </div>`;
     }
   }
+  function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); }
+  window.mtAns = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true);
+    const ok = btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta correcta era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtTF = function(btn,qid,cid){
+    if(containerId!==cid) return;
+    document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+    const ok = btn.dataset.chosen===btn.dataset.correct;
+    btn.classList.add(ok?'correct':'wrong');
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+    next(ok);
+  };
+  window.mtWrite = function(qid,cid,correct){
+    if(containerId!==cid) return;
+    const inp = document.getElementById(qid+'_inp');
+    const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
+    inp.classList.add(ok?'correct':'wrong'); inp.disabled=true;
+    const btns = document.querySelectorAll(`button[onclick*="${qid}"]`);
+    btns.forEach(b=>b.disabled=true);
+    const fb = document.getElementById(qid+'_fb');
+    fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+    fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct;
+    next(ok);
+  };
+  render();
+}
+window.buildMiniTest = buildMiniTest;
+
+// ══════════════════════════════════════════
+// 1. EL UNIVERSO
+// ══════════════════════════════════════════
+function showUniversoPhase(n){
+  setTab('universo', n);
+  const c = document.getElementById('universo-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🌌 ¿Qué hay en el universo?</div>
+      <div class="theory-highlight cyan">El universo está formado por distintos tipos de <strong>ASTROS</strong>: estrellas, planetas y satélites.</div>
+      <div class="theory-highlight indigo"><strong>⭐ ESTRELLAS:</strong> emiten luz y calor propios.<br>
+        El <strong>Sol</strong> es la estrella más cercana a la Tierra.</div>
+      <div class="theory-highlight" style="background:#fef3c7;border-color:#f59e0b"><strong>🪐 PLANETAS:</strong> astros que giran alrededor de las estrellas y <strong>no</strong> tienen luz propia.<br>
+        Nuestro planeta es la <strong>Tierra</strong>.</div>
+      <div class="theory-highlight green"><strong>🌙 SATÉLITES:</strong> no tienen luz propia y giran alrededor de los planetas.<br>
+        La <strong>Luna</strong> es el satélite de la Tierra.</div>
+      <div class="theory-highlight sky">El Sol, los <strong>8 planetas</strong> que giran a su alrededor y otros astros más pequeños forman el <strong>SISTEMA SOLAR</strong>.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showUniversoPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildUniversoClasifica(); }
+  else if(n===3){ buildUniversoTest(); }
+}
+window.showUniversoPhase = showUniversoPhase;
+
+function buildUniversoClasifica(){
+  const items = [
+    {n:'☀️ El Sol',tipo:'estrella'},
+    {n:'🌍 La Tierra',tipo:'planeta'},
+    {n:'🌙 La Luna',tipo:'satélite'},
+    {n:'⭐ Sirio (brilla en el cielo nocturno)',tipo:'estrella'},
+    {n:'🔴 Marte',tipo:'planeta'},
+    {n:'🪐 Saturno',tipo:'planeta'},
+    {n:'🌑 Un satélite natural de Saturno',tipo:'satélite'},
+    {n:'💫 Una estrella que emite luz propia',tipo:'estrella'},
+  ];
+  const c = document.getElementById('universo-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🌌 Clasifica cada astro</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">¿Es una estrella, un planeta o un satélite?</p></div>
+  ${items.map((it,i)=>`
+  <div class="exercise-box">
+    <div class="q-text">${it.n}</div>
+    <div class="options" id="uc-e${i}">
+      <button class="option-btn" data-correct="${it.tipo}" data-chosen="estrella" onclick="checkOpt(this,'uc-e${i}','uc-fb${i}')">⭐ Estrella</button>
+      <button class="option-btn" data-correct="${it.tipo}" data-chosen="planeta" onclick="checkOpt(this,'uc-e${i}','uc-fb${i}')">🪐 Planeta</button>
+      <button class="option-btn" data-correct="${it.tipo}" data-chosen="satélite" onclick="checkOpt(this,'uc-e${i}','uc-fb${i}')">🌙 Satélite</button>
+    </div>
+    <div class="feedback" id="uc-fb${i}"></div>
+  </div>`).join('')}
+  <div class="btn-row"><button class="btn btn-success" onclick="showUniversoPhase(3)">Mini Test →</button></div>`;
+}
+window.checkOpt = function(btn, optsId, fbId){
+  document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true);
+  const ok = btn.dataset.chosen === btn.dataset.correct;
+  btn.classList.add(ok?'correct':'wrong');
+  if(!ok) document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');});
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback '+(ok?'correct':'wrong')+' show';
+  fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct;
+};
+
+function buildUniversoTest(){
+  const ALL = [
+    {type:'mc',question:'¿Qué es una estrella?',options:['Un astro que gira alrededor de un planeta','Un astro que emite luz y calor propios','Un astro sin luz propia'],correct:'Un astro que emite luz y calor propios'},
+    {type:'mc',question:'¿Cuál es la estrella más cercana a la Tierra?',options:['Sirio','La Luna','El Sol'],correct:'El Sol'},
+    {type:'tf',question:'Los planetas tienen luz propia.',correct:'falso'},
+    {type:'mc',question:'¿Qué es un satélite?',options:['Un astro que emite luz','Un astro que gira alrededor de un planeta','Una estrella pequeña'],correct:'Un astro que gira alrededor de un planeta'},
+    {type:'mc',question:'¿Cómo se llama el satélite de la Tierra?',options:['El Sol','Marte','La Luna'],correct:'La Luna'},
+    {type:'tf',question:'El sistema solar está formado por el Sol y los 8 planetas que giran a su alrededor.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuántos planetas tiene el sistema solar?',options:['7','8','9'],correct:'8'},
+    {type:'mc',question:'La Tierra es:',options:['Una estrella','Un satélite','Un planeta'],correct:'Un planeta'},
+    {type:'tf',question:'La Luna emite su propia luz.',correct:'falso'},
+    {type:'mc',question:'¿Qué forman el Sol, los 8 planetas y otros astros menores?',options:['El universo','El sistema solar','La Vía Láctea'],correct:'El sistema solar'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'universo-content', pct=>{
+    progress.universo.score=pct; progress.universo.done=true; updateHome();
+  });
 }
 
-function finalizarDuelo() {
-  if (duelState.mode === 'supervivencia') {
-    const p1Alive = 6 - duelP1.currentIdx;
-    const p2Alive = 6 - duelP2.currentIdx;
-    duelP1.score += (p1Alive * 1);
-    duelP2.score += (p2Alive * 1);
-    if (p2Alive === 0) duelP1.score += 2; 
-    if (p1Alive === 0) duelP2.score += 2;
-    actualizarMarcadorDuelo();
-  }
+// ══════════════════════════════════════════
+// 2. SISTEMA SOLAR
+// ══════════════════════════════════════════
+function showSolarPhase(n){
+  setTab('solar', n);
+  const c = document.getElementById('solar-content');
+  if(n===1){
+    const planetas = [
+      {e:'🟠',n:'Mercurio',f:'El más cercano al Sol. ¡Hace muchísimo calor!'},
+      {e:'🟡',n:'Venus',f:'El más brillante en el cielo. Se llama "planeta azul"… espera, ¡eso es la Tierra!'},
+      {e:'🔵',n:'Tierra',f:'El "planeta azul". ¡El único donde sabemos que hay vida!'},
+      {e:'🔴',n:'Marte',f:'El "planeta rojo". Tiene el volcán más alto del sistema solar.'},
+      {e:'🟤',n:'Júpiter',f:'¡El más grande de todos! Tiene una gran mancha roja (una tormenta gigante).'},
+      {e:'🪐',n:'Saturno',f:'Famoso por sus hermosos anillos. ¡Los más espectaculares!'},
+      {e:'🔵',n:'Urano',f:'Gira de lado, como si estuviera tumbado. Muy frío.'},
+      {e:'🌑',n:'Neptuno',f:'El más lejano del Sol. Tiene los vientos más fuertes del sistema solar.'},
+    ];
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">☀️ Los planetas del sistema solar</div>
+      <div class="theory-highlight cyan">Los planetas se ordenan del más cercano al más lejano del Sol:<br>
+        <strong>Mercurio · Venus · Tierra · Marte · Júpiter · Saturno · Urano · Neptuno</strong><br>
+        <em>Truco para recordarlos: "Mi Vecino Tom Me Juntó Su Ukelele Negro"</em></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px">
+    ${planetas.map(p=>`
+      <div style="background:linear-gradient(135deg,#0c1445,#1e3a8a);border:1px solid rgba(103,232,249,.2);border-radius:14px;padding:16px;text-align:center">
+        <div style="font-size:32px;margin-bottom:6px">${p.e}</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:16px;color:#67e8f9;margin-bottom:6px">${p.n}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.4">${p.f}</div>
+      </div>`).join('')}
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showSolarPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildSolarEjercicio(); }
+  else if(n===3){ buildSolarTest(); }
+}
+window.showSolarPhase = showSolarPhase;
 
-  document.getElementById('res-p1-name').textContent = duelP1.name;
-  document.getElementById('res-p1-pts').textContent = (duelP1.score % 1 === 0 ? duelP1.score : duelP1.score.toFixed(1)) + ' pts';
-  
-  document.getElementById('res-p2-name').textContent = duelP2.name;
-  document.getElementById('res-p2-pts').textContent = (duelP2.score % 1 === 0 ? duelP2.score : duelP2.score.toFixed(1)) + ' pts';
-
-  const wName = document.getElementById('duelo-winner-name');
-  if (duelP1.score > duelP2.score) {
-    wName.textContent = `¡Gana ${duelP1.name}!`; wName.style.color = '#60a5fa';
-  } else if (duelP2.score > duelP1.score) {
-    wName.textContent = `¡Gana ${duelP2.name}!`; wName.style.color = '#f87171';
-  } else {
-    wName.textContent = "¡EMPATE TÁCTICO!"; wName.style.color = 'var(--gold)';
-  }
-
-  showScreen('s-duelo-resultados');
+function buildSolarEjercicio(){
+  const preguntas = [
+    {q:'¿Qué planeta está en el centro del sistema solar?',opts:['La Tierra','El Sol','Júpiter'],r:'El Sol'},
+    {q:'¿Qué planeta es el más cercano al Sol?',opts:['Venus','Mercurio','Marte'],r:'Mercurio'},
+    {q:'¿Qué planeta tiene anillos muy llamativos?',opts:['Urano','Júpiter','Saturno'],r:'Saturno'},
+    {q:'¿Cuál es el planeta más grande del sistema solar?',opts:['Saturno','Júpiter','Neptuno'],r:'Júpiter'},
+    {q:'¿En qué planeta sabemos que hay seres vivos?',opts:['Marte','Venus','Tierra'],r:'Tierra'},
+    {q:'¿Qué planeta es el más alejado del Sol?',opts:['Urano','Saturno','Neptuno'],r:'Neptuno'},
+    {q:'¿Qué planeta está entre Mercurio y la Tierra?',opts:['Marte','Venus','Júpiter'],r:'Venus'},
+    {q:'¿Cuál se conoce como el "planeta rojo"?',opts:['Marte','Mercurio','Urano'],r:'Marte'},
+  ];
+  const c = document.getElementById('solar-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">☀️ ¿Conoces los planetas?</div>
+  <p style="color:var(--gray-600);margin-bottom:8px">Responde sobre las características de cada planeta.</p></div>
+  ${preguntas.map((p,i)=>`
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio ${i+1}</div>
+    <div class="q-text">${p.q}</div>
+    <div class="options" id="se-e${i}">
+      ${p.opts.map(o=>`<button class="option-btn" data-correct="${p.r}" data-chosen="${o}" onclick="checkOpt(this,'se-e${i}','se-fb${i}')">${o}</button>`).join('')}
+    </div>
+    <div class="feedback" id="se-fb${i}"></div>
+  </div>`).join('')}
+  <div class="btn-row"><button class="btn btn-success" onclick="showSolarPhase(3)">Mini Test →</button></div>`;
 }
 
-renderRegistry();
+function buildSolarTest(){
+  const ALL = [
+    {type:'write',question:'¿Cómo se llama el planeta entre Marte y Saturno (el más grande)?',correct:'Júpiter'},
+    {type:'mc',question:'¿Cuántos planetas tiene el sistema solar?',options:['7','8','9'],correct:'8'},
+    {type:'mc',question:'¿Qué planeta está entre Mercurio y la Tierra?',options:['Marte','Venus','Júpiter'],correct:'Venus'},
+    {type:'tf',question:'Saturno tiene anillos muy llamativos.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál es el planeta más lejano del Sol?',options:['Saturno','Urano','Neptuno'],correct:'Neptuno'},
+    {type:'write',question:'¿Cómo se llama el planeta conocido como el "planeta rojo"?',correct:'Marte'},
+    {type:'mc',question:'¿Qué planeta es el más cercano al Sol?',options:['Venus','Mercurio','La Tierra'],correct:'Mercurio'},
+    {type:'tf',question:'Júpiter es el planeta más pequeño del sistema solar.',correct:'falso'},
+    {type:'mc',question:'¿Qué planeta es el único donde sabemos que hay vida?',options:['Marte','Venus','La Tierra'],correct:'La Tierra'},
+    {type:'write',question:'¿Qué astro está en el centro del sistema solar?',correct:'el Sol'},
+    {type:'mc',question:'El orden correcto de los primeros cuatro planetas (de más cercano a más lejano del Sol) es:',options:['Tierra, Venus, Mercurio, Marte','Mercurio, Venus, Tierra, Marte','Venus, Mercurio, Marte, Tierra'],correct:'Mercurio, Venus, Tierra, Marte'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'solar-content', pct=>{
+    progress.solar.score=pct; progress.solar.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 3. LA TIERRA
+// ══════════════════════════════════════════
+function showTierraPhase(n){
+  setTab('tierra', n);
+  const c = document.getElementById('tierra-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🌍 ¿Cómo es la Tierra?</div>
+      <div class="theory-highlight cyan">La Tierra es el <strong>único planeta</strong> del sistema solar donde tenemos certeza de que existe vida.<br>
+        Su superficie está cubierta por <strong>tierra</strong> y por <strong>agua</strong>. La rodea una capa de aire llamada <strong>atmósfera</strong>.</div>
+      <div class="theory-highlight indigo"><strong>Los continentes (6):</strong><br>
+        🌍 África · 🌎 América · 🌏 Asia · 🌍 Europa · 🌏 Oceanía · ❄️ Antártida</div>
+      <div class="theory-highlight green"><strong>Los océanos (5):</strong><br>
+        🌊 Pacífico · Atlántico · Índico · Glacial Ártico · Glacial Antártico</div>
+      <div class="theory-highlight sky"><strong>Los mapas y el planisferio:</strong><br>
+        Para representar la superficie de la Tierra usamos los <strong>mapas</strong>.<br>
+        El <strong>planisferio</strong> (o mapamundi) es un mapa donde aparecen todos los océanos y continentes.<br>
+        Los mapas incluyen la <strong>rosa de los vientos</strong> con los puntos cardinales: Norte, Sur, Este, Oeste.</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showTierraPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildTierraEjercicio(); }
+  else if(n===3){ buildTierraTest(); }
+}
+window.showTierraPhase = showTierraPhase;
+
+function buildTierraEjercicio(){
+  const c = document.getElementById('tierra-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🌍 Practica sobre la Tierra</div></div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 1</div>
+    <div class="q-text">¿Cuántos continentes hay en la Tierra?</div>
+    <div class="options" id="te1">
+      <button class="option-btn" data-correct="6" data-chosen="5" onclick="checkOpt(this,'te1','te-fb1')">5</button>
+      <button class="option-btn" data-correct="6" data-chosen="6" onclick="checkOpt(this,'te1','te-fb1')">6</button>
+      <button class="option-btn" data-correct="6" data-chosen="7" onclick="checkOpt(this,'te1','te-fb1')">7</button>
+    </div>
+    <div class="feedback" id="te-fb1"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 2</div>
+    <div class="q-text">¿Cuántos océanos hay en la Tierra?</div>
+    <div class="options" id="te2">
+      <button class="option-btn" data-correct="5" data-chosen="4" onclick="checkOpt(this,'te2','te-fb2')">4</button>
+      <button class="option-btn" data-correct="5" data-chosen="5" onclick="checkOpt(this,'te2','te-fb2')">5</button>
+      <button class="option-btn" data-correct="5" data-chosen="6" onclick="checkOpt(this,'te2','te-fb2')">6</button>
+    </div>
+    <div class="feedback" id="te-fb2"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 3</div>
+    <div class="q-text">¿Cómo se llama la capa de aire que rodea la Tierra?</div>
+    <div class="options" id="te3">
+      <button class="option-btn" data-correct="Atmósfera" data-chosen="Estratosfera" onclick="checkOpt(this,'te3','te-fb3')">Estratosfera</button>
+      <button class="option-btn" data-correct="Atmósfera" data-chosen="Atmósfera" onclick="checkOpt(this,'te3','te-fb3')">Atmósfera</button>
+      <button class="option-btn" data-correct="Atmósfera" data-chosen="Ionosfera" onclick="checkOpt(this,'te3','te-fb3')">Ionosfera</button>
+    </div>
+    <div class="feedback" id="te-fb3"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 4</div>
+    <div class="q-text">¿Dónde está Europa en relación a África?</div>
+    <div class="options" id="te4">
+      <button class="option-btn" data-correct="Al norte" data-chosen="Al sur" onclick="checkOpt(this,'te4','te-fb4')">Al sur</button>
+      <button class="option-btn" data-correct="Al norte" data-chosen="Al norte" onclick="checkOpt(this,'te4','te-fb4')">Al norte</button>
+      <button class="option-btn" data-correct="Al norte" data-chosen="Al este" onclick="checkOpt(this,'te4','te-fb4')">Al este</button>
+    </div>
+    <div class="feedback" id="te-fb4"></div>
+  </div>
+
+  <div class="exercise-box">
+    <div class="q-num">Ejercicio 5</div>
+    <div class="q-text">¿Cómo se llama el mapa donde aparecen todos los océanos y continentes?</div>
+    <div class="options" id="te5">
+      <button class="option-btn" data-correct="Planisferio" data-chosen="Mapa físico" onclick="checkOpt(this,'te5','te-fb5')">Mapa físico</button>
+      <button class="option-btn" data-correct="Planisferio" data-chosen="Planisferio" onclick="checkOpt(this,'te5','te-fb5')">Planisferio</button>
+      <button class="option-btn" data-correct="Planisferio" data-chosen="Globo terráqueo" onclick="checkOpt(this,'te5','te-fb5')">Globo terráqueo</button>
+    </div>
+    <div class="feedback" id="te-fb5"></div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showTierraPhase(3)">Mini Test →</button></div>`;
+}
+
+function buildTierraTest(){
+  const ALL = [
+    {type:'mc',question:'¿Cuántos continentes hay en la Tierra?',options:['5','6','7'],correct:'6'},
+    {type:'mc',question:'¿Cuántos océanos hay en la Tierra?',options:['4','5','6'],correct:'5'},
+    {type:'tf',question:'La atmósfera es la capa de aire que rodea la Tierra.',correct:'verdadero'},
+    {type:'mc',question:'¿Cómo se llama el mapa donde aparecen todos los continentes y océanos?',options:['Globo terráqueo','Planisferio','Mapa físico'],correct:'Planisferio'},
+    {type:'mc',question:'¿Cuál es el océano más grande?',options:['Atlántico','Índico','Pacífico'],correct:'Pacífico'},
+    {type:'tf',question:'En la Tierra hay 7 continentes.',correct:'falso'},
+    {type:'mc',question:'¿Cuál de estos es un continente?',options:['Pacífico','Oceanía','Atlántico'],correct:'Oceanía'},
+    {type:'mc',question:'Europa está al _____ de África.',options:['sur','este','norte'],correct:'norte'},
+    {type:'tf',question:'La rosa de los vientos indica los puntos cardinales.',correct:'verdadero'},
+    {type:'mc',question:'¿Cuál de estos NO es un océano?',options:['Atlántico','Sahara','Pacífico'],correct:'Sahara'},
+    {type:'write',question:'¿Cómo se llama el continente situado en el Polo Sur?',correct:'Antártida'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'tierra-content', pct=>{
+    progress.tierra.score=pct; progress.tierra.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 4. MOVIMIENTOS DE LA TIERRA
+// ══════════════════════════════════════════
+function showMovPhase(n){
+  setTab('movimientos', n);
+  const c = document.getElementById('movimientos-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🔄 Los movimientos de la Tierra</div>
+      <div class="theory-highlight cyan" style="font-size:16px;text-align:center"><strong>La Tierra realiza DOS movimientos: ROTACIÓN y TRASLACIÓN</strong></div>
+      <div class="theory-highlight indigo"><strong>🔄 MOVIMIENTO DE ROTACIÓN:</strong><br>
+        • La Tierra gira <strong>sobre sí misma</strong><br>
+        • Tarda <strong>1 día</strong> (24 horas) en dar una vuelta completa<br>
+        • Causa el <strong>día y la noche</strong><br>
+        • La parte que recibe luz del Sol = <strong>día</strong>; la parte en sombra = <strong>noche</strong></div>
+      <div class="theory-highlight" style="background:#fef3c7;border-color:#f59e0b"><strong>🌍 MOVIMIENTO DE TRASLACIÓN:</strong><br>
+        • La Tierra se desplaza <strong>alrededor del Sol</strong><br>
+        • Tarda <strong>1 año</strong> (365 días) en dar una vuelta completa<br>
+        • Causa las <strong>estaciones del año</strong></div>
+      <div class="theory-highlight green"><strong>🍂 LAS ESTACIONES:</strong><br>
+        🌸 <strong>Primavera:</strong> los días son cada vez más largos<br>
+        ☀️ <strong>Verano:</strong> días más largos y noches más cortas<br>
+        🍂 <strong>Otoño:</strong> los días son cada vez más cortos<br>
+        ❄️ <strong>Invierno:</strong> días más cortos y noches más largas</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showMovPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildMovEjercicio(); }
+  else if(n===3){ buildMovTest(); }
+}
+window.showMovPhase = showMovPhase;
+
+function buildMovEjercicio(){
+  const c = document.getElementById('movimientos-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🔄 Rotación y Traslación</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Elige si cada dato corresponde a la rotación o la traslación.</p></div>
+
+  ${[
+    {q:'La Tierra gira sobre sí misma',r:'rotación'},
+    {q:'Dura 24 horas (1 día)',r:'rotación'},
+    {q:'Causa el día y la noche',r:'rotación'},
+    {q:'La Tierra se desplaza alrededor del Sol',r:'traslación'},
+    {q:'Dura 365 días (1 año)',r:'traslación'},
+    {q:'Causa las estaciones del año',r:'traslación'},
+  ].map((it,i)=>`
+  <div class="exercise-box">
+    <div class="q-text">${it.q}</div>
+    <div class="options" id="mv-e${i}">
+      <button class="option-btn" data-correct="${it.r}" data-chosen="rotación" onclick="checkOpt(this,'mv-e${i}','mv-fb${i}')">🔄 Rotación</button>
+      <button class="option-btn" data-correct="${it.r}" data-chosen="traslación" onclick="checkOpt(this,'mv-e${i}','mv-fb${i}')">🌍 Traslación</button>
+    </div>
+    <div class="feedback" id="mv-fb${i}"></div>
+  </div>`).join('')}
+
+  <div class="card" style="margin-top:8px"><div class="card-title">🍂 Las estaciones</div></div>
+  ${[
+    {q:'En esta estación los días son más cortos y las noches más largas.',r:'invierno'},
+    {q:'En esta estación los días son más largos y las noches más cortas.',r:'verano'},
+    {q:'En esta estación los días son cada vez más largos (empieza a haber más luz).',r:'primavera'},
+    {q:'En esta estación los días son cada vez más cortos.',r:'otoño'},
+  ].map((it,i)=>`
+  <div class="exercise-box">
+    <div class="q-text">${it.q}</div>
+    <div class="options" id="es-e${i}" style="flex-wrap:wrap">
+      <button class="option-btn" data-correct="${it.r}" data-chosen="primavera" onclick="checkOpt(this,'es-e${i}','es-fb${i}')">🌸 Primavera</button>
+      <button class="option-btn" data-correct="${it.r}" data-chosen="verano" onclick="checkOpt(this,'es-e${i}','es-fb${i}')">☀️ Verano</button>
+      <button class="option-btn" data-correct="${it.r}" data-chosen="otoño" onclick="checkOpt(this,'es-e${i}','es-fb${i}')">🍂 Otoño</button>
+      <button class="option-btn" data-correct="${it.r}" data-chosen="invierno" onclick="checkOpt(this,'es-e${i}','es-fb${i}')">❄️ Invierno</button>
+    </div>
+    <div class="feedback" id="es-fb${i}"></div>
+  </div>`).join('')}
+
+  <div class="btn-row"><button class="btn btn-success" onclick="showMovPhase(3)">Mini Test →</button></div>`;
+}
+
+function buildMovTest(){
+  const ALL = [
+    {type:'mc',question:'¿Cuánto tarda la Tierra en completar el movimiento de rotación?',options:['1 año','1 mes','1 día (24 horas)'],correct:'1 día (24 horas)'},
+    {type:'mc',question:'¿Qué provoca el movimiento de rotación?',options:['Las estaciones','El día y la noche','Los meses del año'],correct:'El día y la noche'},
+    {type:'mc',question:'¿Cuánto tarda la Tierra en completar el movimiento de traslación?',options:['1 día','1 mes','1 año (365 días)'],correct:'1 año (365 días)'},
+    {type:'mc',question:'¿Qué provoca el movimiento de traslación?',options:['El día y la noche','Las mareas','Las estaciones del año'],correct:'Las estaciones del año'},
+    {type:'tf',question:'En invierno, los días son más cortos y las noches más largas.',correct:'verdadero'},
+    {type:'mc',question:'En verano, ¿cómo son los días?',options:['Más cortos que las noches','Igual que las noches','Más largos y las noches más cortas'],correct:'Más largos y las noches más cortas'},
+    {type:'mc',question:'La Tierra gira sobre sí misma en el movimiento de:',options:['Traslación','Rotación','Revolución'],correct:'Rotación'},
+    {type:'tf',question:'En primavera, los días son cada vez más largos.',correct:'verdadero'},
+    {type:'mc',question:'¿En qué estación los días son cada vez más cortos?',options:['Primavera','Verano','Otoño'],correct:'Otoño'},
+    {type:'tf',question:'La Tierra tarda 365 días en dar una vuelta alrededor del Sol.',correct:'verdadero'},
+    {type:'mc',question:'¿Qué movimiento hace la Tierra alrededor del Sol?',options:['Rotación','Traslación','Revolución'],correct:'Traslación'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'movimientos-content', pct=>{
+    progress.movimientos.score=pct; progress.movimientos.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// 5. LA LUNA
+// ══════════════════════════════════════════
+function showLunaPhase(n){
+  setTab('luna', n);
+  const c = document.getElementById('luna-content');
+  if(n===1){
+    c.innerHTML = `
+    <div class="card">
+      <div class="card-title">🌙 ¿Qué vemos en el cielo de noche?</div>
+      <div class="theory-highlight cyan">Durante la noche podemos ver la <strong>Luna</strong> y las <strong>estrellas</strong>, que la luz del Sol no nos deja observar de día.</div>
+      <div class="theory-highlight indigo"><strong>⭐ Las estrellas:</strong> son astros brillantes a enorme distancia. Por eso nos parecen tan pequeñas.</div>
+      <div class="theory-highlight" style="background:#fef3c7;border-color:#f59e0b"><strong>🌙 La Luna:</strong><br>
+        • No tiene luz propia: <strong>refleja la luz del Sol</strong><br>
+        • Gira sobre sí misma y alrededor de la Tierra<br>
+        • Tarda unos <strong>28 días</strong> en dar una vuelta completa a la Tierra<br>
+        • Por eso no siempre la vemos iluminada por completo</div>
+      <div class="theory-highlight green"><strong>🌕 Las fases de la Luna (de más a menos iluminada):</strong><br>
+        🌕 <strong>Luna llena:</strong> la Luna se ve completa<br>
+        🌗 <strong>Cuarto menguante:</strong> tiene forma de D al revés<br>
+        🌑 <strong>Luna nueva:</strong> no se ve (está sin iluminar)<br>
+        🌓 <strong>Cuarto creciente:</strong> tiene forma de C o D</div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="showLunaPhase(2)">Siguiente →</button></div>`;
+  } else if(n===2){ buildLunaEjercicio(); }
+  else if(n===3){ buildLunaTest(); }
+}
+window.showLunaPhase = showLunaPhase;
+
+function buildLunaEjercicio(){
+  const fases = [
+    {desc:'La Luna se ve completa e iluminada.',f:'Luna llena'},
+    {desc:'La Luna no se ve (está sin iluminar).',f:'Luna nueva'},
+    {desc:'La Luna tiene forma de C o D (va creciendo).',f:'Cuarto creciente'},
+    {desc:'La Luna tiene forma de D al revés (va menguando).',f:'Cuarto menguante'},
+  ];
+  const c = document.getElementById('luna-content');
+  c.innerHTML = `
+  <div class="card"><div class="card-title">🌙 Las fases de la Luna</div>
+  <p style="color:var(--gray-600);margin-bottom:16px">Identifica cada fase según su descripción.</p></div>
+  ${fases.map((f,i)=>`
+  <div class="exercise-box">
+    <div class="q-text">${f.desc}</div>
+    <div class="options" id="lu-e${i}" style="flex-wrap:wrap">
+      <button class="option-btn" data-correct="${f.f}" data-chosen="Luna llena" onclick="checkOpt(this,'lu-e${i}','lu-fb${i}')">🌕 Luna llena</button>
+      <button class="option-btn" data-correct="${f.f}" data-chosen="Luna nueva" onclick="checkOpt(this,'lu-e${i}','lu-fb${i}')">🌑 Luna nueva</button>
+      <button class="option-btn" data-correct="${f.f}" data-chosen="Cuarto creciente" onclick="checkOpt(this,'lu-e${i}','lu-fb${i}')">🌓 Cuarto creciente</button>
+      <button class="option-btn" data-correct="${f.f}" data-chosen="Cuarto menguante" onclick="checkOpt(this,'lu-e${i}','lu-fb${i}')">🌗 Cuarto menguante</button>
+    </div>
+    <div class="feedback" id="lu-fb${i}"></div>
+  </div>`).join('')}
+  <div class="btn-row"><button class="btn btn-success" onclick="showLunaPhase(3)">Mini Test →</button></div>`;
+}
+
+function buildLunaTest(){
+  const ALL = [
+    {type:'mc',question:'¿Tiene la Luna luz propia?',options:['Sí, emite luz propia','No, refleja la luz del Sol','Sí, pero muy poca'],correct:'No, refleja la luz del Sol'},
+    {type:'mc',question:'¿Cuánto tarda la Luna en dar una vuelta completa a la Tierra?',options:['7 días','28 días','365 días'],correct:'28 días'},
+    {type:'mc',question:'¿Cómo se llama la fase en que la Luna se ve completa?',options:['Luna nueva','Cuarto creciente','Luna llena'],correct:'Luna llena'},
+    {type:'mc',question:'¿Cómo se llama la fase en que la Luna no se ve?',options:['Luna llena','Luna nueva','Cuarto menguante'],correct:'Luna nueva'},
+    {type:'tf',question:'La Luna gira alrededor de la Tierra.',correct:'verdadero'},
+    {type:'mc',question:'¿Por qué no siempre vemos la Luna completamente iluminada?',options:['Porque se esconde','Porque el Sol la ilumina de diferentes formas según su posición','Porque cambia de tamaño'],correct:'Porque el Sol la ilumina de diferentes formas según su posición'},
+    {type:'tf',question:'Las estrellas que vemos de noche están muy cerca de nosotros.',correct:'falso'},
+    {type:'mc',question:'¿Cuántas fases principales tiene la Luna?',options:['2','4','8'],correct:'4'},
+    {type:'mc',question:'La Luna es el satélite de:',options:['El Sol','Marte','La Tierra'],correct:'La Tierra'},
+    {type:'tf',question:'En la fase de luna llena, la Luna se ve completa e iluminada.',correct:'verdadero'},
+  ];
+  buildMiniTest(ALL.sort(()=>Math.random()-.5).slice(0,8), 'luna-content', pct=>{
+    progress.luna.score=pct; progress.luna.done=true; updateHome();
+  });
+}
+
+// ══════════════════════════════════════════
+// PHASES CONFIG
+// ══════════════════════════════════════════
+const PHASES = {
+  universo:    {tabs:['📖 1. Aprende','🔍 2. Clasifica','📝 Mini Test'], show:showUniversoPhase},
+  solar:       {tabs:['🪐 1. Planetas','✏️ 2. Practica','📝 Mini Test'], show:showSolarPhase},
+  tierra:      {tabs:['📖 1. Aprende','✏️ 2. Practica','📝 Mini Test'], show:showTierraPhase},
+  movimientos: {tabs:['📖 1. Aprende','🔄 2. Ejercicios','📝 Mini Test'], show:showMovPhase},
+  luna:        {tabs:['🌙 1. Aprende','🌕 2. Fases','📝 Mini Test'],    show:showLunaPhase},
+};
+
+// ══════════════════════════════════════════
+// PROGRESO
+// ══════════════════════════════════════════
+function buildProgreso(){
+  const topics = [
+    {key:'universo',    icon:'🌌', name:'¿Qué hay en el universo?'},
+    {key:'solar',       icon:'☀️', name:'El sistema solar'},
+    {key:'tierra',      icon:'🌍', name:'¿Cómo es la Tierra?'},
+    {key:'movimientos', icon:'🔄', name:'Movimientos de la Tierra'},
+    {key:'luna',        icon:'🌙', name:'La Luna y las fases'},
+  ];
+  const done = topics.filter(t=>progress[t.key].done).length;
+  const avg  = done ? Math.round(topics.filter(t=>progress[t.key].done).reduce((s,t)=>s+progress[t.key].score,0)/done) : 0;
+  document.getElementById('progreso-content').innerHTML = `
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;margin-bottom:20px">
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:white;margin-bottom:4px">📊 Mi progreso</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.5)">${done}/${topics.length} secciones completadas · Nota media: <strong style="color:#67e8f9">${avg}%</strong></div>
+    </div>
+    ${topics.map(t=>`
+    <div class="progress-topic-row">
+      <span class="pt-icon">${t.icon}</span>
+      <span class="pt-name">${t.name}</span>
+      ${progress[t.key].done
+        ? `<div class="pt-bar"><div class="pt-fill" style="width:${progress[t.key].score}%"></div></div><span class="pt-score">${progress[t.key].score}%</span>`
+        : `<span style="font-size:12px;color:rgba(255,255,255,.3);font-weight:700">Sin empezar</span>`}
+    </div>`).join('')}`;
+}
 </script>
 
 <script type="module">
 import { CONFIG } from '../components/config.js';
-import { renderFooter } from '../components/components.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
 const s = CONFIG.student;
 document.getElementById('app-header-root').innerHTML = `
   <div class="header">
-    <div class="header-content">
-      <img src="../assets/bbm.png" alt="Logo Beyblade" class="header-logo">
-      <div>
-        <div class="header-title">🌀 Arena Beyblade</div>
-        <div class="header-sub">${s.name} · ${s.class} · ${s.school}</div>
-      </div>
+    <div>
+      <div class="header-logo">🌍 Conocimiento del Medio — <span>Tema 5</span> · ${s.class} · ${s.school}</div>
+      <div class="header-sub">DESCUBRIMOS EL UNIVERSO · SISTEMA SOLAR · MOVIMIENTOS DE LA TIERRA · LA LUNA</div>
     </div>
     <div class="header-right">
-      <a href="../index.html" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:6px 14px;border-radius:9px;font-size:12px;font-weight:700;text-decoration:none;font-family:'Nunito',sans-serif;">← Volver</a>
+      <a href="../index.html" class="btn-back">← Portal</a>
     </div>
   </div>`;
 document.getElementById('app-footer-root').innerHTML = renderFooter();
-
-if ('speechSynthesis' in window) {
-  speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged = function() {
-    speechSynthesis.getVoices();
-  };
-}
-window.speechSynthesis.getVoices();
-window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+showScreen('universo');
 </script>
-
 </body>
 </html>
