@@ -52,7 +52,7 @@ export const CONFIG = {
         //{ label: 'Unidad 1 – El cuerpo humano', url: null },
         //{ label: 'Unidad 2 – Los animales',     url: null },
         //{ label: 'Unidad 3 – Las plantas',      url: null },
-        //{ label: 'Unidad 5 – Descubrimos el universo',      url: 'apps/cono5.html' },
+        { label: 'Unidad 5 – Descubrimos el universo',      url: 'apps/cono5.html' },
         //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
