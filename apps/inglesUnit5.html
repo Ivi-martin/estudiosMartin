@@ -336,19 +336,7 @@ body {
 <div class="stars-bg"></div>
 <div class="app">
 
-<!-- HEADER -->
-<div class="header">
-  <div>
-    <div class="header-logo">🦸 <span>Unit 5</span> – Description</div>
-    <div class="header-sub">Superhero English Academy · 2º Primaria</div>
-  </div>
-  <div class="header-right">
-    <div class="exam-countdown">
-      <div class="days" id="countdown-days">?</div>
-      <div class="label">DAYS TO EXAM</div>
-    </div>
-  </div>
-</div>
+<div id="app-header-root"></div>
 
 <!-- PROGRESS STRIP -->
 <div class="progress-strip">
@@ -604,7 +592,6 @@ body {
     <div class="screen" id="screen-exam">
       <div class="card" style="background:linear-gradient(135deg,#1a2744,#2d1b69);color:white;margin-bottom:16px">
         <div class="card-title" style="color:white">📝 Unit 5 Exam Simulator</div>
-        <div class="card-title" style="color:white">A por todas Alba</div>
         <p style="color:rgba(255,255,255,.8)">All topics · Real exam style · Get your grade!</p>
       </div>
       <div id="exam-container"></div>
@@ -1420,7 +1407,7 @@ function buildExam() {
       <div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:8px">A por todas Alba</div>
       <p style="color:var(--gray-600);max-width:440px;margin:0 auto 20px;line-height:1.6">
         20 preguntas elegidas al azar. ¡Cada examen es diferente!<br>
-        Adjectives, Accessories, Have Got, Questions y Listening.
+        Adjectives, Accessories, Have Got, Questions y Listening. ¡A por todas!
       </p>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
         <div style="background:var(--purple-bg);border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700">💪 5 Adjectives</div>
@@ -1655,16 +1642,47 @@ function buildProgressScreen() {
 // ============================================================
 // INIT
 // ============================================================
-updateCountdown();
 updateHome();
+</script>
 
-// Load CONFIG if available
-try {
-  import('../components/config.js').then(m => {
-    window.CONFIG = m.CONFIG || m.default;
-    updateCountdown();
-  }).catch(()=>{});
-} catch(e) {}
+<div id="app-footer-root"></div>
+
+<script type="module">
+import { CONFIG }          from '../components/config.js';
+import { MA, renderFooter } from '../components/components.js';
+window.CONFIG = CONFIG;
+
+// ── Fecha del examen en la home ──
+const _today = new Date(); _today.setHours(0,0,0,0);
+const _next = (CONFIG.exams||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).find(e=>new Date(e.date+'T12:00:00')>=_today);
+const _dateEl = document.getElementById('home-exam-date');
+if (_dateEl && _next) {
+  const _d = new Date(_next.date+'T12:00:00');
+  _dateEl.textContent = _d.toLocaleDateString('es-ES',{day:'numeric',month:'long'});
+}
+
+// ── Header ──
+const s = CONFIG.student;
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🦸 Superhero <span>English</span> Academy · ${s.class} · ${s.school} · ${s.location}</div>
+      <div class="header-sub">UNIT 5 – 2nd Level</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back" style="margin-right:12px">← Volver</a>
+      ${_next ? `<div class="exam-countdown">
+        <div class="days" id="countdown-days">–</div>
+        <div class="label">DAYS TO EXAM</div>
+      </div>` : ''}
+    </div>
+  </div>`;
+
+// ── Footer ──
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+
+// ── Countdown ──
+updateCountdown();
 </script>
 </body>
 </html>
