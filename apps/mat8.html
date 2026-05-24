@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<style>
+  /* Blindaje de colores */
+  :root {
+    color-scheme: dark;
+    --bg: #161c2a; --surface: #1e2638; --surface2: #28324a;
+    --text: #e6edf3; --muted: #7d8590; --border: rgba(255,255,255,0.10);
+    --accent: #fbbf24;
+  }
+  html, body { background-color: #161c2a !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔢 Matemáticas – Tema 8</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2744;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --sky: #dbeafe;
+  --green: #16a34a;
+  --green-light: #22c55e;
+  --green-bg: #dcfce7;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --yellow: #f59e0b;
+  --yellow-bg: #fef3c7;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --orange: #ea580c;
+  --orange-bg: #ffedd5;
+  --white: #ffffff;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-400: #94a3b8;
+  --gray-600: #475569;
+  --gray-800: #1e293b;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  --shadow: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0f172a;
+  min-height: 100vh;
+  color: var(--gray-800);
+  overflow-x: hidden;
+}
+
+.stars-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  overflow: hidden;
+}
+.stars-bg::before {
+  content: '⏰ 🕐 📅 🔷 🔺 ⏰ 🕑 📅 🔷 🔺 ⏰ 🕒 📅 🔷 🔺 ⏰ 🕓';
+  position: absolute; inset: 0;
+  font-size: 12px; color: rgba(255,255,255,0.06);
+  line-height: 2.5; word-break: break-all;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from{opacity:.5} to{opacity:1} }
+
+.app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+.header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 3px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.header-logo { font-family: 'Fredoka One', cursive; font-size: 20px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.header-logo span { color: #fbbf24; }
+.header-sub { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 600; letter-spacing: 0.5px; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.exam-countdown {
+  background: rgba(255,255,255,0.15); border-radius: 12px; padding: 8px 14px;
+  text-align: center; border: 1px solid rgba(255,255,255,0.2);
+}
+.exam-countdown .days { font-family: 'Fredoka One', cursive; font-size: 28px; color: #fbbf24; line-height: 1; }
+.exam-countdown .label { font-size: 10px; color: rgba(255,255,255,0.8); font-weight: 700; letter-spacing: 1px; }
+
+.progress-strip {
+  background: rgba(0,0,0,0.3); padding: 10px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.progress-label { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
+.progress-track { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #86efac); border-radius: 4px; transition: width .5s ease; }
+.progress-pct { font-size: 12px; color: #86efac; font-weight: 800; }
+
+.main { flex: 1; display: flex; gap: 0; }
+
+.sidebar {
+  width: 240px; flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sidebar-section { font-size: 10px; color: rgba(255,255,255,0.3); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 8px 8px 4px; }
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 12px;
+  cursor: pointer; transition: all .2s;
+  border: none; background: transparent; width: 100%; text-align: left;
+  color: rgba(255,255,255,0.6); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-btn.active { background: rgba(37,99,235,0.3); color: white; border: 1px solid rgba(37,99,235,0.5); }
+.nav-btn.completed { color: #86efac; }
+.nav-btn .nav-icon { font-size: 18px; width: 24px; text-align: center; }
+.nav-btn .nav-stars { margin-left: auto; font-size: 12px; }
+
+.content { flex: 1; padding: 28px; overflow-y: auto; max-height: calc(100vh - 100px); }
+
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.home-hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 60%, #7c3aed 100%);
+  border-radius: 24px; padding: 40px; margin-bottom: 24px; position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.home-hero::before {
+  content: '⏰📅🕐🔷🔺🎮';
+  position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+  font-size: 48px; opacity: .15; writing-mode: vertical-rl; letter-spacing: 12px;
+}
+.home-hero h1 { font-family: 'Fredoka One', cursive; font-size: 38px; color: white; margin-bottom: 8px; }
+.home-hero h1 span { color: #fbbf24; }
+.home-hero p { color: rgba(255,255,255,0.8); font-size: 15px; max-width: 500px; line-height: 1.6; }
+.home-hero .exam-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(251,191,36,0.2); border: 1px solid rgba(251,191,36,0.4);
+  padding: 8px 16px; border-radius: 30px; margin-top: 16px;
+  color: #fbbf24; font-weight: 800; font-size: 13px;
+}
+
+.classes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.class-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 20px; cursor: pointer; transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.class-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.2); }
+.class-card.unlocked { background: rgba(255,255,255,0.08); }
+.class-card.completed { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.06); }
+.class-number { font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; }
+.class-icon { font-size: 36px; margin-bottom: 10px; }
+.class-title { font-family: 'Fredoka One', cursive; font-size: 18px; color: white; margin-bottom: 4px; }
+.class-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+.class-status { position: absolute; top: 14px; right: 14px; font-size: 18px; }
+.class-stars { margin-top: 12px; font-size: 16px; color: #fbbf24; }
+
+.lesson-header {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 20px 24px; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.lesson-icon { font-size: 42px; }
+.lesson-info h2 { font-family: 'Fredoka One', cursive; font-size: 26px; color: white; }
+.lesson-info p { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.lesson-back {
+  margin-left: auto; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  color: white; padding: 8px 16px; border-radius: 10px; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px; transition: all .2s;
+}
+.lesson-back:hover { background: rgba(255,255,255,0.2); }
+
+.phase-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.phase-tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .2s; border: 1px solid transparent;
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+  font-family: 'Nunito', sans-serif;
+}
+.phase-tab:hover { background: rgba(255,255,255,0.12); color: white; }
+.phase-tab.active { background: rgba(37,99,235,0.4); color: white; border-color: rgba(37,99,235,0.6); }
+
+/* CARDS Y EJERCICIOS */
+.card {
+  background: white; border-radius: var(--radius); padding: 24px; margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'Fredoka One', cursive; font-size: 20px; color: var(--navy);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+
+.exercise-box {
+  background: white; border-radius: var(--radius); padding: 24px; margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+.options { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.option-btn {
+  background: var(--gray-50); border: 2px solid var(--gray-200);
+  border-radius: 12px; padding: 12px 18px; text-align: left;
+  cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
+  color: var(--gray-800); transition: all .2s;
+}
+.option-btn:hover:not(:disabled) { background: var(--sky); border-color: var(--blue-light); }
+.option-btn.correct { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+.option-btn.wrong { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+.option-btn:disabled { opacity: .7; cursor: default; }
+
+.text-input {
+  border: 2px solid var(--gray-200); border-radius: 10px; padding: 10px 14px;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
+  outline: none; transition: border-color .2s; width: 100%; max-width: 250px; background: white; color: var(--navy);
+}
+.text-input:focus { border-color: var(--blue); }
+.text-input.correct { border-color: var(--green); background: var(--green-bg); }
+.text-input.wrong { border-color: var(--red); background: var(--red-bg); }
+
+.btn { padding: 10px 20px; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer; border: none; transition: all .2s; }
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--blue-light); }
+.btn-primary:disabled { opacity: .5; cursor: default; }
+
+.feedback {
+  margin-top: 12px; padding: 10px 14px; border-radius: 10px;
+  font-weight: 800; font-size: 14px; display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct { background: var(--green-bg); color: var(--green); }
+.feedback.wrong { background: var(--red-bg); color: var(--red); }
+
+.test-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.test-dots { display: flex; gap: 6px; }
+.test-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gray-200); }
+.test-dot.current { background: var(--blue); transform: scale(1.3); }
+.test-dot.done-correct { background: var(--green); }
+.test-dot.done-wrong { background: var(--red); }
+
+.score-card { text-align: center; padding: 40px; background: white; border-radius: var(--radius); box-shadow: var(--shadow-lg); }
+.stars-display { font-size: 48px; margin-bottom: 16px; }
+.score-big { font-family: 'Fredoka One', cursive; font-size: 64px; line-height: 1; }
+.score-label { font-size: 16px; color: var(--gray-600); margin: 8px 0; font-weight: 700; }
+.score-grade { margin-top: 16px; padding: 10px 24px; border-radius: 30px; font-weight: 800; font-size: 18px; display: inline-block; }
+.score-grade.excellent { background: var(--green-bg); color: var(--green); }
+.score-grade.good { background: var(--yellow-bg); color: var(--yellow); }
+.score-grade.ok { background: var(--orange-bg); color: var(--orange); }
+.score-grade.practice { background: var(--red-bg); color: var(--red); }
+
+/* RELOJ SVG */
+.clock-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.clock-label { font-family: 'Fredoka One', cursive; font-size: 14px; color: var(--navy); }
+
+/* INFO BOX */
+.info-box {
+  background: linear-gradient(135deg, #dbeafe, #ede9fe);
+  border-radius: 14px; padding: 16px 20px; margin: 12px 0;
+  border-left: 4px solid var(--blue);
+}
+.info-box.green { background: linear-gradient(135deg, #dcfce7, #d1fae5); border-color: var(--green); }
+.info-box.yellow { background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: var(--yellow); }
+.info-box.orange { background: linear-gradient(135deg, #ffedd5, #fed7aa); border-color: var(--orange); }
+.info-box strong { color: var(--navy); }
+
+/* GRIDS */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* CUERPO CARD */
+.cuerpo-card {
+  background: white; border-radius: 14px; padding: 16px; text-align: center;
+  box-shadow: var(--shadow-sm); border: 2px solid var(--gray-200);
+  transition: all .2s; cursor: default;
+}
+.cuerpo-card:hover { border-color: var(--blue-light); transform: translateY(-2px); }
+.cuerpo-emoji { font-size: 48px; margin-bottom: 8px; }
+.cuerpo-name { font-family: 'Fredoka One', cursive; font-size: 18px; color: var(--navy); }
+.cuerpo-desc { font-size: 12px; color: var(--gray-600); margin-top: 4px; }
+
+/* SIMÉTRICA */
+.sym-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+.sym-item {
+  background: white; border-radius: 12px; padding: 16px; text-align: center;
+  border: 2px solid var(--gray-200); cursor: pointer; transition: all .2s; user-select: none;
+}
+.sym-item:hover { border-color: var(--blue-light); }
+.sym-item.selected-yes { border-color: var(--green); background: var(--green-bg); }
+.sym-item.selected-no { border-color: var(--red); background: var(--red-bg); }
+.sym-item .sym-emoji { font-size: 36px; }
+.sym-item .sym-label { font-size: 11px; font-weight: 800; margin-top: 6px; color: var(--gray-600); }
+
+/* PROGRESO SCREEN */
+.prog-bar-wrap { margin-bottom: 12px; }
+.prog-bar-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
+.prog-bar-track { height: 12px; background: var(--gray-200); border-radius: 6px; overflow: hidden; }
+.prog-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), #818cf8); border-radius: 6px; transition: width .6s ease; }
+
+/* BTN BACK */
+.btn-back {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  color: white; padding: 7px 14px; border-radius: 10px; text-decoration: none;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px;
+  display: inline-flex; align-items: center; gap: 6px; transition: all .2s;
+}
+.btn-back:hover { background: rgba(255,255,255,0.25); }
+
+/* EXAMEN */
+#examen-content .exercise-box { margin-bottom: 20px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .two-col, .three-col { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+
+<div id="app-header-root"></div>
+
+<div class="progress-strip">
+  <div class="progress-label">PROGRESO GENERAL</div>
+  <div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+  <div class="progress-pct" id="overall-pct">0%</div>
+</div>
+
+<div class="main">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-section">Clases</div>
+  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span> Inicio
+  </button>
+  <button class="nav-btn" onclick="showLesson('tiempo')" id="nav-tiempo">
+    <span class="nav-icon">📅</span> Medida del tiempo
+    <span class="nav-stars" id="stars-tiempo"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('horas')" id="nav-horas">
+    <span class="nav-icon">🕐</span> Las horas
+    <span class="nav-stars" id="stars-horas"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('minutos')" id="nav-minutos">
+    <span class="nav-icon">⏱️</span> Los minutos
+    <span class="nav-stars" id="stars-minutos"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('simetria')" id="nav-simetria">
+    <span class="nav-icon">🔷</span> La simetría
+    <span class="nav-stars" id="stars-simetria"></span>
+  </button>
+  <button class="nav-btn" onclick="showLesson('cuerpos')" id="nav-cuerpos">
+    <span class="nav-icon">🔺</span> Cuerpos geométricos
+    <span class="nav-stars" id="stars-cuerpos"></span>
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Repaso</div>
+  <button class="nav-btn" onclick="showScreen('juego')" id="nav-juego">
+    <span class="nav-icon">🎮</span> Juego Memory
+  </button>
+  <button class="nav-btn" onclick="showScreen('examen')" id="nav-examen">
+    <span class="nav-icon">📝</span> Examen Final
+  </button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso">
+    <span class="nav-icon">📊</span> Dashboard
+  </button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <div>
+      <h1>¡Bienvenido al <span>Tema 8</span>! 🎉</h1>
+      <p>Aprende a medir el tiempo, leer el reloj, descubrir la simetría y conocer los cuerpos geométricos. ¡Completa todas las clases y aprueba el examen!</p>
+      <div class="exam-badge">📅 Examen el <span id="home-exam-date">...</span> – ¡Tú puedes! 💪</div>
+    </div>
+  </div>
+  <div style="margin-bottom:16px; font-family:'Fredoka One',cursive; font-size:18px; color:white; opacity:.8;">📚 Tus Clases</div>
+  <div class="classes-grid">
+    <div class="class-card unlocked" onclick="showLesson('tiempo')">
+      <div class="class-number">CLASE 1</div>
+      <div class="class-icon">📅</div>
+      <div class="class-title">Medida del tiempo</div>
+      <div class="class-desc">Años, meses, semanas, días. El calendario y el año bisiesto.</div>
+      <div class="class-stars" id="home-stars-tiempo"></div>
+      <div class="class-status" id="home-status-tiempo">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('horas')">
+      <div class="class-number">CLASE 2</div>
+      <div class="class-icon">🕐</div>
+      <div class="class-title">Las horas en el reloj</div>
+      <div class="class-desc">En punto, y cuarto, y media, menos cuarto. Reloj analógico y digital.</div>
+      <div class="class-stars" id="home-stars-horas"></div>
+      <div class="class-status" id="home-status-horas">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('minutos')">
+      <div class="class-number">CLASE 3</div>
+      <div class="class-icon">⏱️</div>
+      <div class="class-title">Los minutos</div>
+      <div class="class-desc">La aguja larga avanza 5 minutos por número. 1h = 60 min. 1 min = 60 seg.</div>
+      <div class="class-stars" id="home-stars-minutos"></div>
+      <div class="class-status" id="home-status-minutos">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('simetria')">
+      <div class="class-number">CLASE 4</div>
+      <div class="class-icon">🔷</div>
+      <div class="class-title">La simetría</div>
+      <div class="class-desc">Eje de simetría, figuras simétricas y cómo reconocerlas.</div>
+      <div class="class-stars" id="home-stars-simetria"></div>
+      <div class="class-status" id="home-status-simetria">▶️</div>
+    </div>
+    <div class="class-card unlocked" onclick="showLesson('cuerpos')">
+      <div class="class-number">CLASE 5</div>
+      <div class="class-icon">🔺</div>
+      <div class="class-title">Cuerpos geométricos</div>
+      <div class="class-desc">Prisma, pirámide, esfera, cilindro y cono. El cubo es un prisma especial.</div>
+      <div class="class-stars" id="home-stars-cuerpos"></div>
+      <div class="class-status" id="home-status-cuerpos">▶️</div>
+    </div>
+    <div class="class-card" onclick="showScreen('examen')" style="background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(37,99,235,.2)); border-color:rgba(124,58,237,.4);">
+      <div class="class-number">FINAL</div>
+      <div class="class-icon">📝</div>
+      <div class="class-title">Examen Final</div>
+      <div class="class-desc">Todos los temas. 20 preguntas. ¡A por la nota!</div>
+      <div class="class-status">🎯</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLASE 1: TIEMPO -->
+<div class="screen" id="screen-tiempo">
+  <div class="lesson-header">
+    <div class="lesson-icon">📅</div>
+    <div class="lesson-info">
+      <h2>Clase 1 – Medida del tiempo</h2>
+      <p>Años, meses, semanas, días y el calendario</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="ttab-1" onclick="showTiempoPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="ttab-2" onclick="showTiempoPhase(2)">🔢 2. Ordena</div>
+    <div class="phase-tab" id="ttab-3" onclick="showTiempoPhase(3)">📝 Mini Test</div>
+  </div>
+  <div id="tiempo-content"></div>
+</div>
+
+<!-- CLASE 2: HORAS -->
+<div class="screen" id="screen-horas">
+  <div class="lesson-header">
+    <div class="lesson-icon">🕐</div>
+    <div class="lesson-info">
+      <h2>Clase 2 – Las horas en el reloj</h2>
+      <p>En punto, y cuarto, y media, menos cuarto</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="htab-1" onclick="showHorasPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="htab-2" onclick="showHorasPhase(2)">🕐 2. Lee el reloj</div>
+    <div class="phase-tab" id="htab-3" onclick="showHorasPhase(3)">📝 Mini Test</div>
+  </div>
+  <div id="horas-content"></div>
+</div>
+
+<!-- CLASE 3: MINUTOS -->
+<div class="screen" id="screen-minutos">
+  <div class="lesson-header">
+    <div class="lesson-icon">⏱️</div>
+    <div class="lesson-info">
+      <h2>Clase 3 – Los minutos en el reloj</h2>
+      <p>La aguja larga, los minutos y los segundos</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="mtab-1" onclick="showMinutosPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="mtab-2" onclick="showMinutosPhase(2)">⏱️ 2. Calcula</div>
+    <div class="phase-tab" id="mtab-3" onclick="showMinutosPhase(3)">📝 Mini Test</div>
+  </div>
+  <div id="minutos-content"></div>
+</div>
+
+<!-- CLASE 4: SIMETRÍA -->
+<div class="screen" id="screen-simetria">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔷</div>
+    <div class="lesson-info">
+      <h2>Clase 4 – La simetría</h2>
+      <p>Eje de simetría y figuras simétricas</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="stab-1" onclick="showSimetriaPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="stab-2" onclick="showSimetriaPhase(2)">🔍 2. ¿Simétrico?</div>
+    <div class="phase-tab" id="stab-3" onclick="showSimetriaPhase(3)">📝 Mini Test</div>
+  </div>
+  <div id="simetria-content"></div>
+</div>
+
+<!-- CLASE 5: CUERPOS GEOMÉTRICOS -->
+<div class="screen" id="screen-cuerpos">
+  <div class="lesson-header">
+    <div class="lesson-icon">🔺</div>
+    <div class="lesson-info">
+      <h2>Clase 5 – Cuerpos geométricos</h2>
+      <p>Prisma, pirámide, esfera, cilindro y cono</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div class="phase-tabs">
+    <div class="phase-tab active" id="ctab-1" onclick="showCuerposPhase(1)">📖 1. Aprende</div>
+    <div class="phase-tab" id="ctab-2" onclick="showCuerposPhase(2)">🎯 2. Identifica</div>
+    <div class="phase-tab" id="ctab-3" onclick="showCuerposPhase(3)">📝 Mini Test</div>
+  </div>
+  <div id="cuerpos-content"></div>
+</div>
+
+<!-- JUEGO -->
+<div class="screen" id="screen-juego">
+  <div class="lesson-header">
+    <div class="lesson-icon">🎮</div>
+    <div class="lesson-info">
+      <h2>Juego Memory – Tema 8</h2>
+      <p>Une cada concepto con su definición. ¡Encuentra todos los pares!</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div id="juego-content"></div>
+</div>
+
+<!-- EXAMEN -->
+<div class="screen" id="screen-examen">
+  <div class="lesson-header">
+    <div class="lesson-icon">📝</div>
+    <div class="lesson-info">
+      <h2>Examen Final – Tema 8</h2>
+      <p>20 preguntas sobre tiempo, reloj, simetría y cuerpos</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div id="examen-content"></div>
+</div>
+
+<!-- PROGRESO -->
+<div class="screen" id="screen-progreso">
+  <div class="lesson-header">
+    <div class="lesson-icon">📊</div>
+    <div class="lesson-info">
+      <h2>Mi Progreso</h2>
+      <p>Resumen de todas tus clases</p>
+    </div>
+    <button class="lesson-back" onclick="showScreen('home')">← Volver</button>
+  </div>
+  <div id="progreso-content"></div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<div id="app-footer-root"></div>
+
+<script type="module">
+import { CONFIG } from '../components/config.js';
+import { renderFooter } from '../components/components.js';
+
+// ── Header ──
+const s = CONFIG.student;
+const _today = new Date();
+const _next = (CONFIG.exams||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).find(e=>new Date(e.date+'T12:00:00')>=_today);
+const _dateEl = document.getElementById('home-exam-date');
+if (_dateEl && _next) {
+  _dateEl.textContent = new Date(_next.date+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'long'});
+} else if (_dateEl) { _dateEl.textContent = 'próximamente'; }
+
+document.getElementById('app-header-root').innerHTML = `
+  <div class="header">
+    <div>
+      <div class="header-logo">🔢 Matemáticas – <span>Tema 8</span> · ${s.class} · ${s.school} · ${s.location}</div>
+      <div class="header-sub">NUESTRA CLASE · 2º PRIMARIA</div>
+    </div>
+    <div class="header-right">
+      <a href="../index.html" class="btn-back" style="margin-right:12px">← Volver</a>
+      ${_next ? `<div class="exam-countdown">
+        <div class="days" id="countdown-days">–</div>
+        <div class="label">DÍAS AL EXAMEN</div>
+      </div>` : ''}
+    </div>
+  </div>`;
+
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+
+if (_next) {
+  const diff = Math.floor((new Date(_next.date+'T12:00:00') - _today) / 86400000);
+  const el = document.getElementById('countdown-days');
+  if (el) el.textContent = Math.max(0, diff);
+}
+</script>
+
+<script>
+// ============================================================
+// PROGRESO
+// ============================================================
+const progress = {
+  tiempo:   { done:false, score:0 },
+  horas:    { done:false, score:0 },
+  minutos:  { done:false, score:0 },
+  simetria: { done:false, score:0 },
+  cuerpos:  { done:false, score:0 },
+  juego:    { done:false, score:0 },
+  examen:   { done:false, score:0 },
+};
+
+function updateHome() {
+  const topics = ['tiempo','horas','minutos','simetria','cuerpos'];
+  const done = topics.filter(t => progress[t].done).length;
+  const pct  = Math.round(done / topics.length * 100);
+  document.getElementById('overall-progress').style.width = pct + '%';
+  document.getElementById('overall-pct').textContent = pct + '%';
+  topics.forEach((t, idx) => {
+    const stars = progress[t].done
+      ? (progress[t].score >= 80 ? '⭐⭐⭐' : progress[t].score >= 60 ? '⭐⭐' : '⭐')
+      : '';
+    const statusEl = document.getElementById('home-status-' + t);
+    const starsEl  = document.getElementById('home-stars-' + t);
+    const navStars = document.getElementById('stars-' + t);
+    const navBtn   = document.getElementById('nav-' + t);
+    if (statusEl) statusEl.textContent = progress[t].done ? '✅' : '▶️';
+    if (starsEl)  starsEl.textContent  = stars;
+    if (navStars) navStars.textContent  = stars;
+    if (navBtn && progress[t].done) navBtn.classList.add('completed');
+    const cards = document.querySelectorAll('#screen-home .class-card.unlocked');
+    if (cards[idx] && progress[t].done) cards[idx].classList.add('completed');
+  });
+}
+
+// ============================================================
+// NAVEGACIÓN
+// ============================================================
+let tiempoInit=false, horasInit=false, minutosInit=false, simInit=false, cuerpInit=false, examenReady=false;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  const nb = document.getElementById('nav-' + id);
+  if (nb) nb.classList.add('active');
+  else document.getElementById('nav-home').classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'juego')                   buildJuego();
+  if (id === 'examen' && !examenReady)  buildExamenStart();
+  if (id === 'progreso')                buildProgreso();
+}
+window.showScreen = showScreen;
+
+function showLesson(id) {
+  showScreen(id);
+  if (id === 'tiempo'   && !tiempoInit) { tiempoInit  = true; showTiempoPhase(1); }
+  if (id === 'horas'    && !horasInit)  { horasInit   = true; showHorasPhase(1); }
+  if (id === 'minutos'  && !minutosInit){ minutosInit  = true; showMinutosPhase(1); }
+  if (id === 'simetria' && !simInit)    { simInit      = true; showSimetriaPhase(1); }
+  if (id === 'cuerpos'  && !cuerpInit)  { cuerpInit    = true; showCuerposPhase(1); }
+}
+window.showLesson = showLesson;
+
+function setTab(prefix, n, total) {
+  for (let i = 1; i <= total; i++) {
+    const t = document.getElementById(prefix + 'tab-' + i);
+    if (t) t.classList.remove('active');
+  }
+  const a = document.getElementById(prefix + 'tab-' + n);
+  if (a) a.classList.add('active');
+}
+
+// ============================================================
+// SCORE
+// ============================================================
+function buildScoreHTML(correct, total, pct, cb) {
+  const stars = pct >= 80 ? '⭐⭐⭐' : pct >= 60 ? '⭐⭐' : '⭐';
+  const color = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--yellow)' : 'var(--red)';
+  const msg   = pct >= 80 ? '¡Excelente! 🎉' : pct >= 60 ? '¡Bien, sigue así! 💪' : '¡Sigue practicando! 📚';
+  const grade = pct >= 80 ? 'excellent' : pct >= 60 ? 'good' : pct >= 40 ? 'ok' : 'practice';
+  if (cb) cb(pct, stars);
+  return `<div class="score-card">
+    <div class="stars-display">${stars}</div>
+    <div class="score-big" style="color:${color}">${pct}%</div>
+    <div class="score-label">${correct} de ${total} correctas</div>
+    <div class="score-grade ${grade}">${msg}</div>
+  </div>`;
+}
+
+// ============================================================
+// MINI TEST ENGINE
+// ============================================================
+function buildMiniTest(questions, cid, onComplete) {
+  let curr = 0, results = [];
+  function render() {
+    if (curr >= questions.length) {
+      const c = results.filter(r => r).length;
+      const pct = Math.round(c / questions.length * 100);
+      document.getElementById(cid).innerHTML = buildScoreHTML(c, questions.length, pct, onComplete);
+      return;
+    }
+    const q = questions[curr];
+    const dots = questions.map((_, i) =>
+      `<div class="test-dot ${i < curr ? (results[i] ? 'done-correct' : 'done-wrong') : i === curr ? 'current' : ''}"></div>`
+    ).join('');
+    let html = '';
+    if (q.type === 'mc') {
+      html = `<div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px">${q.question}</div>
+        <div class="options" id="${cid}-opts">
+          ${q.options.map(o => `<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${cid}')">${o}</button>`).join('')}
+        </div>`;
+    } else {
+      html = `<div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px">${q.question}</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input class="text-input" id="${cid}-inp" placeholder="Escribe aquí..." style="max-width:200px">
+          <button class="btn btn-primary" onclick="mtWrt('${cid}','${q.correct.replace(/'/g,"\\'")}')" >Comprobar ✓</button>
+        </div>`;
+    }
+    document.getElementById(cid).innerHTML = `
+      <div class="exercise-box">
+        <div class="test-progress">
+          <div class="test-dots">${dots}</div>
+          <div style="font-size:13px;font-weight:700;color:var(--gray-600)">${curr+1} / ${questions.length}</div>
+        </div>
+        ${html}
+        <div class="feedback" id="${cid}-fb"></div>
+      </div>`;
+  }
+  window[cid + '_next'] = ok => { results.push(ok); curr++; setTimeout(render, ok ? 600 : 1200); };
+  window.mtAns = (btn, id) => {
+    if (id !== cid) return;
+    document.querySelectorAll('#' + id + '-opts .option-btn').forEach(b => b.disabled = true);
+    const ok = btn.dataset.chosen === btn.dataset.correct;
+    btn.classList.add(ok ? 'correct' : 'wrong');
+    const fb = document.getElementById(id + '-fb');
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+    fb.textContent = ok ? '✅ ¡Correcto!' : `❌ La respuesta es: ${btn.dataset.correct}`;
+    window[id + '_next'](ok);
+  };
+  window.mtWrt = (id, correct) => {
+    const inp = document.getElementById(id + '-inp'); if (!inp) return;
+    const ok = inp.value.trim().toLowerCase() === correct.toLowerCase();
+    inp.classList.add(ok ? 'correct' : 'wrong'); inp.disabled = true;
+    document.querySelector('#' + id + ' .btn-primary').disabled = true;
+    const fb = document.getElementById(id + '-fb');
+    fb.className = 'feedback ' + (ok ? 'correct' : 'wrong') + ' show';
+    fb.textContent = ok ? '✅ ¡Correcto!' : `❌ La respuesta era: ${correct}`;
+    window[id + '_next'](ok);
+  };
+  render();
+}
+
+// ============================================================
+// CLASE 1: MEDIDA DEL TIEMPO
+// ============================================================
+function showTiempoPhase(n) {
+  setTab('t', n, 3);
+  const c = document.getElementById('tiempo-content');
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">📅 Las unidades de medida del tiempo</div>
+        <div class="info-box">
+          <strong>Un año</strong> tiene <strong>12 meses</strong>. Los meses son: enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre y diciembre.
+        </div>
+        <div class="info-box green" style="margin-top:12px">
+          <strong>Los meses</strong> tienen 30 o 31 días, excepto <strong>febrero</strong>, que tiene 28 días.<br>
+          Cada cuatro años hay un <strong>año bisiesto</strong> en el que febrero tiene <strong>29 días</strong>.
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px">
+          ${[['📅','1 AÑO','= 12 meses','#ede9fe','#7c3aed'],
+             ['🗓️','1 MES','= 28-31 días','#dbeafe','#2563eb'],
+             ['📆','1 SEMANA','= 7 días','#dcfce7','#16a34a'],
+             ['☀️','1 DÍA','= 24 horas','#fef3c7','#f59e0b']
+            ].map(([ico,name,desc,bg,col])=>`
+            <div style="background:${bg};border-radius:14px;padding:16px;text-align:center">
+              <div style="font-size:28px">${ico}</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:18px;color:${col}">${name}</div>
+              <div style="font-size:12px;font-weight:700;color:${col};margin-top:4px">${desc}</div>
+            </div>`).join('')}
+        </div>
+        <div class="info-box yellow" style="margin-top:16px">
+          <strong>Orden de mayor a menor:</strong> Año → Mes → Semana → Día
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🗓️ Los meses del año</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          ${['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'].map((m,i)=>`
+            <div style="background:${i===1?'#fde68a':'#f1f5f9'};border-radius:10px;padding:10px;text-align:center;border:2px solid ${i===1?'#f59e0b':'transparent'}">
+              <div style="font-size:11px;color:#94a3b8;font-weight:800">${i+1}</div>
+              <div style="font-size:13px;font-weight:800;color:#1e293b">${m}</div>
+              <div style="font-size:11px;color:#64748b">${i===1?'28/29 días':([0,2,4,6,7,9,11].includes(i)?'31 días':'30 días')}</div>
+            </div>`).join('')}
+        </div>
+        <div style="margin-top:12px;text-align:center;font-size:13px;color:#64748b;font-weight:700">⬆️ Febrero (amarillo) es el mes especial con 28 días (29 en año bisiesto)</div>
+      </div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-primary" onclick="showTiempoPhase(2)">Siguiente → Ordena ✏️</button>
+      </div>`;
+  } else if (n === 2) {
+    const pairs = [
+      ['1 año tiene ___ meses:', '12'],
+      ['1 semana tiene ___ días:', '7'],
+      ['1 día tiene ___ horas:', '24'],
+      ['Febrero tiene ___ días normalmente:', '28'],
+      ['En año bisiesto, febrero tiene ___ días:', '29'],
+      ['El mes más corto del año es:', 'febrero'],
+    ];
+    let state = pairs.map(([q,a]) => ({ q, a, answered: false, correct: false }));
+    function renderT2() {
+      document.getElementById('tiempo-content').innerHTML = `
+        <div class="card">
+          <div class="card-title">✏️ Completa estas frases</div>
+          ${state.map((item,i) => `
+            <div class="exercise-box" style="margin-bottom:14px">
+              <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:10px">${item.q}</div>
+              ${item.answered
+                ? `<div style="padding:10px 14px;border-radius:10px;background:${item.correct?'var(--green-bg)':'var(--red-bg)'};color:${item.correct?'var(--green)':'var(--red)'};font-weight:800">${item.correct?'✅':'❌'} ${item.a}</div>`
+                : `<div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <input class="text-input" id="t2-inp-${i}" placeholder="Tu respuesta..." style="max-width:180px">
+                    <button class="btn btn-primary" onclick="checkT2(${i})">✓</button>
+                  </div>`
+              }
+            </div>`).join('')}
+          <div id="t2-result"></div>
+          <div style="margin-top:16px;text-align:center">
+            <button class="btn btn-primary" onclick="showTiempoPhase(3)">Ir al Mini Test 📝</button>
+          </div>
+        </div>`;
+      window.checkT2 = (i) => {
+        const inp = document.getElementById('t2-inp-' + i);
+        if (!inp) return;
+        const ok = inp.value.trim().toLowerCase() === state[i].a.toLowerCase();
+        state[i].answered = true; state[i].correct = ok;
+        renderT2();
+      };
+    }
+    renderT2();
+  } else {
+    const qs = [
+      { type:'mc', question:'¿Cuántos meses tiene un año?', options:['10','11','12','13'], correct:'12' },
+      { type:'mc', question:'¿Cuántos días tiene una semana?', options:['5','6','7','8'], correct:'7' },
+      { type:'mc', question:'¿Qué mes tiene solo 28 días normalmente?', options:['Enero','Febrero','Marzo','Noviembre'], correct:'Febrero' },
+      { type:'mc', question:'¿Cuántos días tiene un año bisiesto en febrero?', options:['28','29','30','31'], correct:'29' },
+      { type:'mc', question:'¿Cuál es el orden de mayor a menor?', options:['Día-Semana-Mes-Año','Año-Mes-Semana-Día','Mes-Año-Día-Semana','Semana-Mes-Año-Día'], correct:'Año-Mes-Semana-Día' },
+      { type:'mc', question:'Los meses tienen 30 o 31 días, excepto:', options:['Enero','Marzo','Febrero','Abril'], correct:'Febrero' },
+    ];
+    buildMiniTest(qs, 'tiempo-content', (pct) => {
+      progress.tiempo = { done: true, score: pct };
+      updateHome();
+    });
+  }
+}
+window.showTiempoPhase = showTiempoPhase;
+
+// ============================================================
+// CLASE 2: LAS HORAS
+// ============================================================
+
+// Función para dibujar un reloj analógico SVG
+function clockSVG(h, m, size=90) {
+  const r = size/2;
+  const cx = r, cy = r;
+  // Ángulos
+  const mAng = (m / 60) * 2 * Math.PI - Math.PI/2;
+  const hAng = ((h % 12) / 12 + m / 720) * 2 * Math.PI - Math.PI/2;
+  const mLen = r * 0.7;
+  const hLen = r * 0.5;
+  const mx = cx + mLen * Math.cos(mAng);
+  const my = cy + mLen * Math.sin(mAng);
+  const hx = cx + hLen * Math.cos(hAng);
+  const hy = cy + hLen * Math.sin(hAng);
+  const nums = [12,1,2,3,4,5,6,7,8,9,10,11].map((n,i) => {
+    const a = (i/12)*2*Math.PI - Math.PI/2;
+    const nr = r*0.8;
+    return `<text x="${cx+nr*Math.cos(a)}" y="${cy+nr*Math.sin(a)+4}" text-anchor="middle" font-size="${r*0.18}" font-weight="800" fill="#1e293b" font-family="Nunito">${n}</text>`;
+  }).join('');
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r-2}" fill="white" stroke="#cbd5e1" stroke-width="3"/>
+    ${nums}
+    <line x1="${cx}" y1="${cy}" x2="${hx}" y2="${hy}" stroke="#1e3a5f" stroke-width="${r*0.07}" stroke-linecap="round"/>
+    <line x1="${cx}" y1="${cy}" x2="${mx}" y2="${my}" stroke="#2563eb" stroke-width="${r*0.04}" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="${r*0.07}" fill="#dc2626"/>
+  </svg>`;
+}
+
+function showHorasPhase(n) {
+  setTab('h', n, 3);
+  const c = document.getElementById('horas-content');
+  if (n === 1) {
+    const ejemplos = [
+      [9,0,'Las 9 en punto','9:00'],
+      [9,15,'Las 9 y cuarto','9:15'],
+      [9,30,'Las 9 y media','9:30'],
+      [9,45,'Las 10 menos cuarto','9:45'],
+      [10,0,'Las 10 en punto','10:00'],
+    ];
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">🕐 Cómo leer la hora</div>
+        <div class="info-box">
+          El reloj tiene dos agujas: la <strong>corta</strong> marca las horas y la <strong>larga</strong> marca los minutos.<br>
+          <strong>1 hora = 60 minutos</strong>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:20px">
+          ${ejemplos.map(([h,m,label,dig])=>`
+            <div style="text-align:center">
+              ${clockSVG(h,m,100)}
+              <div style="font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);margin-top:6px">${label}</div>
+              <div style="background:#1e3a5f;color:#fbbf24;border-radius:8px;padding:4px 10px;font-family:'Fredoka One',cursive;font-size:18px;margin-top:4px;display:inline-block">${dig}</div>
+            </div>`).join('')}
+        </div>
+        <div class="info-box green" style="margin-top:20px">
+          <strong>Truco:</strong> "Y cuarto" = aguja larga en el 3 (15 min) · "Y media" = aguja larga en el 6 (30 min) · "Menos cuarto" = aguja larga en el 9 (45 min, y la hora corta apunta a la siguiente hora)
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-primary" onclick="showHorasPhase(2)">Siguiente → Lee el reloj 🕐</button>
+      </div>`;
+  } else if (n === 2) {
+    const preguntas = [
+      { h:7, m:30, answer:'Las 7 y media', options:['Las 7 en punto','Las 7 y cuarto','Las 7 y media','Las 8 menos cuarto'] },
+      { h:4, m:45, answer:'Las 5 menos cuarto', options:['Las 4 y cuarto','Las 5 menos cuarto','Las 4 y media','Las 5 en punto'] },
+      { h:8, m:15, answer:'Las 8 y cuarto', options:['Las 8 y cuarto','Las 8 y media','Las 8 en punto','Las 9 menos cuarto'] },
+      { h:2, m:0,  answer:'Las 2 en punto', options:['Las 1 en punto','Las 2 y cuarto','Las 2 en punto','Las 3 en punto'] },
+      { h:11,m:30, answer:'Las 11 y media', options:['Las 11 en punto','Las 11 y cuarto','Las 12 menos cuarto','Las 11 y media'] },
+    ];
+    let idx=0, correct=0;
+    function renderH2() {
+      if (idx >= preguntas.length) {
+        const pct = Math.round(correct/preguntas.length*100);
+        document.getElementById('horas-content').innerHTML = buildScoreHTML(correct, preguntas.length, pct, null) +
+          `<div style="text-align:center;margin-top:16px"><button class="btn btn-primary" onclick="showHorasPhase(3)">Ir al Mini Test 📝</button></div>`;
+        return;
+      }
+      const p = preguntas[idx];
+      document.getElementById('horas-content').innerHTML = `
+        <div class="card">
+          <div class="card-title">🕐 Lee el reloj – Pregunta ${idx+1}/${preguntas.length}</div>
+          <div style="display:flex;justify-content:center;margin:20px 0">${clockSVG(p.h,p.m,140)}</div>
+          <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:12px">¿Qué hora marca este reloj?</div>
+          <div class="options" id="h2-opts">
+            ${p.options.map(o=>`<button class="option-btn" data-correct="${p.answer}" data-chosen="${o}" onclick="ansH2(this)">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="h2-fb"></div>
+        </div>`;
+      window.ansH2 = (btn) => {
+        document.querySelectorAll('#h2-opts .option-btn').forEach(b=>b.disabled=true);
+        const ok = btn.dataset.chosen === btn.dataset.correct;
+        btn.classList.add(ok?'correct':'wrong');
+        if(ok) correct++;
+        const fb = document.getElementById('h2-fb');
+        fb.className='feedback '+(ok?'correct':'wrong')+' show';
+        fb.textContent = ok ? '✅ ¡Correcto!' : `❌ Era: ${btn.dataset.correct}`;
+        setTimeout(()=>{ idx++; renderH2(); }, ok?700:1300);
+      };
+    }
+    renderH2();
+  } else {
+    const qs = [
+      { type:'mc', question:'¿Qué aguja del reloj marca las horas?', options:['La larga','La corta','Las dos','Ninguna'], correct:'La corta' },
+      { type:'mc', question:'¿Cuántos minutos tiene una hora?', options:['30','45','60','100'], correct:'60' },
+      { type:'mc', question:'Cuando la aguja larga está en el 6, la hora es:', options:['En punto','Y cuarto','Y media','Menos cuarto'], correct:'Y media' },
+      { type:'mc', question:'Cuando la aguja larga está en el 3, la hora es:', options:['En punto','Y cuarto','Y media','Menos cuarto'], correct:'Y cuarto' },
+      { type:'mc', question:'Cuando la aguja larga está en el 9, la hora es:', options:['En punto','Y cuarto','Y media','Menos cuarto'], correct:'Menos cuarto' },
+      { type:'mc', question:'¿Cómo se escribe en digital "Las 8 y media"?', options:['8:15','8:30','8:45','8:00'], correct:'8:30' },
+    ];
+    buildMiniTest(qs, 'horas-content', (pct) => {
+      progress.horas = { done: true, score: pct };
+      updateHome();
+    });
+  }
+}
+window.showHorasPhase = showHorasPhase;
+
+// ============================================================
+// CLASE 3: LOS MINUTOS
+// ============================================================
+function showMinutosPhase(n) {
+  setTab('m', n, 3);
+  const c = document.getElementById('minutos-content');
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">⏱️ Los minutos en el reloj</div>
+        <div class="info-box">
+          En el reloj de agujas, la <strong>aguja larga</strong> avanza un número cada <strong>5 minutos</strong>.
+        </div>
+        <div style="display:flex;justify-content:center;margin:20px 0">
+          <div style="position:relative;width:200px;height:200px">
+            ${clockSVG(12,0,200)}
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px">
+          ${[
+            ['… en punto','12:00','#dbeafe','#2563eb'],
+            ['… y cinco','12:05','#dcfce7','#16a34a'],
+            ['… y diez','12:10','#fef3c7','#f59e0b'],
+            ['… y cuarto','12:15','#ede9fe','#7c3aed'],
+            ['… y veinte','12:20','#ffedd5','#ea580c'],
+            ['… y veinticinco','12:25','#fce7f3','#db2777'],
+            ['… y media','12:30','#dbeafe','#2563eb'],
+          ].map(([lbl,dig,bg,col])=>`
+            <div style="background:${bg};border-radius:12px;padding:10px;text-align:center">
+              <div style="font-size:12px;font-weight:800;color:${col}">${lbl}</div>
+              <div style="font-family:'Fredoka One',cursive;font-size:20px;color:#1e3a5f;margin-top:4px">${dig}</div>
+            </div>`).join('')}
+        </div>
+        <div class="info-box green" style="margin-top:16px">
+          <strong>Conversiones importantes:</strong><br>
+          🕐 1 hora = 60 minutos &nbsp;|&nbsp; 2 horas = 120 minutos<br>
+          ⏱️ 1 minuto = 60 segundos &nbsp;|&nbsp; 2 minutos = 120 segundos
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-primary" onclick="showMinutosPhase(2)">Siguiente → Calcula ⏱️</button>
+      </div>`;
+  } else if (n === 2) {
+    const items = [
+      { question:'¿Cuántos minutos son 1 cuarto de hora?', answer:'15', hint:'1/4 de 60' },
+      { question:'¿Cuántos minutos son media hora?', answer:'30', hint:'1/2 de 60' },
+      { question:'¿Cuántos minutos son 3 cuartos de hora?', answer:'45', hint:'3/4 de 60' },
+      { question:'¿Cuántos minutos son 1 hora?', answer:'60', hint:'Completa' },
+      { question:'¿Cuántos segundos tiene 1 minuto?', answer:'60', hint:'Definición' },
+      { question:'¿Cuántos minutos son 2 horas?', answer:'120', hint:'2 × 60' },
+    ];
+    let answered = items.map(() => ({ done: false, ok: false }));
+    function renderM2() {
+      document.getElementById('minutos-content').innerHTML = `
+        <div class="card">
+          <div class="card-title">⏱️ Calcula los minutos</div>
+          ${items.map((item,i) => `
+            <div class="exercise-box" style="margin-bottom:12px">
+              <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:10px">${item.question} <span style="font-size:12px;color:var(--gray-400)">(Pista: ${item.hint})</span></div>
+              ${answered[i].done
+                ? `<div style="padding:10px 14px;border-radius:10px;background:${answered[i].ok?'var(--green-bg)':'var(--red-bg)'};color:${answered[i].ok?'var(--green)':'var(--red)'};font-weight:800">${answered[i].ok?'✅':'❌'} ${item.answer} minutos</div>`
+                : `<div style="display:flex;gap:8px;align-items:center">
+                    <input class="text-input" id="m2-${i}" placeholder="Minutos" style="max-width:120px" type="number" min="0">
+                    <button class="btn btn-primary" onclick="checkM2(${i})">✓</button>
+                  </div>`}
+            </div>`).join('')}
+          <div style="margin-top:16px;text-align:center">
+            <button class="btn btn-primary" onclick="showMinutosPhase(3)">Ir al Mini Test 📝</button>
+          </div>
+        </div>`;
+      window.checkM2 = (i) => {
+        const inp = document.getElementById('m2-' + i); if (!inp) return;
+        answered[i].done = true;
+        answered[i].ok = inp.value.trim() === items[i].answer;
+        renderM2();
+      };
+    }
+    renderM2();
+  } else {
+    const qs = [
+      { type:'mc', question:'¿Cuánto avanza la aguja larga por número?', options:['1 minuto','5 minutos','10 minutos','15 minutos'], correct:'5 minutos' },
+      { type:'mc', question:'¿Cuántos minutos son un cuarto de hora?', options:['10','15','20','25'], correct:'15' },
+      { type:'mc', question:'¿Cuántos minutos son media hora?', options:['20','25','30','35'], correct:'30' },
+      { type:'mc', question:'¿Cuántos segundos tiene un minuto?', options:['30','50','60','100'], correct:'60' },
+      { type:'mc', question:'¿Cuántos minutos son 2 horas?', options:['60','90','100','120'], correct:'120' },
+      { type:'mc', question:'¿Cuántos minutos son tres cuartos de hora?', options:['30','40','45','50'], correct:'45' },
+    ];
+    buildMiniTest(qs, 'minutos-content', (pct) => {
+      progress.minutos = { done: true, score: pct };
+      updateHome();
+    });
+  }
+}
+window.showMinutosPhase = showMinutosPhase;
+
+// ============================================================
+// CLASE 4: SIMETRÍA
+// ============================================================
+function showSimetriaPhase(n) {
+  setTab('s', n, 3);
+  const c = document.getElementById('simetria-content');
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">🔷 ¿Qué es la simetría?</div>
+        <div class="info-box">
+          Una figura es <strong>simétrica</strong> si, al doblarla por una línea, sus dos mitades coinciden exactamente.<br>
+          A esa línea la llamamos <strong>eje de simetría</strong>.
+        </div>
+        <div class="two-col" style="margin-top:20px">
+          <div style="background:#dcfce7;border-radius:16px;padding:20px;text-align:center">
+            <div style="font-size:48px">🦋</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#16a34a;margin-top:8px">✅ SIMÉTRICA</div>
+            <div style="font-size:13px;color:#166534;margin-top:4px">Las dos mitades son iguales</div>
+          </div>
+          <div style="background:#fee2e2;border-radius:16px;padding:20px;text-align:center">
+            <div style="font-size:48px">✏️</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#dc2626;margin-top:8px">❌ NO SIMÉTRICA</div>
+            <div style="font-size:13px;color:#991b1b;margin-top:4px">Las dos mitades NO son iguales</div>
+          </div>
+        </div>
+        <div class="info-box green" style="margin-top:16px">
+          <strong>Figuras simétricas:</strong> mariposa 🦋, estrella ⭐, corazón ❤️, rectángulo ▭, triángulo equilátero 🔺, cuadrado ⬜, círculo ⭕
+        </div>
+        <div class="info-box" style="margin-top:12px; background:linear-gradient(135deg,#fef3c7,#fde68a); border-color:var(--yellow)">
+          <strong>Truco:</strong> Para saber si una figura es simétrica, imagina que la doblas por el medio. Si las dos partes encajan perfectamente → ¡es simétrica!
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-primary" onclick="showSimetriaPhase(2)">Siguiente → ¿Simétrico? 🔍</button>
+      </div>`;
+  } else if (n === 2) {
+    const figuras = [
+      { emoji:'🦋', nombre:'Mariposa', simetrica: true },
+      { emoji:'⭐', nombre:'Estrella', simetrica: true },
+      { emoji:'❤️', nombre:'Corazón', simetrica: true },
+      { emoji:'⬜', nombre:'Cuadrado', simetrica: true },
+      { emoji:'🔺', nombre:'Triángulo', simetrica: true },
+      { emoji:'⭕', nombre:'Círculo', simetrica: true },
+      { emoji:'📐', nombre:'Escuadra', simetrica: false },
+      { emoji:'🔑', nombre:'Llave', simetrica: false },
+    ];
+    let sel = figuras.map(() => null);
+    let comprobado = false;
+    function renderS2() {
+      document.getElementById('simetria-content').innerHTML = `
+        <div class="card">
+          <div class="card-title">🔍 ¿Es simétrica? Haz clic en cada figura</div>
+          <p style="color:var(--gray-600);font-size:14px;margin-bottom:16px">Haz clic para marcar: <span style="color:var(--green);font-weight:800">VERDE = Simétrica</span> · <span style="color:var(--red);font-weight:800">ROJO = No simétrica</span> · Clic de nuevo para cambiar</p>
+          <div class="sym-grid">
+            ${figuras.map((f,i) => `
+              <div class="sym-item ${sel[i]===true?'selected-yes':sel[i]===false?'selected-no':''}" onclick="toggleSym(${i})">
+                <div class="sym-emoji">${f.emoji}</div>
+                <div class="sym-label">${f.nombre}</div>
+                ${sel[i]===true?'<div style="font-size:11px;color:var(--green);font-weight:800">✓ SIMÉTRICA</div>':
+                  sel[i]===false?'<div style="font-size:11px;color:var(--red);font-weight:800">✗ NO SIMÉTRICA</div>':''}
+              </div>`).join('')}
+          </div>
+          <div id="sym-result" style="margin-top:16px"></div>
+          <div style="margin-top:16px;text-align:center;display:flex;gap:12px;justify-content:center">
+            <button class="btn btn-primary" onclick="comprobarSim()">Comprobar ✓</button>
+            <button class="btn" style="background:rgba(255,255,255,0.1);color:var(--navy);border:2px solid var(--gray-200)" onclick="showSimetriaPhase(3)">Ir al Mini Test 📝</button>
+          </div>
+        </div>`;
+      window.toggleSym = (i) => {
+        if (sel[i] === null) sel[i] = true;
+        else if (sel[i] === true) sel[i] = false;
+        else sel[i] = null;
+        renderS2();
+      };
+      window.comprobarSim = () => {
+        let ok = 0;
+        figuras.forEach((f,i) => { if (sel[i] === f.simetrica) ok++; });
+        const el = document.getElementById('sym-result');
+        if (el) {
+          const pct = Math.round(ok/figuras.length*100);
+          el.innerHTML = `<div style="padding:14px;border-radius:12px;background:${pct>=80?'var(--green-bg)':'var(--red-bg)'};color:${pct>=80?'var(--green)':'var(--red)'};font-weight:800;text-align:center">
+            ${pct>=80?'✅':'⚠️'} Has acertado ${ok} de ${figuras.length} (${pct}%) – ¡${pct>=80?'¡Muy bien!':'Repasa la teoría!'}
+          </div>`;
+        }
+      };
+    }
+    renderS2();
+  } else {
+    const qs = [
+      { type:'mc', question:'¿Qué es el eje de simetría?', options:['Una línea que divide la figura en dos mitades iguales','Una línea que está al borde','El borde de la figura','Una figura especial'], correct:'Una línea que divide la figura en dos mitades iguales' },
+      { type:'mc', question:'¿Cuál de estas figuras es simétrica?', options:['Una llave 🔑','Una mariposa 🦋','Una escuadra 📐','Un zapato 👟'], correct:'Una mariposa 🦋' },
+      { type:'mc', question:'¿Cuándo decimos que una figura es simétrica?', options:['Cuando es muy grande','Cuando sus dos mitades coinciden al doblarla','Cuando tiene muchos lados','Cuando es de color azul'], correct:'Cuando sus dos mitades coinciden al doblarla' },
+      { type:'mc', question:'¿El círculo es simétrico?', options:['No, nunca','Solo a veces','Sí, tiene muchos ejes de simetría','Depende del color'], correct:'Sí, tiene muchos ejes de simetría' },
+      { type:'mc', question:'¿El cuadrado tiene eje de simetría?', options:['No','Sí, tiene 4 ejes','Sí, tiene 1 eje','Sí, tiene 2 ejes'], correct:'Sí, tiene 4 ejes' },
+      { type:'mc', question:'¿Qué pasa cuando doblamos una figura por su eje de simetría?', options:['Se rompe','Las dos partes encajan perfectamente','Una parte es más grande','Cambia de forma'], correct:'Las dos partes encajan perfectamente' },
+    ];
+    buildMiniTest(qs, 'simetria-content', (pct) => {
+      progress.simetria = { done: true, score: pct };
+      updateHome();
+    });
+  }
+}
+window.showSimetriaPhase = showSimetriaPhase;
+
+// ============================================================
+// CLASE 5: CUERPOS GEOMÉTRICOS
+// ============================================================
+function showCuerposPhase(n) {
+  setTab('c', n, 3);
+  const c = document.getElementById('cuerpos-content');
+  const cuerpos = [
+    { emoji:'📦', nombre:'PRISMA', desc:'Tiene caras rectangulares y dos bases iguales. El cubo es un prisma especial.', ejemplo:'Caja, ladrillo, edificio' },
+    { emoji:'🔺', nombre:'PIRÁMIDE', desc:'Tiene una base y caras triangulares que se juntan en un punto (vértice).', ejemplo:'Pirámides de Egipto, cucurucho' },
+    { emoji:'⚽', nombre:'ESFERA', desc:'Es redonda. Todos sus puntos están a la misma distancia del centro.', ejemplo:'Pelota, globo terrestre' },
+    { emoji:'🥫', nombre:'CILINDRO', desc:'Tiene dos bases circulares y una superficie lateral curva.', ejemplo:'Lata, vaso, tubo' },
+    { emoji:'🍦', nombre:'CONO', desc:'Tiene una base circular y termina en punta (vértice).', ejemplo:'Cucurucho de helado, embudo' },
+  ];
+  if (n === 1) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="card-title">🔺 Los cuerpos geométricos</div>
+        <div class="info-box">
+          Los cuerpos geométricos son figuras en <strong>tres dimensiones</strong> (tienen largo, ancho y alto). Son sólidos que ocupan espacio.
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-top:20px">
+          ${cuerpos.map(cu => `
+            <div class="cuerpo-card">
+              <div class="cuerpo-emoji">${cu.emoji}</div>
+              <div class="cuerpo-name">${cu.nombre}</div>
+              <div class="cuerpo-desc">${cu.desc}</div>
+              <div style="margin-top:8px;font-size:11px;color:#2563eb;font-weight:800">Ejemplos: ${cu.ejemplo}</div>
+            </div>`).join('')}
+        </div>
+        <div class="info-box yellow" style="margin-top:16px">
+          <strong>El cubo</strong> es un prisma especial: tiene todas las caras <strong>cuadradas e iguales</strong>. Si miras un cubo desde arriba, ves un cuadrado. 🎲
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-primary" onclick="showCuerposPhase(2)">Siguiente → Identifica 🎯</button>
+      </div>`;
+  } else if (n === 2) {
+    const preguntas = [
+      { objeto:'🏟️ Un estadio de fútbol (forma redondeada)', opciones:['Prisma','Cilindro','Cono','Esfera'], correcta:'Cilindro' },
+      { objeto:'⛺ Una tienda de campaña triangular', opciones:['Prisma','Pirámide','Cilindro','Esfera'], correcta:'Pirámide' },
+      { objeto:'🌍 La Tierra', opciones:['Prisma','Pirámide','Cilindro','Esfera'], correcta:'Esfera' },
+      { objeto:'🎊 Un sombrero de fiesta puntiagudo', opciones:['Prisma','Cono','Cilindro','Esfera'], correcta:'Cono' },
+      { objeto:'📚 Un libro', opciones:['Prisma','Pirámide','Cilindro','Esfera'], correcta:'Prisma' },
+      { objeto:'🎲 Un dado', opciones:['Prisma (cubo)','Pirámide','Cilindro','Esfera'], correcta:'Prisma (cubo)' },
+    ];
+    let idx=0, correct=0;
+    function renderC2() {
+      if (idx >= preguntas.length) {
+        const pct = Math.round(correct/preguntas.length*100);
+        document.getElementById('cuerpos-content').innerHTML = buildScoreHTML(correct, preguntas.length, pct, null) +
+          `<div style="text-align:center;margin-top:16px"><button class="btn btn-primary" onclick="showCuerposPhase(3)">Ir al Mini Test 📝</button></div>`;
+        return;
+      }
+      const p = preguntas[idx];
+      document.getElementById('cuerpos-content').innerHTML = `
+        <div class="card">
+          <div class="card-title">🎯 Identifica el cuerpo – ${idx+1}/${preguntas.length}</div>
+          <div style="font-size:24px;text-align:center;margin:20px 0">${p.objeto}</div>
+          <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:12px">¿Qué cuerpo geométrico tiene esta forma?</div>
+          <div class="options" id="c2-opts">
+            ${p.opciones.map(o=>`<button class="option-btn" data-correct="${p.correcta}" data-chosen="${o}" onclick="ansC2(this)">${o}</button>`).join('')}
+          </div>
+          <div class="feedback" id="c2-fb"></div>
+        </div>`;
+      window.ansC2 = (btn) => {
+        document.querySelectorAll('#c2-opts .option-btn').forEach(b=>b.disabled=true);
+        const ok = btn.dataset.chosen === btn.dataset.correct;
+        btn.classList.add(ok?'correct':'wrong');
+        if(ok) correct++;
+        const fb = document.getElementById('c2-fb');
+        fb.className='feedback '+(ok?'correct':'wrong')+' show';
+        fb.textContent = ok ? '✅ ¡Correcto!' : `❌ Era: ${btn.dataset.correct}`;
+        setTimeout(()=>{ idx++; renderC2(); }, ok?700:1300);
+      };
+    }
+    renderC2();
+  } else {
+    const qs = [
+      { type:'mc', question:'¿Cuántas dimensiones tienen los cuerpos geométricos?', options:['1','2','3','4'], correct:'3' },
+      { type:'mc', question:'¿Qué cuerpo tiene todas las caras cuadradas e iguales?', options:['Prisma','Pirámide','Cubo','Cilindro'], correct:'Cubo' },
+      { type:'mc', question:'¿Qué cuerpo geométrico tiene una base circular y termina en punta?', options:['Cilindro','Esfera','Prisma','Cono'], correct:'Cono' },
+      { type:'mc', question:'¿Cuál de estos NO es un cuerpo geométrico?', options:['Esfera','Cilindro','Triángulo','Cono'], correct:'Triángulo' },
+      { type:'mc', question:'Una lata de refresco tiene forma de...', options:['Prisma','Cilindro','Esfera','Cono'], correct:'Cilindro' },
+      { type:'mc', question:'¿Cómo se llama el punto donde se juntan las caras de una pirámide?', options:['Arista','Base','Vértice','Centro'], correct:'Vértice' },
+    ];
+    buildMiniTest(qs, 'cuerpos-content', (pct) => {
+      progress.cuerpos = { done: true, score: pct };
+      updateHome();
+    });
+  }
+}
+window.showCuerposPhase = showCuerposPhase;
+
+// ============================================================
+// JUEGO MEMORY
+// ============================================================
+function buildJuego() {
+  const pairs = [
+    ['1 hora', '60 minutos'],
+    ['1 minuto', '60 segundos'],
+    ['1 año', '12 meses'],
+    ['Eje de simetría', 'Línea que divide en dos mitades iguales'],
+    ['Año bisiesto', 'Febrero tiene 29 días'],
+    ['Prisma especial', 'Cubo'],
+    ['Aguja larga del reloj', 'Marca los minutos'],
+    ['Esfera', 'Es redonda y sin esquinas'],
+  ];
+  const cards = [...pairs.map(([a],i)=>({text:a,pair:i,side:'a'})), ...pairs.map(([,b],i)=>({text:b,pair:i,side:'b'}))];
+  // shuffle
+  for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+  cards.forEach((c,i)=>{c.idx=i;});
+  let flipped=[], matched=new Set(), moves=0;
+  function renderJuego() {
+    document.getElementById('juego-content').innerHTML = `
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div style="font-weight:800;color:var(--gray-600)">Movimientos: <span style="color:var(--blue)">${moves}</span></div>
+          <div style="font-weight:800;color:var(--green)">Parejas: ${matched.size/2} / ${pairs.length}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          ${cards.map((card,i) => {
+            const isFlipped = flipped.includes(i) || matched.has(i);
+            const isMatched = matched.has(i);
+            return `<div onclick="flipCard(${i})" style="height:80px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;font-weight:700;padding:8px;transition:all .3s;
+              background:${isMatched?'var(--green-bg)':isFlipped?'white':'#1e3a5f'};
+              color:${isMatched?'var(--green)':isFlipped?'var(--navy)':'transparent'};
+              border:2px solid ${isMatched?'var(--green)':isFlipped?'var(--blue)':'rgba(255,255,255,0.1)'};
+              box-shadow:${isFlipped?'var(--shadow)':'none'}">${isFlipped?card.text:'?'}</div>`;
+          }).join('')}
+        </div>
+        ${matched.size === pairs.length*2 ? `
+          <div style="margin-top:20px;text-align:center;padding:20px;background:var(--green-bg);border-radius:14px">
+            <div style="font-size:48px">🎉</div>
+            <div style="font-family:'Fredoka One',cursive;font-size:24px;color:var(--green)">¡Completado en ${moves} movimientos!</div>
+          </div>` : ''}
+      </div>`;
+    window.flipCard = (i) => {
+      if (flipped.length === 2 || matched.has(i) || flipped.includes(i)) return;
+      flipped.push(i);
+      if (flipped.length === 2) {
+        moves++;
+        const [a,b] = flipped;
+        // Match: one from left half (pair=i), one from right half (pair=original index)
+        const cardA = cards[a], cardB = cards[b];
+        // pairs: cardA.pair and cardB.pair — they match if same pair index but one is "question" and one is "answer"
+        // Since we added questions first then answers, question cards have idx<pairs.length
+        const isMatch = cardA.pair === cardB.pair && cardA.side !== cardB.side;
+        if (isMatch) {
+          matched.add(a); matched.add(b);
+          flipped = [];
+          renderJuego();
+        } else {
+          renderJuego();
+          setTimeout(() => { flipped = []; renderJuego(); }, 1000);
+        }
+      } else {
+        renderJuego();
+      }
+    };
+  }
+  renderJuego();
+}
+
+// ============================================================
+// EXAMEN FINAL
+// ============================================================
+function buildExamenStart() {
+  examenReady = true;
+  document.getElementById('examen-content').innerHTML = `
+    <div class="exercise-box" style="text-align:center;padding:40px">
+      <div style="font-size:64px;margin-bottom:16px">📝</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:12px">Examen Final – Tema 8</div>
+      <p style="color:var(--gray-600);font-size:15px;max-width:400px;margin:0 auto 24px">20 preguntas sobre el tiempo, las horas, los minutos, la simetría y los cuerpos geométricos.</p>
+      <button class="btn btn-primary" style="font-size:16px;padding:14px 32px" onclick="startExamen()">¡Empezar el examen! 🚀</button>
+    </div>`;
+}
+window.buildExamenStart = buildExamenStart;
+
+function startExamen() {
+  const allQs = [
+    // TIEMPO
+    { type:'mc', question:'¿Cuántos meses tiene un año?', options:['10','11','12','13'], correct:'12' },
+    { type:'mc', question:'¿Cuántos días tiene una semana?', options:['5','6','7','8'], correct:'7' },
+    { type:'mc', question:'¿Qué mes tiene 28 días normalmente?', options:['Enero','Febrero','Marzo','Noviembre'], correct:'Febrero' },
+    { type:'mc', question:'¿Cuántos días tiene febrero en año bisiesto?', options:['28','29','30','31'], correct:'29' },
+    // HORAS
+    { type:'mc', question:'¿Qué aguja del reloj marca las horas?', options:['La larga','La corta','Las dos','Ninguna'], correct:'La corta' },
+    { type:'mc', question:'¿Cuántos minutos tiene una hora?', options:['30','45','60','100'], correct:'60' },
+    { type:'mc', question:'"Las 8 y media" en digital es:', options:['8:15','8:30','8:45','8:00'], correct:'8:30' },
+    { type:'mc', question:'"Las 6 y cuarto" en digital es:', options:['6:00','6:15','6:30','6:45'], correct:'6:15' },
+    // MINUTOS
+    { type:'mc', question:'¿Cuánto avanza la aguja larga por número?', options:['1 minuto','5 minutos','10 minutos','15 minutos'], correct:'5 minutos' },
+    { type:'mc', question:'¿Cuántos minutos son media hora?', options:['20','25','30','35'], correct:'30' },
+    { type:'mc', question:'¿Cuántos segundos tiene un minuto?', options:['30','50','60','100'], correct:'60' },
+    { type:'mc', question:'¿Cuántos minutos son 2 horas?', options:['60','90','100','120'], correct:'120' },
+    // SIMETRÍA
+    { type:'mc', question:'¿Qué es el eje de simetría?', options:['Una línea que divide en dos mitades iguales','El borde de la figura','Una figura especial','El área de la figura'], correct:'Una línea que divide en dos mitades iguales' },
+    { type:'mc', question:'¿Cuál es simétrica?', options:['Una llave 🔑','Una mariposa 🦋','Una escuadra 📐','Un zapato 👟'], correct:'Una mariposa 🦋' },
+    { type:'mc', question:'¿El círculo tiene eje de simetría?', options:['No','Solo si es grande','Sí, tiene muchos','Solo 1'], correct:'Sí, tiene muchos' },
+    { type:'mc', question:'¿Cuándo una figura es simétrica?', options:['Cuando es grande','Cuando sus mitades coinciden','Cuando es de color azul','Cuando tiene muchos lados'], correct:'Cuando sus mitades coinciden' },
+    // CUERPOS
+    { type:'mc', question:'¿Cuántas dimensiones tienen los cuerpos geométricos?', options:['1','2','3','4'], correct:'3' },
+    { type:'mc', question:'¿Qué cuerpo tiene todas las caras cuadradas e iguales?', options:['Prisma','Cubo','Cilindro','Cono'], correct:'Cubo' },
+    { type:'mc', question:'¿Una lata de refresco tiene forma de...?', options:['Prisma','Cilindro','Esfera','Cono'], correct:'Cilindro' },
+    { type:'mc', question:'¿Qué cuerpo termina en punta y tiene base circular?', options:['Cilindro','Esfera','Prisma','Cono'], correct:'Cono' },
+  ];
+  buildMiniTest(allQs, 'examen-content', (pct) => {
+    progress.examen = { done: true, score: pct };
+    updateHome();
+  });
+}
+window.startExamen = startExamen;
+
+// ============================================================
+// PROGRESO
+// ============================================================
+function buildProgreso() {
+  const topics = [
+    { id:'tiempo',   name:'Medida del tiempo', icon:'📅' },
+    { id:'horas',    name:'Las horas',          icon:'🕐' },
+    { id:'minutos',  name:'Los minutos',        icon:'⏱️' },
+    { id:'simetria', name:'La simetría',        icon:'🔷' },
+    { id:'cuerpos',  name:'Cuerpos geométricos',icon:'🔺' },
+    { id:'examen',   name:'Examen Final',       icon:'📝' },
+  ];
+  const done = topics.filter(t => progress[t.id].done).length;
+  const pct = Math.round(done / topics.length * 100);
+  document.getElementById('progreso-content').innerHTML = `
+    <div class="card">
+      <div class="card-title">📊 Mi progreso en el Tema 8</div>
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="font-family:'Fredoka One',cursive;font-size:56px;color:${pct>=80?'var(--green)':pct>=60?'var(--yellow)':'var(--blue)'}">${pct}%</div>
+        <div style="font-size:15px;color:var(--gray-600);font-weight:700">completado · ${done} de ${topics.length} actividades</div>
+      </div>
+      ${topics.map(t => {
+        const p = progress[t.id];
+        const barW = p.done ? p.score : 0;
+        const stars = p.done ? (p.score>=80?'⭐⭐⭐':p.score>=60?'⭐⭐':'⭐') : '';
+        return `<div class="prog-bar-wrap">
+          <div class="prog-bar-label">
+            <span>${t.icon} ${t.name}</span>
+            <span>${p.done ? p.score+'% '+stars : 'No completado'}</span>
+          </div>
+          <div class="prog-bar-track">
+            <div class="prog-bar-fill" style="width:${barW}%"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+// INIT
+updateHome();
+</script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2f62d02dae6f47348de2ad83cf623a43"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

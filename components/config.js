@@ -42,6 +42,7 @@ export const CONFIG = {
         //{ label: 'Unidad 4 – Geometría',             url: null },
         { label: 'Unidad 6 – Una tarde de juegos',         url: 'apps/mat6.html' },
         { label: 'Act. Evaluable – Cálculo (sumas/restas)', url: 'apps/matCalculo.html' },
+        { label: 'Unidad 8 – Nuestra clase',                url: 'apps/mat8.html' },
         //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
