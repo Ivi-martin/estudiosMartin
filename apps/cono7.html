@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏘️ Unidad 7: Vivimos en una localidad</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan:#0891b2; --cyan-l:#06b6d4; --cyan-bg:#cffafe;
+    --indigo:#4338ca; --indigo-l:#6366f1; --indigo-bg:#e0e7ff;
+    --amber:#d97706; --amber-l:#f59e0b; --amber-bg:#fef3c7;
+    --rose:#e11d48; --rose-l:#f43f5e; --rose-bg:#ffe4e6;
+    --green:#16a34a; --green-l:#22c55e; --green-bg:#dcfce7;
+    --teal:#0d9488; --teal-l:#14b8a6; --teal-bg:#ccfbf1;
+    --violet:#7c3aed; --violet-l:#8b5cf6; --violet-bg:#ede9fe;
+    --sky-c:#0284c7; --sky-bg:#e0f2fe;
+    --navy:#1a2744;
+    --gray-50:#f8fafc; --gray-100:#f1f5f9; --gray-200:#e2e8f0;
+    --gray-400:#94a3b8; --gray-600:#475569; --gray-800:#1e293b;
+    --shadow:0 4px 16px rgba(0,0,0,.12);
+    --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+    --radius:16px; --radius-sm:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
+  .stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#020617 0%,#0c1445 40%,#0f172a 100%);overflow:hidden}
+  .stars-bg::before{content:'🏘️ 🏙️ 🚦 🏛️ 🌾 🏭 · 🏘️ 🏙️ 🚦 🏛️ 🌾 🏭 ·';
+    position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.06);
+    line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
+  @keyframes twinkle{from{opacity:.5}to{opacity:1}}
+  .app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+  .header{background:linear-gradient(135deg,#020617 0%,#1e3a8a 60%,#0d9488 100%);padding:16px 24px;
+    display:flex;align-items:center;gap:16px;border-bottom:3px solid rgba(255,255,255,.15);
+    box-shadow:0 4px 20px rgba(0,0,0,.5)}
+  .header-logo{font-family:'Fredoka One',cursive;font-size:20px;color:white;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+  .header-logo span{color:#fbbf24}
+  .header-sub{font-size:12px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px}
+  .header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .btn-back{padding:6px 14px;background:rgba(255,255,255,.1);border-radius:30px;color:white;text-decoration:none;font-size:13px;font-weight:700;transition:all .2s}
+  .btn-back:hover{background:rgba(255,255,255,.2);transform:translateY(-1px)}
+  .progress-strip{background:rgba(0,0,0,.4);padding:10px 24px;display:flex;align-items:center;gap:16px}
+  .progress-label{font-size:11px;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:1px;white-space:nowrap}
+  .progress-track{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,#0891b2,#67e8f9);border-radius:4px;transition:width .5s ease}
+  .progress-pct{font-size:12px;color:#67e8f9;font-weight:800}
+  .main{flex:1;display:flex;gap:0}
+  .sidebar{width:250px;flex-shrink:0;background:rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.08);
+    padding:20px 12px;display:flex;flex-direction:column;gap:6px}
+  .sidebar-section{font-size:10px;color:rgba(255,255,255,.3);font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 8px 4px}
+  .nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;
+    transition:all .2s;border:none;background:transparent;width:100%;text-align:left;
+    color:rgba(255,255,255,.6);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700}
+  .nav-btn:hover{background:rgba(255,255,255,.08);color:white}
+  .nav-btn.active{background:rgba(8,145,178,.3);color:white;border:1px solid rgba(8,145,178,.5)}
+  .nav-btn.completed{color:#67e8f9}
+  .nav-btn .nav-icon{font-size:18px;width:24px;text-align:center}
+  .content{flex:1;padding:28px;overflow-y:auto;max-height:calc(100vh - 100px)}
+  .screen{display:none}
+  .screen.active{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .lesson-header{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px}
+  .lesson-icon{font-size:42px}
+  .lesson-info h2{font-family:'Fredoka One',cursive;font-size:26px;color:white}
+  .lesson-info p{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+  .phase-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+  .phase-tab{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;
+    font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid transparent;
+    background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif}
+  .phase-tab.active{background:var(--cyan);color:white;border-color:var(--cyan-l)}
+  .card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+  .card-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .theory-highlight{background:var(--amber-bg);border-left:4px solid var(--amber-l);
+    border-radius:0 12px 12px 0;padding:14px 18px;margin:12px 0;font-size:14px;color:var(--gray-800);line-height:1.8}
+  .theory-highlight.cyan{background:var(--cyan-bg);border-color:var(--cyan)}
+  .theory-highlight.indigo{background:var(--indigo-bg);border-color:var(--indigo)}
+  .theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
+  .theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky-c)}
+  .theory-highlight.teal{background:var(--teal-bg);border-color:var(--teal)}
+  .exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
+  .exercise-box .q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--cyan);text-transform:uppercase;margin-bottom:8px}
+  .exercise-box .q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
+  .options{display:flex;flex-wrap:wrap;gap:8px}
+  .option-btn{padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;
+    transition:all .2s;border:2px solid var(--gray-200);background:white;color:var(--navy);font-family:'Nunito',sans-serif}
+  .option-btn:hover:not(:disabled){border-color:var(--cyan);background:var(--cyan-bg)}
+  .option-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+  .option-btn.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+  .option-btn:disabled{cursor:not-allowed;opacity:.8}
+  .text-input{padding:12px 16px;border:2px solid var(--gray-200);border-radius:10px;
+    font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;transition:all .2s;
+    background:#fff !important;color:#1a2744 !important}
+  .text-input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(8,145,178,.15)}
+  .text-input.correct{border-color:var(--green);background:var(--green-bg) !important}
+  .text-input.wrong{border-color:var(--rose);background:var(--rose-bg) !important}
+  .feedback{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;margin-top:10px;display:none}
+  .feedback.show{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
+  .feedback.correct{background:var(--green-bg);color:var(--green)}
+  .feedback.wrong{background:var(--rose-bg);color:var(--rose)}
+  @keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+  .btn{padding:12px 24px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;
+    transition:all .2s;border:none;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary{background:var(--cyan);color:white}
+  .btn-primary:hover{background:var(--cyan-l);transform:translateY(-1px);box-shadow:0 4px 12px rgba(8,145,178,.4)}
+  .btn-success{background:var(--teal);color:white}
+  .btn-success:hover{background:var(--teal-l);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0) scale(.97)}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .score-card{text-align:center;padding:32px;background:white;border-radius:20px;box-shadow:var(--shadow-lg)}
+  .score-big{font-family:'Fredoka One',cursive;font-size:64px;color:var(--cyan)}
+  .score-label{font-size:16px;color:var(--gray-600);margin-bottom:20px}
+  .stars-display{font-size:36px;letter-spacing:4px}
+  .score-grade{display:inline-block;padding:8px 20px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:20px;margin-top:12px}
+  .score-grade.excellent{background:var(--green-bg);color:var(--green)}
+  .score-grade.good{background:var(--amber-bg);color:var(--amber)}
+  .score-grade.ok{background:var(--rose-bg);color:var(--rose)}
+  .test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+  .test-dots{display:flex;gap:6px}
+  .test-dot{width:12px;height:12px;border-radius:50%;background:var(--gray-200);transition:all .3s}
+  .test-dot.current{background:var(--cyan);transform:scale(1.3)}
+  .test-dot.done-correct{background:var(--green)}
+  .test-dot.done-wrong{background:var(--rose)}
+  .tf-row{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+  .tf-btn{padding:12px 28px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;
+    border:2px solid var(--gray-200);background:white;cursor:pointer;transition:all .2s;color:var(--navy)}
+  .tf-btn:hover:not(:disabled){transform:scale(1.05)}
+  .tf-btn.verd:hover:not(:disabled){border-color:var(--green);background:var(--green-bg)}
+  .tf-btn.fals:hover:not(:disabled){border-color:var(--rose);background:var(--rose-bg)}
+  .tf-btn.correct{background:var(--green-bg) !important;border-color:var(--green) !important;color:var(--green) !important}
+  .tf-btn.wrong{background:var(--rose-bg) !important;border-color:var(--rose) !important;color:var(--rose) !important}
+  .tf-btn:disabled{cursor:not-allowed}
+  .progress-topic-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+  .progress-topic-row .pt-icon{font-size:22px}
+  .progress-topic-row .pt-name{font-weight:700;color:rgba(255,255,255,.8);flex:1;font-size:14px}
+  .progress-topic-row .pt-score{font-family:'Fredoka One',cursive;font-size:22px;color:#67e8f9}
+  .progress-topic-row .pt-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+  .progress-topic-row .pt-fill{height:100%;background:linear-gradient(90deg,#0891b2,#67e8f9);border-radius:99px;transition:width .8s}
+  .content::-webkit-scrollbar{width:6px}
+  .content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
+  .content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+  @media(max-width:700px){.sidebar{display:none}.content{padding:16px}}
+</style>
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="app">
+<div id="app-header-root"></div>
+<div class="progress-strip"><div class="progress-label">PROGRESO DEL TEMA</div><div class="progress-track"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div><div class="progress-pct" id="overall-pct">0%</div></div>
+<div class="main">
+<div class="sidebar">
+  <div class="sidebar-section">Unidad 7 – Localidades</div>
+  <button class="nav-btn active" onclick="showScreen('pueblos')" id="nav-pueblos"><span class="nav-icon">🏘️</span> Pueblos y ciudades</button>
+  <button class="nav-btn" onclick="showScreen('normas')" id="nav-normas"><span class="nav-icon">🚦</span> Normas y convivencia</button>
+  <button class="nav-btn" onclick="showScreen('gobierno')" id="nav-gobierno"><span class="nav-icon">🏛️</span> Gobierno municipal</button>
+  <button class="nav-btn" onclick="showScreen('trabajos')" id="nav-trabajos"><span class="nav-icon">🔧</span> Tipos de trabajos</button>
+  <button class="nav-btn" onclick="showScreen('andalucia')" id="nav-andalucia"><span class="nav-icon">🌻</span> Andalucía</button>
+  <button class="nav-btn" onclick="showScreen('examen')" id="nav-examen"><span class="nav-icon">📝</span> Examen global (20 preg)</button>
+  <div class="sidebar-section" style="margin-top:8px">Mi Progreso</div>
+  <button class="nav-btn" onclick="showScreen('progreso')" id="nav-progreso"><span class="nav-icon">📊</span> Resultados</button>
+</div>
+<div class="content">
+  <div class="screen active" id="screen-pueblos"><div class="lesson-header"><div class="lesson-icon">🏘️</div><div class="lesson-info"><h2>¿Cómo son las localidades?</h2><p>Pueblos, ciudades y barrios</p></div></div><div class="phase-tabs" id="tabs-pueblos"></div><div id="pueblos-content"></div></div>
+  <div class="screen" id="screen-normas"><div class="lesson-header"><div class="lesson-icon">🚦</div><div class="lesson-info"><h2>Normas para convivir mejor</h2><p>Convivencia, circulación y resolución de conflictos</p></div></div><div class="phase-tabs" id="tabs-normas"></div><div id="normas-content"></div></div>
+  <div class="screen" id="screen-gobierno"><div class="lesson-header"><div class="lesson-icon">🏛️</div><div class="lesson-info"><h2>¿Cómo se gobierna la localidad?</h2><p>Ayuntamiento, alcalde y servicios municipales</p></div></div><div class="phase-tabs" id="tabs-gobierno"></div><div id="gobierno-content"></div></div>
+  <div class="screen" id="screen-trabajos"><div class="lesson-header"><div class="lesson-icon">🔧</div><div class="lesson-info"><h2>¿Qué tipos de trabajos hay?</h2><p>Naturaleza, fábricas y servicios</p></div></div><div class="phase-tabs" id="tabs-trabajos"></div><div id="trabajos-content"></div></div>
+  <div class="screen" id="screen-andalucia"><div class="lesson-header"><div class="lesson-icon">🌻</div><div class="lesson-info"><h2>Pueblos y ciudades de Andalucía</h2><p>Provincias y características</p></div></div><div class="phase-tabs" id="tabs-andalucia"></div><div id="andalucia-content"></div></div>
+  <div class="screen" id="screen-examen"><div class="lesson-header"><div class="lesson-icon">📝</div><div class="lesson-info"><h2>Examen global de la unidad</h2><p>20 preguntas para evaluar todo lo aprendido</p></div></div><div id="examen-content"></div></div>
+  <div class="screen" id="screen-progreso"><div id="progreso-content"></div></div>
+</div>
+</div>
+</div>
+<div id="app-footer-root"></div>
+
+<script>
+const progress = { pueblos: {done:false, score:0}, normas: {done:false, score:0}, gobierno: {done:false, score:0}, trabajos: {done:false, score:0}, andalucia: {done:false, score:0}, examen: {done:false, score:0} };
+function updateHome() { const scores = Object.values(progress).map(p => p.done ? p.score : 0); const avg = Math.round(scores.reduce((a,b)=>a+b,0) / scores.length); document.getElementById('overall-progress').style.width = avg + '%'; document.getElementById('overall-pct').textContent = avg + '%'; Object.entries(progress).forEach(([k,p]) => { const nb = document.getElementById('nav-'+k); if(nb && p.done) nb.classList.add('completed'); }); }
+let _inited = {};
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); const nb = document.getElementById('nav-'+id); if(nb) nb.classList.add('active'); if(!_inited[id]) { _inited[id] = true; const starters = { pueblos:()=>showPueblosPhase(1), normas:()=>showNormasPhase(1), gobierno:()=>showGobiernoPhase(1), trabajos:()=>showTrabajosPhase(1), andalucia:()=>showAndaluciaPhase(1), examen:()=>buildExamenGlobal() }; if(starters[id]) starters[id](); } if(id === 'progreso') buildProgreso(); }
+window.showScreen = showScreen;
+function setTab(id, n) { const labels = PHASES[id].tabs; const wrap = document.getElementById('tabs-'+id); if(wrap) wrap.innerHTML = labels.map((l,i) => `<div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join(''); }
+function buildMiniTest(qs, containerId, onDone) { let curr=0, correct=0, results=[]; function render() { const c = document.getElementById(containerId); if(!c) return; if(curr >= qs.length) { const pct = Math.round(correct/qs.length*100); const stars = pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐'; const grade = pct>=80?'excellent':pct>=60?'good':'ok'; c.innerHTML = `<div class="score-card"><div class="stars-display">${stars}</div><div class="score-big">${pct}%</div><div class="score-label">${pct===100?'¡Perfecto! 🔥':pct>=80?'¡Muy bien! 💪':'Repasa e inténtalo 📖'}<br><small>${correct} de ${qs.length} correctas</small></div><div class="score-grade ${grade}">${pct>=80?'¡Aprobado!':pct>=60?'Notable':'A repasar'}</div></div>`; if(onDone) onDone(pct); return; } const q = qs[curr]; const dotHTML = qs.map((_,i) => `<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join(''); const qid = 'mt'+curr; if(q.type==='mc'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Pregunta ${curr+1}</div><div class="q-text">${q.question}</div><div class="options" id="${qid}_opts">${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}</div><div class="feedback" id="${qid}_fb"></div></div>`; } else if(q.type==='tf'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">V/F ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Verdadero o Falso</div><div class="q-text">${q.question}</div><div class="tf-row"><button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button><button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button></div><div class="feedback" id="${qid}_fb"></div></div>`; } else if(q.type==='write'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">Escribe ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Escribe la respuesta</div><div class="q-text">${q.question}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1"><button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button></div><div class="feedback" id="${qid}_fb"></div></div>`; } } function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); } window.mtAns = function(btn,qid,cid){ if(containerId!==cid) return; document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true); const ok = btn.dataset.chosen===btn.dataset.correct; btn.classList.add(ok?'correct':'wrong'); if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');}); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ Respuesta correcta: '+btn.dataset.correct; next(ok); }; window.mtTF = function(btn,qid,cid){ if(containerId!==cid) return; document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true); const ok = btn.dataset.chosen===btn.dataset.correct; btn.classList.add(ok?'correct':'wrong'); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct; next(ok); }; window.mtWrite = function(qid,cid,correct){ if(containerId!==cid) return; const inp = document.getElementById(qid+'_inp'); const ok = inp.value.trim().toLowerCase() === correct.toLowerCase(); inp.classList.add(ok?'correct':'wrong'); inp.disabled=true; document.querySelectorAll(`button[onclick*="${qid}"]`).forEach(b=>b.disabled=true); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct; next(ok); }; render(); }
+window.checkOpt = function(btn, optsId, fbId){ document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true); const ok = btn.dataset.chosen === btn.dataset.correct; btn.classList.add(ok?'correct':'wrong'); if(!ok) document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');}); const fb = document.getElementById(fbId); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta correcta era: '+btn.dataset.correct; };
+
+// ================= 1. PUEBLOS (10 preg test) =================
+function showPueblosPhase(n){ setTab('pueblos',n); const c=document.getElementById('pueblos-content');
+  if(n===1){ c.innerHTML=`<div class="card"><div class="card-title">🏘️ Pueblos y ciudades</div><div class="theory-highlight cyan"><strong>🏡 PUEBLOS:</strong> tamaño pequeño/mediano, menos habitantes, calles estrechas, pocos coches.</div><div class="theory-highlight indigo"><strong>🏙️ CIUDADES:</strong> gran tamaño, muchos habitantes, edificios altos, avenidas anchas, muchos vehículos.</div><div class="theory-highlight green">Las calles y edificios se agrupan en <strong>BARRIOS</strong>.</div></div><div class="btn-row"><button class="btn btn-primary" onclick="showPueblosPhase(2)">Siguiente → (10 ejercicios)</button></div>`; }
+  else if(n===2){ const ejercicios = [["¿Cómo son las calles de un pueblo?",["Estrechas","Anchísimas","Siempre peatonales"],"Estrechas"],["¿Dónde hay más habitantes?",["En un pueblo","En una ciudad","En un barrio"],"En una ciudad"],["¿Qué son los barrios?",["Grupos de calles","Tipos de transportes","Fiestas"],"Grupos de calles"],["¿Característica de la ciudad?",["Casas bajas","Pocos coches","Edificios altos"],"Edificios altos"],["¿Qué localidad tiene avenidas anchas?",["Pueblo","Ciudad","Aldea"],"Ciudad"],["¿Dónde es más fácil encontrar huertos?",["Ciudad","Pueblo","Gran ciudad"],"Pueblo"],["¿Cómo es la vida en un pueblo?",["Muy ruidosa","Tranquila y vecinos conocidos","Anónima"],"Tranquila y vecinos conocidos"],["¿Dónde hay semáforos y grandes avenidas?",["Pueblo","Ciudad","Caserío"],"Ciudad"],["¿Dónde suele haber rascacielos?",["Pueblos pequeños","Ciudades grandes","Campo"],"Ciudades grandes"],["¿Cómo se agrupan las calles?",["Manzanas","Barrios","Provincias"],"Barrios"]];
+    c.innerHTML = `<div class="card"><div class="card-title">✏️ 10 ejercicios prácticos</div></div>` + ejercicios.map((q,i)=>`<div class="exercise-box"><div class="q-text">${q[0]}</div><div class="options" id="pu-e${i}">${q[1].map(opt=>`<button class="option-btn" data-correct="${q[2]}" data-chosen="${opt}" onclick="checkOpt(this,'pu-e${i}','pu-fb${i}')">${opt}</button>`).join('')}</div><div class="feedback" id="pu-fb${i}"></div></div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showPueblosPhase(3)">Mini Test (10 preguntas) →</button></div>`; }
+  else if(n===3){ buildMiniTest([{type:'mc',question:'¿Característica de los pueblos?',options:['Edificios altos','Calles estrechas','Muchos semáforos'],correct:'Calles estrechas'},{type:'tf',question:'Las ciudades tienen menos habitantes que los pueblos.',correct:'falso'},{type:'mc',question:'¿Cómo se llaman los grupos de calles?',options:['Municipios','Barrios','Provincias'],correct:'Barrios'},{type:'mc',question:'¿Dónde hay más tráfico?',options:['Pueblo','Ciudad','Cortijo'],correct:'Ciudad'},{type:'tf',question:'Los pueblos suelen tener edificios bajos.',correct:'verdadero'},{type:'mc',question:'¿Qué abunda en una ciudad?',options:['Semáforos','Animales de granja','Huertos'],correct:'Semáforos'},{type:'mc',question:'¿Dónde es más probable encontrar un rascacielos?',options:['Pueblo','Ciudad','Aldea'],correct:'Ciudad'},{type:'tf',question:'En los pueblos las calles suelen ser anchas.',correct:'falso'},{type:'mc',question:'¿Qué forma una localidad grande con muchos servicios?',options:['Pueblo','Ciudad','Barrio'],correct:'Ciudad'},{type:'write',question:'Grupo de calles y edificios dentro de una localidad',correct:'barrio'}],'pueblos-content',pct=>{progress.pueblos.score=pct; progress.pueblos.done=true; updateHome();}); } }
+
+// ================= 2. NORMAS (10 preg test) =================
+function showNormasPhase(n){ setTab('normas',n); const c=document.getElementById('normas-content');
+  if(n===1){ c.innerHTML=`<div class="card"><div class="card-title">🚦 Normas</div><div class="theory-highlight cyan"><strong>CONVIVENCIA:</strong> usar papeleras, cuidar mobiliario, ayudar vecinos.</div><div class="theory-highlight indigo"><strong>CIRCULACIÓN:</strong> acera, pasos peatones, semáforos.</div><div class="theory-highlight green"><strong>CONFLICTOS:</strong> dialogar, respetar, escuchar.</div></div><div class="btn-row"><button class="btn btn-primary" onclick="showNormasPhase(2)">Siguiente →</button></div>`; }
+  else if(n===2){ const items = [["Caminar por la acera es norma de...",["Convivencia","Circulación","Cortesía"],"Circulación"],["Usar papeleras es norma de...",["Circulación","Convivencia","Higiene"],"Convivencia"],["Resolver conflictos: lo primero es...",["Gritar","Dialogar","Ignorar"],"Dialogar"],["Respetar semáforo rojo es norma de...",["Convivencia","Circulación","Educación"],"Circulación"],["Ayudar a un vecino mayor es norma de...",["Circulación","Convivencia","Obligación"],"Convivencia"],["Antes de cruzar debemos...",["Correr","Mirar ambos lados","Cerrar ojos"],"Mirar ambos lados"],["¿Dónde tirar la basura?",["Suelo","Papelera","Detrás banco"],"Papelera"],["¿Qué actitud ayuda a resolver conflictos?",["Escuchar","Gritar","Irse"],"Escuchar"],["¿Qué debemos respetar al caminar?",["Señales","Moda","Ruido"],"Señales"],["Cuidar mobiliario urbano es...",["No pintar paredes","No usar bancos","No hablar"],"No pintar paredes"]];
+    c.innerHTML = `<div class="card"><div class="card-title">✏️ 10 ejercicios</div></div>` + items.map((q,i)=>`<div class="exercise-box"><div class="q-text">${q[0]}</div><div class="options" id="no-e${i}">${q[1].map(opt=>`<button class="option-btn" data-correct="${q[2]}" data-chosen="${opt}" onclick="checkOpt(this,'no-e${i}','no-fb${i}')">${opt}</button>`).join('')}</div><div class="feedback" id="no-fb${i}"></div></div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showNormasPhase(3)">Mini Test (10 preg) →</button></div>`; }
+  else if(n===3){ buildMiniTest([{type:'mc',question:'¿Dónde caminar seguros?',options:['Calzada','Acera','Cuneta'],correct:'Acera'},{type:'tf',question:'Ayudar vecinos es norma circulación.',correct:'falso'},{type:'mc',question:'Primera regla resolver conflictos',options:['Gritar','Dialogar','Pelear'],correct:'Dialogar'},{type:'tf',question:'Paso peatones es seguro',correct:'verdadero'},{type:'mc',question:'¿Qué hacer con la basura?',options:['Tirar suelo','Usar papelera','Dejar en suelo'],correct:'Usar papelera'},{type:'mc',question:'¿Qué indica el semáforo rojo para peatones?',options:('Avanza','Detente','Corre'),correct:'Detente'},{type:'tf',question:'Pintar paredes públicas es correcto',correct:'falso'},{type:'mc',question:'¿Qué significa escuchar en un conflicto?',options:('Atender','Gritar','Ignorar'),correct:'Atender'},{type:'mc',question:'¿Dónde debemos cruzar la calle?',options:('Cualquier sitio','Paso de peatones','Esquina'),correct:'Paso de peatones'},{type:'write',question:'Acción principal para solucionar problemas con otros',correct:'dialogar'}],'normas-content',pct=>{progress.normas.score=pct; progress.normas.done=true; updateHome();}); } }
+
+// ================= 3. GOBIERNO (10 preg test) =================
+function showGobiernoPhase(n){ setTab('gobierno',n); const c=document.getElementById('gobierno-content');
+  if(n===1){ c.innerHTML=`<div class="card"><div class="card-title">🏛️ Ayuntamiento</div><div class="theory-highlight cyan">Municipio, Ayuntamiento (alcalde+concejales), elecciones municipales.</div><div class="theory-highlight teal">Servicios: limpieza, transporte, parques, bibliotecas, deportes, fiestas.</div></div><div class="btn-row"><button class="btn btn-primary" onclick="showGobiernoPhase(2)">Siguiente →</button></div>`;}
+  else if(n===2){ const preg = [["¿Quién forma el ayuntamiento?",["Alcalde y concejales","Presidente","Jueces"],"Alcalde y concejales"],["¿Cómo se elige al alcalde?",["Sorteo","Elecciones municipales","Nombramiento"],"Elecciones municipales"],["Servicio que recoge basura",["Limpieza","Parques","Policía"],"Limpieza"],["Servicio que organiza deportes",["Cultura","Deportes","Fiestas"],"Deportes"],["Servicio que cuida jardines",["Limpieza","Parques","Transporte"],"Parques"],["¿Quién preside el ayuntamiento?",["Concejal","Alcalde","Secretario"],"Alcalde"],["¿Dónde pedir libro prestado?",["Museo","Biblioteca","Polideportivo"],"Biblioteca"],["Servicio que organiza la feria",["Fiestas","Protección","Limpieza"],"Fiestas"],["Nombre del gobierno local",["Ayuntamiento","Gobierno central","Diputación"],"Ayuntamiento"],["Servicio típico municipal",["Limpieza viaria","Venta coches","Fabricación"],"Limpieza viaria"]];
+    c.innerHTML = `<div class="card"><div class="card-title">✏️ 10 ejercicios</div></div>` + preg.map((q,i)=>`<div class="exercise-box"><div class="q-text">${q[0]}</div><div class="options" id="go-e${i}">${q[1].map(opt=>`<button class="option-btn" data-correct="${q[2]}" data-chosen="${opt}" onclick="checkOpt(this,'go-e${i}','go-fb${i}')">${opt}</button>`).join('')}</div><div class="feedback" id="go-fb${i}"></div></div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showGobiernoPhase(3)">Mini Test (10 preg) →</button></div>`;}
+  else if(n===3){ buildMiniTest([{type:'mc',question:'¿Quién gobierna el municipio?',options:['Presidente','Alcalde','Director'],correct:'Alcalde'},{type:'mc',question:'Servicio que cuida parques',options:['Limpieza','Parques y jardines','Policía'],correct:'Parques y jardines'},{type:'tf',question:'Concejales elegidos por vecinos',correct:'verdadero'},{type:'mc',question:'¿Qué órgano organiza fiestas locales?',options:['Ayuntamiento','Gobierno central','Tribunal'],correct:'Ayuntamiento'},{type:'write',question:'Edificio donde trabaja el alcalde',correct:'ayuntamiento'},{type:'mc',question:'¿Qué servicio proporciona autobuses urbanos?',options:('Limpieza','Transporte público','Parques'),correct:'Transporte público'},{type:'tf',question:'El alcalde es elegido por los concejales solamente',correct:'falso'},{type:'mc',question:'¿Qué son las elecciones municipales?',options:('Votar alcalde','Votar presidente','Elegir rey'),correct:'Votar alcalde'},{type:'mc',question:'¿Qué cuida el servicio de limpieza?',options:('Calles','Escuelas','Hospitales'),correct:'Calles'},{type:'mc',question:'¿Dónde se reúne el ayuntamiento?',options:('Plaza mayor','Casa consistorial','Parque'),correct:'Casa consistorial'}],'gobierno-content',pct=>{progress.gobierno.score=pct; progress.gobierno.done=true; updateHome();}); } }
+
+// ================= 4. TRABAJOS (10 preg test) =================
+function showTrabajosPhase(n){ setTab('trabajos',n); const c=document.getElementById('trabajos-content');
+  if(n===1){ c.innerHTML=`<div class="card"><div class="card-title">🔧 Tipos de trabajos</div><div class="theory-highlight cyan">🌾 Naturaleza: agricultura, ganadería, pesca, minería → materias primas.</div><div class="theory-highlight indigo">🏭 Fábricas y talleres: elaboran productos.</div><div class="theory-highlight green">📚 Servicios: dependiente, dentista, profesor, médico, policía.</div></div><div class="btn-row"><button class="btn btn-primary" onclick="showTrabajosPhase(2)">Siguiente →</button></div>`;}
+  else if(n===2){ const empleos = [["Agricultor",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Profesora",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Artesano",["Naturaleza","Servicios","Fábricas y talleres"],"Fábricas y talleres"],["Pescadora",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Camarero",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Minero",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Dependienta",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Operario fábrica",["Naturaleza","Servicios","Fábricas y talleres"],"Fábricas y talleres"],["Médico",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Ganadero",["Naturaleza","Servicios","Fábricas"],"Naturaleza"]];
+    c.innerHTML = `<div class="card"><div class="card-title">✏️ 10 ejercicios clasifica</div></div>` + empleos.map((q,i)=>`<div class="exercise-box"><div class="q-text">${q[0]}</div><div class="options" id="tr-e${i}">${q[1].map(opt=>`<button class="option-btn" data-correct="${q[2]}" data-chosen="${opt}" onclick="checkOpt(this,'tr-e${i}','tr-fb${i}')">${opt}</button>`).join('')}</div><div class="feedback" id="tr-fb${i}"></div></div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showTrabajosPhase(3)">Mini Test (10 preg) →</button></div>`;}
+  else if(n===3){ buildMiniTest([{type:'mc',question:'¿Qué sector obtiene materias primas?',options:['Servicios','Fábricas','Naturaleza'],correct:'Naturaleza'},{type:'write',question:'Productos de la naturaleza para fabricar otros',correct:'materias primas'},{type:'tf',question:'Dentista es sector servicios',correct:'verdadero'},{type:'mc',question:'¿Dónde trabaja un artesano?',options:['Campo','Taller','Oficina'],correct:'Taller'},{type:'mc',question:'Trabajo de naturaleza',options:['Dependiente','Pescador','Policía'],correct:'Pescador'},{type:'mc',question:'¿Qué produce un agricultor?',options:('Ropa','Alimentos','Muebles'),correct:'Alimentos'},{type:'tf',question:'Un minero trabaja en sector servicios',correct:'falso'},{type:'mc',question:'Ejemplo de sector servicios',options:('Minero','Profesor','Ganadero'),correct:'Profesor'},{type:'mc',question:'¿Qué hacen en las fábricas?',options:('Extraer','Elaborar productos','Enseñar'),correct:'Elaborar productos'},{type:'write',question:'Profesión que cuida animales para obtener leche o carne',correct:'ganadero'}],'trabajos-content',pct=>{progress.trabajos.score=pct; progress.trabajos.done=true; updateHome();}); } }
+
+// ================= 5. ANDALUCÍA (10 preg test) =================
+function showAndaluciaPhase(n){ setTab('andalucia',n); const c=document.getElementById('andalucia-content');
+  if(n===1){ c.innerHTML=`<div class="card"><div class="card-title">🌻 Andalucía</div><div class="theory-highlight cyan">8 provincias: Huelva, Sevilla, Cádiz, Málaga, Córdoba, Jaén, Granada, Almería.</div><div class="theory-highlight indigo">Pueblos grandes en llanuras y costa; pequeños en montaña.</div><div class="theory-highlight green">Agricultura, artesanía, turismo.</div></div><div class="btn-row"><button class="btn btn-primary" onclick="showAndaluciaPhase(2)">Siguiente →</button></div>`;}
+  else if(n===2){ const provs = [["¿Cuántas provincias tiene Andalucía?",["6","7","8"],"8"],["¿Cuál es una provincia andaluza?",["Badajoz","Jaén","Murcia"],"Jaén"],["¿Qué provincia tiene la Alhambra?",["Sevilla","Granada","Córdoba"],"Granada"],["Capital de Andalucía",["Málaga","Sevilla","Córdoba"],"Sevilla"],["Provincia oeste frontera Portugal",["Huelva","Almería","Granada"],"Huelva"],["¿Dónde hay pueblos pequeños?",["Costa","Llanuras","Montaña"],"Montaña"],["Sector importante en pueblos andaluces",["Industria","Agricultura y turismo","Minería"],"Agricultura y turismo"],["Ejemplo localidad costera",["Frigiliana","Marbella","Córdoba"],"Marbella"],["NO es provincia andaluza",["Cádiz","Málaga","Valencia"],"Valencia"],["Zona con pueblos grandes en Andalucía",["Alta montaña","Llanuras y costa","Desierto"],"Llanuras y costa"]];
+    c.innerHTML = `<div class="card"><div class="card-title">✏️ 10 ejercicios</div></div>` + provs.map((q,i)=>`<div class="exercise-box"><div class="q-text">${q[0]}</div><div class="options" id="an-e${i}">${q[1].map(opt=>`<button class="option-btn" data-correct="${q[2]}" data-chosen="${opt}" onclick="checkOpt(this,'an-e${i}','an-fb${i}')">${opt}</button>`).join('')}</div><div class="feedback" id="an-fb${i}"></div></div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showAndaluciaPhase(3)">Mini Test (10 preg) →</button></div>`; }
+  else if(n===3){ buildMiniTest([{type:'mc',question:'¿Cuántas provincias tiene Andalucía?',options:['6','7','8'],correct:'8'},{type:'mc',question:'¿Cuál es provincia andaluza?',options:['Badajoz','Jaén','Murcia'],correct:'Jaén'},{type:'tf',question:'En montaña predominan pueblos grandes',correct:'falso'},{type:'write',question:'Provincia con la Alhambra',correct:'Granada'},{type:'mc',question:'Sector principal en pueblos andaluces',options:['Industria','Agricultura y turismo','Minería'],correct:'Agricultura y turismo'},{type:'mc',question:'Capital de Andalucía',options:('Málaga','Sevilla','Córdoba'),correct:'Sevilla'},{type:'tf',question:'Marbella es una localidad de interior',correct:'falso'},{type:'mc',question:'¿Qué provincia tiene costa atlántica?',options:('Jaén','Cádiz','Granada'),correct:'Cádiz'},{type:'mc',question:'¿Cuál limita con Portugal?',options:('Huelva','Almería','Málaga'),correct:'Huelva'},{type:'write',question:'Provincia conocida por la Mezquita',correct:'Córdoba'}],'andalucia-content',pct=>{progress.andalucia.score=pct; progress.andalucia.done=true; updateHome();}); } }
+
+// ================= EXAMEN GLOBAL (20 preguntas) =================
+function buildExamenGlobal() {
+  const preguntas = [
+    {type:'mc',question:'¿Característica de los pueblos?',options:['Edificios altos','Calles estrechas','Muchos semáforos'],correct:'Calles estrechas'},
+    {type:'tf',question:'Las ciudades tienen menos habitantes que los pueblos.',correct:'falso'},
+    {type:'mc',question:'¿Cómo se llaman los grupos de calles?',options:['Municipios','Barrios','Provincias'],correct:'Barrios'},
+    {type:'mc',question:'¿Dónde hay más tráfico?',options:['Pueblo','Ciudad','Cortijo'],correct:'Ciudad'},
+    {type:'tf',question:'Los pueblos suelen tener edificios bajos.',correct:'verdadero'},
+    {type:'mc',question:'¿Dónde caminar seguros?',options:['Calzada','Acera','Cuneta'],correct:'Acera'},
+    {type:'tf',question:'Ayudar vecinos es norma de circulación.',correct:'falso'},
+    {type:'mc',question:'Primera regla resolver conflictos',options:['Gritar','Dialogar','Pelear'],correct:'Dialogar'},
+    {type:'mc',question:'¿Qué hacer con la basura?',options:['Tirar suelo','Usar papelera','Dejar en suelo'],correct:'Usar papelera'},
+    {type:'mc',question:'¿Quién gobierna el municipio?',options:['Presidente','Alcalde','Director'],correct:'Alcalde'},
+    {type:'tf',question:'Concejales son elegidos por vecinos',correct:'verdadero'},
+    {type:'mc',question:'Servicio que cuida parques',options:['Limpieza','Parques y jardines','Policía'],correct:'Parques y jardines'},
+    {type:'write',question:'Edificio donde trabaja el alcalde',correct:'ayuntamiento'},
+    {type:'mc',question:'¿Qué sector obtiene materias primas?',options:['Servicios','Fábricas','Naturaleza'],correct:'Naturaleza'},
+    {type:'write',question:'Productos de la naturaleza para fabricar otros',correct:'materias primas'},
+    {type:'mc',question:'¿Dónde trabaja un artesano?',options:['Campo','Taller','Oficina'],correct:'Taller'},
+    {type:'mc',question:'¿Cuántas provincias tiene Andalucía?',options:['6','7','8'],correct:'8'},
+    {type:'mc',question:'¿Cuál es provincia andaluza?',options:['Badajoz','Jaén','Murcia'],correct:'Jaén'},
+    {type:'write',question:'Provincia con la Alhambra',correct:'Granada'},
+    {type:'mc',question:'Sector principal en pueblos andaluces',options:['Industria','Agricultura y turismo','Minería'],correct:'Agricultura y turismo'}
+  ];
+  buildMiniTest(preguntas, 'examen-content', pct=>{ progress.examen.score=pct; progress.examen.done=true; updateHome(); });
+}
+
+const PHASES = { pueblos: {tabs:['📖 1. Aprende','✏️ 10 Practica','📝 10 Test'], show:showPueblosPhase}, normas: {tabs:['📖 1. Aprende','🚸 10 Practica','📝 10 Test'], show:showNormasPhase}, gobierno: {tabs:['📖 1. Aprende','🏛️ 10 Practica','📝 10 Test'], show:showGobiernoPhase}, trabajos: {tabs:['📖 1. Aprende','🔧 10 Clasifica','📝 10 Test'], show:showTrabajosPhase}, andalucia: {tabs:['🌻 1. Aprende','🗺️ 10 Practica','📝 10 Test'], show:showAndaluciaPhase}, };
+function buildProgreso(){ const topics = [{key:'pueblos',icon:'🏘️',name:'Pueblos y ciudades'},{key:'normas',icon:'🚦',name:'Normas y convivencia'},{key:'gobierno',icon:'🏛️',name:'Gobierno'},{key:'trabajos',icon:'🔧',name:'Tipos de trabajos'},{key:'andalucia',icon:'🌻',name:'Andalucía'},{key:'examen',icon:'📝',name:'Examen global'}]; const done = topics.filter(t=>progress[t.key].done).length; const avg = done ? Math.round(topics.filter(t=>progress[t.key].done).reduce((s,t)=>s+progress[t.key].score,0)/done) : 0; document.getElementById('progreso-content').innerHTML = `<div style="background:rgba(255,255,255,.06);border-radius:20px;padding:28px;margin-bottom:20px"><div style="font-family:'Fredoka One',cursive;font-size:28px;color:white">📊 Mi progreso</div><div style="font-size:14px;color:rgba(255,255,255,.5)">${done}/${topics.length} secciones · Nota media: <strong style="color:#67e8f9">${avg}%</strong></div></div>${topics.map(t=>`<div class="progress-topic-row"><span class="pt-icon">${t.icon}</span><span class="pt-name">${t.name}</span>${progress[t.key].done?`<div class="pt-bar"><div class="pt-fill" style="width:${progress[t.key].score}%"></div></div><span class="pt-score">${progress[t.key].score}%</span>`:'<span style="font-size:12px;color:rgba(255,255,255,.3);font-weight:700">Sin empezar</span>'}</div>`).join('')}`; }
+
+document.getElementById('app-header-root').innerHTML = `<div class="header"><div><div class="header-logo">🌍 Conocimiento del Medio - <span>Unidad 7</span></div><div class="header-sub">VIVIMOS EN UNA LOCALIDAD</div></div><div class="header-right"><a href="../index.html" class="btn-back">← Portal</a></div></div>`;
+document.getElementById('app-footer-root').innerHTML = `<div style="text-align:center;padding:16px;font-size:11px;color:rgba(255,255,255,.4)">Unidad 7 completa · Más de 70 ejercicios + examen final de 20 preguntas</div>`;
+showScreen('pueblos'); updateHome();
+</script>
+</body>
+</html>

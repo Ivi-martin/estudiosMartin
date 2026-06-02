@@ -54,6 +54,7 @@ export const CONFIG = {
         //{ label: 'Unidad 2 – Los animales',     url: null },
         //{ label: 'Unidad 3 – Las plantas',      url: null },
         { label: 'Unidad 5 – Descubrimos el universo',      url: 'apps/cono5.html' },
+        { label: 'Unidad 7 – Vivimos en una localidad',      url: 'apps/cono7.html' },
         //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
       ],
     },
