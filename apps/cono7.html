@@ -25,7 +25,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Nunito',sans-serif;background:#0f172a;min-height:100vh;color:var(--gray-800);overflow-x:hidden}
   .stars-bg{position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#020617 0%,#0c1445 40%,#0f172a 100%);overflow:hidden}
-  .stars-bg::before{content:'🏘️ 🏙️ 🚦 🏛️ 🌾 🏭 · 🏘️ 🏙️ 🚦 🏛️ 🌾 🏭 ·';
+  .stars-bg::before{content:'🏘️ 🏙️ 🚦 ️ 🌾  · 🏘️ ️ 🚦 ️ 🌾  ·';
     position:absolute;inset:0;font-size:12px;color:rgba(255,255,255,.06);
     line-height:2.5;word-break:break-all;animation:twinkle 4s ease-in-out infinite alternate}
   @keyframes twinkle{from{opacity:.5}to{opacity:1}}
@@ -78,6 +78,7 @@
   .theory-highlight.green{background:var(--green-bg);border-color:var(--green)}
   .theory-highlight.sky{background:var(--sky-bg);border-color:var(--sky-c)}
   .theory-highlight.teal{background:var(--teal-bg);border-color:var(--teal)}
+  .theory-highlight.violet{background:var(--violet-bg);border-color:var(--violet)}
   .exercise-box{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:20px;margin-bottom:16px}
   .exercise-box .q-num{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--cyan);text-transform:uppercase;margin-bottom:8px}
   .exercise-box .q-text{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px}
@@ -138,13 +139,27 @@
   .progress-topic-row .pt-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
   .progress-topic-row .pt-fill{height:100%;background:linear-gradient(90deg,#0891b2,#67e8f9);border-radius:99px;transition:width .8s}
   
-  /* Estilos para la simulación de pizarra (ing.jpg) */
+  /* Estilos para la simulación de pizarra */
   .chalkboard-preview {background:#1e3d2f; border:8px solid #5c4033; border-radius:8px; padding:16px; color:#fff; font-family:'Courier New', Courier, monospace; margin-bottom:20px; box-shadow:inset 0 0 20px rgba(0,0,0,0.8);}
   .chalkboard-title {color:#facc15; font-weight:bold; border-bottom:2px dashed #fff; padding-bottom:8px; margin-bottom:12px;}
   .chalk-grid {display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:15px;}
   .chalk-card {background:rgba(255,255,255,0.05); border:1px dashed rgba(255,255,255,0.3); padding:10px; border-radius:4px;}
   .chalk-en {font-size:18px; color:#67e8f9; font-weight:bold; text-transform:uppercase;}
   .chalk-es {font-size:16px; color:#fbcfe8; font-style:italic;}
+  
+  /* Vocabulary cards */
+  .vocab-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; margin:16px 0;}
+  .vocab-card {background:linear-gradient(135deg, var(--cyan-bg), var(--indigo-bg)); border-left:4px solid var(--cyan); padding:12px 16px; border-radius:8px; font-weight:700;}
+  .vocab-card .en {color:var(--navy); font-size:16px; display:block;}
+  .vocab-card .es {color:var(--gray-600); font-size:13px;}
+  
+  /* Matching exercise */
+  .match-container {display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:16px 0;}
+  .match-col {display:flex; flex-direction:column; gap:8px;}
+  .match-item {padding:12px; background:white; border:2px solid var(--gray-200); border-radius:8px; cursor:pointer; transition:all .2s; font-weight:700;}
+  .match-item:hover {border-color:var(--cyan); background:var(--cyan-bg);}
+  .match-item.selected {border-color:var(--cyan); background:var(--cyan-bg);}
+  .match-item.matched {border-color:var(--green); background:var(--green-bg); opacity:.6;}
 
   .content::-webkit-scrollbar{width:6px}
   .content::-webkit-scrollbar-track{background:rgba(255,255,255,.05)}
@@ -177,10 +192,10 @@
   <div class="screen" id="screen-trabajos"><div class="lesson-header"><div class="lesson-icon">🔧</div><div class="lesson-info"><h2>¿Qué tipos de trabajos hay?</h2><p>Naturaleza, fábricas y servicios</p></div></div><div class="phase-tabs" id="tabs-trabajos"></div><div id="trabajos-content"></div></div>
   <div class="screen" id="screen-andalucia"><div class="lesson-header"><div class="lesson-icon">🌻</div><div class="lesson-info"><h2>Pueblos y ciudades de Andalucía</h2><p>Provincias y características</p></div></div><div class="phase-tabs" id="tabs-andalucia"></div><div id="andalucia-content"></div></div>
   
-  <!-- Sección Actividad Bilingüe Corregida (Con pestañas de separación) -->
-  <div class="screen" id="screen-bilingue"><div class="lesson-header"><div class="lesson-icon">🇬🇧</div><div class="lesson-info"><h2>Bilingual Activity: Local Government</h2><p>Aprende los términos municipales de la pizarra en inglés</p></div></div><div class="phase-tabs" id="tabs-bilingue"></div><div id="bilingue-content"></div></div>
+  <!-- Sección Actividad Bilingüe AMPLIADA -->
+  <div class="screen" id="screen-bilingue"><div class="lesson-header"><div class="lesson-icon">🇬🇧</div><div class="lesson-info"><h2>Bilingual Activity: Complete Unit 7 Vocabulary</h2><p>Villages, Cities, Jobs, Raw Materials and Local Government</p></div></div><div class="phase-tabs" id="tabs-bilingue"></div><div id="bilingue-content"></div></div>
   
-  <div class="screen" id="screen-examen"><div class="lesson-header"><div class="lesson-icon">📝</div><div class="lesson-info"><h2>Examen de desarrollo final</h2><p>¡Nivel difícil! Escribe la respuesta exacta en vez de seleccionar.</p></div></div><div id="examen-content"></div></div>
+  <div class="screen" id="screen-examen"><div class="lesson-header"><div class="lesson-icon">📝</div><div class="lesson-info"><h2>Examen de desarrollo final</h2><p>¡Nivel difícil! Escribe la respuesta exacta.</p></div></div><div id="examen-content"></div></div>
   
   <div class="screen" id="screen-progreso"><div id="progreso-content"></div></div>
 </div>
@@ -197,7 +212,54 @@ function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.cl
 window.showScreen = showScreen;
 function setTab(id, n) { const labels = PHASES[id].tabs; const wrap = document.getElementById('tabs-'+id); if(wrap) wrap.innerHTML = labels.map((l,i) => `<div class="phase-tab ${i+1===n?'active':''}" onclick="PHASES['${id}'].show(${i+1})">${l}</div>`).join(''); }
 
-function buildMiniTest(qs, containerId, onDone) { let curr=0, correct=0, results=[]; function render() { const c = document.getElementById(containerId); if(!c) return; if(curr >= qs.length) { const pct = Math.round(correct/qs.length*100); const stars = pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐'; const grade = pct>=80?'excellent':pct>=60?'good':'ok'; c.innerHTML = `<div class="score-card"><div class="stars-display">${stars}</div><div class="score-big">${pct}%</div><div class="score-label">${pct===100?'¡Perfecto! 🔥':pct>=80?'¡Muy bien! 💪':'Repasa e inténtalo 📖'}<br><small>${correct} de ${qs.length} correctas</small></div><div class="score-grade ${grade}">${pct>=80?'¡Aprobado!':pct>=60?'Notable':'A repasar'}</div></div>`; if(onDone) onDone(pct); return; } const q = qs[curr]; const dotHTML = qs.map((_,i) => `<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join(''); const qid = 'mt'+curr; if(q.type==='mc'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Pregunta ${curr+1}</div><div class="q-text">${q.question}</div><div class="options" id="${qid}_opts">${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}</div><div class="feedback" id="${qid}_fb"></div></div>`; } else if(q.type==='tf'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">V/F ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Verdadero o Falso</div><div class="q-text">${q.question}</div><div class="tf-row"><button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button><button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button></div><div class="feedback" id="${qid}_fb"></div></div>`; } else if(q.type==='write'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">Escribe ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Escribe la respuesta</div><div class="q-text">${q.question}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1" onkeypress="if(event.key==='Enter')mtWrite('${qid}','${containerId}','${q.correct}')"><button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button></div><div class="feedback" id="${qid}_fb"></div></div>`; } } function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); } window.mtAns = function(btn,qid,cid){ if(containerId!==cid) return; document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true); const ok = btn.dataset.chosen===btn.dataset.correct; btn.classList.add(ok?'correct':'wrong'); if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');}); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ Respuesta correcta: '+btn.dataset.correct; next(ok); }; window.mtTF = function(btn,qid,cid){ if(containerId!==cid) return; document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true); const ok = btn.dataset.chosen===btn.dataset.correct; btn.classList.add(ok?'correct':'wrong'); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct; next(ok); }; window.mtWrite = function(qid,cid,correct){ if(containerId!==cid) return; const inp = document.getElementById(qid+'_inp'); if(!inp || inp.disabled) return; const ok = inp.value.trim().toLowerCase() === correct.toLowerCase(); inp.classList.add(ok?'correct':'wrong'); inp.disabled=true; document.querySelectorAll(`button[onclick*="${qid}"]`).forEach(b=>b.disabled=true); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct; next(ok); }; render(); }
+function buildMiniTest(qs, containerId, onDone) { let curr=0, correct=0, results=[]; function render() { const c = document.getElementById(containerId); if(!c) return; if(curr >= qs.length) { const pct = Math.round(correct/qs.length*100); const stars = pct>=80?'⭐⭐⭐':pct>=60?'⭐⭐':'⭐'; const grade = pct>=80?'excellent':pct>=60?'good':'ok'; c.innerHTML = `<div class="score-card"><div class="stars-display">${stars}</div><div class="score-big">${pct}%</div><div class="score-label">${pct===100?'¡Perfecto! 🔥':pct>=80?'¡Muy bien! 💪':'Repasa e inténtalo 📖'}<br><small>${correct} de ${qs.length} correctas</small></div><div class="score-grade ${grade}">${pct>=80?'¡Aprobado!':pct>=60?'Notable':'A repasar'}</div></div>`; if(onDone) onDone(pct); return; } const q = qs[curr]; const dotHTML = qs.map((_,i) => `<div class="test-dot ${i<curr?(results[i]?'done-correct':'done-wrong'):i===curr?'current':''}"></div>`).join(''); const qid = 'mt'+curr; if(q.type==='mc'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">Pregunta ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Pregunta ${curr+1}</div><div class="q-text">${q.question}</div><div class="options" id="${qid}_opts">${q.options.map(o=>`<button class="option-btn" data-correct="${q.correct}" data-chosen="${o}" onclick="mtAns(this,'${qid}','${containerId}')">${o}</button>`).join('')}</div><div class="feedback" id="${qid}_fb"></div></div>`; } else if(q.type==='tf'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">V/F ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Verdadero o Falso</div><div class="q-text">${q.question}</div><div class="tf-row"><button class="tf-btn verd" data-correct="${q.correct}" data-chosen="verdadero" onclick="mtTF(this,'${qid}','${containerId}')">✅ Verdadero</button><button class="tf-btn fals" data-correct="${q.correct}" data-chosen="falso" onclick="mtTF(this,'${qid}','${containerId}')">❌ Falso</button></div><div class="feedback" id="${qid}_fb"></div></div>`; } else if(q.type==='write'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">Escribe ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Escribe la respuesta</div><div class="q-text">${q.question}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><input class="text-input" id="${qid}_inp" placeholder="Escribe aquí..." style="flex:1" onkeypress="if(event.key==='Enter')mtWrite('${qid}','${containerId}','${q.correct}')"><button class="btn btn-primary" onclick="mtWrite('${qid}','${containerId}','${q.correct}')">Comprobar ✓</button></div><div class="feedback" id="${qid}_fb"></div></div>`; } else if(q.type==='match'){ c.innerHTML = `<div class="test-progress"><span style="font-weight:700;color:rgba(255,255,255,.6)">Une ${curr+1}/${qs.length}</span><div class="test-dots">${dotHTML}</div></div><div class="exercise-box"><div class="q-num">Une con flechas</div><div class="q-text">${q.question}</div><div class="match-container" id="${qid}_match"><div class="match-col" id="${qid}_left">${q.pairs.map((p,i)=>`<div class="match-item" data-id="${i}" data-type="left" onclick="matchClick(this,'${qid}')">${p.left}</div>`).join('')}</div><div class="match-col" id="${qid}_right">${q.pairs.map((p,i)=>`<div class="match-item" data-id="${i}" data-type="right" onclick="matchClick(this,'${qid}')">${p.right}</div>`).join('')}</div></div><div class="feedback" id="${qid}_fb"></div></div>`; setTimeout(()=>initMatching(qid, q.pairs, q.correct), 100); } } function next(ok){ results.push(ok); if(ok) correct++; curr++; setTimeout(render, ok?600:1500); } window.mtAns = function(btn,qid,cid){ if(containerId!==cid) return; document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>b.disabled=true); const ok = btn.dataset.chosen===btn.dataset.correct; btn.classList.add(ok?'correct':'wrong'); if(!ok) document.querySelectorAll('#'+qid+'_opts .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');}); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ Respuesta correcta: '+btn.dataset.correct; next(ok); }; window.mtTF = function(btn,qid,cid){ if(containerId!==cid) return; document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true); const ok = btn.dataset.chosen===btn.dataset.correct; btn.classList.add(ok?'correct':'wrong'); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ Era: '+btn.dataset.correct; next(ok); }; window.mtWrite = function(qid,cid,correct){ if(containerId!==cid) return; const inp = document.getElementById(qid+'_inp'); if(!inp || inp.disabled) return; const ok = inp.value.trim().toLowerCase() === correct.toLowerCase(); inp.classList.add(ok?'correct':'wrong'); inp.disabled=true; document.querySelectorAll(`button[onclick*="${qid}"]`).forEach(b=>b.disabled=true); const fb = document.getElementById(qid+'_fb'); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta era: '+correct; next(ok); }; render(); }
+
+// Matching exercise logic
+let selectedLeft = null, selectedRight = null, matches = {};
+window.matchClick = function(el, qid) {
+  const type = el.dataset.type;
+  const id = el.dataset.id;
+  if(type === 'left') {
+    if(selectedLeft) selectedLeft.classList.remove('selected');
+    selectedLeft = el;
+    el.classList.add('selected');
+  } else {
+    if(selectedRight) selectedRight.classList.remove('selected');
+    selectedRight = el;
+    el.classList.add('selected');
+  }
+  if(selectedLeft && selectedRight) {
+    if(selectedLeft.dataset.id === selectedRight.dataset.id) {
+      // Correct match
+      selectedLeft.classList.add('matched');
+      selectedRight.classList.add('matched');
+      matches[qid] = (matches[qid] || 0) + 1;
+      selectedLeft = null;
+      selectedRight = null;
+      // Check if all matched
+      const total = document.querySelectorAll(`#${qid}_left .match-item`).length;
+      if(matches[qid] === total) {
+        document.getElementById(qid+'_fb').className = 'feedback correct show';
+        document.getElementById(qid+'_fb').textContent = '✅ ¡Perfecto!';
+        setTimeout(()=>window.mtAns({dataset:{chosen:'ok',correct:'ok'}}, qid, 'bilingue-content'), 1000);
+      }
+    } else {
+      // Wrong match
+      selectedLeft.classList.add('wrong');
+      selectedRight.classList.add('wrong');
+      setTimeout(()=>{
+        selectedLeft.classList.remove('selected','wrong');
+        selectedRight.classList.remove('selected','wrong');
+        selectedLeft = null;
+        selectedRight = null;
+      }, 1000);
+    }
+  }
+};
+function initMatching(qid, pairs, correct) {
+  matches[qid] = 0;
+}
+
 window.checkOpt = function(btn, optsId, fbId){ document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>b.disabled=true); const ok = btn.dataset.chosen === btn.dataset.correct; btn.classList.add(ok?'correct':'wrong'); if(!ok) document.querySelectorAll('#'+optsId+' .option-btn').forEach(b=>{if(b.dataset.chosen===btn.dataset.correct)b.classList.add('correct');}); const fb = document.getElementById(fbId); fb.className = 'feedback '+(ok?'correct':'wrong')+' show'; fb.textContent = ok?'✅ ¡Correcto!':'❌ La respuesta correcta era: '+btn.dataset.correct; };
 
 // ================= 1. PUEBLOS =================
@@ -223,8 +285,8 @@ function showGobiernoPhase(n){ setTab('gobierno',n); const c=document.getElement
 
 // ================= 4. TRABAJOS =================
 function showTrabajosPhase(n){ setTab('trabajos',n); const c=document.getElementById('trabajos-content');
-  if(n===1){ c.innerHTML=`<div class="card"><div class="card-title">🔧 Tipos de trabajos</div><div class="theory-highlight cyan">🌾 Naturaleza: agricultura, ganadería, pesca, minería → materias primas.</div><div class="theory-highlight indigo">🏭 Fábricas y talleres: elaboran productos.</div><div class="theory-highlight green">📚 Servicios: dependiente, dentista, profesor, médico, policía.</div></div><div class="btn-row"><button class="btn btn-primary" onclick="showTrabajosPhase(2)">Siguiente →</button></div>`;}
-  else if(n===2){ const empleos = [["Agricultor",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Profesora",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Artesano",["Naturaleza","Servicios","Fábricas y talleres"],"Fábricas y talleres"],["Pescadora",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Camarero",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Minero",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Dependienta",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Operario fábrica",["Naturaleza","Servicios","Fábricas y talleres"],"Fábricas y talleres"],["Médico",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Ganadero",["Naturaleza","Servicios","Fábricas"],"Naturaleza"]];
+  if(n===1){ c.innerHTML=`<div class="card"><div class="card-title">🔧 Tipos de trabajos</div><div class="theory-highlight cyan">🌾 <strong>Naturaleza (Sector Primario):</strong> agricultura, ganadería, pesca, minería → materias primas.</div><div class="theory-highlight indigo">🏭 <strong>Fábricas y talleres (Sector Secundario):</strong> elaboran productos.</div><div class="theory-highlight green">📚 <strong>Servicios (Sector Terciario):</strong> dependiente, dentista, profesor, médico, policía.</div><div class="theory-highlight violet"><strong>Materias Primas:</strong> se obtienen de la naturaleza (algodón, madera, oro, leche...)</div></div><div class="btn-row"><button class="btn btn-primary" onclick="showTrabajosPhase(2)">Siguiente →</button></div>`;}
+  else if(n===2){ const empleos = [["Agricultor",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Profesora",["Naturaleza","Servicios","Fábricas y talleres"],"Servicios"],["Artesano",["Naturaleza","Servicios","Fábricas y talleres"],"Fábricas y talleres"],["Pescadora",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Camarero",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Minero",["Naturaleza","Servicios","Fábricas"],"Naturaleza"],["Dependienta",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Operario fábrica",["Naturaleza","Servicios","Fábricas y talleres"],"Fábricas y talleres"],["Médico",["Naturaleza","Servicios","Fábricas"],"Servicios"],["Ganadero",["Naturaleza","Servicios","Fábricas"],"Naturaleza"]];
     c.innerHTML = `<div class="card"><div class="card-title">✏️ 10 ejercicios clasifica</div></div>` + empleos.map((q,i)=>`<div class="exercise-box"><div class="q-text">${q[0]}</div><div class="options" id="tr-e${i}">${q[1].map(opt=>`<button class="option-btn" data-correct="${q[2]}" data-chosen="${opt}" onclick="checkOpt(this,'tr-e${i}','tr-fb${i}')">${opt}</button>`).join('')}</div><div class="feedback" id="tr-fb${i}"></div></div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showTrabajosPhase(3)">Mini Test (10 preg) →</button></div>`;}
   else if(n===3){ buildMiniTest([{type:'mc',question:'¿Qué sector obtiene materias primas?',options:['Servicios','Fábricas','Naturaleza'],correct:'Naturaleza'},{type:'write',question:'Productos de la naturaleza para fabricar otros',correct:'materias primas'},{type:'tf',question:'Dentista es sector servicios',correct:'verdadero'},{type:'mc',question:'¿Dónde trabaja un artesano?',options:['Campo','Taller','Oficina'],correct:'Taller'},{type:'mc',question:'Trabajo de naturaleza',options:['Dependiente','Pescador','Policía'],correct:'Pescador'},{type:'mc',question:'¿Qué produce un agricultor?',options:['Ropa','Alimentos','Muebles'],correct:'Alimentos'},{type:'tf',question:'Un minero trabaja en sector servicios',correct:'falso'},{type:'mc',question:'Ejemplo de sector servicios',options:['Minero','Profesor','Ganadero'],correct:'Profesor'},{type:'mc',question:'¿Qué hacen en las fábricas?',options:['Extraer','Elaborar productos','Enseñar'],correct:'Elaborar productos'},{type:'write',question:'Profesión que cuida animales para obtener leche o carne',correct:'ganadero'}],'trabajos-content',pct=>{progress.trabajos.score=pct; progress.trabajos.done=true; updateHome();}); } }
 
@@ -235,28 +297,59 @@ function showAndaluciaPhase(n){ setTab('andalucia',n); const c=document.getEleme
     c.innerHTML = `<div class="card"><div class="card-title">✏️ 10 ejercicios</div></div>` + provs.map((q,i)=>`<div class="exercise-box"><div class="q-text">${q[0]}</div><div class="options" id="an-e${i}">${q[1].map(opt=>`<button class="option-btn" data-correct="${q[2]}" data-chosen="${opt}" onclick="checkOpt(this,'an-e${i}','an-fb${i}')">${opt}</button>`).join('')}</div><div class="feedback" id="an-fb${i}"></div></div>`).join('') + `<div class="btn-row"><button class="btn btn-success" onclick="showAndaluciaPhase(3)">Mini Test (10 preg) →</button></div>`; }
   else if(n===3){ buildMiniTest([{type:'mc',question:'¿Cuántas provincias tiene Andalucía?',options:['6','7','8'],correct:'8'},{type:'mc',question:'¿Cuál es provincia andaluza?',options:['Badajoz','Jaén','Murcia'],correct:'Jaén'},{type:'tf',question:'En montaña predominan pueblos grandes',correct:'falso'},{type:'write',question:'Provincia con la Alhambra',correct:'Granada'},{type:'mc',question:'Sector principal en pueblos andaluces',options:['Industria','Agricultura y turismo','Minería'],correct:'Agricultura y turismo'},{type:'mc',question:'Capital de Andalucía',options:['Málaga','Sevilla','Córdoba'],correct:'Sevilla'},{type:'tf',question:'Marbella es una localidad de interior',correct:'falso'},{type:'mc',question:'¿Qué provincia tiene costa atlántica?',options:['Jaén','Cádiz','Granada'],correct:'Cádiz'},{type:'mc',question:'¿Cuál limita con Portugal?',options:['Huelva','Almería','Málaga'],correct:'Huelva'},{type:'write',question:'Provincia conocida por la Mezquita',correct:'Córdoba'}],'andalucia-content',pct=>{progress.andalucia.score=pct; progress.andalucia.done=true; updateHome();}); } }
 
-
-// ================= FASES ACTIVIDAD BILINGÜE (Separadas por fin) =================
+// ================= ACTIVIDAD BILINGÜE AMPLIADA =================
 function showBilinguePhase(n) {
   setTab('bilingue', n);
   const c = document.getElementById('bilingue-content');
   
   if (n === 1) {
-    // Fase 1: Solo repasar la pizarra
+    // Fase 1: Vocabulario completo con todas las palabras solicitadas
     c.innerHTML = `
       <div class="card">
-        <div class="card-title">📝 Local Government Chalkboard</div>
-        <p style="margin-bottom: 16px; font-size:14px; color:var(--gray-600);">Repasa y memoriza los términos de la pizarra antes de pasar al examen:</p>
+        <div class="card-title">📚 Bilingual Vocabulary - Unit 7</div>
+        <p style="margin-bottom: 16px; font-size:14px; color:var(--gray-600);">Aprende todo el vocabulario en inglés de la Unidad 7:</p>
         
-        <div class="chalkboard-preview">
-          <div class="chalkboard-title">💡 Today is Tuesday, the 2<sup>nd</sup> June 2026 / Martes 2-06-26</div>
-          <div class="chalk-grid">
-            <div class="chalk-card"><span class="chalk-en">TOWN HALL</span><br><span class="chalk-es">Ayuntamiento</span></div>
-            <div class="chalk-card"><span class="chalk-en">MAYOR</span><br><span class="chalk-es">Alcalde / Alcaldesa</span></div>
-            <div class="chalk-card"><span class="chalk-en">ELECTIONS</span><br><span class="chalk-es">Elecciones</span></div>
-            <div class="chalk-card"><span class="chalk-en">SERVICES</span><br><span class="chalk-es">Servicios</span></div>
-            <div class="chalk-card"><span class="chalk-en">COUNCILLORS</span><br><span class="chalk-es">Concejales / Concejalas</span></div>
-          </div>
+        <h3 style="color:var(--navy); margin:16px 0 12px; font-family:'Fredoka One',cursive;">🏘️ Villages and Cities (Pueblos y Ciudades)</h3>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="en">Village</span><span class="es">Pueblo</span></div>
+          <div class="vocab-card"><span class="en">City</span><span class="es">Ciudad</span></div>
+          <div class="vocab-card"><span class="en">Many people</span><span class="es">Muchas personas</span></div>
+          <div class="vocab-card"><span class="en">Tall buildings</span><span class="es">Edificios altos</span></div>
+          <div class="vocab-card"><span class="en">Low buildings</span><span class="es">Edificios bajos</span></div>
+          <div class="vocab-card"><span class="en">Wide streets</span><span class="es">Calles anchas</span></div>
+          <div class="vocab-card"><span class="en">Traffic</span><span class="es">Tráfico</span></div>
+        </div>
+        
+        <h3 style="color:var(--navy); margin:16px 0 12px; font-family:'Fredoka One',cursive;">🔧 Jobs and Workplaces (Trabajos y Lugares)</h3>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="en">Workshops</span><span class="es">Talleres</span></div>
+          <div class="vocab-card"><span class="en">Offices</span><span class="es">Oficinas</span></div>
+          <div class="vocab-card"><span class="en">Livestock Farming</span><span class="es">Ganadería</span></div>
+        </div>
+        
+        <h3 style="color:var(--navy); margin:16px 0 12px; font-family:'Fredoka One',cursive;">🌾 Raw Materials (Materias Primas)</h3>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="en">Cotton</span><span class="es">Algodón</span></div>
+          <div class="vocab-card"><span class="en">Gold</span><span class="es">Oro</span></div>
+          <div class="vocab-card"><span class="en">Wood</span><span class="es">Madera</span></div>
+          <div class="vocab-card"><span class="en">Milk</span><span class="es">Leche</span></div>
+        </div>
+        
+        <h3 style="color:var(--navy); margin:16px 0 12px; font-family:'Fredoka One',cursive;">🏭 Products (Productos)</h3>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="en">Ring</span><span class="es">Anillo</span></div>
+          <div class="vocab-card"><span class="en">T-shirt</span><span class="es">Camiseta</span></div>
+          <div class="vocab-card"><span class="en">Cheese</span><span class="es">Queso</span></div>
+          <div class="vocab-card"><span class="en">Toy</span><span class="es">Juguete</span></div>
+        </div>
+        
+        <h3 style="color:var(--navy); margin:16px 0 12px; font-family:'Fredoka One',cursive;">🏛️ Local Government (Gobierno Local)</h3>
+        <div class="vocab-grid">
+          <div class="vocab-card"><span class="en">Town Hall</span><span class="es">Ayuntamiento</span></div>
+          <div class="vocab-card"><span class="en">Mayor</span><span class="es">Alcalde/Alcaldesa</span></div>
+          <div class="vocab-card"><span class="en">Councillors</span><span class="es">Concejales</span></div>
+          <div class="vocab-card"><span class="en">Elections</span><span class="es">Elecciones</span></div>
+          <div class="vocab-card"><span class="en">Services</span><span class="es">Servicios</span></div>
         </div>
       </div>
       <div class="btn-row">
@@ -264,21 +357,53 @@ function showBilinguePhase(n) {
       </div>
     `;
   } else if (n === 2) {
-    // Fase 2: Solo el Test escrito, sin rastros de la pizarra
+    // Fase 2: Test completo con todo el vocabulario
     c.innerHTML = `
       <div class="card">
-        <div class="card-title">✍️ Bilingual Test</div>
-        <p style="margin-bottom: 12px; font-size:14px; color:var(--gray-600);">Demuestra lo que recuerdas. Escribe las palabras correctamente en inglés:</p>
+        <div class="card-title">✍️ Bilingual Test - Complete Vocabulary</div>
+        <p style="margin-bottom: 12px; font-size:14px; color:var(--gray-600);">Demuestra que conoces TODO el vocabulario bilingüe:</p>
       </div>
       <div id="bilingue-quiz-container"></div>
     `;
 
     const bilingueQuestions = [
-      {type:'write', question:'¿Cómo se dice "Ayuntamiento" en inglés?', correct:'Town Hall'},
-      {type:'write', question:'¿Cómo se dice "Alcalde" en inglés?', correct:'Mayor'},
-      {type:'write', question:'¿Cómo se dice "Elecciones" en inglés?', correct:'Elections'},
-      {type:'write', question:'¿Cómo se dice "Servicios" en inglés?', correct:'Services'},
-      {type:'write', question:'¿Cómo se dice "Concejales" en inglés?', correct:'Councillors'}
+      // Villages and Cities
+      {type:'write', question:'¿Cómo se dice "Pueblo" en inglés?', correct:'village'},
+      {type:'write', question:'¿Cómo se dice "Ciudad" en inglés?', correct:'city'},
+      {type:'write', question:'¿Cómo se dice "Muchas personas" en inglés?', correct:'many people'},
+      {type:'write', question:'¿Cómo se dice "Edificios altos" en inglés?', correct:'tall buildings'},
+      {type:'write', question:'¿Cómo se dice "Edificios bajos" en inglés?', correct:'low buildings'},
+      {type:'write', question:'¿Cómo se dice "Calles anchas" en inglés?', correct:'wide streets'},
+      {type:'write', question:'¿Cómo se dice "Tráfico" en inglés?', correct:'traffic'},
+      
+      // Jobs
+      {type:'write', question:'¿Cómo se dice "Talleres" en inglés?', correct:'workshops'},
+      {type:'write', question:'¿Cómo se dice "Oficinas" en inglés?', correct:'offices'},
+      {type:'write', question:'¿Cómo se dice "Ganadería" en inglés?', correct:'livestock farming'},
+      
+      // Raw Materials
+      {type:'write', question:'¿Cómo se dice "Algodón" en inglés?', correct:'cotton'},
+      {type:'write', question:'¿Cómo se dice "Oro" en inglés?', correct:'gold'},
+      {type:'write', question:'¿Cómo se dice "Madera" en inglés?', correct:'wood'},
+      {type:'write', question:'¿Cómo se dice "Leche" en inglés?', correct:'milk'},
+      
+      // Products
+      {type:'write', question:'¿Cómo se dice "Anillo" en inglés?', correct:'ring'},
+      {type:'write', question:'¿Cómo se dice "Camiseta" en inglés?', correct:'t-shirt'},
+      {type:'write', question:'¿Cómo se dice "Queso" en inglés?', correct:'cheese'},
+      {type:'write', question:'¿Cómo se dice "Juguete" en inglés?', correct:'toy'},
+      
+      // Local Government
+      {type:'write', question:'¿Cómo se dice "Ayuntamiento" en inglés?', correct:'town hall'},
+      {type:'write', question:'¿Cómo se dice "Alcalde" en inglés?', correct:'mayor'},
+      {type:'write', question:'¿Cómo se dice "Concejales" en inglés?', correct:'councillors'},
+      {type:'write', question:'¿Cómo se dice "Elecciones" en inglés?', correct:'elections'},
+      {type:'write', question:'¿Cómo se dice "Servicios" en inglés?', correct:'services'},
+      
+      // Matching exercise
+      {type:'match', question:'Une las materias primas con los productos que se fabrican:', 
+       pairs:[{left:'🌾 COTTON',right:'👕 T-SHIRT'},{left:'🥛 MILK',right:'🧀 CHEESE'},{left:'🪵 WOOD',right:'🎮 TOY'},{left:'🏆 GOLD',right:'💍 RING'}], 
+       correct:'match'}
     ];
 
     buildMiniTest(bilingueQuestions, 'bilingue-quiz-container', pct => {
@@ -288,7 +413,6 @@ function showBilinguePhase(n) {
     });
   }
 }
-
 
 // ================= EXAMEN GLOBAL TOTALMENTE ESCRITO =================
 function buildExamenGlobal() {
@@ -329,7 +453,7 @@ const PHASES = {
   gobierno: {tabs:['📖 1. Aprende','🏛️ 10 Practica','📝 10 Test'], show:showGobiernoPhase}, 
   trabajos: {tabs:['📖 1. Aprende','🔧 10 Clasifica','📝 10 Test'], show:showTrabajosPhase}, 
   andalucia: {tabs:['🌻 1. Aprende','🗺️ 10 Practica','📝 10 Test'], show:showAndaluciaPhase},
-  bilingue: {tabs:['🇬🇧 1. Repasa','📝 2. Test'], show:showBilinguePhase} // Configuración añadida
+  bilingue: {tabs:['🇧 1. Vocabulario','📝 2. Test (23 preg)'], show:showBilinguePhase}
 };
 
 function buildProgreso(){ 
@@ -339,8 +463,8 @@ function buildProgreso(){
     {key:'gobierno',icon:'🏛️',name:'Gobierno'},
     {key:'trabajos',icon:'🔧',name:'Tipos de trabajos'},
     {key:'andalucia',icon:'🌻',name:'Andalucía'},
-    {key:'bilingue',icon:'🇬🇧',name:'Actividad Bilingüe'},
-    {key:'examen',icon:'📝',name:'Examen Final Escito'}
+    {key:'bilingue',icon:'🇬',name:'Actividad Bilingüe'},
+    {key:'examen',icon:'📝',name:'Examen Final Escrito'}
   ]; 
   const done = topics.filter(t=>progress[t.key].done).length; 
   const avg = done ? Math.round(topics.filter(t=>progress[t.key].done).reduce((s,t)=>s+progress[t.key].score,0)/done) : 0; 
@@ -348,7 +472,7 @@ function buildProgreso(){
 }
 
 document.getElementById('app-header-root').innerHTML = `<div class="header"><div><div class="header-logo">🌍 Conocimiento del Medio - <span>Unidad 7</span></div><div class="header-sub">VIVIMOS EN UNA LOCALIDAD</div></div><div class="header-right"><a href="../index.html" class="btn-back">← Portal</a></div></div>`;
-document.getElementById('app-footer-root').innerHTML = `<div style="text-align:center;padding:16px;font-size:11px;color:rgba(255,255,255,.4)">Unidad 7 completa · Actividades bilingües y Examen Final de escritura añadidos.</div>`;
+document.getElementById('app-footer-root').innerHTML = `<div style="text-align:center;padding:16px;font-size:11px;color:rgba(255,255,255,.4)">Unidad 7 completa · Vocabulario bilingüe ampliado con todas las palabras solicitadas.</div>`;
 
 showScreen('pueblos'); 
 updateHome();
