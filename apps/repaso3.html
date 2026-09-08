@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📚 Repaso 2.º → 3.º · Lengua</title>
+<link rel="stylesheet" href="../components/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --violet:#7c3aed;--violet2:#a78bfa;--violet-bg:#ede9fe;
+  --green:#16a34a;--green-bg:#dcfce7;--rose:#e11d48;--rose-bg:#ffe4e6;
+  --amber:#d97706;--amber-bg:#fef3c7;--sky:#0284c7;--sky-bg:#e0f2fe;
+  --navy:#17223b;--muted:#64748b;--line:#e2e8f0;--bg:#f8fafc;
+  --shadow:0 8px 28px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#0f172a 0%,#312e81 45%,#0f172a 100%);min-height:100vh;color:var(--navy)}
+.app{min-height:100vh}
+.top{background:rgba(15,23,42,.78);backdrop-filter:blur(10px);color:#fff;padding:16px 24px;position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(255,255,255,.12)}
+.topin{max-width:1200px;margin:auto;display:flex;align-items:center;gap:16px}
+.logo{font:24px 'Fredoka One',cursive}.logo span{color:#fbbf24}
+.sub{font-size:12px;color:rgba(255,255,255,.65)}
+.back{margin-left:auto;color:#fff;text-decoration:none;background:rgba(255,255,255,.1);padding:9px 14px;border-radius:12px;font-weight:800}
+.layout{max-width:1200px;margin:auto;display:flex;gap:0;min-height:calc(100vh - 70px)}
+.side{width:245px;flex:none;background:rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.1);padding:22px 12px}
+.side h3{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1.7px;text-transform:uppercase;margin:4px 10px 12px}
+.nav{width:100%;border:1px solid transparent;background:transparent;color:rgba(255,255,255,.68);padding:12px;border-radius:13px;text-align:left;font:800 13px Nunito;cursor:pointer;margin-bottom:5px}
+.nav:hover{background:rgba(255,255,255,.08);color:#fff}.nav.active{background:rgba(124,58,237,.42);color:#fff;border-color:rgba(167,139,250,.4)}
+.content{flex:1;background:#f8fafc;padding:28px;min-width:0}
+.hero{background:linear-gradient(135deg,#4c1d95,#7c3aed);color:#fff;border-radius:22px;padding:25px;margin-bottom:20px;box-shadow:var(--shadow)}
+.hero h1{font:32px 'Fredoka One',cursive;margin:0 0 6px}.hero p{margin:0;color:rgba(255,255,255,.82);line-height:1.6}
+.progress{height:9px;background:rgba(255,255,255,.18);border-radius:99px;margin-top:18px;overflow:hidden}.fill{height:100%;width:0;background:#fbbf24;transition:.35s}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.tab{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:999px;font:800 13px Nunito;color:var(--muted);cursor:pointer}.tab.active{background:var(--violet);color:#fff;border-color:var(--violet)}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 5px 18px rgba(15,23,42,.06);margin-bottom:18px}
+.title{font:22px 'Fredoka One',cursive;margin-bottom:8px}.hint{color:var(--muted);font-size:14px;line-height:1.6}
+.story{font-size:18px;line-height:1.9;background:#fffdf5;border:2px solid #fde68a;border-radius:16px;padding:22px;white-space:pre-line}
+.q{padding:15px 0;border-bottom:1px solid #edf2f7}.q:last-child{border-bottom:0}.q strong{display:block;margin-bottom:9px}
+input[type=text]{width:100%;max-width:760px;border:2px solid var(--line);border-radius:10px;padding:11px 13px;font:700 15px Nunito;outline:none}
+input[type=text]:focus{border-color:var(--violet)}textarea{width:100%;min-height:100px;border:2px solid var(--line);border-radius:12px;padding:13px;font:600 16px Nunito;resize:vertical}
+.btn{border:0;border-radius:12px;padding:11px 16px;font:800 14px Nunito;cursor:pointer}.primary{background:var(--violet);color:#fff}.success{background:var(--green);color:#fff}.ghost{background:#fff;border:2px solid var(--line);color:var(--navy)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}.feedback{display:none;margin-top:10px;padding:10px 13px;border-radius:10px;font-weight:800}.feedback.show{display:block}.ok{background:var(--green-bg);color:var(--green)}.bad{background:var(--rose-bg);color:var(--rose)}
+.word-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px}.word{border:2px solid #ddd6fe;background:var(--violet-bg);color:#5b21b6;border-radius:12px;padding:12px;text-align:center;font-weight:900;cursor:pointer}.word.read{background:var(--violet);color:#fff}
+.findbox{background:#f1f5f9;border-radius:14px;padding:16px;margin-top:12px}.findbox b{color:var(--violet)}
+.passagesearch{font-size:17px;line-height:1.9;border:2px solid var(--line);padding:18px;border-radius:14px;background:#fff}
+textarea.dict{min-height:55px}
+.dict-word{font-size:22px;font-weight:900;letter-spacing:.5px;text-align:center;padding:18px;background:#f8fafc;border-radius:14px;margin:12px 0}
+.hidden-word{filter:blur(8px);user-select:none}
+.score{text-align:center;padding:28px;background:linear-gradient(135deg,#ede9fe,#fff);border-radius:18px;border:2px solid #ddd6fe}.scorebig{font:60px 'Fredoka One',cursive;color:var(--violet)}
+.badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#f1f5f9;font-size:12px;font-weight:900;color:var(--muted)}
+@media(max-width:800px){.side{display:none}.content{padding:16px}.hero h1{font-size:27px}.story{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="topin"><div><div class="logo">📚 Repaso <span>2.º → 3.º</span></div><div class="sub">Preparación para empezar tercero · Lengua</div></div><a class="back" href="../index.html">← Portal</a></div></header>
+<div class="layout">
+<aside class="side">
+<h3>PRUEBA DE LENGUA</h3>
+<button class="nav active" data-screen="lectura">📖 1. Lectura</button>
+<button class="nav" data-screen="comprension">🧠 2. Comprensión</button>
+<button class="nav" data-screen="palabras">🔤 3. Palabras difíciles</button>
+<button class="nav" data-screen="busqueda">🔎 4. Busca en el texto</button>
+<button class="nav" data-screen="dictado">✏️ 5. Dictados</button>
+<button class="nav" data-screen="resultado">🏆 6. Resultado</button>
+</aside>
+<main class="content">
+<section class="hero">
+<h1>¡Vamos a preparar tercero!</h1>
+<p>Hazlo con calma. Esta prueba no es para sacar una nota: sirve para descubrir qué cosas ya recuerdas y cuáles conviene practicar un poquito más.</p>
+<div class="progress"><div class="fill" id="fill"></div></div>
+</section>
+<div class="tabs" id="tabs"></div>
+<div id="screen"></div>
+</main>
+</div>
+<div id="app-footer-root"></div>
+</div>
+<script type="module">
+import { renderFooter } from '../components/components.js';
+document.getElementById('app-footer-root').innerHTML = renderFooter();
+
+const story = `La excursión de Hugo y Valeria
+
+El sábado por la mañana, Hugo se levantó muy temprano. Había quedado con su amiga Valeria para hacer una pequeña excursión por el campo.
+
+—¡Buenos días, Hugo! —dijo Valeria cuando llegó—. ¿Has preparado la mochila?
+
+—¡Claro! Llevo agua, un bocadillo de jamón, una botella de zumo, una gorra y una brújula.
+
+—Yo he traído unas galletas, una libreta y unos prismáticos. También llevo una pequeña manta por si nos sentamos a descansar.
+
+Los dos amigos comenzaron a caminar por un sendero que pasaba junto a un río. El día estaba muy bonito. Había nubes blancas en el cielo y los pájaros cantaban entre los árboles.
+
+De repente, Hugo vio algo que se movía detrás de unos arbustos.
+
+—¡Mira, Valeria! ¿Qué es aquello?
+
+Los dos se acercaron despacio. Era una ardilla pequeña que llevaba una bellota en la boca. Al verlos, la ardilla subió rápidamente por el tronco de un árbol y desapareció entre las ramas.
+
+—¡Qué suerte hemos tenido! —exclamó Valeria—. Nunca había visto una ardilla tan cerca.
+
+Continuaron andando hasta llegar a un puente de madera. Desde allí podían ver una gran montaña y, más abajo, un grupo de ovejas que pastaban tranquilamente.
+
+Cerca del puente encontraron un cartel:
+
+«Por favor, cuidad este lugar. No tiréis basura y respetad a los animales».
+
+—Tiene razón —dijo Hugo—. Si todos cuidamos la naturaleza, podremos disfrutar de ella durante muchos años.
+
+Después de descansar un rato, los amigos regresaron a casa. Estaban cansados, pero muy contentos.
+
+Aquella tarde, Hugo escribió en su libreta:
+
+«Hoy he aprendido que una excursión no necesita ser muy larga para convertirse en una gran aventura. A veces, basta con caminar, observar y disfrutar de lo que tenemos alrededor».
+
+Y, antes de irse a dormir, pensó que al día siguiente volvería a salir al campo.`;
+
+const questions = [
+['¿Con quién había quedado Hugo?','Valeria'],
+['¿Qué cosas llevaba Hugo en la mochila?','agua, un bocadillo de jamón, una botella de zumo, una gorra y una brújula'],
+['¿Qué animal encontraron?','una ardilla'],
+['¿Dónde estaba la ardilla?','detrás de unos arbustos'],
+['¿Qué podían ver desde el puente?','una gran montaña y un grupo de ovejas'],
+['¿Qué decía el cartel?','que cuidaran el lugar, no tiraran basura y respetaran a los animales'],
+['¿Por qué estaban cansados Hugo y Valeria?','porque habían estado andando / de excursión'],
+['¿Qué aprendió Hugo durante la excursión?','que una excursión no necesita ser muy larga para ser una gran aventura; basta con caminar, observar y disfrutar de lo que tenemos alrededor']
+];
+
+const words = ['Hugo','había','Valeria','botella','brújula','galletas','libreta','prismáticos','campo','sendero','río','pájaros','arbustos','ardilla','bellota','rápidamente','puente','montaña','ovejas','naturaleza','disfrutar','excursión','aventura','observar'];
+
+const dictation = {
+'Bloque 1 — Palabras básicas':['barco','balón','bicicleta','botella','bueno','biblioteca','ventana','verano','vestido','vaca','viaje','viernes','huevo','helado','hierba','hormiga'],
+'Bloque 2 — G y GU':['gato','gusano','gorro','guitarra','guerra','juguete','Miguel','águila','regalo','domingo','amigo','hormiguero'],
+'Bloque 3 — GÜE y GÜI':['pingüino','cigüeña','vergüenza','bilingüe','paragüero'],
+'Bloque 4 — MP y MB':['campo','tiempo','lámpara','cumpleaños','siempre','empezar','también','tambor','sombra','hambre','cambiar','invierno'],
+'Bloque 5 — LL y Y':['llave','lluvia','calle','caballo','amarillo','botella','yo','ayer','desayuno','mayo','playa','ayudar'],
+'Bloque 6 — H':['huevo','hielo','hierba','hormiga','hermano','hoy','había','hacer','hablar','ahora','hasta','hambre']
+};
+const phrases = [
+'El sábado fuimos en bicicleta hasta el campo.',
+'Mi hermano llevaba una botella de agua y un bocadillo.',
+'En el camino vimos un caballo blanco y una vaca pequeña.',
+'De repente, empezó a llover y buscamos refugio debajo de un árbol.',
+'Había una cigüeña junto al río y un pingüino dibujado en un cartel.',
+'También encontramos un hormiguero cerca de una montaña.',
+'Cuando dejó de llover, volvimos a casa muy contentos.',
+'Mi madre preparó una merienda y nos dio un vaso de leche.',
+'Después hice los deberes y jugué con mi amigo Miguel.',
+'¡Qué día tan divertido! Mañana volveremos a salir juntos.'
+];
+const finalText='Ayer, Hugo y Valeria fueron de excursión. Llevaban una mochila, agua, un bocadillo y una brújula. Durante el camino vieron una ardilla, varios pájaros y una cigüeña. También encontraron un pequeño puente de madera. Cuando empezó a llover, buscaron refugio debajo de un árbol. Después salió el sol y volvieron felices a casa.';
+
+const screens=['lectura','comprension','palabras','busqueda','dictado','resultado'];
+let current='lectura', state={readDone:false, answers:{}, wordRead:0, searches:{}, dictScores:{}};
+
+const normalize=s=>s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[¿?¡!.,;:«»—"]/g,'').replace(/\\s+/g,' ').trim();
+function markText(a,b){const x=normalize(a), y=normalize(b); return x===y || (x.includes(y)&&y.length>4) || (y.includes(x)&&x.length>4)}
+function setScreen(name){
+ current=name; document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.screen===name)); render(); updateProgress();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>setScreen(b.dataset.screen));
+
+function render(){
+ const s=document.getElementById('screen');
+ if(current==='lectura') s.innerHTML=`<div class="card"><div class="title">📖 Lee la historia en voz alta</div><p class="hint">Lee despacio, vocalizando bien y respetando los puntos y las pausas. Un adulto puede cronometrar el tiempo, pero lo más importante es que leas con seguridad.</p><div class="story">${story}</div><div class="row"><button class="btn primary" id="readok">✅ Ya he leído el texto</button><button class="btn ghost" id="readagain">↻ Empezar de nuevo</button></div><div class="feedback" id="rf"></div></div>
+ <div class="card"><div class="title">⏱️ Opcional: tiempo de lectura</div><p class="hint">Si quieres, pulsa iniciar cuando empiece a leer y parar al terminar. No es una carrera.</p><div id="timer" style="font:38px 'Fredoka One';color:var(--violet);margin:10px 0">00:00</div><div class="row"><button class="btn primary" id="start">▶ Iniciar</button><button class="btn ghost" id="stop">⏹ Parar</button><button class="btn ghost" id="reset">↺ Reiniciar</button></div></div>`;
+ document.getElementById('readok').onclick=()=>{state.readDone=true; const f=document.getElementById('rf');f.className='feedback show ok';f.textContent='¡Lectura completada! Ahora vamos a comprobar cuánto has entendido.';updateProgress()};
+ document.getElementById('readagain').onclick=()=>{state.readDone=false;document.getElementById('rf').className='feedback';updateProgress()};
+ let sec=0, int=null; const t=document.getElementById('timer'); const fmt=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+ document.getElementById('start').onclick=()=>{if(int)return;int=setInterval(()=>{sec++;t.textContent=fmt(sec)},1000)}; document.getElementById('stop').onclick=()=>{clearInterval(int);int=null}; document.getElementById('reset').onclick=()=>{clearInterval(int);int=null;sec=0;t.textContent='00:00'};
+ } else if(current==='comprension') {
+ s.innerHTML=`<div class="card"><div class="title">🧠 Comprueba que has entendido la historia</div><p class="hint">Escribe la respuesta con tus palabras. No hace falta que sea exactamente igual que el texto.</p>${questions.map((q,i)=>`<div class="q"><strong>${i+1}. ${q[0]}</strong><input type="text" id="q${i}" value="${state.answers[i]||''}" placeholder="Escribe tu respuesta aquí"><div class="feedback" id="fb${i}"></div></div>`).join('')}<div class="row"><button class="btn primary" id="checkq">Comprobar respuestas</button></div></div>`;
+ document.getElementById('checkq').onclick=()=>{let ok=0;questions.forEach((q,i)=>{const inp=document.getElementById('q'+i);state.answers[i]=inp.value;const f=document.getElementById('fb'+i);let good=markText(inp.value,q[1]);if(i===1)good=normalize(inp.value).includes('agua')&&normalize(inp.value).includes('bocadillo')&&normalize(inp.value).includes('botella')&&normalize(inp.value).includes('gorra')&&normalize(inp.value).includes('brujula');if(i===5)good=normalize(inp.value).includes('cuid')&&normalize(inp.value).includes('basura')&&normalize(inp.value).includes('animal');if(good){ok++;f.className='feedback show ok';f.textContent='✓ ¡Muy bien!'}else{f.className='feedback show bad';f.textContent='Revisa el texto y vuelve a intentarlo.'}});if(ok===8){setTimeout(()=>alert('🎉 ¡8 de 8! Comprensión perfecta.'),50)}updateProgress()};
+ } else if(current==='palabras') {
+ s.innerHTML=`<div class="card"><div class="title">🔤 Lee las palabras, una a una</div><p class="hint">Pulsa cada palabra después de leerla en voz alta. Intenta no correr y presta atención a las partes difíciles.</p><div class="word-grid">${words.map((w,i)=>`<button class="word ${state.wordRead>i?'read':''}" data-i="${i}">${w}</button>`).join('')}</div><div class="row"><span class="badge" id="wordcount">${state.wordRead}/${words.length} leídas</span></div></div>`;
+ document.querySelectorAll('.word').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;state.wordRead=Math.max(state.wordRead,i+1);render();});
+ } else if(current==='busqueda') {
+ const tasks=[
+ ['3 palabras con b',w=>w.toLowerCase().includes('b'),3],
+ ['3 palabras con v',w=>w.toLowerCase().includes('v'),3],
+ ['3 palabras con h',w=>w.toLowerCase().includes('h'),3],
+ ['2 palabras con gue o gui',w=>/(gue|gui)/i.test(w),2],
+ ['2 palabras con güe o güi',w=>/(güe|güi)/i.test(w),2],
+ ['2 palabras con mp',w=>/mp/i.test(w),2],
+ ['2 palabras con mb',w=>/mb/i.test(w),2],
+ ['3 palabras con ll',w=>/ll/i.test(w),3],
+ ['2 palabras con y',w=>/y/i.test(w),2],
+ ['2 palabras con rr',w=>/rr/i.test(w),2],
+ ['2 palabras con qu',w=>/qu/i.test(w),2]
+ ];
+ s.innerHTML=`<div class="card"><div class="title">🔎 Busca las palabras en el texto</div><p class="hint">Vuelve al texto y encuentra las palabras. Escríbelas separadas por comas. Hay más respuestas posibles de las que necesitas.</p><div class="passagesearch">${story}</div>${tasks.map((t,i)=>`<div class="findbox"><b>${i+1}. ${t[0]}</b><input type="text" id="f${i}" value="${state.searches[i]||''}" placeholder="Ejemplo: botella, biblioteca, balón"><div class="feedback" id="ff${i}"></div></div>`).join('')}<div class="row"><button class="btn primary" id="checkfind">Comprobar</button></div></div>`;
+ document.getElementById('checkfind').onclick=()=>{tasks.forEach((t,i)=>{const vals=document.getElementById('f'+i).value.split(',').map(x=>x.trim()).filter(Boolean);state.searches[i]=document.getElementById('f'+i).value;const valid=vals.filter(v=>t[1](v)&&story.toLowerCase().includes(v.toLowerCase())).length;const f=document.getElementById('ff'+i);if(valid>=t[2]){f.className='feedback show ok';f.textContent='✓ ¡Conseguido!'}else{f.className='feedback show bad';f.textContent=`Te faltan ${t[2]-valid} palabra(s). Busca otra vez en el texto.`}});updateProgress()};
+ } else if(current==='dictado') {
+ const blockNames=Object.keys(dictation);
+ s.innerHTML=`<div class="card"><div class="title">✏️ Dictados</div><p class="hint"><b>Modo adulto:</b> un adulto dicta las palabras. El niño no debe mirar la palabra mientras escribe. Pulsa «Mostrar palabra» solo para corregir.</p><div class="tabs" id="dictTabs">${blockNames.map((n,i)=>`<button class="tab ${i===0?'active':''}" data-bi="${i}">${n}</button>`).join('')}<button class="tab" data-bi="phrases">📝 Frases</button><button class="tab" data-bi="final">🏁 Texto final</button></div><div id="dictArea"></div></div>`;
+ renderDict('0'); document.querySelectorAll('#dictTabs .tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dictTabs .tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderDict(b.dataset.bi)});
+ } else {
+ const done=(state.readDone?1:0)+(state.wordRead>=words.length?1:0)+(Object.keys(state.searches).length?1:0)+(Object.keys(state.dictScores).length?1:0);
+ s.innerHTML=`<div class="score"><div class="scorebig">${Math.round((done/4)*100)}%</div><div style="font-weight:900;font-size:18px">Repaso completado</div><p class="hint">No buscamos una nota. Este porcentaje solo indica cuánto has avanzado por las actividades interactivas.</p></div><div class="card"><div class="title">🎯 ¿Qué conviene repasar?</div><p class="hint">Si has tenido varios errores con una misma dificultad, practícala unos minutos: <b>b/v, h, g/gu/güe/güi, mp/mb, ll/y, r/rr, c/qu</b>.</p><div class="row"><button class="btn primary" onclick="setScreen('dictado')">Volver a los dictados</button><button class="btn ghost" onclick="setScreen('lectura')">Repetir lectura</button></div></div>`;
+ }
+}
+function renderDict(key){
+ const area=document.getElementById('dictArea'); if(!area)return;
+ if(key==='phrases'){area.innerHTML=`<p class="hint">Dicta una frase completa, espera a que termine de escribirla y pasa a la siguiente.</p>${phrases.map((p,i)=>`<div class="q"><strong>Frase ${i+1}</strong><textarea class="dict" id="ph${i}" placeholder="Escribe lo que escuches"></textarea></div>`).join('')}<div class="row"><button class="btn primary" onclick="showPhrases()">Mostrar texto para corregir</button></div><div id="phraseSol"></div>`;return}
+ if(key==='final'){area.innerHTML=`<p class="hint">Dicta el texto completo frase a frase.</p><div class="dict-word" id="finaltext">Texto oculto para el niño</div><textarea class="dict" id="finalInput" placeholder="Escribe aquí el dictado..."></textarea><div class="row"><button class="btn primary" onclick="document.getElementById('finaltext').innerHTML='<b>'+finalText+'</b>'">Mostrar texto para corregir</button></div>`;return}
+ const words2=dictation[Object.keys(dictation)[+key]];
+ area.innerHTML=`<p class="hint">El adulto pulsa «Mostrar palabra» para verla, la dicta y después el niño escribe. Luego se puede comparar.</p><div id="dw"></div><div class="row"><button class="btn primary" id="showWord">👀 Mostrar palabra</button><button class="btn ghost" id="nextWord">Siguiente →</button></div><div id="dictProgress" class="badge" style="margin-top:12px"></div>`;
+ let i=0; function draw(){document.getElementById('dw').innerHTML=`<div class="dict-word"><span class="hidden-word">${words2[i]}</span></div><textarea class="dict" id="di" placeholder="Escribe la palabra que te han dictado"></textarea>`;document.getElementById('dictProgress').textContent=`Palabra ${i+1} de ${words2.length}`;document.getElementById('showWord').onclick=()=>{document.querySelector('#dw .hidden-word').classList.remove('hidden-word')};document.getElementById('nextWord').onclick=()=>{const val=document.getElementById('di').value;const ok=normalize(val)===normalize(words2[i]);document.querySelector('#dw').insertAdjacentHTML('beforeend',`<div class="feedback show ${ok?'ok':'bad'}">${ok?'✓ Correcta':'✗ Era: '+words2[i]}</div>`);if(i<words2.length-1){i++;setTimeout(draw,400)}else{state.dictScores[key]=true;updateProgress();document.getElementById('nextWord').disabled=true}}} draw();
+}
+window.showPhrases=()=>{document.getElementById('phraseSol').innerHTML='<div class="findbox"><b>Soluciones:</b><ol>'+phrases.map(p=>'<li>'+p+'</li>').join('')+'</ol></div>'};
+function updateProgress(){let n=screens.indexOf(current);let pct=((n+1)/screens.length)*100;document.getElementById('fill').style.width=pct+'%'}
+render();updateProgress();
+</script>
+</body>
+</html>

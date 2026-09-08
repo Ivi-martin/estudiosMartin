@@ -28,6 +28,7 @@ export const CONFIG = {
     val:  'Nombre del/la profe',
     vida: 'Nombre del/la profe',
     pant: 'Nombre del/la profe',
+    repaso3: 'Nombre del/la profe',
   },
 
   // ── Asignaturas ──
@@ -130,6 +131,13 @@ export const CONFIG = {
         { label: '🧩 TEA',                      url: 'apps/vidaTEA.html' },
         { label: '🛡️ Bullying',               url: 'apps/vidaBullying.html' },
         //{ label: '🎮 Juego – Defensor del Conocimiento',   url: 'apps/juegoDefensor.html' },
+      ],
+    },
+    {
+      id: 'repaso3', icon: '📚', name: 'Repaso 2º → 3º',
+      color: '#7c3aed', colorBg: 'rgba(124,58,237,0.12)', colorText: '#c4b5fd',
+      topics: [
+        { label: '📖 Repaso de lectura y escritura', url: 'apps/repaso3.html' },
       ],
     },
     {
